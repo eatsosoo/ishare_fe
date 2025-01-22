@@ -2,9 +2,8 @@ import type { DropMenu } from '../components/Dropdown';
 import type { LocaleSetting, LocaleType } from '#/config';
 
 export const LOCALE: { [key: string]: LocaleType } = {
-  ZH_CN: 'zh_CN',
-  EN_US: 'en',
   VI: 'vi',
+  EN_US: 'en',
 };
 
 export const localeSetting: LocaleSetting = {
@@ -14,15 +13,11 @@ export const localeSetting: LocaleSetting = {
   // Default locale
   fallback: LOCALE.VI,
   // available Locales
-  availableLocales: [LOCALE.VI, LOCALE.EN_US, LOCALE.ZH_CN],
+  availableLocales: [LOCALE.VI, LOCALE.EN_US],
 };
 
 // locale list
 export const localeList: DropMenu[] = [
-  {
-    text: '简体中文',
-    event: LOCALE.ZH_CN,
-  },
   {
     text: 'English',
     event: LOCALE.EN_US,
