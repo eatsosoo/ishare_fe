@@ -1,22 +1,22 @@
 <template>
   <PageWrapper
-    title="后台权限示例"
+    title="Ví dụ về quyền quản trị viên (Backend Permission Example)"
     contentBackground
     contentClass="p-4"
-    content="目前mock了两组数据， id为1 和 2 具体返回的菜单可以在mock/sys/menu.ts内查看"
+    content="Hiện tại, đã mock sẵn hai bộ dữ liệu có id là 1 và 2. Các menu được trả về có thể xem chi tiết trong file mock/sys/menu.ts."
   >
     <CurrentPermissionMode />
 
-    <Alert class="mt-4" type="info" message="点击后请查看左侧菜单变化" show-icon />
+    <Alert class="mt-4" type="info" message="Nhấn để xem sự thay đổi menu bên trái" show-icon />
 
     <div class="mt-4">
-      权限切换(请先切换权限模式为后台权限模式):
+      Chuyển đổi quyền (Vui lòng chuyển sang chế độ quyền quản trị viên trước):
       <Space>
         <a-button @click="switchToken(1)" :disabled="!isBackPermissionMode">
-          获取用户id为1的菜单
+          Lấy menu của người dùng có id là 1
         </a-button>
         <a-button @click="switchToken(2)" :disabled="!isBackPermissionMode">
-          获取用户id为2的菜单
+          Lấy menu của người dùng có id là 2
         </a-button>
       </Space>
     </div>

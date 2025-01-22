@@ -1,5 +1,5 @@
 <template>
-  <div class="m-10 auth-page">Super 角色可见</div>
+  <div class="m-10 auth-page">Hiển thị theo vai trò Super</div>
 </template>
 <script lang="ts" setup></script>
 <style lang="less" scoped>

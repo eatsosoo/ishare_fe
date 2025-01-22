@@ -1,10 +1,16 @@
 <template>
   <div class="mt-2">
-    当前权限模式：
+    Chế độ phân quyền hiện tại:
     <a-button type="link">
-      {{ permissionMode === PermissionModeEnum.BACK ? '后台权限模式' : '前端角色权限模式' }}
+      {{
+        permissionMode === PermissionModeEnum.BACK
+          ? 'Chế độ phân quyền backend'
+          : 'Chế độ phân quyền role frontend'
+      }}
     </a-button>
-    <a-button class="ml-4" @click="togglePermissionMode" type="primary"> 切换权限模式 </a-button>
+    <a-button class="ml-4" @click="togglePermissionMode" type="primary">
+      Chuyển đổi chế độ phân quyền
+    </a-button>
     <Divider />
   </div>
 </template>

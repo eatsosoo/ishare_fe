@@ -18,12 +18,12 @@
           class="fix-auto-fill"
         />
       </FormItem>
-      <FormItem name="sms" class="enter-x">
-        <CountdownInput
+      <FormItem name="email" class="enter-x">
+        <Input
           size="large"
+          v-model:value="formData.email"
+          :placeholder="t('sys.login.email')"
           class="fix-auto-fill"
-          v-model:value="formData.sms"
-          :placeholder="t('sys.login.smsCode')"
         />
       </FormItem>
       <FormItem name="password" class="enter-x">
