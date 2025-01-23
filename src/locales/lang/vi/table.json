@@ -5,5 +5,11 @@
   "numberStudent": "Số học sinh",
   "status": "Trạng thái",
   "openingDay": "Ngày khai giảng",
-  "enterData": "Nhập dữ liệu"
+  "enterData": "Nhập dữ liệu",
+  "action": "Hành động",
+  "studentOfClass": "Danh sách học sinh",
+  "studentOfClassHelpMessage": "Điểm số của từng học sinh sẽ được hiển thị ở đây",
+  "studentName": "Tên học sinh",
+  "view": "Xem",
+  "field": "Trường"
 }

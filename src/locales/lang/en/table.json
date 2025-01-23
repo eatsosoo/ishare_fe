@@ -5,5 +5,11 @@
   "numberStudent": "Number of Students",
   "status": "Status",
   "openingDay": "Opening Day",
-  "enterData": "Enter Data"
+  "enterData": "Enter Data",
+  "action": "Action",
+  "studentOfClass": "Student List",
+  "studentOfClassHelpMessage": "The score of each student will be displayed here",
+  "studentName": "Student Name",
+  "view": "View",
+  "field": "Field"
 }

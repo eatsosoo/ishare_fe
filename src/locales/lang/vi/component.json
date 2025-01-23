@@ -67,7 +67,7 @@
     "settingFixedRight": "Cố định bên phải",
     "settingFullScreen": "Toàn màn hình",
     "index": "Chỉ mục",
-    "total": "Tổng {total} trang",
+    "total": "Tổng {total}",
     "selectionBarTips": "Đã chọn {count} bản ghi.",
     "selectionBarClear": "Xóa",
     "selectionBarEmpty": "Chưa chọn bản ghi nào."

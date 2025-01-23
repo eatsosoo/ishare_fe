@@ -77,6 +77,22 @@ const classList = (() => {
   return result;
 })();
 
+const studentList = (() => {
+  const result: any[] = [];
+  for (let index = 0; index < 40; index++) {
+    result.push({
+      id: `${index}`,
+      name: '@name',
+      reading: '@integer(0, 9)',
+      listening: '@integer(0, 9)',
+      speaking: '@integer(0, 9)',
+      writing: '@integer(0, 9)',
+      total: '@integer(0, 9)',
+    });
+  }
+  return result;
+})();
+
 export default [
   {
     url: '/basic-api/table/getDemoList',
@@ -94,6 +110,15 @@ export default [
     response: ({ query }) => {
       const { page = 1, pageSize = 20 } = query;
       return resultPageSuccess(page, pageSize, classList);
+    },
+  },
+  {
+    url: '/basic-api/table/getStudentList',
+    timeout: 100,
+    method: 'get',
+    response: ({ query }) => {
+      const { page = 1, pageSize = 20 } = query;
+      return resultPageSuccess(page, pageSize, studentList);
     },
   },
 ] as MockMethod[];
