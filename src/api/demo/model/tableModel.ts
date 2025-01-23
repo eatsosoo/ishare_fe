@@ -14,7 +14,22 @@ export interface DemoListItem {
   status: number;
 }
 
+export interface ClassListItem {
+  id: string;
+  className: string;
+  classCode: string;
+  teacher: string;
+  studentNum: number;
+  openingDay: string;
+  status: number;
+}
+
 /**
  * @description: Request list return value
  */
 export type DemoListGetResultModel = BasicFetchResult<DemoListItem>;
+
+/**
+ * @description: Request list return value
+ */
+export type ClassListGetResultModel = BasicFetchResult<ClassListItem>;

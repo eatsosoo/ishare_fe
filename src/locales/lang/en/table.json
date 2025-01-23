@@ -1,0 +1,9 @@
+{
+  "className": "Class Name",
+  "classCode": "Class Code",
+  "teacher": "Teacher",
+  "numberStudent": "Number of Students",
+  "status": "Status",
+  "openingDay": "Opening Day",
+  "enterData": "Enter Data"
+}

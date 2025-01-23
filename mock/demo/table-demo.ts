@@ -10,6 +10,23 @@ function getRandomPics(count = 10): string[] {
   return arr;
 }
 
+const vietnameseCities = [
+  'Hà Nội',
+  'Hồ Chí Minh',
+  'Đà Nẵng',
+  'Hải Phòng',
+  'Cần Thơ',
+  'Nha Trang',
+  'Huế',
+  'Vũng Tàu',
+  'Biên Hòa',
+  'Buôn Ma Thuột',
+];
+
+function getRandomVietnameseCity(): string {
+  return vietnameseCities[Math.floor(Math.random() * vietnameseCities.length)];
+}
+
 const demoList = (() => {
   const result: any[] = [];
   for (let index = 0; index < 200; index++) {
@@ -17,19 +34,19 @@ const demoList = (() => {
       id: `${index}`,
       beginTime: '@datetime',
       endTime: '@datetime',
-      address: '@city()',
-      name: '@cname()',
-      name1: '@cname()',
-      name2: '@cname()',
-      name3: '@cname()',
-      name4: '@cname()',
-      name5: '@cname()',
-      name6: '@cname()',
-      name7: '@cname()',
-      name8: '@cname()',
-      radio1: `选项${index + 1}`,
-      radio2: `选项${index + 1}`,
-      radio3: `选项${index + 1}`,
+      address: getRandomVietnameseCity(),
+      name: '@name()',
+      name1: '@name()',
+      name2: '@name()',
+      name3: '@name()',
+      name4: '@name()',
+      name5: '@name()',
+      name6: '@name()',
+      name7: '@name()',
+      name8: '@name()',
+      radio1: `Option ${index + 1}`,
+      radio2: `Option ${index + 1}`,
+      radio3: `Option ${index + 1}`,
       avatar: Random.image('400x400', Random.color(), Random.color(), Random.first()),
       imgArr: getRandomPics(Math.ceil(Math.random() * 3) + 1),
       imgs: getRandomPics(Math.ceil(Math.random() * 3) + 1),
@@ -37,6 +54,24 @@ const demoList = (() => {
       time: `@time('HH:mm')`,
       'no|100000-10000000': 100000,
       'status|1': ['normal', 'enable', 'disable'],
+    });
+  }
+  return result;
+})();
+
+const classList = (() => {
+  const result: any[] = [];
+  for (let index = 0; index < 200; index++) {
+    result.push({
+      id: `${index}`,
+      created: '@datetime',
+      updated: '@datetime',
+      className: '@name()',
+      classCode: '@guid()',
+      teacher: '@name()',
+      studentNum: '@integer(30, 100)',
+      openingDay: `@date('yyyy-MM-dd')`,
+      'status|1': ['pending', 'enable', 'finished'],
     });
   }
   return result;
@@ -50,6 +85,15 @@ export default [
     response: ({ query }) => {
       const { page = 1, pageSize = 20 } = query;
       return resultPageSuccess(page, pageSize, demoList);
+    },
+  },
+  {
+    url: '/basic-api/table/getClassList',
+    timeout: 100,
+    method: 'get',
+    response: ({ query }) => {
+      const { page = 1, pageSize = 20 } = query;
+      return resultPageSuccess(page, pageSize, classList);
     },
   },
 ] as MockMethod[];
