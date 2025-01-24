@@ -9,7 +9,7 @@
 
 ## Introduction
 
-Vue Vben Admin is a free and open source middle platform/back-end template. Using the latest `vue3`, `vite4`, `TypeScript` and other mainstream technology, Vben is the out-of-the-box front-end solution for both production and learning purpose.
+Vue Jin Admin is a free and open source middle platform/back-end template. Using the latest `vue3`, `vite4`, `TypeScript` and other mainstream technology, Vben is the out-of-the-box front-end solution for both production and learning purpose.
 
 ## Features
 
