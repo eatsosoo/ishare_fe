@@ -1,6 +1,6 @@
 import { MockMethod } from 'vite-plugin-mock';
 import { Random } from 'mockjs';
-import { resultPageSuccess } from '../_util';
+import { resultPageSuccess, resultSuccess } from '../_util';
 
 function getRandomPics(count = 10): string[] {
   const arr: string[] = [];
@@ -96,6 +96,21 @@ const studentList = (() => {
   return result;
 })();
 
+const teacherList = (() => {
+  const result: any[] = [];
+  for (let index = 0; index < 40; index++) {
+    result.push({
+      id: `${index}`,
+      name: '@name',
+      phone: '@integer(1000000000, 9999999999)',
+      email: '@email',
+      birthday: '@date',
+      'status|1': ['active', 'inactive'],
+    });
+  }
+  return result;
+})();
+
 export default [
   {
     url: '/basic-api/table/getDemoList',
@@ -122,6 +137,14 @@ export default [
     response: ({ query }) => {
       const { page = 1, pageSize = 20 } = query;
       return resultPageSuccess(page, pageSize, studentList);
+    },
+  },
+  {
+    url: '/basic-api/table/getTeacherList',
+    timeout: 10,
+    method: 'get',
+    response: () => {
+      return resultSuccess(teacherList);
     },
   },
 ] as MockMethod[];
