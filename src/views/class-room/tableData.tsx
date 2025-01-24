@@ -73,6 +73,33 @@ export function getStudentOfClassColumns(): BasicColumn[] {
   ];
 }
 
+export function getStudentColumns(): BasicColumn[] {
+  return [
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      fixed: 'left',
+      width: 80,
+    },
+    {
+      title: t('table.studentName'),
+      dataIndex: 'name',
+    },
+    {
+      title: t('table.phone'),
+      dataIndex: 'phone',
+    },
+    {
+      title: t('table.email'),
+      dataIndex: 'email',
+    },
+    {
+      title: t('table.birthday'),
+      dataIndex: 'birthday',
+    },
+  ];
+}
+
 export const getAdvanceSchema = (itemNumber = 6): FormSchema[] => {
   const arr: FormSchema[] = [];
   for (let index = 0; index < itemNumber; index++) {

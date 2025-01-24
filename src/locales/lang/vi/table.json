@@ -9,7 +9,22 @@
   "action": "Hành động",
   "studentOfClass": "Danh sách học sinh",
   "studentOfClassHelpMessage": "Điểm số của từng học sinh sẽ được hiển thị ở đây",
+  "addStudentToClass": "Thêm học sinh vào lớp",
   "studentName": "Tên học sinh",
   "view": "Xem",
-  "field": "Trường"
+  "field": "Trường",
+  "score": "Điểm",
+  "edit": "Sửa",
+  "delete": "Xóa",
+  "add": "Thêm",
+  "save": "Lưu",
+  "cancel": "Hủy",
+  "addStudent": "Thêm học sinh",
+  "editStudent": "Sửa học sinh",
+  "deleteStudent": "Xóa học sinh",
+  "phone": "Số điện thoại",
+  "email": "Email",
+  "address": "Địa chỉ",
+  "birthday": "Ngày sinh",
+  "viewStudentList": "Xem danh sách học sinh"
 }

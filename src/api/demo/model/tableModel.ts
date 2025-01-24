@@ -27,6 +27,9 @@ export interface ClassListItem {
 export interface StudentListItem {
   id: string;
   name: string;
+  phone: string;
+  email: string;
+  birthday: string;
   reading: number;
   listening: number;
   speaking: number;

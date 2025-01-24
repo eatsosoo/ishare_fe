@@ -7,12 +7,33 @@
       </template>
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'action'">
-          <a-button type="link" @click="activateModal(record)">{{ t('table.view') }}</a-button>
+          <Tooltip>
+            <template #title>
+              <div>{{ t('table.viewStudentList') }}</div>
+            </template>
+            <a-button
+              size="small"
+              preIcon="ant-design:ordered-list-outlined"
+              class="mr-2"
+              @click="activateModal(record, 'VIEW')"
+            />
+          </Tooltip>
+          <Tooltip>
+            <template #title>
+              <div>{{ t('table.addStudentToClass') }}</div>
+            </template>
+            <a-button
+              size="small"
+              preIcon="ant-design:user-add-outlined"
+              @click="activateModal(record, 'ADD')"
+            />
+          </Tooltip>
         </template>
       </template>
     </BasicTable>
 
-    <ClassModal :title="titleModal" @register="registerModal" />
+    <ClassModal :title="titleModal" @register="registerViewModal" />
+    <AddStudentModal :title="titleModal" @register="registerAddModal" />
   </div>
 </template>
 <script lang="ts" setup>
@@ -24,9 +45,12 @@
   import { useModal } from '@/components/Modal';
   import { ClassListItem } from '@/api/demo/model/tableModel';
   import { computed, ref } from 'vue';
+  import AddStudentModal from '@/views/class-room/AddStudentModal.vue';
+  import { Tooltip } from 'ant-design-vue';
 
   const { t } = useI18n();
-  const [registerModal, { openModal: openClassModal }] = useModal();
+  const [registerViewModal, { openModal: openViewModal }] = useModal();
+  const [registerAddModal, { openModal: openAddModal }] = useModal();
   const [registerTable, { getForm }] = useTable({
     title: t('routes.page.classRoomList'),
     api: classListApi(),
@@ -53,8 +77,12 @@
     console.log(getForm().getFieldsValue());
   }
 
-  function activateModal(record: ClassListItem | any) {
+  function activateModal(record: ClassListItem | any, type: 'ADD' | 'VIEW') {
     targetValue.value = record;
-    openClassModal();
+    if (type === 'VIEW') {
+      openViewModal();
+    } else {
+      openAddModal();
+    }
   }
 </script>

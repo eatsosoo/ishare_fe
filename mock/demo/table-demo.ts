@@ -83,6 +83,9 @@ const studentList = (() => {
     result.push({
       id: `${index}`,
       name: '@name',
+      phone: '@integer(1000000000, 9999999999)',
+      email: '@email',
+      birthday: '@date',
       reading: '@integer(0, 9)',
       listening: '@integer(0, 9)',
       speaking: '@integer(0, 9)',

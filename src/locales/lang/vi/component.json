@@ -69,7 +69,7 @@
     "index": "Chỉ mục",
     "total": "Tổng {total}",
     "selectionBarTips": "Đã chọn {count} bản ghi.",
-    "selectionBarClear": "Xóa",
+    "selectionBarClear": "Bỏ chọn",
     "selectionBarEmpty": "Chưa chọn bản ghi nào."
   },
   "time": {
