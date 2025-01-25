@@ -19,7 +19,8 @@
     "enable": "Hoạt động",
     "pending": "Chờ",
     "finished": "Kết thúc",
-    "student": "Học sinh"
+    "student": "Học sinh",
+    "studentRegister": "Học sinh đăng ký"
   },
   "addStudentToClass": "Thêm học sinh vào lớp"
 }

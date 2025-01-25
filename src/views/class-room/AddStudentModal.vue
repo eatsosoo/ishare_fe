@@ -1,5 +1,12 @@
 <template>
-  <BasicModal v-bind="$attrs" title="Modal Title" width="1100px" @fullscreen="onFullscreen">
+  <BasicModal
+    v-bind="$attrs"
+    title="Modal Title"
+    width="1100px"
+    @register="registerModal"
+    @fullscreen="onFullscreen"
+    @ok="getSelectStudents"
+  >
     <CollapseContainer :title="t('table.search')" class="border">
       <BasicForm @register="registerSearchForm" @submit="handleSearchFormSubmit" />
     </CollapseContainer>
@@ -8,7 +15,7 @@
 </template>
 <script lang="ts" setup>
   import { ref, nextTick } from 'vue';
-  import { BasicModal } from '@/components/Modal';
+  import { BasicModal, useModalInner } from '@/components/Modal';
   import { BasicTable, ColumnChangeParam, useTable } from '@/components/Table';
   import { getStudentColumns } from '@/views/class-room/tableData';
   import { studentListApi } from '@/api/demo/table';
@@ -18,7 +25,8 @@
   import { useMessage } from '@/hooks/web/useMessage';
 
   const { t } = useI18n();
-  const [registerTable] = useTable({
+  const [registerModal, { closeModal }] = useModalInner();
+  const [registerTable, { getSelectRows, clearSelectedRowKeys }] = useTable({
     canResize: true,
     title: t('table.studentList'),
     titleHelpMessage: t('table.addStudentToClass'),
@@ -39,6 +47,7 @@
       console.log('ColumnsChanged', data);
     },
   });
+  const emit = defineEmits(['selectStudents']);
 
   const selectTable = ref<InstanceType<typeof BasicTable> | undefined>();
 
@@ -55,7 +64,6 @@
       colProps: {
         span: 8,
       },
-      required: true,
     },
     {
       field: 'phone',
@@ -64,7 +72,6 @@
       colProps: {
         span: 8,
       },
-      required: true,
     },
   ];
 
@@ -79,5 +86,11 @@
 
   function handleSearchFormSubmit(values: any) {
     createMessage.success('click search,values:' + JSON.stringify(values));
+  }
+
+  function getSelectStudents() {
+    emit('selectStudents', getSelectRows());
+    clearSelectedRowKeys();
+    closeModal();
   }
 </script>

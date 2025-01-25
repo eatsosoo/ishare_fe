@@ -1,19 +1,25 @@
 <template>
   <div>
-    <BasicTable @register="registerTable" @edit-change="handleEditChange">
+    <BasicTable @register="registerTable">
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'action'">
           <TableAction :actions="createActions(record)" />
         </template>
       </template>
     </BasicTable>
-    <a-button block class="mt-5" type="dashed" @click="handleAdd"> 新增成员 </a-button>
-    <a-button block class="mt-5" type="dashed" @click="openAddModal"> 新增成员 </a-button>
+    <a-button block class="mt-5" type="dashed" @click="openAddModal">
+      {{ t('form.addStudentToClass') }}
+    </a-button>
 
-    <AddStudentModal :title="t('form.addStudentToClass')" @register="registerAddModal" />
+    <AddStudentModal
+      :title="t('form.addStudentToClass')"
+      @register="registerAddModal"
+      @select-students="handleSelectStudents"
+    />
   </div>
 </template>
 <script lang="ts" setup>
+  import { StudentListItem } from '@/api/demo/model/tableModel';
   import { useModal } from '@/components/Modal';
   import {
     BasicTable,
@@ -30,112 +36,65 @@
   const [registerAddModal, { openModal: openAddModal }] = useModal();
   const columns: BasicColumn[] = [
     {
-      title: '成员姓名',
+      title: t('table.studentName'),
       dataIndex: 'name',
       editRow: true,
     },
     {
-      title: '工号',
-      dataIndex: 'no',
+      title: t('table.phone'),
+      dataIndex: 'phone',
       editRow: true,
     },
     {
-      title: '所属部门',
-      dataIndex: 'dept',
+      title: t('table.email'),
+      dataIndex: 'email',
       editRow: true,
     },
   ];
+  const emit = defineEmits(['selectStudents']);
 
-  const data: any[] = [
-    {
-      name: 'John Brown',
-      no: '00001',
-      dept: 'New York No. 1 Lake Park',
-    },
-    {
-      name: 'John Brown2',
-      no: '00002',
-      dept: 'New York No. 2 Lake Park',
-    },
-    {
-      name: 'John Brown3',
-      no: '00003',
-      dept: 'New York No. 3Lake Park',
-    },
-  ];
+  const data: StudentListItem[] = [];
   const [registerTable, { getDataSource }] = useTable({
     columns: columns,
-    showIndexColumn: false,
+    showIndexColumn: true,
     dataSource: data,
     actionColumn: {
       width: 160,
-      title: '操作',
+      title: t('table.action'),
       dataIndex: 'action',
       // slots: { customRender: 'action' },
     },
     scroll: { y: '100%' },
     pagination: false,
   });
-  // 暴露getDataSource 供父组件使用
+  // Expose getDataSource for parent components to use
   defineExpose({ getDataSource });
 
-  function handleEdit(record: EditRecordRow) {
-    record.onEdit?.(true);
-  }
-
-  function handleCancel(record: EditRecordRow) {
-    record.onEdit?.(false);
-    if (record.isNew) {
-      const data = getDataSource();
-      const index = data.findIndex((item) => item.key === record.key);
-      data.splice(index, 1);
-    }
-  }
-
-  function handleSave(record: EditRecordRow) {
-    record.onEdit?.(false, true);
-  }
-
-  function handleEditChange(data: Recordable) {
-    console.log(data);
-  }
-
-  function handleAdd() {
+  function handleDelete(record: EditRecordRow) {
     const data = getDataSource();
-    const addRow: EditRecordRow = {
-      name: '',
-      no: '',
-      dept: '',
-      editable: true,
-      isNew: true,
-      key: `${Date.now()}`,
-    };
-    data.push(addRow);
+    const index = data.findIndex((item) => item.key === record.key);
+    data.splice(index, 1);
+    emit('selectStudents', data);
+  }
+
+  function handleSelectStudents(students: StudentListItem[]) {
+    const data = getDataSource();
+    students.forEach((student) => {
+      if (data.some((item) => item.id === student.id)) {
+        return;
+      }
+      data.push({
+        ...student,
+      });
+    });
+    emit('selectStudents', data);
   }
 
   function createActions(record: EditRecordRow): ActionItem[] {
-    if (!record.editable) {
-      return [
-        {
-          label: '编辑',
-          onClick: handleEdit.bind(null, record),
-        },
-        {
-          label: '删除',
-        },
-      ];
-    }
     return [
       {
-        label: '保存',
-        onClick: handleSave.bind(null, record),
-      },
-      {
-        label: '取消',
-        popConfirm: {
-          title: '是否取消编辑',
-          confirm: handleCancel.bind(null, record),
-        },
+        label: t('table.delete'),
+        onClick: handleDelete.bind(null, record),
       },
     ];
   }

@@ -7,12 +7,12 @@
     <Card :title="t('form.newClassForm.information')" :bordered="false">
       <BasicForm @register="register" />
     </Card>
-    <Card :title="t('form.newClassForm.student')" :bordered="false" class="!mt-5">
-      <StudentTable ref="tableRef" />
+    <Card :title="title2" :bordered="false" class="!mt-5">
+      <StudentTable ref="tableRef" @select-students="handleRegisterStudentToClass" />
     </Card>
 
     <template #rightFooter>
-      <a-button type="primary" @click="submitAll"> 提交 </a-button>
+      <a-button type="primary" @click="submitAll"> {{ t('common.confirm') }} </a-button>
     </template>
   </PageWrapper>
 </template>
@@ -24,11 +24,13 @@
   import { schemas } from './data';
   import { Card } from 'ant-design-vue';
   import { useI18n } from '@/hooks/web/useI18n';
+  import { StudentListItem } from '@/api/demo/model/tableModel';
 
   defineOptions({ name: 'FormHightPage' });
 
   const { t } = useI18n();
   const tableRef = ref<{ getDataSource: () => any } | null>(null);
+  const studentsRegistered = ref<StudentListItem[]>([]);
 
   const [register, { validate }] = useForm({
     layout: 'vertical',
@@ -39,6 +41,8 @@
     showActionButtonGroup: false,
   });
 
+  const title2 = `${t('form.newClassForm.studentRegister')} (${t('table.numberStudent')}: ${studentsRegistered.value.length})`;
+
   async function submitAll() {
     try {
       if (tableRef.value) {
@@ -46,10 +50,14 @@
       }
 
       const [values] = await Promise.all([validate()]);
-      console.log('form data:', values);
+      console.log('form data:', { ...values, students: studentsRegistered.value });
     } catch (error) {
       console.log(error);
     }
+  }
+
+  function handleRegisterStudentToClass(data: StudentListItem[]) {
+    studentsRegistered.value = data;
   }
 </script>
 <style lang="less" scoped>
