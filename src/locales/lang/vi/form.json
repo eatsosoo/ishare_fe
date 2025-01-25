@@ -2,15 +2,24 @@
   "field": "Trường",
   "validateForm": "Xác thực biểu mẫu",
   "resetValidate": "Đặt lại xác thực",
-  "getFormValues": "Nhận giá trị biểu mẫu",
-  "setFormValues": "Làm mới giá trị biểu mẫu",
+  "getFormValues": "Xem giá trị biểu mẫu",
+  "setFormValues": "Điền giá trị biểu mẫu",
   "resetFields": "Đặt lại giá trị biểu mẫu",
   "newClassForm": {
     "title": "Biểu mẫu tạo nhóm lớp",
+    "information": "Thông tin lớp học",
     "name": "Tên lớp học",
     "namePlaceholder": "Nhập tên lớp học",
     "description": "Mô tả",
     "descriptionPlaceholder": "Nhập mô tả",
-    "submit": "Tạo lớp học"
-  }
+    "submit": "Tạo lớp học",
+    "teacher": "Giáo viên",
+    "openingDay": "Ngày khai giảng",
+    "status": "Trạng thái",
+    "enable": "Hoạt động",
+    "pending": "Chờ",
+    "finished": "Kết thúc",
+    "student": "Học sinh"
+  },
+  "addStudentToClass": "Thêm học sinh vào lớp"
 }

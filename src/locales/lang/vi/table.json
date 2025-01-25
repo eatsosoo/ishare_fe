@@ -26,5 +26,7 @@
   "email": "Email",
   "address": "Địa chỉ",
   "birthday": "Ngày sinh",
-  "viewStudentList": "Xem danh sách học sinh"
+  "viewStudentList": "Xem danh sách học sinh",
+  "studentList": "Danh sách học sinh",
+  "search": "Tìm kiếm"
 }
