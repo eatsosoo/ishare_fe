@@ -30,7 +30,7 @@
     EditRecordRow,
   } from '@/components/Table';
   import { useI18n } from '@/hooks/web/useI18n';
-  import AddStudentModal from '@/views/class-room/AddStudentModal.vue';
+  import AddStudentModal from '@/views/classroom/AddStudentModal.vue';
 
   const { t } = useI18n();
   const [registerAddModal, { openModal: openAddModal }] = useModal();

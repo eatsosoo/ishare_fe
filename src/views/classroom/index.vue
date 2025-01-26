@@ -38,21 +38,21 @@
 </template>
 <script lang="ts" setup>
   import { BasicTable, useTable } from '@/components/Table';
-  import { getClassColumns, getFormConfig } from '@/views/class-room/tableData';
+  import { getClassColumns, getFormConfig } from '@/views/classroom/tableData';
   import { classListApi } from '@/api/demo/table';
   import { useI18n } from '@/hooks/web/useI18n';
   import ClassModal from './ClassModal.vue';
   import { useModal } from '@/components/Modal';
   import { ClassListItem } from '@/api/demo/model/tableModel';
   import { computed, ref } from 'vue';
-  import AddStudentModal from '@/views/class-room/AddStudentModal.vue';
+  import AddStudentModal from '@/views/classroom/AddStudentModal.vue';
   import { Tooltip } from 'ant-design-vue';
 
   const { t } = useI18n();
   const [registerViewModal, { openModal: openViewModal }] = useModal();
   const [registerAddModal, { openModal: openAddModal }] = useModal();
   const [registerTable, { getForm }] = useTable({
-    title: t('routes.page.classRoomList'),
+    title: t('routes.page.classroomList'),
     api: classListApi(),
     columns: getClassColumns(),
     useSearchForm: true,

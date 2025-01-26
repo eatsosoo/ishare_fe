@@ -3,35 +3,35 @@ import type { AppRouteModule } from '@/router/types';
 import { LAYOUT } from '@/router/constant';
 import { t } from '@/hooks/web/useI18n';
 
-const classRoom: AppRouteModule = {
+const classroom: AppRouteModule = {
   path: '/class',
-  name: 'ClassRoom',
+  name: 'Classroom',
   component: LAYOUT,
-  redirect: '/classes/index',
+  redirect: '/class/index',
   meta: {
     orderNo: 10,
     icon: 'ion:grid-outline',
-    title: t('routes.page.class'),
+    title: t('routes.page.classManager'),
   },
   children: [
     {
       path: 'index',
       name: 'ClassList',
-      component: () => import('@/views/class-room/index.vue'),
+      component: () => import('@/views/classroom/index.vue'),
       meta: {
         // affix: true,
-        title: t('routes.page.classRoomList'),
+        title: t('routes.page.classroomList'),
       },
     },
     {
       path: 'new',
       name: 'ClassCreate',
-      component: () => import('@/views/class-room/new.vue'),
+      component: () => import('@/views/classroom/new.vue'),
       meta: {
-        title: t('routes.page.createClassRoom'),
+        title: t('routes.page.createClassroom'),
       },
     },
   ],
 };
 
-export default classRoom;
+export default classroom;

@@ -8,7 +8,7 @@
   import { ref, nextTick } from 'vue';
   import { BasicModal } from '@/components/Modal';
   import { BasicTable, ColumnChangeParam, useTable } from '@/components/Table';
-  import { getStudentOfClassColumns } from '@/views/class-room/tableData';
+  import { getStudentOfClassColumns } from '@/views/classroom/tableData';
   import { studentListApi } from '@/api/demo/table';
   import { useI18n } from '@/hooks/web/useI18n';
 

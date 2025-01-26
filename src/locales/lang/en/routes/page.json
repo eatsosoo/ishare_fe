@@ -1,3 +1,10 @@
 {
-  "classRoomList": "Class List"
+  "classroomList": "Classroom List",
+  "createClassroom": "Create Classroom Group",
+  "classManager": "Class Management",
+  "exerciseManager": "Exercise Management",
+  "reading": "Reading",
+  "listening": "Listening",
+  "writing": "Writing",
+  "speaking": "Speaking"
 }

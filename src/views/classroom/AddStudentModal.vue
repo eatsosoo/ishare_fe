@@ -17,7 +17,7 @@
   import { ref, nextTick } from 'vue';
   import { BasicModal, useModalInner } from '@/components/Modal';
   import { BasicTable, ColumnChangeParam, useTable } from '@/components/Table';
-  import { getStudentColumns } from '@/views/class-room/tableData';
+  import { getStudentColumns } from '@/views/classroom/tableData';
   import { studentListApi } from '@/api/demo/table';
   import { useI18n } from '@/hooks/web/useI18n';
   import { BasicForm, FormSchema, useForm } from '@/components/Form';

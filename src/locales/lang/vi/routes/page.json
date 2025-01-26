@@ -1,5 +1,10 @@
 {
-  "classRoomList": "Danh sách lớp học",
-  "createClassRoom": "Tạo nhóm lớp",
-  "class": "Lớp học"
+  "classroomList": "Danh sách lớp học",
+  "createClassroom": "Tạo nhóm lớp",
+  "classManager": "Quản lý lớp học",
+  "exerciseManager": "Quản lý bài tập",
+  "reading": "Reading",
+  "listening": "Listening",
+  "writing": "Writing",
+  "speaking": "Speaking"
 }
