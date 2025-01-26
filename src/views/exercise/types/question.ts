@@ -3,4 +3,4 @@ export interface QuestionType {
   label: string;
 }
 
-export type SelectQuestionType = 'multiple_choice' | 'write' | 'true_false';
+export type SelectQuestionType = 'choice' | 'write' | 'true_false';
