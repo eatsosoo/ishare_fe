@@ -13,6 +13,7 @@ export function uploadApi(
   params: UploadFileParams,
   onUploadProgress: (progressEvent: AxiosProgressEvent) => void,
 ) {
+  console.log('upload-params: ', params);
   return defHttp.uploadFile<UploadApiResult>(
     {
       url: uploadUrl,

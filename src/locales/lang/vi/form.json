@@ -10,7 +10,7 @@
     "information": "Thông tin lớp học",
     "name": "Tên lớp học",
     "namePlaceholder": "Nhập tên lớp học",
-    "description": "Mô tả",
+    "description": "Điền thông tin nhóm lớp và số lượng học sinh",
     "descriptionPlaceholder": "Nhập mô tả",
     "submit": "Tạo nhóm lớp",
     "teacher": "Giáo viên",

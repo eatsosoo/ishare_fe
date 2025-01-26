@@ -7,7 +7,7 @@
     @fullscreen="onFullscreen"
     @ok="getSelectStudents"
   >
-    <CollapseContainer :title="t('table.search')" class="border">
+    <CollapseContainer :title="t('table.search')" class="search-student-form">
       <BasicForm @register="registerSearchForm" @submit="handleSearchFormSubmit" />
     </CollapseContainer>
     <BasicTable @register="registerTable" ref="selectTable" />
@@ -94,3 +94,14 @@
     closeModal();
   }
 </script>
+<style lang="less" scoped>
+  .search-student-form {
+    margin: 0 10px 10px;
+    border: 1px solid #f0f0f0;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow:
+      rgb(50 50 93 / 25%) 0 2px 5px -1px,
+      rgb(0 0 0 / 30%) 0 1px 3px -1px;
+  }
+</style>
