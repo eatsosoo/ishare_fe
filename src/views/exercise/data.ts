@@ -1,4 +1,4 @@
-import { QuestionType } from './types/question';
+import { QuestionType, ReadingPart } from './types/question';
 
 export const questionTypes: QuestionType[] = [
   {
@@ -15,13 +15,13 @@ export const questionTypes: QuestionType[] = [
   },
 ];
 
-export const readingParts = [
+export const readingParts: ReadingPart[] = [
   {
     key: 'tabs1',
     tab: 'Part 1',
     questions: Array.from({ length: 13 }, (_, i) => ({
       no: i + 1,
-      content: '',
+      content: `Question ${i + 1}`,
       type: 'choice',
       options: [],
       answer: null,
@@ -32,7 +32,7 @@ export const readingParts = [
     tab: 'Part 2',
     questions: Array.from({ length: 13 }, (_, i) => ({
       no: i + 13,
-      content: '',
+      content: `Question ${i + 13}`,
       type: 'choice',
       options: [],
       answer: null,
@@ -43,7 +43,7 @@ export const readingParts = [
     tab: 'Part 3',
     questions: Array.from({ length: 13 }, (_, i) => ({
       no: i + 26,
-      content: '',
+      content: `Question ${i + 26}`,
       type: 'choice',
       options: [],
       answer: null,

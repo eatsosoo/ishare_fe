@@ -15,5 +15,7 @@
   "light": "Sáng",
   "dark": "Tối",
   "confirm": "Xác nhận",
-  "readingExercise": "Bài tập phần READING"
+  "readingExercise": "Bài tập phần READING",
+  "pleaseSelectQuestion": "Vui lòng chọn câu hỏi",
+  "questionInformation": "Thông tin câu hỏi"
 }
