@@ -15,7 +15,13 @@
   "light": "Sáng",
   "dark": "Tối",
   "confirm": "Xác nhận",
+  "add": "Thêm",
   "readingExercise": "Bài tập phần READING",
+  "listeningExercise": "Bài tập phần LISTENING",
   "pleaseSelectQuestion": "Vui lòng chọn câu hỏi",
-  "questionInformation": "Thông tin câu hỏi"
+  "questionInformation": "Thông tin câu hỏi",
+  "questionContent": "Nội dung câu hỏi",
+  "questionType": "Loại câu hỏi",
+  "answer": "Đáp án",
+  "correctAnswer": "Đáp án đúng"
 }

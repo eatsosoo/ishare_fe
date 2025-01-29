@@ -29,29 +29,7 @@
               </div>
               <div class="re-box-shadow rounded-lg mt-4 pa-4">
                 <template v-if="questionCurrent">
-                  <h3>{{ t('common.questionInformation') }}</h3>
-                  <Input
-                    v-model:value="questionCurrent.content"
-                    placeholder="Nhập tên câu hỏi"
-                    class="mb-4"
-                  />
-                  <Select
-                    :options="questionTypes"
-                    v-model:value="questionCurrent.type"
-                    placeholder="Chọn loại câu hỏi"
-                    class="mb-4 w-1/2"
-                  />
-                  <div v-if="questionCurrent.type === 'choice'">
-                    <div
-                      v-for="answer in ['A', 'B', 'C', 'D']"
-                      :key="answer"
-                      class="flex items-center w-1/2"
-                      >{{ answer }}. <Input placeholder="Đáp án A" class="ml-2 mb-2"
-                    /></div>
-                  </div>
-                  <div class="text-right">
-                    <a-button type="primary">{{ t('common.confirm') }}</a-button>
-                  </div>
+                  <Question :value="questionCurrent" />
                 </template>
                 <template v-else>
                   <div class="text-center">{{
@@ -74,15 +52,16 @@
   import { ref } from 'vue';
   import { Tinymce } from '@/components/Tinymce';
   import { PageWrapper } from '@/components/Page';
-  import { Col, Row, Select, Tabs, Input } from 'ant-design-vue';
+  import { Col, Row, Tabs } from 'ant-design-vue';
   import { useI18n } from '@/hooks/web/useI18n';
-  import { questionTypes, readingParts } from './data';
+  import { readingParts } from './data';
   import { omit } from 'lodash-es';
   import { QuestionItem } from './types/question';
+  import Question from './Question.vue';
 
   const TabPane = Tabs.TabPane;
   const activeKey = ref('tabs1');
-  const value = ref('hello world!');
+  const value = ref('Reading');
   const questionCurrent = ref<QuestionItem | null>(null);
   const { t } = useI18n();
 
