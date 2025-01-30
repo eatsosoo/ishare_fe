@@ -4,7 +4,11 @@
       <div>
         <h3>{{ t('common.questionInformation') }}</h3>
         <Form.Item :label="t('common.questionContent')" name="content" required>
-          <Input v-model:value="questionFormData.content" :placeholder="t('common.inputText')" />
+          <Input
+            v-model:value="questionFormData.content"
+            :placeholder="t('common.inputText')"
+            allow-clear
+          />
         </Form.Item>
 
         <Form.Item :label="t('common.questionType')" name="type" required>
@@ -18,6 +22,7 @@
 
       <Form
         :model="optionFormData"
+        :rules="rulesOption"
         ref="optionFormRef"
         v-if="
           questionFormData.type === SelectQuestionType.SingleChoice ||
@@ -32,11 +37,14 @@
             :key="`answer_${key}`"
             :label="`${t('common.answer')} ${key}`"
             :name="key"
-            :rules="[{ required: true, message: t('common.inputText') + key }]"
-            required
             class="flex items-center w-1/2 mb-2"
+            required
           >
-            <Input v-model:value="optionFormData[key]" :placeholder="t('common.inputText')" />
+            <Input
+              v-model:value="optionFormData[key]"
+              :placeholder="t('common.inputText')"
+              allow-clear
+            />
           </Form.Item>
           <a-button type="success" ghost @click="handleAddAnswer">{{ t('common.add') }}</a-button>
           <a-button
@@ -118,7 +126,7 @@
   import { alphabet, questionTypes, trueFalseNotGivenOptions, SelectQuestionType } from './data';
   import { useI18n } from '@/hooks/web/useI18n';
   import { QuestionItem, QuestionOptionItem } from './types/question';
-  import { computed, ref, watch } from 'vue';
+  import { ref, watch } from 'vue';
 
   const { t } = useI18n();
   interface Props {
@@ -127,13 +135,19 @@
 
   const props = defineProps<Props>();
   const questionFormData = ref<QuestionItem>(props.value);
-  const optionFormData = computed(() => handleInitOptions(questionFormData.value.options));
+  const optionFormData = ref<{ [key: string]: string }>({ A: '', B: '', C: '', D: '' });
   const emit = defineEmits(['update:value']);
 
-  const rulesMain = ref({
+  const rulesMain = {
     content: [{ required: true, message: t('common.inputText') }],
     type: [{ required: true, message: t('common.chooseText') }],
     answer: [{ required: true, message: t('common.chooseAnswerText') }],
+  };
+  const rulesOption = ref({
+    A: [{ required: true, message: t('common.inputText') }],
+    B: [{ required: true, message: t('common.inputText') }],
+    C: [{ required: true, message: t('common.inputText') }],
+    D: [{ required: true, message: t('common.inputText') }],
   });
 
   const formRef = ref();
@@ -142,7 +156,7 @@
   const submitForm = async () => {
     try {
       await formRef.value.validate();
-      await optionFormRef.value.validate();
+      await optionFormRef.value?.validate();
 
       const options: QuestionOptionItem[] = Object.entries(optionFormData.value).map(
         ([key, value]) => ({
@@ -153,6 +167,7 @@
       questionFormData.value.options = options;
 
       emit('update:value', { ...questionFormData.value });
+      console.log('submitForm', questionFormData.value);
     } catch (error) {
       console.log('Validation failed:', error);
     }
@@ -164,36 +179,35 @@
       return acc;
     }, {});
 
-    return optionsObject;
+    optionFormData.value = optionsObject;
   };
 
   const handleAddAnswer = () => {
+    const newKey = alphabet[Object.keys(optionFormData.value).length];
     questionFormData.value.options.push({
-      id: alphabet[questionFormData.value.options.length],
+      id: newKey,
       text: '',
     });
+    rulesOption.value[newKey] = [{ required: true, message: t('common.inputText') }];
+    console.log(rulesOption.value);
   };
 
   const handleRemoveAnswer = () => {
     questionFormData.value.options.pop();
+    const keys = Object.keys(optionFormData.value);
+    if (keys.length > 1) {
+      const lastKey = keys[keys.length - 1];
+      delete rulesOption.value[lastKey];
+    }
+    console.log(rulesOption.value);
   };
-
-  watch(
-    () => questionFormData.value.type,
-    (value) => {
-      if (value === SelectQuestionType.FillIn) {
-        questionFormData.value.answer = [];
-      }
-    },
-  );
 
   watch(
     () => props.value,
     () => {
-      console.log(props.value);
-      questionFormData.value = props.value;
-      formRef.value.resetFields();
-      optionFormRef.value.resetFields();
+      questionFormData.value = { ...props.value };
+      handleInitOptions(questionFormData.value.options);
+      console.log(questionFormData.value);
     },
   );
 </script>

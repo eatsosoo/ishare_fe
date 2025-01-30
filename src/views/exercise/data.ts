@@ -25,7 +25,7 @@ export const questionTypes: QuestionType[] = [
   },
   {
     value: SelectQuestionType.TrueFalseNotGiven,
-    label: 'Đúng/Sai/Không có thông tin',
+    label: 'Đúng/Sai/Không được đề cập',
   },
 ];
 
@@ -44,9 +44,14 @@ export const trueFalseNotGivenOptions = [
   },
 ];
 
-const defaultOptions = Array.from({ length: 4 }, (_, i) => ({
+const defaultReadingOptions = Array.from({ length: 4 }, (_, i) => ({
   id: String.fromCharCode(65 + i),
-  text: 'text' + String.fromCharCode(65 + i),
+  text: '',
+}));
+
+const defaultListeningOptions = Array.from({ length: 3 }, (_, i) => ({
+  id: String.fromCharCode(65 + i),
+  text: '',
 }));
 
 export const readingParts: ReadingPart[] = [
@@ -58,7 +63,7 @@ export const readingParts: ReadingPart[] = [
       no: i + 1,
       content: `Question ${i + 1} ?`,
       type: 'choice',
-      options: defaultOptions,
+      options: defaultReadingOptions,
       answer: null,
     })),
   },
@@ -70,7 +75,7 @@ export const readingParts: ReadingPart[] = [
       no: i + 13,
       content: `Question ${i + 13} ?`,
       type: 'choice',
-      options: defaultOptions,
+      options: defaultReadingOptions,
       answer: null,
     })),
   },
@@ -82,7 +87,7 @@ export const readingParts: ReadingPart[] = [
       no: i + 26,
       content: `Question ${i + 26} ?`,
       type: 'choice',
-      options: defaultOptions,
+      options: defaultReadingOptions,
       answer: null,
     })),
   },
@@ -97,7 +102,7 @@ export const listeningParts: ReadingPart[] = [
       no: i + 1,
       content: `Question ${i + 1} ?`,
       type: 'choice',
-      options: defaultOptions,
+      options: defaultListeningOptions,
       answer: null,
     })),
   },
@@ -109,7 +114,7 @@ export const listeningParts: ReadingPart[] = [
       no: i + 11,
       content: `Question ${i + 11} ?`,
       type: 'choice',
-      options: defaultOptions,
+      options: defaultListeningOptions,
       answer: null,
     })),
   },
@@ -121,7 +126,7 @@ export const listeningParts: ReadingPart[] = [
       no: i + 21,
       content: `Question ${i + 21} ?`,
       type: 'choice',
-      options: defaultOptions,
+      options: defaultListeningOptions,
       answer: null,
     })),
   },
@@ -133,7 +138,7 @@ export const listeningParts: ReadingPart[] = [
       no: i + 31,
       content: `Question ${i + 31} ?`,
       type: 'choice',
-      options: defaultOptions,
+      options: defaultListeningOptions,
       answer: null,
     })),
   },
