@@ -1,9 +1,9 @@
 <template>
   <PageWrapper :title="t('common.readingExercise')">
-    <div class="bg-white px-4 pb-4">
+    <div class="bg-white px-4 pb-4 mb-8">
       <Tabs v-model:activeKey="activeKey" @change="questionCurrent = null">
         <TabPane
-          v-for="item in readingParts"
+          v-for="(item, index) in readingExercise"
           :key="item.key"
           v-bind="omit(item, ['questions', 'key'])"
         >
@@ -29,7 +29,10 @@
               </div>
               <div class="re-box-shadow rounded-lg mt-4 pa-4">
                 <template v-if="questionCurrent">
-                  <Question :value="questionCurrent" />
+                  <Question
+                    :value="questionCurrent"
+                    @update:value="handleUpdateQuestion(index, $event)"
+                  />
                 </template>
                 <template v-else>
                   <div class="text-center">{{
@@ -44,7 +47,7 @@
     </div>
 
     <template #rightFooter>
-      <a-button type="primary" @click="submitAll"> {{ t('common.confirm') }} </a-button>
+      <a-button type="primary" @click="submitAll"> {{ t('common.saveText') }} </a-button>
     </template>
   </PageWrapper>
 </template>
@@ -56,7 +59,7 @@
   import { useI18n } from '@/hooks/web/useI18n';
   import { readingParts } from './data';
   import { omit } from 'lodash-es';
-  import { QuestionItem } from './types/question';
+  import { QuestionItem, ReadingPart } from './types/question';
   import Question from './Question.vue';
 
   const TabPane = Tabs.TabPane;
@@ -64,6 +67,7 @@
   const value = ref('Reading');
   const questionCurrent = ref<QuestionItem | null>(null);
   const { t } = useI18n();
+  const readingExercise = ref<ReadingPart[]>(readingParts);
 
   function handleChange(value: string) {
     console.log(value);
@@ -71,6 +75,15 @@
 
   function submitAll() {
     console.log('submit all');
+  }
+
+  function handleUpdateQuestion(partIdx: number, value: QuestionItem) {
+    const questionIndex = readingExercise.value[partIdx].questions.findIndex(
+      (item) => item.no === questionCurrent.value?.no,
+    );
+    if (questionIndex !== -1) {
+      readingExercise.value[partIdx].questions[questionIndex] = value;
+    }
   }
 </script>
 

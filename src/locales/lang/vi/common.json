@@ -10,6 +10,9 @@
   "queryText": "Tìm kiếm",
   "inputText": "Vui lòng nhập ",
   "chooseText": "Vui lòng chọn ",
+  "enterAnswerText": "Vui lòng nhập đáp án đúng",
+  "chooseAnswerText": "Vui lòng chọn đáp án đúng",
+  "chooseAnswersText": "Vui lòng chọn các đáp án đúng",
   "redo": "Làm mới",
   "back": "Quay lại",
   "light": "Sáng",
@@ -23,5 +26,9 @@
   "questionContent": "Nội dung câu hỏi",
   "questionType": "Loại câu hỏi",
   "answer": "Đáp án",
-  "correctAnswer": "Đáp án đúng"
+  "answerOptions": "Các phương án trả lời",
+  "correctAnswer": "Đáp án đúng",
+  "true": "Đúng",
+  "false": "Sai",
+  "notGiven": "Không có thông tin"
 }

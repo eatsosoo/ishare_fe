@@ -1,23 +1,53 @@
 import { QuestionType, ReadingPart } from './types/question';
+import { useI18n } from '@/hooks/web/useI18n';
+
+const { t } = useI18n();
+
+export enum SelectQuestionType {
+  SingleChoice = 'choice',
+  MultipleChoice = 'multiple_choice',
+  FillIn = 'fill_in',
+  TrueFalseNotGiven = 'true_false_not_given',
+}
 
 export const questionTypes: QuestionType[] = [
   {
-    value: 'choice',
+    value: SelectQuestionType.SingleChoice,
     label: 'Chọn đáp án đúng',
   },
   {
-    value: 'multiple_choice',
+    value: SelectQuestionType.MultipleChoice,
     label: 'Chọn các đáp án đúng',
   },
   {
-    value: 'fill_in',
+    value: SelectQuestionType.FillIn,
     label: 'Điền đáp án đúng',
   },
   {
-    value: 'true_false_not_given',
+    value: SelectQuestionType.TrueFalseNotGiven,
     label: 'Đúng/Sai/Không có thông tin',
   },
 ];
+
+export const trueFalseNotGivenOptions = [
+  {
+    value: 'true',
+    label: t('common.true'),
+  },
+  {
+    value: 'false',
+    label: t('common.false'),
+  },
+  {
+    value: 'not_given',
+    label: t('common.notGiven'),
+  },
+];
+
+const defaultOptions = Array.from({ length: 4 }, (_, i) => ({
+  id: String.fromCharCode(65 + i),
+  text: 'text' + String.fromCharCode(65 + i),
+}));
 
 export const readingParts: ReadingPart[] = [
   {
@@ -28,7 +58,7 @@ export const readingParts: ReadingPart[] = [
       no: i + 1,
       content: `Question ${i + 1} ?`,
       type: 'choice',
-      options: [],
+      options: defaultOptions,
       answer: null,
     })),
   },
@@ -40,7 +70,7 @@ export const readingParts: ReadingPart[] = [
       no: i + 13,
       content: `Question ${i + 13} ?`,
       type: 'choice',
-      options: [],
+      options: defaultOptions,
       answer: null,
     })),
   },
@@ -52,7 +82,7 @@ export const readingParts: ReadingPart[] = [
       no: i + 26,
       content: `Question ${i + 26} ?`,
       type: 'choice',
-      options: [],
+      options: defaultOptions,
       answer: null,
     })),
   },
@@ -67,7 +97,7 @@ export const listeningParts: ReadingPart[] = [
       no: i + 1,
       content: `Question ${i + 1} ?`,
       type: 'choice',
-      options: [],
+      options: defaultOptions,
       answer: null,
     })),
   },
@@ -79,7 +109,7 @@ export const listeningParts: ReadingPart[] = [
       no: i + 11,
       content: `Question ${i + 11} ?`,
       type: 'choice',
-      options: [],
+      options: defaultOptions,
       answer: null,
     })),
   },
@@ -91,7 +121,7 @@ export const listeningParts: ReadingPart[] = [
       no: i + 21,
       content: `Question ${i + 21} ?`,
       type: 'choice',
-      options: [],
+      options: defaultOptions,
       answer: null,
     })),
   },
@@ -103,7 +133,7 @@ export const listeningParts: ReadingPart[] = [
       no: i + 31,
       content: `Question ${i + 31} ?`,
       type: 'choice',
-      options: [],
+      options: defaultOptions,
       answer: null,
     })),
   },

@@ -1,113 +1,189 @@
 <template>
   <div>
-    <div class="mb-4">
-      <h3>{{ t('common.questionInformation') }}</h3>
-      <div class="flex mb-4">
-        <span class="w-1/3">{{ t('common.questionContent') }}</span>
-        <Input
-          v-model:value="questionFormData.content"
-          placeholder="Nhập tên câu hỏi"
-          class="w-2/3"
-        />
-      </div>
+    <Form :model="questionFormData" :rules="rulesMain" ref="formRef">
+      <div>
+        <h3>{{ t('common.questionInformation') }}</h3>
+        <Form.Item :label="t('common.questionContent')" name="content" required>
+          <Input v-model:value="questionFormData.content" :placeholder="t('common.inputText')" />
+        </Form.Item>
 
-      <div class="flex">
-        <span class="w-1/3">{{ t('common.questionType') }}</span>
-        <Select
-          :options="questionTypes"
-          v-model:value="questionFormData.type"
-          placeholder="Chọn loại câu hỏi"
-          class="w-2/3"
-        />
-      </div>
-    </div>
-
-    <div class="mb-4">
-      <h3>{{ t('common.answer') }}</h3>
-      <div v-if="questionFormData.type === 'choice' || questionFormData.type === 'multiple_choice'">
-        <div
-          v-for="(answer, index) in numAnswers"
-          :key="`answer_${index}`"
-          class="flex items-center w-1/2 mb-2"
-          >{{ alphabet[index] }}.
-          <Input :placeholder="`Đáp án ${alphabet[index]}`" class="mx-2" />
-          <a-button
-            size="small"
-            preIcon="ant-design:minus-outlined"
-            class="mr-2 !bg-red-500 !text-white"
-            @click="numAnswers--"
+        <Form.Item :label="t('common.questionType')" name="type" required>
+          <Select
+            v-model:value="questionFormData.type"
+            placeholder="Enter question"
+            :options="questionTypes"
           />
+        </Form.Item>
+      </div>
+
+      <Form
+        :model="optionFormData"
+        ref="optionFormRef"
+        v-if="
+          questionFormData.type === SelectQuestionType.SingleChoice ||
+          questionFormData.type === SelectQuestionType.MultipleChoice
+        "
+        class="mb-4"
+      >
+        <h3>{{ t('common.answerOptions') }}</h3>
+        <div>
+          <Form.Item
+            v-for="(value, key) in optionFormData"
+            :key="`answer_${key}`"
+            :label="`${t('common.answer')} ${key}`"
+            :name="key"
+            :rules="[{ required: true, message: t('common.inputText') + key }]"
+            required
+            class="flex items-center w-1/2 mb-2"
+          >
+            <Input v-model:value="optionFormData[key]" :placeholder="t('common.inputText')" />
+          </Form.Item>
+          <a-button type="default" @click="handleAddAnswer">{{ t('common.add') }}</a-button>
+          <a-button
+            v-if="Object.keys(optionFormData).length > 1"
+            type="default"
+            class="ml-2 !bg-red-500 !text-white"
+            @click="handleRemoveAnswer"
+            >{{ t('common.delText') }}</a-button
+          >
         </div>
-        <a-button type="default" @click="numAnswers++">{{ t('common.add') }}</a-button>
-      </div>
-    </div>
+      </Form>
 
-    <div class="mb-4">
-      <h3>{{ t('common.correctAnswer') }}</h3>
-      <div v-if="questionFormData.type === 'choice'">
-        <RadioGroup v-model:value="questionFormData.answer">
-          <Radio
-            v-for="(answer, index) in numAnswers"
-            :key="`answer_${index}`"
-            :value="alphabet[index]"
-          >
-            {{ alphabet[index] }}
-          </Radio>
-        </RadioGroup>
-      </div>
-      <div v-else-if="questionFormData.type === 'multiple_choice'">
-        <CheckboxGroup v-model:value="questionFormData.answer">
-          <Checkbox
-            v-for="(answer, index) in numAnswers"
-            :key="`answer_${index}`"
-            :value="alphabet[index]"
-          >
-            {{ alphabet[index] }}
-          </Checkbox>
-        </CheckboxGroup>
-      </div>
-      <div v-else-if="questionFormData.type === 'fill_in'">
-        <Input placeholder="Nhập đáp án" class="mb-4 w-1/2" />
-      </div>
-      <div v-else-if="questionFormData.type === 'true_false_not_given'">
-        <RadioGroup v-model:value="questionFormData.answer">
-          <Radio
-            v-for="answer in ['True', 'False', 'Not Given']"
-            :key="`answer_${answer}`"
-            :value="alphabet[answer]"
-          >
-            {{ answer }}
-          </Radio>
-        </RadioGroup>
-      </div>
-    </div>
+      <div class="mb-4">
+        <h3>{{ t('common.correctAnswer') }}</h3>
+        <Form.Item
+          v-if="questionFormData.type === SelectQuestionType.SingleChoice"
+          name="answer"
+          required
+        >
+          <RadioGroup v-model:value="questionFormData.answer">
+            <Radio
+              v-for="(value, key) in optionFormData"
+              :key="`correct_answer_${key}`"
+              :value="key"
+            >
+              {{ key }}
+            </Radio>
+          </RadioGroup>
+        </Form.Item>
 
-    <div class="text-right border border-b-0 border-x-0 border-t-gray mt-8 pt-4">
-      <a-button type="primary">{{ t('common.confirm') }}</a-button>
-    </div>
+        <Form.Item
+          v-else-if="questionFormData.type === SelectQuestionType.MultipleChoice"
+          name="answer"
+          required
+        >
+          <CheckboxGroup v-model:value="questionFormData.answer">
+            <Checkbox
+              v-for="(value, key) in optionFormData"
+              :key="`correct_answer_${key}`"
+              :value="key"
+            >
+              {{ key }}
+            </Checkbox>
+          </CheckboxGroup>
+        </Form.Item>
+
+        <Form.Item v-else-if="questionFormData.type === 'fill_in'" name="answer" required>
+          <Input
+            v-model:value="questionFormData.answer"
+            :placeholder="t('common.enterAnswerText')"
+            class="mb-4 w-1/2"
+          />
+        </Form.Item>
+
+        <Form.Item
+          v-else-if="questionFormData.type === SelectQuestionType.TrueFalseNotGiven"
+          name="answer"
+          required
+        >
+          <RadioGroup v-model:value="questionFormData.answer">
+            <Radio
+              v-for="option in trueFalseNotGivenOptions"
+              :key="option.value"
+              :value="option.value"
+              >{{ option.label }}</Radio
+            >
+          </RadioGroup>
+        </Form.Item>
+      </div>
+
+      <a-button type="primary" @click="submitForm">{{ t('common.confirm') }}</a-button>
+    </Form>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { Select, Input, Radio, RadioGroup, Checkbox, CheckboxGroup } from 'ant-design-vue';
-  import { alphabet, questionTypes } from './data';
+  import { Select, Input, Radio, RadioGroup, Checkbox, CheckboxGroup, Form } from 'ant-design-vue';
+  import { alphabet, questionTypes, trueFalseNotGivenOptions, SelectQuestionType } from './data';
   import { useI18n } from '@/hooks/web/useI18n';
-  import { QuestionItem } from './types/question';
-  import { ref, toRef, watch } from 'vue';
+  import { QuestionItem, QuestionOptionItem } from './types/question';
+  import { computed, ref, toRef, watch } from 'vue';
 
   const { t } = useI18n();
-  const props = defineProps<{
+  interface Props {
     value: QuestionItem;
-  }>();
-  const numAnswers = ref(4);
+  }
 
+  const props = defineProps<Props>();
   const questionFormData = toRef(props, 'value');
+  const optionFormData = computed(() => handleInitOptions(questionFormData.value.options));
+  const emit = defineEmits(['update:value']);
+
+  const rulesMain = ref({
+    content: [{ required: true, message: t('common.inputText') }],
+    type: [{ required: true, message: t('common.chooseText') }],
+    answer: [{ required: true, message: t('common.chooseAnswerText') }],
+  });
+
+  const formRef = ref();
+  const optionFormRef = ref();
+
+  const submitForm = async () => {
+    try {
+      await formRef.value.validate();
+      await optionFormRef.value.validate();
+
+      const options: QuestionOptionItem[] = Object.entries(optionFormData.value).map(
+        ([key, value]) => ({
+          id: key,
+          text: value as string,
+        }),
+      );
+      questionFormData.value.options = options;
+
+      emit('update:value', questionFormData.value);
+      console.log('Form submitted:', questionFormData.value);
+    } catch (error) {
+      console.log('Validation failed:', error);
+    }
+  };
+
+  const handleInitOptions = (options: QuestionOptionItem[]) => {
+    const optionsObject = options.reduce((acc, option) => {
+      acc[option.id] = option.text;
+      return acc;
+    }, {});
+
+    return optionsObject;
+  };
+
+  const handleAddAnswer = () => {
+    questionFormData.value.options.push({
+      id: alphabet[questionFormData.value.options.length],
+      text: '',
+    });
+    console.log(optionFormData.value);
+  };
+
+  const handleRemoveAnswer = () => {
+    questionFormData.value.options.pop();
+  };
 
   watch(
     () => questionFormData.value.type,
-    () => {
-      if (questionFormData.value.type === 'true_false_not_given') {
-        numAnswers.value = 3;
+    (value) => {
+      if (value === SelectQuestionType.FillIn) {
+        questionFormData.value.answer = [];
       }
     },
   );

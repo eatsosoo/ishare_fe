@@ -5,12 +5,16 @@ export interface QuestionType {
 
 export type SelectQuestionType = 'choice' | 'fill_in' | 'true_false_not_given' | 'multiple_choice';
 
+export interface QuestionOptionItem {
+  id: string;
+  text: string;
+}
 export interface QuestionItem {
   no: number;
   content: string;
   type: SelectQuestionType;
-  options: string[];
-  answer: string | null | string[];
+  options: QuestionOptionItem[];
+  answer: any;
 }
 
 export interface ReadingPart {
