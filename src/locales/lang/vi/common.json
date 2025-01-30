@@ -30,5 +30,6 @@
   "correctAnswer": "Đáp án đúng",
   "true": "Đúng",
   "false": "Sai",
-  "notGiven": "Không có thông tin"
+  "notGiven": "Không có thông tin",
+  "updateSuccess": "Cập nhật thành công"
 }

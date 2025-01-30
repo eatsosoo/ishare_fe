@@ -38,11 +38,12 @@
           >
             <Input v-model:value="optionFormData[key]" :placeholder="t('common.inputText')" />
           </Form.Item>
-          <a-button type="default" @click="handleAddAnswer">{{ t('common.add') }}</a-button>
+          <a-button type="success" ghost @click="handleAddAnswer">{{ t('common.add') }}</a-button>
           <a-button
             v-if="Object.keys(optionFormData).length > 1"
-            type="default"
-            class="ml-2 !bg-red-500 !text-white"
+            type="error"
+            ghost
+            class="ml-2"
             @click="handleRemoveAnswer"
             >{{ t('common.delText') }}</a-button
           >
@@ -107,7 +108,7 @@
         </Form.Item>
       </div>
 
-      <a-button type="primary" @click="submitForm">{{ t('common.confirm') }}</a-button>
+      <a-button type="primary" ghost @click="submitForm">{{ t('common.confirm') }}</a-button>
     </Form>
   </div>
 </template>
@@ -117,7 +118,7 @@
   import { alphabet, questionTypes, trueFalseNotGivenOptions, SelectQuestionType } from './data';
   import { useI18n } from '@/hooks/web/useI18n';
   import { QuestionItem, QuestionOptionItem } from './types/question';
-  import { computed, ref, toRef, watch } from 'vue';
+  import { computed, ref, watch } from 'vue';
 
   const { t } = useI18n();
   interface Props {
@@ -125,7 +126,7 @@
   }
 
   const props = defineProps<Props>();
-  const questionFormData = toRef(props, 'value');
+  const questionFormData = ref<QuestionItem>(props.value);
   const optionFormData = computed(() => handleInitOptions(questionFormData.value.options));
   const emit = defineEmits(['update:value']);
 
@@ -151,8 +152,7 @@
       );
       questionFormData.value.options = options;
 
-      emit('update:value', questionFormData.value);
-      console.log('Form submitted:', questionFormData.value);
+      emit('update:value', { ...questionFormData.value });
     } catch (error) {
       console.log('Validation failed:', error);
     }
@@ -172,7 +172,6 @@
       id: alphabet[questionFormData.value.options.length],
       text: '',
     });
-    console.log(optionFormData.value);
   };
 
   const handleRemoveAnswer = () => {
@@ -185,6 +184,16 @@
       if (value === SelectQuestionType.FillIn) {
         questionFormData.value.answer = [];
       }
+    },
+  );
+
+  watch(
+    () => props.value,
+    () => {
+      console.log(props.value);
+      questionFormData.value = props.value;
+      formRef.value.resetFields();
+      optionFormRef.value.resetFields();
     },
   );
 </script>

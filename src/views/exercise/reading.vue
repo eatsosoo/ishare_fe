@@ -22,7 +22,7 @@
                   "
                   :key="`${item.key}_${index}`"
                   class="border rounded-full h-10 w-10 flex items-center justify-center cursor-pointer"
-                  @click="questionCurrent = question"
+                  @click="questionCurrent = { ...question }"
                 >
                   {{ question.no }}
                 </a-button>
@@ -61,6 +61,7 @@
   import { omit } from 'lodash-es';
   import { QuestionItem, ReadingPart } from './types/question';
   import Question from './Question.vue';
+  import { useMessage } from '@/hooks/web/useMessage';
 
   const TabPane = Tabs.TabPane;
   const activeKey = ref('tabs1');
@@ -68,6 +69,7 @@
   const questionCurrent = ref<QuestionItem | null>(null);
   const { t } = useI18n();
   const readingExercise = ref<ReadingPart[]>(readingParts);
+  const { createMessage } = useMessage();
 
   function handleChange(value: string) {
     console.log(value);
@@ -84,6 +86,8 @@
     if (questionIndex !== -1) {
       readingExercise.value[partIdx].questions[questionIndex] = value;
     }
+
+    createMessage.success(t('common.updateSuccess'));
   }
 </script>
 
