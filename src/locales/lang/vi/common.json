@@ -21,6 +21,8 @@
   "add": "Thêm",
   "readingExercise": "Bài tập phần READING",
   "listeningExercise": "Bài tập phần LISTENING",
+  "speakingExercise": "Bài tập phần SPEAKING",
+  "writingExercise": "Bài tập phần WRITING",
   "pleaseSelectQuestion": "Vui lòng chọn câu hỏi",
   "questionInformation": "Thông tin câu hỏi",
   "questionContent": "Nội dung câu hỏi",
@@ -35,5 +37,7 @@
   "uploadAudio": "Tải lên file âm thanh",
   "listeningContext": "Bối cảnh bài nghe",
   "readingContext": "Bối cảnh bài đọc",
+  "speakingSubject": "Chủ đề bài nói",
+  "writingSubject": "Chủ đề bài viết",
   "audio": "Ghi âm"
 }
