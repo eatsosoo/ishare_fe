@@ -1,6 +1,10 @@
 <template>
   <BasicModal v-bind="$attrs" title="Modal Title" width="1100px" @fullscreen="onFullscreen">
-    <BasicTable @register="registerTable" ref="selectTable" />
+    <Tabs v-model:activeKey="activeKey">
+      <TabPane v-for="tab in tabs" :key="tab.key" v-bind="omit(tab, ['content', 'key'])">
+        <BasicTable @register="registerTable" ref="selectTable" />
+      </TabPane>
+    </Tabs>
     <template #footer></template>
   </BasicModal>
 </template>
@@ -11,12 +15,28 @@
   import { getStudentOfClassColumns } from '@/views/classroom/tableData';
   import { studentListApi } from '@/api/demo/table';
   import { useI18n } from '@/hooks/web/useI18n';
+  import { omit } from 'lodash-es';
+  import { Tabs } from 'ant-design-vue';
 
+  const TabPane = Tabs.TabPane;
   const { t } = useI18n();
+  const tabs = [
+    {
+      key: '1',
+      tab: t('table.studentList'),
+    },
+    {
+      key: '2',
+      tab: t('table.homeWorkList'),
+    },
+    {
+      key: '3',
+      tab: t('table.monthlyTestScore'),
+    },
+  ];
+  const activeKey = ref('1');
   const [registerTable] = useTable({
     canResize: true,
-    title: t('table.studentOfClass'),
-    titleHelpMessage: t('table.studentOfClassHelpMessage'),
     api: studentListApi(),
     columns: getStudentOfClassColumns(),
     defSort: {
@@ -24,7 +44,7 @@
       order: 'ascend',
     },
     rowKey: 'id',
-    showTableSetting: true,
+    showTableSetting: false,
     showIndexColumn: false,
     onColumnsChange: (data: ColumnChangeParam[]) => {
       console.log('ColumnsChanged', data);
