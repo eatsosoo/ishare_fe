@@ -31,5 +31,9 @@
   "true": "Đúng",
   "false": "Sai",
   "notGiven": "Không được đề cập",
-  "updateSuccess": "Cập nhật thành công"
+  "updateSuccess": "Cập nhật thành công",
+  "uploadAudio": "Tải lên file âm thanh",
+  "listeningContext": "Bối cảnh bài nghe",
+  "readingContext": "Bối cảnh bài đọc",
+  "audio": "Ghi âm"
 }

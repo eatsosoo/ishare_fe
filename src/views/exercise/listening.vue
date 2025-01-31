@@ -1,20 +1,34 @@
 <template>
   <PageWrapper :title="t('common.listeningExercise')">
-    <div class="bg-white px-4 pb-4">
+    <div class="bg-white px-4 pb-4 mb-8">
       <Tabs v-model:activeKey="activeKey" @change="questionCurrent = null">
         <TabPane
-          v-for="item in listeningData"
+          v-for="(item, index) in listeningExercise"
           :key="item.key"
           v-bind="omit(item, ['questions', 'key'])"
         >
           <Row :gutter="[16, 16]">
             <Col :span="12">
+              <div class="flex mb-4">
+                <Upload
+                  :beforeUpload="beforeUpload"
+                  :customRequest="handleUpload"
+                  :fileList="fileList"
+                  @change="handleChangeFile"
+                >
+                  <a-button preIcon="ant-design:upload-outlined">{{
+                    t('common.uploadAudio')
+                  }}</a-button>
+                </Upload>
+                <audio v-if="audioUrl" :src="audioUrl" controls class="mt-4"></audio>
+              </div>
               <div class="p-4 re-box-shadow rounded-lg">
-                <Tinymce v-model="item.subject" @change="handleChange" width="100%" />
+                <h3>{{ t('common.listeningContext') }}</h3>
+                <Tinymce v-model="value" @change="handleChangeTinymce" width="100%" />
               </div>
             </Col>
             <Col :span="12">
-              <div class="flex flex-wrap gap-2">
+              <div class="flex gap-2 mb-2">
                 <a-button
                   v-for="(question, index) in item.questions"
                   :type="
@@ -22,41 +36,20 @@
                   "
                   :key="`${item.key}_${index}`"
                   class="border rounded-full h-10 w-10 flex items-center justify-center cursor-pointer"
-                  @click="questionCurrent = question"
+                  @click="questionCurrent = { ...question }"
                 >
                   {{ question.no }}
                 </a-button>
               </div>
-              <div class="re-box-shadow rounded-lg mt-4 pa-4">
+              <div class="re-box-shadow rounded-lg pa-4 w-full">
                 <template v-if="questionCurrent">
-                  <h3>{{ t('common.questionInformation') }}</h3>
-                  <Input
-                    v-model:value="questionCurrent.content"
-                    placeholder="Nhập tên câu hỏi"
-                    class="mb-4"
+                  <Question
+                    :value="questionCurrent"
+                    @update:value="handleUpdateQuestion(index, $event)"
                   />
-                  <Select
-                    :options="questionTypes"
-                    v-model:value="questionCurrent.type"
-                    placeholder="Chọn loại câu hỏi"
-                    class="mb-4 w-1/2"
-                  />
-                  <div v-if="questionCurrent.type === 'choice'">
-                    <div
-                      v-for="answer in ['A', 'B', 'C', 'D']"
-                      :key="answer"
-                      class="flex items-center w-1/2"
-                      >{{ answer }}. <Input placeholder="Đáp án A" class="ml-2 mb-2"
-                    /></div>
-                  </div>
-                  <div class="text-right">
-                    <a-button type="primary">{{ t('common.confirm') }}</a-button>
-                  </div>
                 </template>
                 <template v-else>
-                  <div class="text-center">{{
-                    `${t('common.pleaseSelectQuestion')} ${item.tab}`
-                  }}</div>
+                  <h3>{{ `${t('common.pleaseSelectQuestion')} ${item.tab}` }}</h3>
                 </template>
               </div>
             </Col>
@@ -66,32 +59,77 @@
     </div>
 
     <template #rightFooter>
-      <a-button type="primary" @click="submitAll"> {{ t('common.confirm') }} </a-button>
+      <a-button type="primary" @click="submitAll"> {{ t('common.saveText') }} </a-button>
     </template>
   </PageWrapper>
 </template>
 <script lang="ts" setup>
-  import { reactive, ref } from 'vue';
+  import { ref } from 'vue';
   import { Tinymce } from '@/components/Tinymce';
   import { PageWrapper } from '@/components/Page';
-  import { Col, Row, Select, Tabs, Input } from 'ant-design-vue';
+  import { Col, Row, Tabs, Upload, message } from 'ant-design-vue';
   import { useI18n } from '@/hooks/web/useI18n';
-  import { questionTypes, listeningParts } from './data';
+  import { listeningParts } from './data';
   import { omit } from 'lodash-es';
-  import { QuestionItem } from './types/question';
+  import { QuestionItem, ListeningPart } from './types/question';
+  import Question from './Question.vue';
+  import { useMessage } from '@/hooks/web/useMessage';
 
   const TabPane = Tabs.TabPane;
   const activeKey = ref('tabs1');
-  const listeningData = reactive(listeningParts);
+  const value = ref('Reading');
   const questionCurrent = ref<QuestionItem | null>(null);
   const { t } = useI18n();
+  const listeningExercise = ref<ListeningPart[]>(listeningParts);
+  const { createMessage } = useMessage();
+  const fileList = ref([]);
+  const audioUrl = ref('');
 
-  function handleChange(value: string) {
+  function handleChangeTinymce(value: string) {
     console.log(value);
   }
 
   function submitAll() {
     console.log('submit all');
+  }
+
+  function handleUpdateQuestion(partIdx: number, value: QuestionItem) {
+    const questionIndex = listeningExercise.value[partIdx].questions.findIndex(
+      (item) => item.no === questionCurrent.value?.no,
+    );
+    if (questionIndex !== -1) {
+      listeningExercise.value[partIdx].questions[questionIndex] = value;
+    }
+
+    createMessage.success(t('common.updateSuccess'));
+  }
+
+  function handleChangeFile(info: any) {
+    if (info.file.status === 'done') {
+      message.success(`${info.file.name} file uploaded successfully`);
+      audioUrl.value = URL.createObjectURL(info.file.originFileObj);
+    } else if (info.file.status === 'error') {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  }
+
+  function beforeUpload(file: File) {
+    const isAudio = file.type.startsWith('audio/');
+    if (!isAudio) {
+      message.error('You can only upload audio files!');
+    }
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+      message.error('Audio must be smaller than 2MB!');
+    }
+    return isAudio && isLt2M;
+  }
+
+  function handleUpload({ file, onSuccess, onError }: any) {
+    // Simulate a successful upload
+    setTimeout(() => {
+      onSuccess('ok');
+    }, 1000);
   }
 </script>
 

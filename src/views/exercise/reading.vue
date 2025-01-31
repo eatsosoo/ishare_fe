@@ -10,11 +10,23 @@
           <Row :gutter="[16, 16]">
             <Col :span="12">
               <div class="p-4 re-box-shadow rounded-lg">
+                <h3>{{ t('common.readingContext') }}</h3>
                 <Tinymce v-model="value" @change="handleChange" width="100%" />
               </div>
             </Col>
-            <Col :span="12">
-              <div class="flex flex-wrap gap-2">
+            <Col :span="12" class="flex">
+              <div class="re-box-shadow rounded-lg pa-4 w-full">
+                <template v-if="questionCurrent">
+                  <Question
+                    :value="questionCurrent"
+                    @update:value="handleUpdateQuestion(index, $event)"
+                  />
+                </template>
+                <template v-else>
+                  <h3>{{ `${t('common.pleaseSelectQuestion')} ${item.tab}` }}</h3>
+                </template>
+              </div>
+              <div class="flex flex-col gap-2 ml-4">
                 <a-button
                   v-for="(question, index) in item.questions"
                   :type="
@@ -26,19 +38,6 @@
                 >
                   {{ question.no }}
                 </a-button>
-              </div>
-              <div class="re-box-shadow rounded-lg mt-4 pa-4">
-                <template v-if="questionCurrent">
-                  <Question
-                    :value="questionCurrent"
-                    @update:value="handleUpdateQuestion(index, $event)"
-                  />
-                </template>
-                <template v-else>
-                  <div class="text-center">{{
-                    `${t('common.pleaseSelectQuestion')} ${item.tab}`
-                  }}</div>
-                </template>
               </div>
             </Col>
           </Row>

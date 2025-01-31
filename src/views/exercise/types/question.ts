@@ -24,7 +24,7 @@ export interface ReadingPart {
   questions: QuestionItem[];
 }
 
-export interface Listening {
+export interface ListeningPart {
   key: string;
   tab: string;
   subject: string;
