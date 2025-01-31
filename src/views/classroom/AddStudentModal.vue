@@ -3,7 +3,6 @@
     v-bind="$attrs"
     title="Modal Title"
     width="1100px"
-    @register="registerModal"
     @fullscreen="onFullscreen"
     @ok="getSelectStudents"
   >
@@ -15,7 +14,7 @@
 </template>
 <script lang="ts" setup>
   import { ref, nextTick } from 'vue';
-  import { BasicModal, useModalInner } from '@/components/Modal';
+  import { BasicModal } from '@/components/Modal';
   import { BasicTable, ColumnChangeParam, useTable } from '@/components/Table';
   import { getStudentColumns } from '@/views/classroom/tableData';
   import { studentListApi } from '@/api/demo/table';
@@ -25,7 +24,6 @@
   import { useMessage } from '@/hooks/web/useMessage';
 
   const { t } = useI18n();
-  const [registerModal, { closeModal }] = useModalInner();
   const [registerTable, { getSelectRows, clearSelectedRowKeys }] = useTable({
     canResize: true,
     title: t('table.studentList'),
@@ -91,7 +89,6 @@
   function getSelectStudents() {
     emit('selectStudents', getSelectRows());
     clearSelectedRowKeys();
-    closeModal();
   }
 </script>
 <style lang="less" scoped>

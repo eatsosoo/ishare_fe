@@ -33,7 +33,11 @@
     </BasicTable>
 
     <ClassModal :title="titleModal" @register="registerViewModal" />
-    <AddStudentModal :title="titleModal" @register="registerAddModal" />
+    <AddStudentModal
+      :title="titleModal"
+      @register="registerAddModal"
+      @select-students="handleAddMoreStudents"
+    />
   </div>
 </template>
 <script lang="ts" setup>
@@ -47,6 +51,7 @@
   import { computed, ref } from 'vue';
   import AddStudentModal from '@/views/classroom/AddStudentModal.vue';
   import { Tooltip } from 'ant-design-vue';
+  import { useMessage } from '@/hooks/web/useMessage';
 
   const { t } = useI18n();
   const [registerViewModal, { openModal: openViewModal }] = useModal();
@@ -73,6 +78,8 @@
     return targetValue.value ? `${targetValue.value.className} - ${targetValue.value.teacher}` : '';
   });
 
+  const { createSuccessModal } = useMessage();
+
   function getFormValues() {
     console.log(getForm().getFieldsValue());
   }
@@ -84,5 +91,13 @@
     } else {
       openAddModal();
     }
+  }
+
+  function handleAddMoreStudents() {
+    console.log('Add more students');
+    createSuccessModal({
+      title: t('layout.setting.operatingTitle'),
+      content: t('table.addStudentToClassSuccess'),
+    });
   }
 </script>

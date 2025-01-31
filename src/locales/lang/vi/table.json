@@ -10,6 +10,7 @@
   "studentOfClass": "Danh sách học sinh",
   "studentOfClassHelpMessage": "Điểm số của từng học sinh sẽ được hiển thị ở đây",
   "addStudentToClass": "Thêm học sinh vào lớp",
+  "addStudentToClassSuccess": "Thêm học sinh vào lớp thành công",
   "studentName": "Tên học sinh",
   "view": "Xem",
   "field": "Trường",
