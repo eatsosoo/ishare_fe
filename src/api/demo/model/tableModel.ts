@@ -45,6 +45,27 @@ export interface TeacherListItem {
   status: number;
 }
 
+export interface ExerciseListItem {
+  id: string;
+  name: string;
+  type: string;
+  student: string;
+  status: number;
+  score: number;
+  created_at: string;
+  deadline: string;
+}
+
+export interface ExamListItem {
+  id: string;
+  name: string;
+  type: string;
+  student: string;
+  status: number;
+  score: number;
+  created_at: string;
+}
+
 /**
  * @description: Request list return value
  */
@@ -64,3 +85,13 @@ export type StudentListGetResultModel = BasicFetchResult<StudentListItem>;
  * @description: Request list return value
  */
 export type TeacherListGetResultModel = BasicFetchResult<TeacherListItem>;
+
+/**
+ * @description: Request list return value
+ */
+export type ExerciseListGetResultModel = BasicFetchResult<ExerciseListItem>;
+
+/**
+ * @description: Request list return value
+ */
+export type ExamListGetResultModel = BasicFetchResult<ExamListItem>;

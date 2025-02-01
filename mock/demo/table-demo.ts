@@ -111,6 +111,39 @@ const teacherList = (() => {
   return result;
 })();
 
+const exerciseList = (() => {
+  const result: any[] = [];
+  for (let index = 0; index < 40; index++) {
+    result.push({
+      id: `${index}`,
+      name: '@name',
+      'type|1': ['Reading', 'Listening', 'Speaking', 'Writing'],
+      student: '@name',
+      'status|1': ['v', 'x'],
+      score: '@integer(0, 100)',
+      created_at: '@datetime',
+      deadline: '@datetime',
+    });
+  }
+  return result;
+})();
+
+const examList = (() => {
+  const result: any[] = [];
+  for (let index = 0; index < 40; index++) {
+    result.push({
+      id: `${index}`,
+      name: '@name',
+      'type|1': ['Reading', 'Listening', 'Speaking', 'Writing'],
+      student: '@name',
+      'status|1': ['v', 'x'],
+      score: '@integer(0, 100)',
+      created_at: '@datetime',
+    });
+  }
+  return result;
+})();
+
 export default [
   {
     url: '/basic-api/table/getDemoList',
@@ -141,10 +174,28 @@ export default [
   },
   {
     url: '/basic-api/table/getTeacherList',
-    timeout: 10,
+    timeout: 100,
     method: 'get',
     response: () => {
       return resultSuccess(teacherList);
+    },
+  },
+  {
+    url: '/basic-api/table/getExerciseList',
+    timeout: 100,
+    method: 'get',
+    response: ({ query }) => {
+      const { page = 1, pageSize = 20 } = query;
+      return resultPageSuccess(page, pageSize, exerciseList);
+    },
+  },
+  {
+    url: '/basic-api/table/getExamList',
+    timeout: 100,
+    method: 'get',
+    response: ({ query }) => {
+      const { page = 1, pageSize = 20 } = query;
+      return resultPageSuccess(page, pageSize, examList);
     },
   },
 ] as MockMethod[];

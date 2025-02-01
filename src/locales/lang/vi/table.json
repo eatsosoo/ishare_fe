@@ -31,5 +31,24 @@
   "studentList": "Danh sách học sinh",
   "search": "Tìm kiếm",
   "homeWorkList": "Bài tập về nhà",
-  "monthlyTestScore": "Điểm thi tháng"
+  "monthlyTestScore": "Điểm thi tháng",
+  "exerciseTable": {
+    "name": "Tên bài tập",
+    "score": "Điểm",
+    "status": "Trạng thái",
+    "action": "Hành động",
+    "createdAt": "Ngày giao",
+    "deadline": "Hạn nộp",
+    "student": "Tên học sinh",
+    "type": "Loại bài tập"
+  },
+  "examTable": {
+    "name": "Tên bài thi",
+    "score": "Điểm",
+    "status": "Trạng thái",
+    "action": "Hành động",
+    "createdAt": "Ngày thi",
+    "student": "Tên học sinh",
+    "type": "Loại bài thi"
+  }
 }
