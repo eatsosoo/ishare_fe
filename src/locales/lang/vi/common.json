@@ -39,5 +39,11 @@
   "readingContext": "Bối cảnh bài đọc",
   "speakingSubject": "Chủ đề bài nói",
   "writingSubject": "Chủ đề bài viết",
-  "audio": "Ghi âm"
+  "audio": "Ghi âm",
+  "test": {
+    "reading": "Đề thi phần READING",
+    "listening": "Đề thi phần LISTENING",
+    "speaking": "Đề thi phần SPEAKING",
+    "writing": "Đề thi phần WRITING"
+  }
 }
