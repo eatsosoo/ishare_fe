@@ -1,5 +1,12 @@
 <template>
-  <BasicModal v-bind="$attrs" title="Modal Title" width="1100px" @fullscreen="onFullscreen">
+  <BasicModal
+    v-bind="$attrs"
+    title="Modal Title"
+    width="1100px"
+    @fullscreen="onFullscreen"
+    :show-ok-btn="false"
+    :show-cancel-btn="false"
+  >
     <Tabs v-model:activeKey="activeKey">
       <TabPane v-for="tab in tabs" :key="tab.key" v-bind="omit(tab, ['content', 'key'])">
         <BasicTable @register="tab.register" ref="selectTable">
@@ -13,7 +20,6 @@
         </BasicTable>
       </TabPane>
     </Tabs>
-    <template #footer></template>
   </BasicModal>
 </template>
 <script lang="ts" setup>

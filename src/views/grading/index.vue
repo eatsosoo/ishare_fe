@@ -16,11 +16,13 @@
             <template #title>
               <div>{{ t('common.grading.text') }}</div>
             </template>
-            <a-button size="small" preIcon="ant-design:edit-filled" />
+            <a-button size="small" preIcon="ant-design:edit-filled" @click="openDetailModal" />
           </Tooltip>
         </template>
       </template>
     </BasicTable>
+
+    <DetailModal @register="registerDetailModal" />
   </div>
 </template>
 <script lang="ts" setup>
@@ -29,6 +31,8 @@
   import { exerciseListApi } from '@/api/demo/table';
   import { useI18n } from '@/hooks/web/useI18n';
   import { Tag, Tooltip } from 'ant-design-vue';
+  import DetailModal from './DetailModal.vue';
+  import { useModal } from '@/components/Modal';
 
   const { t } = useI18n();
   const [registerTable, { getForm }] = useTable({
@@ -47,6 +51,7 @@
       dataIndex: 'action',
     },
   });
+  const [registerDetailModal, { openModal: openDetailModal }] = useModal();
 
   function getFormValues() {
     console.log(getForm().getFieldsValue());
