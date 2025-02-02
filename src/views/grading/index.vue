@@ -5,11 +5,16 @@
       <template #toolbar>
         <a-button type="primary" @click="getFormValues">{{ t('table.enterData') }}</a-button>
       </template>
-      <template #bodyCell="{ column }">
-        <template v-if="column.key === 'action'">
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'status'">
+          <Tag :color="record.status === 'v' ? 'green' : 'red'">
+            {{ record.status }}
+          </Tag>
+        </template>
+        <template v-if="column.key === 'action' && record.status === 'v'">
           <Tooltip>
             <template #title>
-              <div>Chấm bài</div>
+              <div>{{ t('common.grading.text') }}</div>
             </template>
             <a-button size="small" preIcon="ant-design:edit-filled" />
           </Tooltip>
@@ -23,7 +28,7 @@
   import { getExerciseColumns, getSearchFormConfig } from '@/views/classroom/tableData';
   import { exerciseListApi } from '@/api/demo/table';
   import { useI18n } from '@/hooks/web/useI18n';
-  import { Tooltip } from 'ant-design-vue';
+  import { Tag, Tooltip } from 'ant-design-vue';
 
   const { t } = useI18n();
   const [registerTable, { getForm }] = useTable({

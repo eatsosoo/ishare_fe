@@ -59,7 +59,7 @@
   import { readingParts } from './data';
   import { omit } from 'lodash-es';
   import { QuestionItem, ReadingPart } from './types/question';
-  import Question from './Question.vue';
+  import Question from '@/views/test/Question.vue';
   import { useMessage } from '@/hooks/web/useMessage';
 
   const TabPane = Tabs.TabPane;

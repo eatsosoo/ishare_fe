@@ -72,8 +72,8 @@
   import { listeningParts } from './data';
   import { omit } from 'lodash-es';
   import { QuestionItem, ListeningPart } from './types/question';
-  import Question from './Question.vue';
   import { useMessage } from '@/hooks/web/useMessage';
+  import Question from '@/views/test/Question.vue';
 
   const TabPane = Tabs.TabPane;
   const activeKey = ref('tabs1');

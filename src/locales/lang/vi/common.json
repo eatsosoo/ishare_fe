@@ -45,5 +45,16 @@
     "listening": "Đề thi phần LISTENING",
     "speaking": "Đề thi phần SPEAKING",
     "writing": "Đề thi phần WRITING"
+  },
+  "grading": {
+    "text": "Chấm điểm",
+    "reading": "Chấm điểm phần READING",
+    "listening": "Chấm điểm phần LISTENING",
+    "speaking": "Chấm điểm phần SPEAKING",
+    "writing": "Chấm điểm phần WRITING"
+  },
+  "exercise": {
+    "done": "Đã hoàn thành",
+    "incomplete": "Chưa hoàn thành"
   }
 }
