@@ -10,8 +10,8 @@ const test: AppRouteModule = {
   redirect: '/test/index',
   meta: {
     orderNo: 10,
-    icon: 'ion:layers-outline',
-    title: t('routes.page.testManager'),
+    icon: 'ion:list-outline',
+    title: t('routes.page.testManagement'),
   },
   children: [
     {

@@ -6,9 +6,6 @@
     @fullscreen="onFullscreen"
     @ok="getSelectStudents"
   >
-    <CollapseContainer :title="t('table.search')" class="search-student-form">
-      <BasicForm @register="registerSearchForm" @submit="handleSearchFormSubmit" />
-    </CollapseContainer>
     <BasicTable @register="registerTable" ref="selectTable" />
   </BasicModal>
 </template>
@@ -16,12 +13,9 @@
   import { ref, nextTick } from 'vue';
   import { BasicModal } from '@/components/Modal';
   import { BasicTable, ColumnChangeParam, useTable } from '@/components/Table';
-  import { getStudentColumns } from '@/views/classroom/tableData';
+  import { getSearchStudentConfig, getStudentColumns } from '@/views/classroom/tableData';
   import { studentListApi } from '@/api/demo/table';
   import { useI18n } from '@/hooks/web/useI18n';
-  import { BasicForm, FormSchema, useForm } from '@/components/Form';
-  import { CollapseContainer } from '@/components/Container';
-  import { useMessage } from '@/hooks/web/useMessage';
 
   const { t } = useI18n();
   const [registerTable, { getSelectRows, clearSelectedRowKeys }] = useTable({
@@ -37,6 +31,8 @@
     rowKey: 'id',
     showTableSetting: true,
     showIndexColumn: false,
+    useSearchForm: true,
+    formConfig: getSearchStudentConfig(),
     rowSelection: {
       type: 'checkbox',
     },
@@ -53,38 +49,6 @@
     await nextTick();
     selectTable.value?.redoHeight();
   };
-
-  const schemas: FormSchema[] = [
-    {
-      field: 'name',
-      component: 'Input',
-      label: t('table.studentName'),
-      colProps: {
-        span: 8,
-      },
-    },
-    {
-      field: 'phone',
-      component: 'Input',
-      label: t('table.phone'),
-      colProps: {
-        span: 8,
-      },
-    },
-  ];
-
-  const { createMessage } = useMessage();
-  const [registerSearchForm] = useForm({
-    labelWidth: 120,
-    schemas,
-    actionColOptions: {
-      span: 24,
-    },
-  });
-
-  function handleSearchFormSubmit(values: any) {
-    createMessage.success('click search,values:' + JSON.stringify(values));
-  }
 
   function getSelectStudents() {
     emit('selectStudents', getSelectRows());

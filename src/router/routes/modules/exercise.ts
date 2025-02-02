@@ -11,7 +11,7 @@ const exercise: AppRouteModule = {
   meta: {
     orderNo: 10,
     icon: 'ion:layers-outline',
-    title: t('routes.page.exerciseManager'),
+    title: t('routes.page.exerciseManagement'),
   },
   children: [
     {

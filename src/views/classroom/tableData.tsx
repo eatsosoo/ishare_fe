@@ -1,3 +1,4 @@
+import { classListApi } from '@/api/demo/table';
 import { FormProps, FormSchema, BasicColumn } from '@/components/Table';
 import { useI18n } from '@/hooks/web/useI18n';
 
@@ -202,6 +203,100 @@ export function getFormConfig(): Partial<FormProps> {
         colProps: {
           xl: 12,
           xxl: 8,
+        },
+      },
+    ],
+  };
+}
+
+export function getSearchFormConfig(): Partial<FormProps> {
+  return {
+    labelWidth: 100,
+    schemas: [
+      {
+        field: 'classId',
+        component: 'ApiSelect',
+        label: t('table.searchForm.className'),
+        componentProps: {
+          // more details see /src/components/Form/src/components/ApiSelect.vue
+          api: classListApi(),
+          params: {
+            id: 1,
+          },
+
+          resultField: 'items',
+          // use name as label
+          labelField: 'name',
+          // use id as value
+          valueField: 'id',
+          // not request untill to select
+          immediate: true,
+          onChange: (e, v) => {
+            console.log('ApiSelect====>:', e, v);
+          },
+          // atfer request callback
+          onOptionsChange: (options) => {
+            console.log('get options', options.length, options);
+          },
+        },
+        colProps: {
+          xl: 6,
+          xxl: 4,
+        },
+      },
+      {
+        field: 'typeExercise',
+        label: t('table.searchForm.typeExercise'),
+        component: 'Select',
+        componentProps: {
+          options: [
+            {
+              label: 'Reading',
+              value: '1',
+            },
+            {
+              label: 'Listening',
+              value: '2',
+            },
+            {
+              label: 'Speaking',
+              value: '3',
+            },
+            {
+              label: 'Writing',
+              value: '4',
+            },
+          ],
+        },
+        colProps: {
+          xl: 6,
+          xxl: 4,
+        },
+      },
+    ],
+  };
+}
+
+export function getSearchStudentConfig(): Partial<FormProps> {
+  return {
+    labelWidth: 100,
+    schemas: [
+      {
+        field: 'studentName',
+        component: 'Input',
+        label: t('table.searchForm.studentName'),
+        colProps: {
+          xl: 6,
+          xxl: 4,
+        },
+      },
+      {
+        field: 'phone',
+        label: t('table.searchForm.phone'),
+        component: 'Input',
+        colProps: {
+          xl: 6,
+          xxl: 4,
         },
       },
     ],

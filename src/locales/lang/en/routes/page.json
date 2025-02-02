@@ -1,8 +1,8 @@
 {
   "classroomList": "Classroom List",
   "createClassroom": "Create Classroom Group",
-  "classManager": "Class Management",
-  "exerciseManager": "Exercise Management",
+  "classManagement": "Class Management",
+  "exerciseManagement": "Exercise Management",
   "reading": "Reading",
   "listening": "Listening",
   "writing": "Writing",

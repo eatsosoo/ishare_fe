@@ -11,7 +11,7 @@ const classroom: AppRouteModule = {
   meta: {
     orderNo: 10,
     icon: 'ion:grid-outline',
-    title: t('routes.page.classManager'),
+    title: t('routes.page.classManagement'),
   },
   children: [
     {
