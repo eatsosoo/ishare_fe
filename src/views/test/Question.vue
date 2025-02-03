@@ -3,7 +3,13 @@
     <Form :model="questionFormData" :rules="rulesMain" ref="formRef">
       <div>
         <h3>{{ t('common.questionInformation') }}</h3>
-        <Form.Item :label="t('common.questionContent')" name="content" required>
+        <Form.Item
+          :label="t('common.questionContent')"
+          name="content"
+          :label-col="{ xl: 6, xxl: 6 }"
+          label-align="left"
+          required
+        >
           <Input
             v-model:value="questionFormData.content"
             :placeholder="t('common.inputText')"
@@ -11,7 +17,13 @@
           />
         </Form.Item>
 
-        <Form.Item :label="t('common.questionType')" name="type" required>
+        <Form.Item
+          :label="t('common.questionType')"
+          name="type"
+          :label-col="{ xl: 6, xxl: 6 }"
+          label-align="left"
+          required
+        >
           <Select
             v-model:value="questionFormData.type"
             placeholder="Enter question"

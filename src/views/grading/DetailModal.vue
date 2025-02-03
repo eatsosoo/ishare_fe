@@ -1,7 +1,6 @@
 <template>
   <BasicModal
     v-bind="$attrs"
-    :title="`Học sinh: - Kỹ năng: ${props.skillType}`"
     default-fullscreen
     :show-cancel-btn="false"
     :show-ok-btn="false"
@@ -51,13 +50,20 @@
             <div v-html="sample2" class="mb-4"></div>
             <h3>Chấm điểm và nhận xét</h3>
             <Form :model="gradingFormData">
-              <FormItem label="Điểm" name="score">
+              <FormItem label="Điểm" name="score" :label-col="{ span: 3 }" label-align="left">
                 <InputNumber v-model:value="gradingFormData.score" :min="0" :max="10" required />
               </FormItem>
-              <FormItem label="Nhận xét" name="feedback">
+              <FormItem
+                label="Nhận xét"
+                name="feedback"
+                :label-col="{ span: 3 }"
+                label-align="left"
+              >
                 <InputTextArea v-model:value="gradingFormData.feedback" />
               </FormItem>
-              <a-button type="primary" @click="submitForm">{{ t('common.confirm') }}</a-button>
+              <div class="flex justify-end">
+                <a-button type="primary" @click="submitForm">{{ t('common.confirm') }}</a-button>
+              </div>
             </Form>
           </template>
         </div>

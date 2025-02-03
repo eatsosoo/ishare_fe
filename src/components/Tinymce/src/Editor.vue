@@ -111,7 +111,7 @@
       default: true,
     },
   });
-
+  console.log(props.height);
   const emit = defineEmits(['change', 'update:modelValue', 'inited', 'init-error']);
 
   const attrs = useAttrs();

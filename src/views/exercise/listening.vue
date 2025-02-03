@@ -41,7 +41,7 @@
                   {{ question.no }}
                 </a-button>
               </div>
-              <div class="re-box-shadow rounded-lg pa-4 w-full">
+              <div class="re-box-shadow rounded-lg pa-4 min-h-[29.2rem]">
                 <template v-if="questionCurrent">
                   <Question
                     :value="questionCurrent"

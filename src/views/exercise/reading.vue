@@ -11,7 +11,7 @@
             <Col :span="12">
               <div class="p-4 re-box-shadow rounded-lg">
                 <h3>{{ t('common.readingContext') }}</h3>
-                <Tinymce v-model="value" @change="handleChange" width="100%" />
+                <Tinymce v-model="value" @change="handleChange" height="550" />
               </div>
             </Col>
             <Col :span="12" class="flex">

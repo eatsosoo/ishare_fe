@@ -19,14 +19,14 @@
             <a-button
               size="small"
               preIcon="ant-design:edit-filled"
-              @click="clickOpen(record.type)"
+              @click="clickOpen(record.type, record.student)"
             />
           </template>
         </template>
       </BasicTable>
     </Card>
 
-    <DetailModal :skill-type="skillType" @register="registerDetailModal" />
+    <DetailModal :title="modalTitle" :skill-type="skillType" @register="registerDetailModal" />
   </PageWrapper>
 </template>
 <script lang="ts" setup>
@@ -70,9 +70,11 @@
 
   const showExerciseTable = ref(false);
   const skillType = ref<SkillType>('Reading');
+  const modalTitle = ref('');
 
-  function clickOpen(skill: SkillType) {
-    skillType.value = skill;
+  function clickOpen(skillVal: SkillType, studentName: string) {
+    skillType.value = skillVal;
+    modalTitle.value = `Học sinh: ${studentName} - Kỹ năng: ${skillVal}`;
     openDetailModal();
   }
 

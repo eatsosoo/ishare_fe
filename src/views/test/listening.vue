@@ -28,7 +28,7 @@
               </div>
             </Col>
             <Col :span="12">
-              <div class="flex gap-2 mb-2">
+              <div class="flex justify-around mb-2">
                 <a-button
                   v-for="(question, index) in item.questions"
                   :type="
@@ -41,7 +41,7 @@
                   {{ question.no }}
                 </a-button>
               </div>
-              <div class="re-box-shadow rounded-lg pa-4 w-full">
+              <div class="re-box-shadow rounded-lg pa-4 min-h-[29.2rem]">
                 <template v-if="questionCurrent">
                   <Question
                     :value="questionCurrent"
