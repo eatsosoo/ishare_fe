@@ -3,9 +3,9 @@
     v-bind="$attrs"
     title="Modal Title"
     width="1100px"
-    @fullscreen="onFullscreen"
     :show-ok-btn="false"
     :show-cancel-btn="false"
+    :can-fullscreen="false"
   >
     <Tabs v-model:activeKey="activeKey">
       <TabPane v-for="tab in tabs" :key="tab.key" v-bind="omit(tab, ['content', 'key'])">
@@ -23,7 +23,7 @@
   </BasicModal>
 </template>
 <script lang="ts" setup>
-  import { ref, nextTick } from 'vue';
+  import { ref } from 'vue';
   import { BasicModal } from '@/components/Modal';
   import { BasicTable, useTable } from '@/components/Table';
   import {
@@ -95,11 +95,4 @@
       register: registerTable3,
     },
   ];
-
-  const selectTable = ref<InstanceType<typeof BasicTable> | undefined>();
-
-  const onFullscreen = async () => {
-    await nextTick();
-    selectTable.value?.redoHeight();
-  };
 </script>

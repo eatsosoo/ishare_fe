@@ -3,14 +3,14 @@
     v-bind="$attrs"
     title="Modal Title"
     width="1100px"
-    @fullscreen="onFullscreen"
+    :can-fullscreen="false"
     @ok="getSelectStudents"
   >
     <BasicTable @register="registerTable" ref="selectTable" />
   </BasicModal>
 </template>
 <script lang="ts" setup>
-  import { ref, nextTick } from 'vue';
+  import { ref } from 'vue';
   import { BasicModal } from '@/components/Modal';
   import { BasicTable, ColumnChangeParam, useTable } from '@/components/Table';
   import { getSearchStudentConfig, getStudentColumns } from '@/views/classroom/tableData';
@@ -45,24 +45,8 @@
 
   const selectTable = ref<InstanceType<typeof BasicTable> | undefined>();
 
-  const onFullscreen = async () => {
-    await nextTick();
-    selectTable.value?.redoHeight();
-  };
-
   function getSelectStudents() {
     emit('selectStudents', getSelectRows());
     clearSelectedRowKeys();
   }
 </script>
-<style lang="less" scoped>
-  .search-student-form {
-    margin: 0 10px 10px;
-    border: 1px solid #f0f0f0;
-    border-radius: 8px;
-    background-color: #fff;
-    box-shadow:
-      rgb(50 50 93 / 25%) 0 2px 5px -1px,
-      rgb(0 0 0 / 30%) 0 1px 3px -1px;
-  }
-</style>

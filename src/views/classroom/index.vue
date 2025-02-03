@@ -32,7 +32,7 @@
       </template>
     </BasicTable>
 
-    <ClassModal :title="titleModal" @register="registerViewModal" />
+    <DetailClassModal :title="titleModal" @register="registerViewModal" />
     <AddStudentModal
       :title="titleModal"
       @register="registerAddModal"
@@ -45,7 +45,7 @@
   import { getClassColumns, getFormConfig } from '@/views/classroom/tableData';
   import { classListApi } from '@/api/demo/table';
   import { useI18n } from '@/hooks/web/useI18n';
-  import ClassModal from './ClassModal.vue';
+  import DetailClassModal from './DetailClassModal.vue';
   import { useModal } from '@/components/Modal';
   import { ClassListItem } from '@/api/demo/model/tableModel';
   import { computed, ref } from 'vue';
