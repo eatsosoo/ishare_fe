@@ -22,5 +22,18 @@
     "student": "Học sinh",
     "studentRegister": "Học sinh đăng ký"
   },
-  "addStudentToClass": "Thêm học sinh vào lớp"
+  "addStudentToClass": "Thêm học sinh vào lớp",
+  "gradingSearch": {
+    "searchText": "Tìm kiếm theo lớp học và kỹ năng",
+    "className": "Tên lớp học",
+    "skill": "Kỹ năng"
+  },
+  "exerciseSearch": {
+    "className": "Tên lớp",
+    "typeExercise": "Loại bài tập",
+    "studentName": "Tên học sinh",
+    "phone": "Số điện thoại",
+    "completeStatus": "Trạng thái",
+    "createdAt": "Ngày giao"
+  }
 }

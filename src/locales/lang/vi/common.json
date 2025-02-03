@@ -51,7 +51,8 @@
     "reading": "Chấm điểm phần READING",
     "listening": "Chấm điểm phần LISTENING",
     "speaking": "Chấm điểm phần SPEAKING",
-    "writing": "Chấm điểm phần WRITING"
+    "writing": "Chấm điểm phần WRITING",
+    "resultList": "Danh sách kết quả"
   },
   "exercise": {
     "done": "Đã hoàn thành",

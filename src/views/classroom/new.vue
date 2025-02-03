@@ -7,7 +7,7 @@
     <Card :title="t('form.newClassForm.information')" :bordered="false">
       <BasicForm @register="register" />
     </Card>
-    <Card :title="title2" :bordered="false" class="!mt-5">
+    <Card :title="titlePreviewTable" :bordered="false" class="!mt-5">
       <StudentTable ref="tableRef" @select-students="handleRegisterStudentToClass" />
     </Card>
 
@@ -41,7 +41,7 @@
     showActionButtonGroup: false,
   });
 
-  const title2 = `${t('form.newClassForm.studentRegister')} (${t('table.numberStudent')}: ${studentsRegistered.value.length})`;
+  const titlePreviewTable = `${t('form.newClassForm.studentRegister')} (${t('table.numberStudent')}: ${studentsRegistered.value.length})`;
 
   async function submitAll() {
     try {

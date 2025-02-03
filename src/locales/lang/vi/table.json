@@ -51,10 +51,11 @@
     "student": "Tên học sinh",
     "type": "Loại bài thi"
   },
-  "searchForm": {
-    "className": "Tên lớp",
-    "typeExercise": "Loại bài tập",
+  "gradingTable": {
+    "title": "Tìm kiếm bài làm",
+    "className": "Tên lớp học",
     "studentName": "Tên học sinh",
-    "phone": "Số điện thoại"
+    "skill": "Kỹ năng",
+    "type": "Loại bài"
   }
 }

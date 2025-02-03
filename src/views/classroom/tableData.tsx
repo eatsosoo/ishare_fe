@@ -216,7 +216,7 @@ export function getSearchFormConfig(): Partial<FormProps> {
       {
         field: 'classId',
         component: 'ApiSelect',
-        label: t('table.searchForm.className'),
+        label: t('form.exerciseSearch.className'),
         componentProps: {
           // more details see /src/components/Form/src/components/ApiSelect.vue
           api: classListApi(),
@@ -226,7 +226,7 @@ export function getSearchFormConfig(): Partial<FormProps> {
 
           resultField: 'items',
           // use name as label
-          labelField: 'name',
+          labelField: 'className',
           // use id as value
           valueField: 'id',
           // not request untill to select
@@ -239,14 +239,10 @@ export function getSearchFormConfig(): Partial<FormProps> {
             console.log('get options', options.length, options);
           },
         },
-        colProps: {
-          xl: 6,
-          xxl: 4,
-        },
       },
       {
         field: 'typeExercise',
-        label: t('table.searchForm.typeExercise'),
+        label: t('form.exerciseSearch.typeExercise'),
         component: 'Select',
         componentProps: {
           options: [
@@ -268,10 +264,6 @@ export function getSearchFormConfig(): Partial<FormProps> {
             },
           ],
         },
-        colProps: {
-          xl: 6,
-          xxl: 4,
-        },
       },
     ],
   };
@@ -284,7 +276,7 @@ export function getSearchStudentConfig(): Partial<FormProps> {
       {
         field: 'studentName',
         component: 'Input',
-        label: t('table.searchForm.studentName'),
+        label: t('form.exerciseSearch.studentName'),
         colProps: {
           xl: 6,
           xxl: 4,
@@ -292,8 +284,55 @@ export function getSearchStudentConfig(): Partial<FormProps> {
       },
       {
         field: 'phone',
-        label: t('table.searchForm.phone'),
+        label: t('form.exerciseSearch.phone'),
         component: 'Input',
+        colProps: {
+          xl: 6,
+          xxl: 4,
+        },
+      },
+    ],
+  };
+}
+
+export function getSearchExerciseConfig(): Partial<FormProps> {
+  return {
+    labelWidth: 100,
+    schemas: [
+      {
+        field: 'studentName',
+        component: 'Input',
+        label: t('form.exerciseSearch.studentName'),
+        colProps: {
+          xl: 6,
+          xxl: 4,
+        },
+      },
+      {
+        field: 'status',
+        label: t('form.exerciseSearch.completeStatus'),
+        component: 'Select',
+        componentProps: {
+          options: [
+            {
+              label: 'Đã hoàn thành',
+              value: '1',
+            },
+            {
+              label: 'Chưa hoàn thành',
+              value: '2',
+            },
+          ],
+        },
+        colProps: {
+          xl: 6,
+          xxl: 4,
+        },
+      },
+      {
+        field: 'createdAt',
+        label: t('form.exerciseSearch.createdAt'),
+        component: 'DatePicker',
         colProps: {
           xl: 6,
           xxl: 4,
