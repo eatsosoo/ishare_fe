@@ -114,7 +114,7 @@ export function getExerciseColumns(): BasicColumn[] {
       dataIndex: 'name',
     },
     {
-      title: t('table.exerciseTable.type'),
+      title: t('table.exerciseTable.skill'),
       dataIndex: 'type',
     },
     {
@@ -315,11 +315,32 @@ export function getSearchExerciseConfig(): Partial<FormProps> {
         componentProps: {
           options: [
             {
-              label: 'Đã hoàn thành',
+              label: t('form.exerciseSearch.done'),
+              value: 'done',
+            },
+            {
+              label: t('form.exerciseSearch.incomplete'),
+              value: 'incomplete',
+            },
+          ],
+        },
+        colProps: {
+          xl: 6,
+          xxl: 4,
+        },
+      },
+      {
+        field: 'type',
+        label: t('form.exerciseSearch.typeGrading'),
+        component: 'Select',
+        componentProps: {
+          options: [
+            {
+              label: 'Bài về nhà',
               value: '1',
             },
             {
-              label: 'Chưa hoàn thành',
+              label: 'Bài kiểm tra',
               value: '2',
             },
           ],

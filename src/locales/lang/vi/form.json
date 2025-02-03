@@ -30,10 +30,14 @@
   },
   "exerciseSearch": {
     "className": "Tên lớp",
-    "typeExercise": "Loại bài tập",
+    "skill": "Kỹ năng",
     "studentName": "Tên học sinh",
     "phone": "Số điện thoại",
     "completeStatus": "Trạng thái",
-    "createdAt": "Ngày giao"
+    "done": "Đã hoàn thành",
+    "incomplete": "Chưa hoàn thành",
+    "createdAt": "Ngày giao",
+    "deadline": "Hạn nộp",
+    "typeGrading": "Loại bài"
   }
 }

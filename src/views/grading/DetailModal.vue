@@ -1,54 +1,90 @@
 <template>
   <BasicModal
     v-bind="$attrs"
-    title="Bài làm của học sinh"
+    :title="`Học sinh: - Kỹ năng: ${props.skillType}`"
     default-fullscreen
     :show-cancel-btn="false"
     :show-ok-btn="false"
+    :can-fullscreen="false"
   >
     <Row :gutter="[16, 16]">
       <Col :span="12">
-        <div class="shadow-lg rounded-md p-4 mb-4" v-html="sample"></div>
+        <div class="shadow-lg rounded-md p-4 mb-4">
+          <h1>Đề bài</h1>
+          <div v-html="sample"></div>
+        </div>
       </Col>
       <Col :span="12">
         <div class="shadow-lg rounded-md p-4 mb-4">
-          <div v-for="question in questionsSample" :key="question.no">
-            <h2 class="text-primary">Question {{ question.no }}</h2>
-            <h3>{{ question.no }}. {{ question.content }}</h3>
-            <ul class="mb-0">
-              <li v-for="option in question.options" :key="option.id">
-                <template
-                  v-if="
-                    option.id === question.actualAnswer &&
-                    question.actualAnswer === question.studentAnswer
-                  "
-                >
-                  <span class="text-green-500">{{ option.id + '. ' + option.text }}</span>
-                </template>
-                <template
-                  v-else-if="
-                    option.id === question.actualAnswer &&
-                    question.actualAnswer !== question.studentAnswer
-                  "
-                >
-                  <span class="text-red-500">{{ option.id + '. ' + option.text }}</span>
-                </template>
-                <template v-else>
-                  <span class="text-danger">{{ option.id + '. ' + option.text }}</span>
-                </template>
-              </li>
-            </ul>
-            <h4>Đáp án đúng: {{ question.actualAnswer }}</h4>
-          </div>
-        </div></Col
-      >
+          <h1>Bài làm của học sinh</h1>
+          <template v-if="props.skillType === 'Reading' || props.skillType === 'Listening'">
+            <div v-for="question in questionsSample" :key="question.no" class="mb-4">
+              <h2 class="text-primary mb-0">Question {{ question.no }}</h2>
+              <h3 class="mb-0">{{ question.no }}. {{ question.content }}</h3>
+              <ul class="mb-0">
+                <li v-for="option in question.options" :key="option.id">
+                  <template
+                    v-if="
+                      option.id === question.actualAnswer &&
+                      question.actualAnswer === question.studentAnswer
+                    "
+                  >
+                    <span class="text-green-500">{{ option.id + '. ' + option.text }}</span>
+                  </template>
+                  <template
+                    v-else-if="
+                      option.id === question.actualAnswer &&
+                      question.actualAnswer !== question.studentAnswer
+                    "
+                  >
+                    <span class="text-red-500">{{ option.id + '. ' + option.text }}</span>
+                  </template>
+                  <template v-else>
+                    <span class="text-danger">{{ option.id + '. ' + option.text }}</span>
+                  </template>
+                </li>
+              </ul>
+              <h4>Đáp án đúng: {{ question.actualAnswer }}</h4>
+            </div>
+          </template>
+          <template v-else>
+            <div v-html="sample2" class="mb-4"></div>
+            <h3>Chấm điểm và nhận xét</h3>
+            <Form :model="gradingFormData">
+              <FormItem label="Điểm" name="score">
+                <InputNumber v-model:value="gradingFormData.score" :min="0" :max="10" required />
+              </FormItem>
+              <FormItem label="Nhận xét" name="feedback">
+                <InputTextArea v-model:value="gradingFormData.feedback" />
+              </FormItem>
+              <a-button type="primary" @click="submitForm">{{ t('common.confirm') }}</a-button>
+            </Form>
+          </template>
+        </div>
+      </Col>
     </Row>
   </BasicModal>
 </template>
 
 <script lang="ts" setup>
   import { BasicModal } from '@/components/Modal';
-  import { Row, Col } from 'ant-design-vue';
+  import { Row, Col, InputNumber, Form, FormItem, Input } from 'ant-design-vue';
+  import { SkillType } from '@/views/test/types/question';
+  import { ref, type PropType } from 'vue';
+  import { useI18n } from '@/hooks/web/useI18n';
+
+  const InputTextArea = Input.TextArea;
+  const props = defineProps({
+    skillType: {
+      type: String as PropType<SkillType>,
+      default: '',
+    },
+  });
+  const { t } = useI18n();
+  const gradingFormData = ref({
+    score: 0,
+    feedback: '',
+  });
 
   const sample = `
     <h2>Welcome to Our Platform</h2>
@@ -138,4 +174,12 @@
       studentAnswer: 'D',
     },
   ];
+
+  // writing sample
+  const sample2 =
+    'We are thrilled to have you here! Our platform offers a variety of features to enhance your experience. Explore our latest updates and discover new possibilities.';
+
+  function submitForm() {
+    console.log('submit form');
+  }
 </script>

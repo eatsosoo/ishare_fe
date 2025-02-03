@@ -40,7 +40,7 @@
     "createdAt": "Ngày giao",
     "deadline": "Hạn nộp",
     "student": "Tên học sinh",
-    "type": "Loại bài tập"
+    "skill": "Kỹ năng"
   },
   "examTable": {
     "name": "Tên bài thi",

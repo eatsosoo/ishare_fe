@@ -7,7 +7,7 @@
         @reset="showExerciseTable = false"
       />
     </Card>
-    <Card v-if="showExerciseTable" :title="t('common.grading.resultList')" :bordered="false">
+    <Card v-if="showExerciseTable" :title="t('common.resultList')" :bordered="false">
       <BasicTable @register="registerTable">
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'status'">
@@ -16,18 +16,17 @@
             </Tag>
           </template>
           <template v-if="column.key === 'action' && record.status === 'v'">
-            <Tooltip>
-              <template #title>
-                <div>{{ t('common.grading.text') }}</div>
-              </template>
-              <a-button size="small" preIcon="ant-design:edit-filled" @click="openDetailModal" />
-            </Tooltip>
+            <a-button
+              size="small"
+              preIcon="ant-design:edit-filled"
+              @click="clickOpen(record.type)"
+            />
           </template>
         </template>
       </BasicTable>
     </Card>
 
-    <DetailModal @register="registerDetailModal" />
+    <DetailModal :skill-type="skillType" @register="registerDetailModal" />
   </PageWrapper>
 </template>
 <script lang="ts" setup>
@@ -35,7 +34,7 @@
   import { getExerciseColumns, getSearchExerciseConfig } from '@/views/classroom/tableData';
   import { exerciseListApi } from '@/api/demo/table';
   import { useI18n } from '@/hooks/web/useI18n';
-  import { Card, Tag, Tooltip } from 'ant-design-vue';
+  import { Card, Tag } from 'ant-design-vue';
   import DetailModal from './DetailModal.vue';
   import { useModal } from '@/components/Modal';
   import PageWrapper from '@/components/Page/src/PageWrapper.vue';
@@ -43,10 +42,10 @@
   import { useForm } from '@/components/Form';
   import { searchGradingSchemas } from '@/views/classroom/data';
   import { ref } from 'vue';
+  import { SkillType } from '@/views/test/types/question';
 
   const { t } = useI18n();
   const [registerTable] = useTable({
-    title: t('routes.page.exerciseList'),
     api: exerciseListApi(),
     columns: getExerciseColumns(),
     useSearchForm: true,
@@ -70,6 +69,12 @@
   });
 
   const showExerciseTable = ref(false);
+  const skillType = ref<SkillType>('Reading');
+
+  function clickOpen(skill: SkillType) {
+    skillType.value = skill;
+    openDetailModal();
+  }
 
   async function findExerciseOfClass() {
     try {

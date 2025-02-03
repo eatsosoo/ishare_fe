@@ -40,6 +40,7 @@
   "speakingSubject": "Chủ đề bài nói",
   "writingSubject": "Chủ đề bài viết",
   "audio": "Ghi âm",
+  "resultList": "Danh sách kết quả tìm kiếm",
   "test": {
     "reading": "Đề thi phần READING",
     "listening": "Đề thi phần LISTENING",
@@ -51,8 +52,7 @@
     "reading": "Chấm điểm phần READING",
     "listening": "Chấm điểm phần LISTENING",
     "speaking": "Chấm điểm phần SPEAKING",
-    "writing": "Chấm điểm phần WRITING",
-    "resultList": "Danh sách kết quả"
+    "writing": "Chấm điểm phần WRITING"
   },
   "exercise": {
     "done": "Đã hoàn thành",

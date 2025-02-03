@@ -1,4 +1,4 @@
-import { QuestionType, ReadingPart } from './types/question';
+import { ListeningPart, QuestionType, ReadingPart } from '@/views/test/types/question';
 import { useI18n } from '@/hooks/web/useI18n';
 
 const { t } = useI18n();
@@ -93,7 +93,7 @@ export const readingParts: ReadingPart[] = [
   },
 ];
 
-export const listeningParts: ReadingPart[] = [
+export const listeningParts: ListeningPart[] = [
   {
     key: 'tabs1',
     tab: 'Section 1',
