@@ -13,19 +13,17 @@
       </template>
     </BasicTable>
 
-    <div
-      ref="domRef"
-      v-show="isDomFullscreen"
-      class="flex items-center justify-center w-1/2 h-64 mx-auto mt-10 bg-white rounded-md"
-    >
-      <a-button type="primary" @click="toggleDom" class="mr-2">
-        {{ isDomFullscreen ? 'Exit Dom Full Screen' : 'Enter Dom Full Screen' }}
-      </a-button>
+    <div ref="domRef" v-show="isDomFullscreen" class="bg-white p-4">
+      <div class="mb-4 flex items-center justify-end gap-2">
+        <a-button type="default">Thời gian: {{ timeLeft }}</a-button>
+        <a-button type="primary" @click="toggleDom"> Nộp bài </a-button>
+      </div>
+      <ExamineType1 />
     </div>
   </div>
 </template>
 <script lang="ts" setup>
-  import { ref } from 'vue';
+  import { onBeforeUnmount, onMounted, ref } from 'vue';
   import { useFullscreen } from '@vueuse/core';
 
   import { type Nullable } from '@vben/types';
@@ -35,10 +33,23 @@
   import { getExamColumns, getSearchExamOfStudentConfig } from '@/views/classroom/tableData';
   import { examListApi } from '@/api/demo/table';
   import { Tag } from 'ant-design-vue';
+  import ExamineType1 from './ExamineType1.vue';
 
   const domRef = ref<Nullable<HTMLElement>>(null);
   const { toggle: toggleDom, isFullscreen: isDomFullscreen } = useFullscreen(domRef);
   const { t } = useI18n();
+  const timeLeft = ref('');
+  const examDuration = ref(40 * 60); // Example: 1 hour in seconds
+  const interval = setInterval(() => {
+    const minutes = Math.floor(examDuration.value / 60);
+    const seconds = examDuration.value % 60;
+    timeLeft.value = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    if (examDuration.value <= 0) {
+      clearInterval(interval);
+      // Handle exam end logic here
+    }
+    examDuration.value--;
+  }, 1000);
 
   const [registerTable] = useTable({
     api: examListApi(),
@@ -60,4 +71,18 @@
     console.log(examId);
     toggleDom();
   }
+
+  function preventF5(event) {
+    if (event.key === 'F5') {
+      event.preventDefault();
+    }
+  }
+
+  onMounted(() => {
+    window.addEventListener('keydown', preventF5);
+  });
+
+  onBeforeUnmount(() => {
+    window.addEventListener('keydown', preventF5);
+  });
 </script>

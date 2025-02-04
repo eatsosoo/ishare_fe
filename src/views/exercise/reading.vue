@@ -56,9 +56,9 @@
   import { PageWrapper } from '@/components/Page';
   import { Col, Row, Tabs } from 'ant-design-vue';
   import { useI18n } from '@/hooks/web/useI18n';
-  import { readingParts } from './data';
+  import { readingParts } from '@/views/test/data';
   import { omit } from 'lodash-es';
-  import { QuestionItem, ReadingPart } from './types/question';
+  import { QuestionItem, ReadingPart } from '@/views/test/types/question';
   import Question from '@/views/test/Question.vue';
   import { useMessage } from '@/hooks/web/useMessage';
 
