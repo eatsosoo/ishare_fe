@@ -9,7 +9,7 @@ const grading: AppRouteModule = {
   component: LAYOUT,
   redirect: '/grading/index',
   meta: {
-    orderNo: 10,
+    orderNo: 15,
     icon: 'ion:checkmark-done-outline',
     title: t('routes.page.testGradingManagement'),
   },

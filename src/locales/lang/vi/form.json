@@ -39,5 +39,21 @@
     "createdAt": "Ngày giao",
     "deadline": "Hạn nộp",
     "typeGrading": "Loại bài"
+  },
+  "examOfStudentSearch": {
+    "skill": "Kỹ năng",
+    "completeStatus": "Trạng thái",
+    "done": "Đã hoàn thành",
+    "incomplete":"Chưa hoàn thành",
+    "createdAt": "Ngày giao",
+    "deadline": "Hạn nộp"
+  },
+  "exerciseOfStudentSearch": {
+    "skill": "Kỹ năng",
+    "completeStatus": "Trạng thái",
+    "done": "Đã hoàn thành",
+    "incomplete":"Chưa hoàn thành",
+    "createdAt": "Ngày giao",
+    "deadline": "Hạn nộp"
   }
 }

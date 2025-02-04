@@ -9,5 +9,9 @@
   "reading": "Reading",
   "listening": "Listening",
   "writing": "Writing",
-  "speaking": "Speaking"
+  "speaking": "Speaking",
+  "studentManagement": "Quản lý học sinh",
+  "homework": "Bài tập về nhà",
+  "takeTheTest": "Làm bài thi",
+  "learningOutcomes": "Kết quả học tập"
 }

@@ -362,3 +362,155 @@ export function getSearchExerciseConfig(): Partial<FormProps> {
     ],
   };
 }
+
+export function getSearchExamOfStudentConfig(): Partial<FormProps> {
+  return {
+    labelWidth: 100,
+    schemas: [
+      {
+        field: 'skill',
+        component: 'Select',
+        componentProps: {
+          options: [
+            {
+              label: 'Reading',
+              value: '1',
+            },
+            {
+              label: 'Listening',
+              value: '2',
+            },
+            {
+              label: 'Speaking',
+              value: '3',
+            },
+            {
+              label: 'Writing',
+              value: '4',
+            },
+          ],
+        },
+        label: t('form.examOfStudentSearch.skill'),
+        colProps: {
+          xl: 6,
+          xxl: 4,
+        },
+      },
+      {
+        field: 'status',
+        label: t('form.examOfStudentSearch.completeStatus'),
+        component: 'Select',
+        componentProps: {
+          options: [
+            {
+              label: t('form.examOfStudentSearch.done'),
+              value: 'done',
+            },
+            {
+              label: t('form.examOfStudentSearch.incomplete'),
+              value: 'incomplete',
+            },
+          ],
+        },
+        colProps: {
+          xl: 6,
+          xxl: 4,
+        },
+      },
+      {
+        field: 'createdAt',
+        label: t('form.examOfStudentSearch.createdAt'),
+        component: 'DatePicker',
+        colProps: {
+          xl: 6,
+          xxl: 4,
+        },
+      },
+      {
+        field: 'deadline',
+        label: t('form.examOfStudentSearch.deadline'),
+        component: 'DatePicker',
+        colProps: {
+          xl: 6,
+          xxl: 4,
+        },
+      },
+    ],
+  };
+}
+
+export function getSearchExerciseOfStudentConfig(): Partial<FormProps> {
+  return {
+    labelWidth: 100,
+    schemas: [
+      {
+        field: 'skill',
+        component: 'Select',
+        componentProps: {
+          options: [
+            {
+              label: 'Reading',
+              value: '1',
+            },
+            {
+              label: 'Listening',
+              value: '2',
+            },
+            {
+              label: 'Speaking',
+              value: '3',
+            },
+            {
+              label: 'Writing',
+              value: '4',
+            },
+          ],
+        },
+        label: t('form.exerciseOfStudentSearch.skill'),
+        colProps: {
+          xl: 6,
+          xxl: 4,
+        },
+      },
+      {
+        field: 'status',
+        label: t('form.exerciseOfStudentSearch.completeStatus'),
+        component: 'Select',
+        componentProps: {
+          options: [
+            {
+              label: t('form.exerciseOfStudentSearch.done'),
+              value: 'done',
+            },
+            {
+              label: t('form.exerciseOfStudentSearch.incomplete'),
+              value: 'incomplete',
+            },
+          ],
+        },
+        colProps: {
+          xl: 6,
+          xxl: 4,
+        },
+      },
+      {
+        field: 'createdAt',
+        label: t('form.exerciseOfStudentSearch.createdAt'),
+        component: 'DatePicker',
+        colProps: {
+          xl: 6,
+          xxl: 4,
+        },
+      },
+      {
+        field: 'deadline',
+        label: t('form.exerciseOfStudentSearch.deadline'),
+        component: 'DatePicker',
+        colProps: {
+          xl: 6,
+          xxl: 4,
+        },
+      },
+    ],
+  };
+}
