@@ -1,12 +1,14 @@
 <template>
   <Row :gutter="[16, 16]">
     <Col :span="12">
-      <Card>
-        <div v-html="sample"></div>
+      <Card class="shadow2">
+        <div class="overflow-auto">
+          <div v-html="sample"></div>
+        </div>
       </Card>
     </Col>
     <Col :span="12">
-      <Card>
+      <Card class="shadow2">
         <Quiz
           v-for="question in questionsSample"
           :key="question.no"
