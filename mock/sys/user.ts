@@ -72,12 +72,14 @@ export default [
     url: '/basic-api/getUserInfo',
     method: 'get',
     response: (request: requestParams) => {
-      const token = getRequestToken(request);
-      if (!token) return resultError('Invalid token');
-      const checkUser = createFakeUserList().find((item) => item.token === token);
-      if (!checkUser) {
-        return resultError('The corresponding user information was not obtained!');
-      }
+      console.log('request', request);
+      // const token = getRequestToken(request);
+      // if (!token) return resultError('Invalid token');
+      const checkUser = createFakeUserList()[0];
+      // console.log('checkUser', checkUser);
+      // if (!checkUser) {
+      //   return resultError('The corresponding user information was not obtained!');
+      // }
       return resultSuccess(checkUser);
     },
   },

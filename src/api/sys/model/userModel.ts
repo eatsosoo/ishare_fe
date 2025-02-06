@@ -6,6 +6,14 @@ export interface LoginParams {
   password: string;
 }
 
+export interface RegisterParams {
+  username: string;
+  name: string;
+  email: string;
+  phone_number: string;
+  password: string;
+}
+
 export interface RoleInfo {
   roleName: string;
   value: string;
@@ -20,19 +28,30 @@ export interface LoginResultModel {
   // roles: RoleInfo[];
 }
 
+export interface RegisterResultModel {
+  token: string;
+  user: {
+    username: string;
+    name: string;
+    email: string;
+    phone_number: string;
+    id: string;
+  };
+}
+
 /**
  * @description: Get user information return value
  */
 export interface GetUserInfoModel {
-  // roles: RoleInfo[];
+  roles: RoleInfo[];
   // 用户id
   userId: string | number;
   // 用户名
-  // username: string;
+  username: string;
   // 真实名字
-  // realName: string;
+  realName: string;
   // 头像
-  // avatar: string;
+  avatar: string;
   // 介绍
-  // desc?: string;
+  desc?: string;
 }

@@ -53,10 +53,17 @@ export function useFormValid<T extends Object = any>(formRef: Ref<FormInstance>)
 export function useFormRules(formData?: Recordable) {
   const { t } = useI18n();
 
-  const getAccountFormRule = computed(() => createRule(t('sys.login.accountPlaceholder')));
-  const getPasswordFormRule = computed(() => createRule(t('sys.login.passwordPlaceholder')));
-  const getSmsFormRule = computed(() => createRule(t('sys.login.smsPlaceholder')));
-  const getMobileFormRule = computed(() => createRule(t('sys.login.mobilePlaceholder')));
+  const getUsernameFormRule = computed(() =>
+    createRule(t('sys.login.accountPlaceholder'), 'user_name'),
+  );
+  const getNameFormRule = computed(() => createRule(t('sys.login.namePlaceholder'), 'name'));
+  const getPasswordFormRule = computed(() =>
+    createRule(t('sys.login.passwordPlaceholder'), 'password'),
+  );
+  const getMobileFormRule = computed(() =>
+    createRule(t('sys.login.mobilePlaceholder'), 'phone_number'),
+  );
+  const getEmailFormRule = computed(() => createRule(t('sys.login.emailPlaceholder'), 'email'));
 
   const validatePolicy = async (_: RuleObject, value: boolean) => {
     return !value ? Promise.reject(t('sys.login.policyPlaceholder')) : Promise.resolve();
@@ -75,43 +82,31 @@ export function useFormRules(formData?: Recordable) {
   };
 
   const getFormRules = computed((): { [k: string]: ValidationRule | ValidationRule[] } => {
-    const accountFormRule = unref(getAccountFormRule);
+    const usernameFormRule = unref(getUsernameFormRule);
+    const nameFormRule = unref(getNameFormRule);
     const passwordFormRule = unref(getPasswordFormRule);
-    const smsFormRule = unref(getSmsFormRule);
     const mobileFormRule = unref(getMobileFormRule);
+    const emailFormRule = unref(getEmailFormRule);
 
-    const mobileRule = {
-      sms: smsFormRule,
-      mobile: mobileFormRule,
-    };
     switch (unref(currentState)) {
       // register form rules
       case LoginStateEnum.REGISTER:
         return {
-          account: accountFormRule,
+          username: usernameFormRule,
+          name: nameFormRule,
           password: passwordFormRule,
+          phone_number: mobileFormRule,
+          email: emailFormRule,
           confirmPassword: [
             { validator: validateConfirmPassword(formData?.password), trigger: 'change' },
           ],
           policy: [{ validator: validatePolicy, trigger: 'change' }],
-          ...mobileRule,
         };
-
-      // reset password form rules
-      case LoginStateEnum.RESET_PASSWORD:
-        return {
-          account: accountFormRule,
-          ...mobileRule,
-        };
-
-      // mobile form rules
-      case LoginStateEnum.MOBILE:
-        return mobileRule;
 
       // login form rules
       default:
         return {
-          account: accountFormRule,
+          username: usernameFormRule,
           password: passwordFormRule,
         };
     }
@@ -119,12 +114,20 @@ export function useFormRules(formData?: Recordable) {
   return { getFormRules };
 }
 
-function createRule(message: string): ValidationRule[] {
-  return [
-    {
-      required: true,
-      message,
-      trigger: 'change',
-    },
-  ];
+function createRule(message: string, type: string): ValidationRule[] {
+  const baseRule: ValidationRule = {
+    required: true,
+    message,
+    trigger: 'change',
+  };
+
+  const typeSpecificRules: Record<string, Partial<ValidationRule>> = {
+    phone_number: { len: 10 },
+    username: { len: 6 },
+    password: { len: 8 },
+    name: { len: 3 },
+    email: { type: 'email' },
+  };
+
+  return [{ ...baseRule, ...typeSpecificRules[type] }];
 }

@@ -3,8 +3,8 @@ import { ResultEnum } from '@/enums/httpEnum';
 
 export function resultSuccess<T = Recordable>(result: T, { message = 'ok' } = {}) {
   return {
-    code: ResultEnum.SUCCESS,
-    result,
+    statusCode: ResultEnum.SUCCESS,
+    data: result,
     message,
     type: 'success',
   };
@@ -31,9 +31,10 @@ export function resultError(
   message = 'Request failed',
   { code = ResultEnum.ERROR, result = null } = {},
 ) {
+  console.log(message);
   return {
-    code,
-    result,
+    statusCode: code,
+    data: result,
     message,
     type: 'error',
   };
