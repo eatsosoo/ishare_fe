@@ -239,7 +239,9 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
         // 基础接口地址
         // baseURL: globSetting.apiUrl,
 
-        headers: { 'Content-Type': ContentTypeEnum.JSON },
+        headers: {
+          'Content-Type': ContentTypeEnum.JSON,
+        },
         // 如果是form-data格式
         // headers: { 'Content-Type': ContentTypeEnum.FORM_URLENCODED },
         // 数据处理方式
@@ -279,7 +281,7 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
     ),
   );
 }
-export const defHttp = createAxios();
+export const defHttp = createAxios({ authenticationScheme: 'Bearer' });
 
 // other api url
 export const otherHttp = createAxios({
