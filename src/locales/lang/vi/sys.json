@@ -93,5 +93,11 @@
     "smsCode": "Mã SMS",
     "mobile": "Di động",
     "name": "Họ tên"
+  },
+  "validate": {
+    "min": "Giá trị phải nhiều hơn {min} kí tự",
+    "max": "Giá trị phải nhỏ hơn {max} kí tự",
+    "len": "Giá trị phải đủ {len} kí tự",
+    "email": "Vui lòng nhập địa chỉ email"
   }
 }

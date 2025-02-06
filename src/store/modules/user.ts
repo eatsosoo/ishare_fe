@@ -196,8 +196,8 @@ export const useUserStore = defineStore({
     async register(params: RegisterParams): Promise<RegisterResultModel | null> {
       try {
         const RegisterParams = params;
-        const data = await registerApi(RegisterParams);
-        return data;
+        const result = await registerApi(RegisterParams);
+        return result;
       } catch (error) {
         return Promise.reject(error);
       }

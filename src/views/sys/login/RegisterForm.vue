@@ -81,7 +81,7 @@
   const InputPassword = Input.Password;
   const { t } = useI18n();
   const { handleBackLogin, getLoginState } = useLoginState();
-  const { notification, createErrorModal } = useMessage();
+  const { createErrorModal, createSuccessModal } = useMessage();
   const { prefixCls } = useDesign('register');
   const userStore = useUserStore();
 
@@ -107,23 +107,31 @@
     if (!data) return;
     try {
       loading.value = true;
-      const userInfo = await userStore.register(formData);
+      const res = await userStore.register(formData);
+      const user = res?.user;
 
-      if (userInfo) {
-        notification.success({
-          message: t('sys.login.registerSuccessTitle'),
-          description: `${t('sys.login.registerSuccessDesc')}: ${data.username}`,
-          duration: 3,
+      if (user) {
+        createSuccessModal({
+          title: t('sys.login.registerSuccessTitle'),
+          content: `${t('sys.login.registerSuccessDesc')}: ${data.username}`,
+          getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
         });
+        resetForm();
       }
     } catch (error) {
+      const apiMessage = error.response.data.message;
       createErrorModal({
         title: t('sys.api.errorTip'),
-        content: (error as unknown as Error).message || t('sys.api.networkExceptionMsg'),
+        content:
+          apiMessage || (error as unknown as Error).message || t('sys.api.networkExceptionMsg'),
         getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
       });
     } finally {
       loading.value = false;
     }
+  }
+
+  function resetForm() {
+    formRef.value?.resetFields();
   }
 </script>

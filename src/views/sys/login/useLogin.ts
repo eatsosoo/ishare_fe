@@ -16,6 +16,7 @@ export enum LoginStateEnum {
 }
 
 const currentState = ref(LoginStateEnum.LOGIN);
+const { t } = useI18n();
 
 // 这里也可以优化
 // import { createGlobalState } from '@vueuse/core'
@@ -51,8 +52,6 @@ export function useFormValid<T extends Object = any>(formRef: Ref<FormInstance>)
 }
 
 export function useFormRules(formData?: Recordable) {
-  const { t } = useI18n();
-
   const getUsernameFormRule = computed(() =>
     createRule(t('sys.login.accountPlaceholder'), 'user_name'),
   );
@@ -122,11 +121,11 @@ function createRule(message: string, type: string): ValidationRule[] {
   };
 
   const typeSpecificRules: Record<string, Partial<ValidationRule>> = {
-    phone_number: { len: 10 },
-    username: { len: 6 },
-    password: { len: 8 },
-    name: { len: 3 },
-    email: { type: 'email' },
+    phone_number: { len: 10, message: t('sys.validate.len', { len: 10 }) },
+    user_name: { min: 6, message: t('sys.validate.min', { min: 6 }) },
+    password: { min: 8, message: t('sys.validate.min', { min: 8 }) },
+    name: { min: 3, message: t('sys.validate.min', { min: 3 }) },
+    email: { type: 'email', message: t('sys.validate.email') },
   };
 
   return [{ ...baseRule, ...typeSpecificRules[type] }];
