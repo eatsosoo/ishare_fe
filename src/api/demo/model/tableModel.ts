@@ -16,11 +16,12 @@ export interface DemoListItem {
 
 export interface ClassListItem {
   id: string;
-  className: string;
+  title: string;
   classCode: string;
   teacher: string;
-  studentNum: number;
-  openingDay: string;
+  students_count: number;
+  start_date: string;
+  end_date: string;
   status: number;
 }
 

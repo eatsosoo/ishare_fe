@@ -4,5 +4,6 @@
   "teacher": "Giáo viên",
   "numberStudent": "Số học sinh",
   "status": "Trạng thái",
-  "openingDay": "Ngày khai giảng"
+  "openingDay": "Ngày khai giảng",
+  "endDay": "Ngày kết thúc"
 }

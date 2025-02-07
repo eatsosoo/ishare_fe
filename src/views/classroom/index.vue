@@ -75,7 +75,7 @@
 
   const targetValue = ref<ClassListItem | null>(null);
   const titleModal = computed(() => {
-    return targetValue.value ? `${targetValue.value.className} - ${targetValue.value.teacher}` : '';
+    return targetValue.value ? `${targetValue.value.title} - ${targetValue.value.teacher}` : '';
   });
 
   const { createSuccessModal } = useMessage();

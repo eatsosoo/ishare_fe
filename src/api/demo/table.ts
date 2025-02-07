@@ -9,7 +9,7 @@ import {
 
 enum Api {
   DEMO_LIST = '/table/getDemoList',
-  CLASS_LIST = '/table/getClassList',
+  CLASS_LIST = '/classes',
   STUDENT_LIST = '/table/getStudentList',
   TEACHER_LIST = '/table/getTeacherList',
   EXERCISE_LIST = '/table/getExerciseList',
@@ -31,7 +31,7 @@ export const demoListApi = (params: DemoParams) =>
   });
 
 export const classListApi = () => (params: DemoParams) =>
-  otherHttp.get<ClassListGetResultModel>({
+  defHttp.get<ClassListGetResultModel>({
     url: Api.CLASS_LIST,
     params,
     headers: {

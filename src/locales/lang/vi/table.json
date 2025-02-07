@@ -5,6 +5,7 @@
   "numberStudent": "Số học sinh",
   "status": "Trạng thái",
   "openingDay": "Ngày khai giảng",
+  "endDay": "Ngày kết thúc",
   "enterData": "Nhập dữ liệu",
   "action": "Hành động",
   "studentOfClass": "Danh sách học sinh",

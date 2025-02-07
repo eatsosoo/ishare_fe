@@ -5,6 +5,7 @@
   "numberStudent": "Number of Students",
   "status": "Status",
   "openingDay": "Opening Day",
+  "endDay": "End Day",
   "enterData": "Enter Data",
   "action": "Action",
   "studentOfClass": "Student List",

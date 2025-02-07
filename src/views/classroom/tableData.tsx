@@ -13,7 +13,7 @@ export function getClassColumns(): BasicColumn[] {
     },
     {
       title: t('table.className'),
-      dataIndex: 'className',
+      dataIndex: 'title',
     },
     {
       title: t('table.classCode'),
@@ -25,7 +25,7 @@ export function getClassColumns(): BasicColumn[] {
     },
     {
       title: t('table.numberStudent'),
-      dataIndex: 'studentNum',
+      dataIndex: 'students_count',
     },
     {
       title: t('table.status'),
@@ -34,7 +34,12 @@ export function getClassColumns(): BasicColumn[] {
     {
       title: t('table.openingDay'),
       sorter: true,
-      dataIndex: 'openingDay',
+      dataIndex: 'start_date',
+    },
+    {
+      title: t('table.endDay'),
+      sorter: true,
+      dataIndex: 'end_date',
     },
   ];
 }

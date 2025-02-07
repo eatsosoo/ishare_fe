@@ -7,20 +7,23 @@
   "resetFields": "Đặt lại giá trị biểu mẫu",
   "newClassForm": {
     "title": "Biểu mẫu tạo nhóm lớp",
+    "formDesc": "",
     "information": "Thông tin lớp học",
     "name": "Tên lớp học",
     "namePlaceholder": "Nhập tên lớp học",
-    "description": "Điền thông tin nhóm lớp và số lượng học sinh",
+    "description": "Mô tả",
     "descriptionPlaceholder": "Nhập mô tả",
     "submit": "Tạo nhóm lớp",
     "teacher": "Giáo viên",
     "openingDay": "Ngày khai giảng",
+    "endDay": "Ngày kết thúc",
     "status": "Trạng thái",
     "enable": "Hoạt động",
     "pending": "Chờ",
     "finished": "Kết thúc",
     "student": "Học sinh",
-    "studentRegister": "Học sinh đăng ký"
+    "studentRegister": "Học sinh đăng ký",
+    "courseDuration": "Thời gian khóa học"
   },
   "addStudentToClass": "Thêm học sinh vào lớp",
   "gradingSearch": {
