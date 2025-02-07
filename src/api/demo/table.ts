@@ -1,4 +1,4 @@
-import { defHttp } from '@/utils/http/axios';
+import { defHttp, otherHttp } from '@/utils/http/axios';
 import {
   DemoParams,
   DemoListGetResultModel,
@@ -21,7 +21,7 @@ enum Api {
  */
 
 export const demoListApi = (params: DemoParams) =>
-  defHttp.get<DemoListGetResultModel>({
+  otherHttp.get<DemoListGetResultModel>({
     url: Api.DEMO_LIST,
     params,
     headers: {
@@ -31,7 +31,7 @@ export const demoListApi = (params: DemoParams) =>
   });
 
 export const classListApi = () => (params: DemoParams) =>
-  defHttp.get<ClassListGetResultModel>({
+  otherHttp.get<ClassListGetResultModel>({
     url: Api.CLASS_LIST,
     params,
     headers: {
@@ -41,7 +41,7 @@ export const classListApi = () => (params: DemoParams) =>
   });
 
 export const studentListApi = () => (params: DemoParams) =>
-  defHttp.get<ClassListGetResultModel>({
+  otherHttp.get<ClassListGetResultModel>({
     url: Api.STUDENT_LIST,
     params,
     headers: {
@@ -51,7 +51,7 @@ export const studentListApi = () => (params: DemoParams) =>
   });
 
 export const teacherListApi = () => (params: DemoParams) =>
-  defHttp.get<ClassListGetResultModel>({
+  otherHttp.get<ClassListGetResultModel>({
     url: Api.TEACHER_LIST,
     params,
     headers: {
@@ -61,7 +61,7 @@ export const teacherListApi = () => (params: DemoParams) =>
   });
 
 export const exerciseListApi = () => (params: DemoParams) =>
-  defHttp.get<ExerciseListGetResultModel>({
+  otherHttp.get<ExerciseListGetResultModel>({
     url: Api.EXERCISE_LIST,
     params,
     headers: {
@@ -71,7 +71,7 @@ export const exerciseListApi = () => (params: DemoParams) =>
   });
 
 export const examListApi = () => (params: DemoParams) =>
-  defHttp.get<ExamListGetResultModel>({
+  otherHttp.get<ExamListGetResultModel>({
     url: Api.EXAM_LIST,
     params,
     headers: {

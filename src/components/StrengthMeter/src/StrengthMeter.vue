@@ -3,7 +3,6 @@
     <Input.Password
       v-if="showInput"
       v-bind="$attrs"
-      allowClear
       :value="innerValueRef"
       @change="handleChange"
       :disabled="disabled"

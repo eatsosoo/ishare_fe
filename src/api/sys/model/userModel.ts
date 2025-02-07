@@ -6,6 +6,14 @@ export interface LoginParams {
   password: string;
 }
 
+export interface RegisterParams {
+  username: string;
+  name: string;
+  email: string;
+  phone_number: string;
+  password: string;
+}
+
 export interface RoleInfo {
   roleName: string;
   value: string;
@@ -17,7 +25,18 @@ export interface RoleInfo {
 export interface LoginResultModel {
   userId: string | number;
   token: string;
-  roles: RoleInfo[];
+  // roles: RoleInfo[];
+}
+
+export interface RegisterResultModel {
+  token: string;
+  user: {
+    username: string;
+    name: string;
+    email: string;
+    phone_number: string;
+    id: string;
+  };
 }
 
 /**

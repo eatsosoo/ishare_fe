@@ -76,17 +76,28 @@
     "otherSignIn": "Đăng nhập bằng",
     "loginSuccessTitle": "Đăng nhập thành công",
     "loginSuccessDesc": "Chào mừng trở lại",
+    "registerSuccessTitle": "Đăng ký thành công",
+    "registerSuccessDesc": "Chúc mừng tài khoản",
     "accountPlaceholder": "Vui lòng nhập tên đăng nhập",
+    "namePlaceholder": "Vui lòng nhập họ tên",
     "passwordPlaceholder": "Vui lòng nhập mật khẩu",
     "smsPlaceholder": "Vui lòng nhập mã SMS",
     "mobilePlaceholder": "Vui lòng nhập số di động",
     "policyPlaceholder": "Đăng ký sau khi đã đồng ý",
+    "emailPlaceholder": "Vui lòng nhập email",
     "diffPwd": "Hai mật khẩu không khớp",
     "userName": "Tên đăng nhập",
     "password": "Mật khẩu",
     "confirmPassword": "Xác nhận mật khẩu",
     "email": "Email",
     "smsCode": "Mã SMS",
-    "mobile": "Di động"
+    "mobile": "Di động",
+    "name": "Họ tên"
+  },
+  "validate": {
+    "min": "Giá trị phải nhiều hơn {min} kí tự",
+    "max": "Giá trị phải nhỏ hơn {max} kí tự",
+    "len": "Giá trị phải đủ {len} kí tự",
+    "email": "Vui lòng nhập địa chỉ email"
   }
 }
