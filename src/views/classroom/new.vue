@@ -28,7 +28,7 @@
   import { useDesign } from '@/hooks/web/useDesign';
   import { StudentListItem } from '@/api/demo/model/tableModel';
   import { classCreateApi } from '@/api/class/class';
-  import { CreateClassParams } from '@/api/class/model/classModel';
+  import { CreateClassParams } from '@/api/class/classModel';
 
   defineOptions({ name: 'FormHightPage' });
 

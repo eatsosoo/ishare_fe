@@ -1,5 +1,5 @@
 import { defHttp } from '@/utils/http/axios';
-import { ClassListGetResultModel, CreateClassParams } from './model/classModel';
+import { ClassListGetResultModel, CreateClassParams } from './classModel';
 import { BasicPageParams, BasicPostResult } from '../model/baseModel';
 import { ErrorMessageMode } from '#/axios';
 
