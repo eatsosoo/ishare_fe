@@ -1,0 +1,63 @@
+{
+  "field": "Field",
+  "validateForm": "Validate Form",
+  "resetValidate": "Reset Validation",
+  "getFormValues": "Get Form Values",
+  "setFormValues": "Set Form Values",
+  "resetFields": "Reset Form Fields",
+  "newClassForm": {
+    "title": "Create Class Group Form",
+    "formDesc": "",
+    "information": "Class Information",
+    "name": "Class Name",
+    "namePlaceholder": "Enter class name",
+    "description": "Description",
+    "descriptionPlaceholder": "Enter description",
+    "submit": "Create Class Group",
+    "teacher": "Teacher",
+    "openingDay": "Opening Day",
+    "endDay": "End Day",
+    "status": "Status",
+    "enable": "Active",
+    "pending": "Pending",
+    "finished": "Finished",
+    "student": "Student",
+    "studentRegister": "Registered Students",
+    "courseDuration": "Course Duration",
+    "hour": "Hour"
+  },
+  "addStudentToClass": "Add Student to Class",
+  "gradingSearch": {
+    "searchText": "Search by Class and Skill",
+    "className": "Class Name",
+    "skill": "Skill"
+  },
+  "exerciseSearch": {
+    "className": "Class Name",
+    "skill": "Skill",
+    "studentName": "Student Name",
+    "phone": "Phone Number",
+    "completeStatus": "Status",
+    "done": "Completed",
+    "incomplete": "Incomplete",
+    "createdAt": "Assigned Date",
+    "deadline": "Deadline",
+    "typeGrading": "Type of Assignment"
+  },
+  "examOfStudentSearch": {
+    "skill": "Skill",
+    "completeStatus": "Status",
+    "done": "Completed",
+    "incomplete": "Incomplete",
+    "createdAt": "Assigned Date",
+    "deadline": "Deadline"
+  },
+  "exerciseOfStudentSearch": {
+    "skill": "Skill",
+    "completeStatus": "Status",
+    "done": "Completed",
+    "incomplete": "Incomplete",
+    "createdAt": "Assigned Date",
+    "deadline": "Deadline"
+  }
+}

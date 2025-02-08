@@ -1,10 +1,17 @@
 {
   "classroomList": "Classroom List",
-  "createClassroom": "Create Classroom Group",
+  "createClassroom": "Create Classroom",
   "classManagement": "Class Management",
   "exerciseManagement": "Exercise Management",
+  "exerciseList": "Exercise List",
+  "testManagement": "Test Management",
+  "testGradingManagement": "Test Grading Management",
   "reading": "Reading",
   "listening": "Listening",
   "writing": "Writing",
-  "speaking": "Speaking"
+  "speaking": "Speaking",
+  "studentManagement": "Student Management",
+  "homework": "Homework",
+  "takeTheTest": "Take the Test",
+  "learningOutcomes": "Learning Outcomes"
 }

@@ -1,4 +1,5 @@
 {
-  "login": "Login",
-  "errorLogList": "Error Log"
+  "login": "Đăng nhập",
+  "errorLogList": "Danh sách lỗi",
+  "classList": "Danh sách lớp"
 }

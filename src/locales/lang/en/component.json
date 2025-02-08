@@ -6,19 +6,19 @@
   },
   "countdown": {
     "normalText": "Get SMS code",
-    "sendText": "Reacquire in {0}s"
+    "sendText": "Retry in {0}s"
   },
   "cropper": {
-    "selectImage": "Select Image",
-    "uploadSuccess": "Uploaded success!",
-    "imageTooBig": "Image too big",
-    "modalTitle": "Avatar upload",
+    "selectImage": "Select image",
+    "uploadSuccess": "Upload successful!",
+    "imageTooBig": "Image too large",
+    "modalTitle": "Upload avatar",
     "okText": "Confirm and upload",
     "btn_reset": "Reset",
-    "btn_rotate_left": "Counterclockwise rotation",
-    "btn_rotate_right": "Clockwise rotation",
-    "btn_scale_x": "Flip horizontal",
-    "btn_scale_y": "Flip vertical",
+    "btn_rotate_left": "Rotate counterclockwise",
+    "btn_rotate_right": "Rotate clockwise",
+    "btn_scale_x": "Flip horizontally",
+    "btn_scale_y": "Flip vertically",
     "btn_zoom_in": "Zoom in",
     "btn_zoom_out": "Zoom out",
     "preview": "Preview"
@@ -34,18 +34,18 @@
     "fileName": "File name"
   },
   "form": {
-    "putAway": "Put away",
-    "unfold": "Unfold",
-    "maxTip": "The number of characters should be less than {0}",
-    "apiSelectNotFound": "Wait for data loading to complete..."
+    "putAway": "Collapse",
+    "unfold": "Expand",
+    "maxTip": "Number of characters must be less than {0}",
+    "apiSelectNotFound": "Waiting for data to load..."
   },
   "icon": {
-    "placeholder": "Click the select icon",
+    "placeholder": "Click to select icon",
     "search": "Search icon",
-    "copy": "Copy icon successfully!"
+    "copy": "Icon copied successfully!"
   },
   "menu": {
-    "search": "Menu search"
+    "search": "Search menu"
   },
   "modal": {
     "cancelText": "Close",
@@ -57,24 +57,24 @@
   "table": {
     "settingDens": "Density",
     "settingDensDefault": "Default",
-    "settingDensMiddle": "Middle",
+    "settingDensMiddle": "Medium",
     "settingDensSmall": "Compact",
     "settingColumn": "Column settings",
-    "settingColumnShow": "Column display",
-    "settingIndexColumnShow": "Index Column",
-    "settingSelectColumnShow": "Selection Column",
-    "settingFixedLeft": "Fixed Left",
-    "settingFixedRight": "Fixed Right",
-    "settingFullScreen": "Full Screen",
+    "settingColumnShow": "Show column",
+    "settingIndexColumnShow": "Index column",
+    "settingSelectColumnShow": "Select column",
+    "settingFixedLeft": "Fixed left",
+    "settingFixedRight": "Fixed right",
+    "settingFullScreen": "Full screen",
     "index": "Index",
-    "total": "total of {total}",
+    "total": "Total {total}",
     "selectionBarTips": "{count} records selected.",
-    "selectionBarClear": "Clear",
+    "selectionBarClear": "Clear selection",
     "selectionBarEmpty": "No records selected."
   },
   "time": {
     "before": " ago",
-    "after": " after",
+    "after": " later",
     "just": "just now",
     "seconds": " seconds",
     "minutes": " minutes",
@@ -82,28 +82,28 @@
     "days": " days"
   },
   "tree": {
-    "selectAll": "Select All",
-    "unSelectAll": "Cancel Select",
-    "expandAll": "Expand All",
+    "selectAll": "Select all",
+    "unSelectAll": "Deselect all",
+    "expandAll": "Expand all",
     "unExpandAll": "Collapse all",
-    "checkStrictly": "Hierarchical association",
-    "checkUnStrictly": "Hierarchical independence"
+    "checkStrictly": "Hierarchical linkage",
+    "checkUnStrictly": "Independent hierarchy"
   },
   "upload": {
     "save": "Save",
     "upload": "Upload",
-    "imgUpload": "ImageUpload",
+    "imgUpload": "Upload image",
     "uploaded": "Uploaded",
-    "operating": "Operating",
+    "operating": "Processing",
     "del": "Delete",
-    "download": "download",
-    "saveWarn": "Please wait for the file to upload and save!",
-    "saveError": "There is no file successfully uploaded and cannot be saved!",
+    "download": "Download",
+    "saveWarn": "Please wait for the file upload to complete before saving!",
+    "saveError": "No files uploaded successfully, cannot save!",
     "preview": "Preview",
-    "choose": "Select the file",
-    "accept": "Support {0} format",
+    "choose": "Choose file",
+    "accept": "Supports format {0}",
     "acceptUpload": "Only upload files in {0} format",
-    "maxSize": "A single file does not exceed {0}MB ",
+    "maxSize": "A file cannot exceed {0}MB",
     "maxSizeMultiple": "Only upload files up to {0}MB!",
     "maxNumber": "Only upload up to {0} files",
     "legend": "Legend",
@@ -112,17 +112,17 @@
     "fileStatue": "File status",
     "pending": "Pending",
     "startUpload": "Start upload",
-    "uploadSuccess": "Upload successfully",
+    "uploadSuccess": "Upload successful",
     "uploadError": "Upload failed",
     "uploading": "Uploading",
-    "uploadWait": "Please wait for the file upload to finish",
+    "uploadWait": "Please wait for the file upload to complete",
     "reUploadFailed": "Re-upload failed files"
   },
   "verify": {
-    "error": "verification failed！",
-    "time": "The verification is successful and it takes {time} seconds！",
-    "redoTip": "Click the picture to refresh",
-    "dragText": "Hold down the slider and drag",
-    "successText": "Verified"
+    "error": "Verification failed!",
+    "time": "Verification successful in {time} seconds!",
+    "redoTip": "Click the image to refresh",
+    "dragText": "Hold the slider and drag",
+    "successText": "Verification successful"
   }
 }
