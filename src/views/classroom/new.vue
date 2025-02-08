@@ -55,6 +55,10 @@
       const [values] = await Promise.all([validate()]);
       const submitForm: CreateClassParams = {
         ...values,
+        title: values.title,
+        description: values.description,
+        start_date: values.start_date,
+        end_date: values.end_date,
         hour: values.hour.split(' ')[1],
         students: studentsRegistered.value.map((student) => ({ id: student.id })),
       };
@@ -64,7 +68,7 @@
       if (newClass) {
         createSuccessModal({
           title: t('form.newClassForm.title'),
-          content: t('form.newClassForm.createSuccessfully'),
+          content: t('common.createSuccessfully'),
           getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
         });
         resetFields();

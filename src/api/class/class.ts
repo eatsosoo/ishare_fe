@@ -1,6 +1,6 @@
 import { defHttp } from '@/utils/http/axios';
-import { CreateClassParams } from './model/classModel';
-import { BasicPostResult } from '../model/baseModel';
+import { ClassListGetResultModel, CreateClassParams } from './model/classModel';
+import { BasicPageParams, BasicPostResult } from '../model/baseModel';
 import { ErrorMessageMode } from '#/axios';
 
 enum Api {
@@ -17,3 +17,13 @@ export const classCreateApi = (params: CreateClassParams, mode: ErrorMessageMode
       errorMessageMode: mode,
     },
   );
+
+export const classListApi = () => (params: BasicPageParams) =>
+  defHttp.get<ClassListGetResultModel>({
+    url: Api.CLASS_LIST,
+    params,
+    headers: {
+      // @ts-ignore
+      ignoreCancelToken: true,
+    },
+  });

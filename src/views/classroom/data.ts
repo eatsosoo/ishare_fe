@@ -1,4 +1,4 @@
-import { classListApi } from '@/api/demo/table';
+import { classListApi } from '@/api/class/class';
 import { FormSchema } from '@/components/Form';
 import { useI18n } from '@/hooks/web/useI18n';
 

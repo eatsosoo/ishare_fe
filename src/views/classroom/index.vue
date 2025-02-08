@@ -52,7 +52,6 @@
 <script lang="ts" setup>
   import { BasicTable, useTable } from '@/components/Table';
   import { getClassColumns, getFormConfig } from '@/views/classroom/tableData';
-  import { classListApi } from '@/api/demo/table';
   import { useI18n } from '@/hooks/web/useI18n';
   import DetailClassModal from './DetailClassModal.vue';
   import { useModal } from '@/components/Modal';
@@ -61,6 +60,7 @@
   import AddStudentModal from '@/views/classroom/AddStudentModal.vue';
   import { Tooltip } from 'ant-design-vue';
   import { useMessage } from '@/hooks/web/useMessage';
+  import { classListApi } from '@/api/class/class';
 
   const { t } = useI18n();
   const [registerViewModal, { openModal: openViewModal }] = useModal();

@@ -1,4 +1,4 @@
-import { classListApi } from '@/api/demo/table';
+import { classListApi } from '@/api/class/class';
 import { FormProps, FormSchema, BasicColumn } from '@/components/Table';
 import { useI18n } from '@/hooks/web/useI18n';
 
@@ -26,6 +26,10 @@ export function getClassColumns(): BasicColumn[] {
     {
       title: t('table.status'),
       dataIndex: 'status',
+    },
+    {
+      title: t('table.hour'),
+      dataIndex: 'hour',
     },
     {
       title: t('table.openingDay'),
