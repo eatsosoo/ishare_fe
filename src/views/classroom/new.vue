@@ -26,9 +26,9 @@
   import { useI18n } from '@/hooks/web/useI18n';
   import { useMessage } from '@/hooks/web/useMessage';
   import { useDesign } from '@/hooks/web/useDesign';
-  import { StudentListItem } from '@/api/demo/model/tableModel';
-  import { classCreateApi } from '@/api/class/class';
+  import { createClassApi } from '@/api/class/class';
   import { CreateClassParams } from '@/api/class/classModel';
+  import { StudentListItem } from '@/api/student/student';
 
   defineOptions({ name: 'FormHightPage' });
 
@@ -64,7 +64,7 @@
       };
       console.log('form data:', submitForm);
 
-      const newClass = await classCreateApi(submitForm);
+      const newClass = await createClassApi(submitForm);
       if (newClass) {
         createSuccessModal({
           title: t('form.newClassForm.title'),

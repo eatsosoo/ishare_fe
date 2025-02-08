@@ -20,6 +20,16 @@ export interface ClassListItem {
   status: number;
 }
 
+export interface ClassAddStudentsParams {
+  class_id: number;
+  students: { id: string }[];
+}
+
+export interface ClassDeleteStudentsParams {
+  class_id: number;
+  students: { id: string }[];
+}
+
 /**
  * @description: Request list return value
  */

@@ -55,12 +55,12 @@
   import { useI18n } from '@/hooks/web/useI18n';
   import DetailClassModal from './DetailClassModal.vue';
   import { useModal } from '@/components/Modal';
-  import { ClassListItem } from '@/api/demo/model/tableModel';
   import { computed, ref } from 'vue';
   import AddStudentModal from '@/views/classroom/AddStudentModal.vue';
   import { Tooltip } from 'ant-design-vue';
   import { useMessage } from '@/hooks/web/useMessage';
   import { classListApi } from '@/api/class/class';
+  import { ClassListItem } from '@/api/class/classModel';
 
   const { t } = useI18n();
   const [registerViewModal, { openModal: openViewModal }] = useModal();

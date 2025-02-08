@@ -8,7 +8,7 @@ export interface BasicFetchResult<T> {
   total: number;
 }
 
-export interface BasicPostResult<T> {
+export interface BasicApiResult<T> {
   result: T;
   statusCode: number;
   message: string;

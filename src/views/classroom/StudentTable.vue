@@ -19,7 +19,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { StudentListItem } from '@/api/demo/model/tableModel';
+  import { StudentListItem } from '@/api/student/student';
   import { useModal } from '@/components/Modal';
   import {
     BasicTable,
