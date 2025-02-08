@@ -31,10 +31,12 @@
     getExerciseColumns,
     getStudentColumns,
   } from '@/views/classroom/tableData';
-  import { examListApi, exerciseListApi, studentListApi } from '@/api/demo/table';
   import { useI18n } from '@/hooks/web/useI18n';
   import { omit } from 'lodash-es';
   import { Tabs, Tag } from 'ant-design-vue';
+  import { studentListApi } from '@/api/student/studentModel';
+  import { exerciseListApi } from '@/api/exercise/exercise';
+  import { examListApi } from '@/api/exam/examModel';
 
   const TabPane = Tabs.TabPane;
   const { t } = useI18n();

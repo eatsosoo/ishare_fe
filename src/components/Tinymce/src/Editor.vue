@@ -111,7 +111,7 @@
       default: true,
     },
   });
-  console.log(props.height);
+
   const emit = defineEmits(['change', 'update:modelValue', 'inited', 'init-error']);
 
   const attrs = useAttrs();
@@ -138,7 +138,7 @@
 
   const langName = computed(() => {
     const lang = useLocale().getLocale.value;
-    return ['en'].includes(lang) ? lang : 'en';
+    return ['vi', 'en'].includes(lang) ? lang : 'en';
   });
 
   const initOptions = computed((): RawEditorSettings => {
