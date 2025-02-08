@@ -28,13 +28,9 @@ export interface ClassListItem {
 export interface StudentListItem {
   id: string;
   name: string;
-  phone: string;
+  phone_number: string;
   email: string;
-  birthday: string;
-  reading: number;
-  listening: number;
-  speaking: number;
-  total: number;
+  date_of_birth: string;
 }
 
 export interface TeacherListItem {

@@ -23,7 +23,8 @@
     "finished": "Kết thúc",
     "student": "Học sinh",
     "studentRegister": "Học sinh đăng ký",
-    "courseDuration": "Thời gian khóa học"
+    "courseDuration": "Thời gian khóa học",
+    "hour": "Giờ học"
   },
   "addStudentToClass": "Thêm học sinh vào lớp",
   "gradingSearch": {

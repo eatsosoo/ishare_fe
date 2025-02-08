@@ -82,6 +82,15 @@ export const schemas: FormSchema[] = [
       offset: 2,
     },
   },
+  {
+    field: 'hour',
+    label: t('form.newClassForm.hour'),
+    component: 'TimePicker',
+    required: true,
+    colProps: {
+      offset: 2,
+    },
+  },
 ];
 
 export const searchGradingSchemas: FormSchema[] = [

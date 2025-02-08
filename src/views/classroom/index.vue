@@ -6,6 +6,15 @@
         <a-button type="primary" @click="getFormValues">{{ t('table.enterData') }}</a-button>
       </template>
       <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'start_date'">
+          {{ record.start_date.split(' ')[0] }}
+        </template>
+        <template v-if="column.key === 'end_date'">
+          {{ record.end_date.split(' ')[0] }}
+        </template>
+        <template v-if="column.key === 'status'">
+          {{ setClassStatus(record.start_date, record.end_date) }}
+        </template>
         <template v-if="column.key === 'action'">
           <Tooltip>
             <template #title>
@@ -99,5 +108,19 @@
       title: t('layout.setting.operatingTitle'),
       content: t('table.addStudentToClassSuccess'),
     });
+  }
+
+  function setClassStatus(startDate: string, endDate: string) {
+    const currentDate = new Date();
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    if (currentDate < start) {
+      return t('form.newClassForm.pending');
+    } else if (currentDate >= start && currentDate <= end) {
+      return t('form.newClassForm.enable');
+    } else {
+      return t('form.newClassForm.finished');
+    }
   }
 </script>

@@ -5,12 +5,14 @@ import {
   ClassListGetResultModel,
   ExerciseListGetResultModel,
   ExamListGetResultModel,
+  StudentListGetResultModel,
+  TeacherListGetResultModel,
 } from './model/tableModel';
 
 enum Api {
   DEMO_LIST = '/table/getDemoList',
   CLASS_LIST = '/classes',
-  STUDENT_LIST = '/table/getStudentList',
+  STUDENT_LIST = '/users',
   TEACHER_LIST = '/table/getTeacherList',
   EXERCISE_LIST = '/table/getExerciseList',
   EXAM_LIST = '/table/getExamList',
@@ -41,7 +43,7 @@ export const classListApi = () => (params: DemoParams) =>
   });
 
 export const studentListApi = () => (params: DemoParams) =>
-  otherHttp.get<ClassListGetResultModel>({
+  defHttp.get<StudentListGetResultModel>({
     url: Api.STUDENT_LIST,
     params,
     headers: {
@@ -51,7 +53,7 @@ export const studentListApi = () => (params: DemoParams) =>
   });
 
 export const teacherListApi = () => (params: DemoParams) =>
-  otherHttp.get<ClassListGetResultModel>({
+  otherHttp.get<TeacherListGetResultModel>({
     url: Api.TEACHER_LIST,
     params,
     headers: {

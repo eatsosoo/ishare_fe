@@ -57,5 +57,9 @@
   "exercise": {
     "done": "Đã hoàn thành",
     "incomplete": "Chưa hoàn thành"
-  }
+  },
+  "createSuccessfully": "Tạo thành công",
+  "editSuccessfully": "Cập nhật thành công",
+  "deleteSuccessfully": "Xoá thành công",
+  "saveSuccessfully": "Lưu thành công"
 }

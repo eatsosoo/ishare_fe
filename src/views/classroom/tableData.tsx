@@ -16,10 +16,6 @@ export function getClassColumns(): BasicColumn[] {
       dataIndex: 'title',
     },
     {
-      title: t('table.classCode'),
-      dataIndex: 'classCode',
-    },
-    {
       title: t('table.teacher'),
       dataIndex: 'teacher',
     },
@@ -90,18 +86,20 @@ export function getStudentColumns(): BasicColumn[] {
     {
       title: t('table.studentName'),
       dataIndex: 'name',
+      align: 'left',
     },
     {
       title: t('table.phone'),
-      dataIndex: 'phone',
+      dataIndex: 'phone_number',
     },
     {
       title: t('table.email'),
       dataIndex: 'email',
+      align: 'left',
     },
     {
       title: t('table.birthday'),
-      dataIndex: 'birthday',
+      dataIndex: 'date_of_birth',
     },
   ];
 }

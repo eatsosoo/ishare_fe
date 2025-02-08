@@ -7,3 +7,9 @@ export interface BasicFetchResult<T> {
   items: T[];
   total: number;
 }
+
+export interface BasicPostResult<T> {
+  result: T;
+  statusCode: number;
+  message: string;
+}

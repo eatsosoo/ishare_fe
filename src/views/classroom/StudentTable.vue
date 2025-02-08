@@ -38,17 +38,17 @@
     {
       title: t('table.studentName'),
       dataIndex: 'name',
-      editRow: true,
+      align: 'left',
     },
     {
       title: t('table.phone'),
       dataIndex: 'phone',
-      editRow: true,
+      align: 'left',
     },
     {
       title: t('table.email'),
       dataIndex: 'email',
-      editRow: true,
+      align: 'left',
     },
   ];
   const emit = defineEmits(['selectStudents']);
@@ -62,7 +62,6 @@
       width: 160,
       title: t('table.action'),
       dataIndex: 'action',
-      // slots: { customRender: 'action' },
     },
     scroll: { y: '100%' },
     pagination: false,

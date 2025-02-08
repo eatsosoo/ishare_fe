@@ -55,7 +55,6 @@ const transform: AxiosTransform = {
     const { statusCode, result, message } = data;
 
     // 这里逻辑可以根据项目进行修改
-    console.log(data);
     const hasSuccess = data && Reflect.has(data, 'statusCode') && statusCode === ResultEnum.SUCCESS;
     if (hasSuccess) {
       console.log();
@@ -70,7 +69,7 @@ const transform: AxiosTransform = {
       } else if (options.successMessageMode === 'message') {
         createMessage.success(successMsg);
       }
-      return data.data;
+      return result;
     }
 
     // 在此处根据自己项目的实际情况对不同的code执行不同的操作

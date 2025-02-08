@@ -24,15 +24,22 @@
   import { schemas } from './data';
   import { Card } from 'ant-design-vue';
   import { useI18n } from '@/hooks/web/useI18n';
+  import { useMessage } from '@/hooks/web/useMessage';
+  import { useDesign } from '@/hooks/web/useDesign';
   import { StudentListItem } from '@/api/demo/model/tableModel';
+  import { classCreateApi } from '@/api/class/class';
+  import { CreateClassParams } from '@/api/class/model/classModel';
 
   defineOptions({ name: 'FormHightPage' });
 
   const { t } = useI18n();
   const tableRef = ref<{ getDataSource: () => any } | null>(null);
   const studentsRegistered = ref<StudentListItem[]>([]);
+  const { prefixCls } = useDesign('register');
+  const { createErrorModal, createSuccessModal } = useMessage();
+  const loading = ref(false);
 
-  const [register, { validate }] = useForm({
+  const [register, { validate, resetFields }] = useForm({
     layout: 'vertical',
     baseColProps: {
       span: 6,
@@ -45,14 +52,33 @@
 
   async function submitAll() {
     try {
-      if (tableRef.value) {
-        console.log('table data:', tableRef.value.getDataSource());
-      }
-
       const [values] = await Promise.all([validate()]);
-      console.log('form data:', { ...values, students: studentsRegistered.value });
+      const submitForm: CreateClassParams = {
+        ...values,
+        hour: values.hour.split(' ')[1],
+        students: studentsRegistered.value.map((student) => ({ id: student.id })),
+      };
+      console.log('form data:', submitForm);
+
+      const newClass = await classCreateApi(submitForm);
+      if (newClass) {
+        createSuccessModal({
+          title: t('form.newClassForm.title'),
+          content: t('form.newClassForm.createSuccessfully'),
+          getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
+        });
+        resetFields();
+      }
     } catch (error) {
-      console.log(error);
+      const apiMessage = error.response.data.message;
+      createErrorModal({
+        title: t('sys.api.errorTip'),
+        content:
+          apiMessage || (error as unknown as Error).message || t('sys.api.networkExceptionMsg'),
+        getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
+      });
+    } finally {
+      loading.value = false;
     }
   }
 
