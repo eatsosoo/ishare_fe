@@ -15,7 +15,7 @@
   import { BasicTable, ColumnChangeParam, useTable } from '@/components/Table';
   import { getSearchStudentConfig, getStudentColumns } from '@/views/classroom/tableData';
   import { useI18n } from '@/hooks/web/useI18n';
-  import { studentListApi } from '@/api/student/studentModel';
+  import { studentListApi } from '@/api/student/student';
 
   const { t } = useI18n();
   const [registerTable, { getSelectRows, clearSelectedRowKeys }] = useTable({

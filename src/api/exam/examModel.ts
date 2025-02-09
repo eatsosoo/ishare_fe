@@ -1,16 +1,16 @@
-import { otherHttp } from '@/utils/http/axios';
-import { ExamListGetResultModel } from './exam';
-import { BasicPageParams } from '../model/baseModel';
+import { BasicFetchResult } from '../model/baseModel';
 
-enum Api {
-  EXAM_LIST = '/table/exam',
+export interface ExamListItem {
+  id: string;
+  name: string;
+  type: string;
+  student: string;
+  status: number;
+  score: number;
+  created_at: string;
 }
-export const examListApi = () => (params: BasicPageParams) =>
-  otherHttp.get<ExamListGetResultModel>({
-    url: Api.EXAM_LIST,
-    params,
-    headers: {
-      // @ts-ignore
-      ignoreCancelToken: true,
-    },
-  });
+
+/**
+ * @description: Request list return value
+ */
+export type ExamListGetResultModel = BasicFetchResult<ExamListItem>;

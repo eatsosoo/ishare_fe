@@ -34,9 +34,9 @@
   import { useI18n } from '@/hooks/web/useI18n';
   import { omit } from 'lodash-es';
   import { Tabs, Tag } from 'ant-design-vue';
-  import { studentListApi } from '@/api/student/studentModel';
+  import { studentListApi } from '@/api/student/student';
   import { exerciseListApi } from '@/api/exercise/exercise';
-  import { examListApi } from '@/api/exam/examModel';
+  import { examListApi } from '@/api/exam/exam';
 
   const TabPane = Tabs.TabPane;
   const { t } = useI18n();
