@@ -15,6 +15,14 @@ const test: AppRouteModule = {
   },
   children: [
     {
+      path: '/test/index',
+      name: 'ExamList',
+      component: () => import('@/views/test/index.vue'),
+      meta: {
+        title: t('routes.page.examList'),
+      },
+    },
+    {
       path: '/test/reading',
       name: 'ReadingTest',
       component: () => import('@/views/test/reading.vue'),

@@ -1,12 +1,13 @@
-import { otherHttp } from '@/utils/http/axios';
-import { ExamListGetResultModel } from './examModel';
-import { BasicPageParams } from '../model/baseModel';
+import { defHttp } from '@/utils/http/axios';
+import { ExamBasicItem, ExamListGetResultModel } from './examModel';
+import { BasicApiResult, BasicPageParams } from '../model/baseModel';
 
 enum Api {
-  EXAM_LIST = '/table/getExamList',
+  EXAM_LIST = '/exams',
 }
+
 export const examListApi = () => (params: BasicPageParams) =>
-  otherHttp.get<ExamListGetResultModel>({
+  defHttp.get<ExamListGetResultModel>({
     url: Api.EXAM_LIST,
     params,
     headers: {
@@ -14,3 +15,14 @@ export const examListApi = () => (params: BasicPageParams) =>
       ignoreCancelToken: true,
     },
   });
+
+export const examDeleteApi = (examId: number) => () => {
+  defHttp.delete<BasicApiResult<ExamBasicItem>>(
+    {
+      url: `${Api.EXAM_LIST}/${examId}`,
+    },
+    {
+      errorMessageMode: 'modal',
+    },
+  );
+};

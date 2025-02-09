@@ -49,9 +49,11 @@
     "score": "Điểm",
     "status": "Trạng thái",
     "action": "Hành động",
-    "createdAt": "Ngày thi",
+    "createdAt": "Ngày tạo",
     "student": "Tên học sinh",
-    "type": "Loại bài thi"
+    "type": "Loại bài thi",
+    "teacher":"Giáo viên",
+    "deadline": "Hạn nộp"
   },
   "gradingTable": {
     "title": "Tìm kiếm bài làm",

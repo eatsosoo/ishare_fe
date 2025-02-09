@@ -1,14 +1,14 @@
 import { BasicFetchResult } from '../model/baseModel';
 
 export interface ExamListItem {
-  id: string;
-  name: string;
-  type: string;
-  student: string;
-  status: number;
+  id: number;
+  title: string;
+  teacher: string;
   score: number;
-  created_at: string;
+  deadline: string;
 }
+
+export interface ExamBasicItem {}
 
 /**
  * @description: Request list return value
