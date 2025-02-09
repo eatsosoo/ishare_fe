@@ -28,6 +28,7 @@ interface UserState {
   roleList: RoleEnum[];
   sessionTimeout?: boolean;
   lastUpdateTime: number;
+  classId: number | null;
 }
 
 export const useUserStore = defineStore({
@@ -43,6 +44,8 @@ export const useUserStore = defineStore({
     sessionTimeout: false,
     // Last fetch time
     lastUpdateTime: 0,
+    //
+    classId: null,
   }),
   getters: {
     getUserInfo(state): UserInfo {
@@ -59,6 +62,9 @@ export const useUserStore = defineStore({
     },
     getLastUpdateTime(state): number {
       return state.lastUpdateTime;
+    },
+    getClassId(state): number | null {
+      return state.classId;
     },
   },
   actions: {
@@ -77,6 +83,9 @@ export const useUserStore = defineStore({
     },
     setSessionTimeout(flag: boolean) {
       this.sessionTimeout = flag;
+    },
+    setClassId(id: number | null) {
+      this.classId = id;
     },
     resetState() {
       this.userInfo = null;

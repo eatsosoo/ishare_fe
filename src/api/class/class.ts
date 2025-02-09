@@ -7,6 +7,7 @@ import {
 } from './classModel';
 import { BasicPageParams, BasicApiResult } from '../model/baseModel';
 import { ErrorMessageMode } from '#/axios';
+import { useUserStore } from '@/store/modules/user';
 
 enum Api {
   CLASS_ROUTE = '/classes',
@@ -80,8 +81,10 @@ export const getStudentsOfClassApi = (classId: number) => (params: BasicPagePara
     },
   });
 
-export const getHomeworksOfClassApi = (classId: number) => (params: BasicPageParams) =>
-  defHttp.get<ClassListGetResultModel>({
+export const getHomeworksOfClassApi = () => (params: BasicPageParams) => {
+  const useStore = useUserStore();
+  const classId = useStore.getClassId;
+  return defHttp.get<ClassListGetResultModel>({
     url: `${Api.CLASS_ROUTE}/${classId}/homework`,
     params,
     headers: {
@@ -89,3 +92,4 @@ export const getHomeworksOfClassApi = (classId: number) => (params: BasicPagePar
       ignoreCancelToken: true,
     },
   });
+};

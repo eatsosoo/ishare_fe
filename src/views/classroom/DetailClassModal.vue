@@ -7,9 +7,9 @@
     :show-cancel-btn="false"
     :can-fullscreen="false"
   >
-    <Tabs v-model:activeKey="activeKey">
+    <Tabs v-model:activeTab="activeTab">
       <TabPane v-for="tab in tabs" :key="tab.key" v-bind="omit(tab, ['content', 'key'])">
-        <BasicTable @register="tab.register" ref="selectTable">
+        <BasicTable @register="tab.register" ref="tableRefs">
           <template #bodyCell="{ column, record }">
             <template v-if="column.key === 'status'">
               <Tag :color="record.status === 'v' ? 'green' : 'red'">
@@ -23,7 +23,7 @@
   </BasicModal>
 </template>
 <script lang="ts" setup>
-  import { ref } from 'vue';
+  import { ref, watch } from 'vue';
   import { BasicModal } from '@/components/Modal';
   import { BasicTable, useTable } from '@/components/Table';
   import {
@@ -38,10 +38,17 @@
   import { examListApi } from '@/api/exam/exam';
   import { getHomeworksOfClassApi } from '@/api/class/class';
 
+  const props = defineProps({
+    classId: {
+      type: Number,
+      required: true,
+    },
+  });
   const TabPane = Tabs.TabPane;
   const { t } = useI18n();
-  const activeKey = ref('1');
-  const [registerTable1] = useTable({
+  const activeTab = ref('1');
+  const tableRefs = ref([]);
+  const [registerTable1, { reload: reload1 }] = useTable({
     canResize: true,
     api: studentListApi(),
     columns: getStudentColumns(),
@@ -54,9 +61,9 @@
     showIndexColumn: false,
   });
 
-  const [registerTable2] = useTable({
+  const [registerTable2, { reload: reload2 }] = useTable({
     canResize: true,
-    api: getHomeworksOfClassApi(1),
+    api: getHomeworksOfClassApi(),
     columns: getExerciseColumns(),
     defSort: {
       field: 'name',
@@ -67,7 +74,7 @@
     showIndexColumn: false,
   });
 
-  const [registerTable3] = useTable({
+  const [registerTable3, { reload: reload3 }] = useTable({
     canResize: true,
     api: examListApi(),
     columns: getExamColumns(),
@@ -97,4 +104,21 @@
       register: registerTable3,
     },
   ];
+
+  watch(
+    () => props.classId,
+    () => {
+      if (props.classId) {
+        if (tableRefs.value[0]) {
+          reload1();
+        }
+        if (tableRefs.value[1]) {
+          reload2();
+        }
+        if (tableRefs.value[2]) {
+          reload3();
+        }
+      }
+    },
+  );
 </script>

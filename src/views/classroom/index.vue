@@ -41,7 +41,11 @@
       </template>
     </BasicTable>
 
-    <DetailClassModal :title="titleModal" @register="registerViewModal" />
+    <DetailClassModal
+      :title="titleModal"
+      :class-id="targetValue?.id ?? 0"
+      @register="registerViewModal"
+    />
     <AddStudentModal
       :title="titleModal"
       @register="registerAddModal"
@@ -61,6 +65,7 @@
   import { useMessage } from '@/hooks/web/useMessage';
   import { classListApi } from '@/api/class/class';
   import { ClassListItem } from '@/api/class/classModel';
+  import { useUserStore } from '@/store/modules/user';
 
   const { t } = useI18n();
   const [registerViewModal, { openModal: openViewModal }] = useModal();
@@ -94,6 +99,8 @@
   }
 
   function activateModal(record: ClassListItem | any, type: 'ADD' | 'VIEW') {
+    const useStore = useUserStore();
+    useStore.setClassId(record.id);
     targetValue.value = record;
     if (type === 'VIEW') {
       openViewModal();

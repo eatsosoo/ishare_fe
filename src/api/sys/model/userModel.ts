@@ -23,8 +23,12 @@ export interface RoleInfo {
  * @description: Login interface return value
  */
 export interface LoginResultModel {
-  userId: string | number;
-  token: string;
+  items: {
+    user_id: string | number;
+    token: string;
+    token_type: string;
+    expired_time: string;
+  };
   // roles: RoleInfo[];
 }
 
