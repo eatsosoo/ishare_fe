@@ -86,6 +86,9 @@ export const schemas: FormSchema[] = [
     field: 'hour',
     label: t('form.newClassForm.hour'),
     component: 'TimePicker',
+    componentProps: {
+      format: 'HH:mm',
+    },
     required: true,
     colProps: {
       offset: 2,

@@ -79,3 +79,13 @@ export const getStudentsOfClassApi = (classId: number) => (params: BasicPagePara
       ignoreCancelToken: true,
     },
   });
+
+export const getHomeworksOfClassApi = (classId: number) => (params: BasicPageParams) =>
+  defHttp.get<ClassListGetResultModel>({
+    url: `${Api.CLASS_ROUTE}/${classId}/homework`,
+    params,
+    headers: {
+      // @ts-ignore
+      ignoreCancelToken: true,
+    },
+  });

@@ -69,7 +69,7 @@ export function testRetry() {
     {
       retryRequest: {
         isOpenRetry: true,
-        count: 5,
+        count: 0,
         waitTime: 1000,
       },
     },

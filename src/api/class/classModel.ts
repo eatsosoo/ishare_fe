@@ -10,7 +10,7 @@ export interface CreateClassParams {
 }
 
 export interface ClassListItem {
-  id: string;
+  id: number;
   title: string;
   classCode: string;
   teacher: string;

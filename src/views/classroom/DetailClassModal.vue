@@ -35,8 +35,8 @@
   import { omit } from 'lodash-es';
   import { Tabs, Tag } from 'ant-design-vue';
   import { studentListApi } from '@/api/student/student';
-  import { exerciseListApi } from '@/api/exercise/exercise';
   import { examListApi } from '@/api/exam/exam';
+  import { getHomeworksOfClassApi } from '@/api/class/class';
 
   const TabPane = Tabs.TabPane;
   const { t } = useI18n();
@@ -56,7 +56,7 @@
 
   const [registerTable2] = useTable({
     canResize: true,
-    api: exerciseListApi(),
+    api: getHomeworksOfClassApi(1),
     columns: getExerciseColumns(),
     defSort: {
       field: 'name',
