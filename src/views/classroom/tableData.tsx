@@ -118,15 +118,15 @@ export function getExerciseColumns(): BasicColumn[] {
     },
     {
       title: t('table.exerciseTable.name'),
-      dataIndex: 'name',
+      dataIndex: 'exam_title',
     },
     {
       title: t('table.exerciseTable.skill'),
-      dataIndex: 'type',
+      dataIndex: 'skill',
     },
     {
       title: t('table.exerciseTable.student'),
-      dataIndex: 'student',
+      dataIndex: 'student_name',
     },
     {
       title: t('table.exerciseTable.status'),

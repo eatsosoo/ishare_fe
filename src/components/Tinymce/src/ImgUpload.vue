@@ -1,11 +1,12 @@
 <template>
   <div :class="[prefixCls, { fullscreen }]">
     <Upload
-      name="file"
+      name="media"
       multiple
       @change="handleChange"
       :action="uploadUrl"
       :showUploadList="false"
+      :headers="headers"
       accept=".jpg,.jpeg,.gif,.png,.webp"
     >
       <a-button type="primary" v-bind="{ ...getButtonProps }">
@@ -21,6 +22,7 @@
   import { useDesign } from '@/hooks/web/useDesign';
   import { useGlobSetting } from '@/hooks/setting';
   import { useI18n } from '@/hooks/web/useI18n';
+  import { getToken } from '@/utils/auth';
 
   defineOptions({ name: 'TinymceImageUpload' });
 
@@ -48,6 +50,10 @@
       disabled,
     };
   });
+
+  const headers = {
+    Authorization: `Bearer ${getToken()}`,
+  };
 
   function handleChange(info: Record<string, any>) {
     const file = info.file;
