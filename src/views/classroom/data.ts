@@ -158,3 +158,28 @@ export const searchGradingSchemas: FormSchema[] = [
     },
   },
 ];
+
+export const createExamSchemas: FormSchema[] = [
+  {
+    field: 'title',
+    component: 'Input',
+    label: t('form.exam.name'),
+    required: true,
+    colProps: {
+      span: 24,
+    },
+  },
+  {
+    field: 'deadline',
+    label: t('form.exam.deadline'),
+    component: 'DatePicker',
+    componentProps: {
+      showTime: true,
+      format: 'YYYY-MM-DD HH:mm:ss',
+    },
+    required: true,
+    colProps: {
+      span: 24,
+    },
+  },
+];

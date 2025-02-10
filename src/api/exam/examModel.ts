@@ -10,6 +10,11 @@ export interface ExamListItem {
 
 export interface ExamBasicItem {}
 
+export interface ExamAddForm {
+  title: string;
+  deadline: string;
+}
+
 /**
  * @description: Request list return value
  */

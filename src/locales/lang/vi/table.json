@@ -53,7 +53,8 @@
     "student": "Tên học sinh",
     "type": "Loại bài thi",
     "teacher":"Giáo viên",
-    "deadline": "Hạn nộp"
+    "deadline": "Hạn nộp",
+    "createAction": "Đề thi mới"
   },
   "gradingTable": {
     "title": "Tìm kiếm bài làm",

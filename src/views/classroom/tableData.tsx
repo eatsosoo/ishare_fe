@@ -424,7 +424,7 @@ export function getSearchExamOfStudentConfig(): Partial<FormProps> {
             },
           ],
         },
-        label: t('form.examOfStudentSearch.skill'),
+        label: t('form.exam.skill'),
         colProps: {
           xl: 6,
           xxl: 4,
@@ -432,16 +432,16 @@ export function getSearchExamOfStudentConfig(): Partial<FormProps> {
       },
       {
         field: 'status',
-        label: t('form.examOfStudentSearch.completeStatus'),
+        label: t('form.exam.completeStatus'),
         component: 'Select',
         componentProps: {
           options: [
             {
-              label: t('form.examOfStudentSearch.done'),
+              label: t('form.exam.done'),
               value: 'done',
             },
             {
-              label: t('form.examOfStudentSearch.incomplete'),
+              label: t('form.exam.incomplete'),
               value: 'incomplete',
             },
           ],
@@ -453,7 +453,7 @@ export function getSearchExamOfStudentConfig(): Partial<FormProps> {
       },
       {
         field: 'createdAt',
-        label: t('form.examOfStudentSearch.createdAt'),
+        label: t('form.exam.createdAt'),
         component: 'DatePicker',
         colProps: {
           xl: 6,
@@ -462,7 +462,7 @@ export function getSearchExamOfStudentConfig(): Partial<FormProps> {
       },
       {
         field: 'deadline',
-        label: t('form.examOfStudentSearch.deadline'),
+        label: t('form.exam.deadline'),
         component: 'DatePicker',
         colProps: {
           xl: 6,

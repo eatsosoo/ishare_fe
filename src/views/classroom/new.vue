@@ -62,7 +62,6 @@
         hour: values.hour.split(' ')[1],
         students: studentsRegistered.value.map((student) => ({ id: student.id })),
       };
-      console.log('form data:', submitForm);
 
       const newClass = await createClassApi(submitForm);
       if (newClass) {

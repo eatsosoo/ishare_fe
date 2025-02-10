@@ -44,13 +44,15 @@
     "deadline": "Hạn nộp",
     "typeGrading": "Loại bài"
   },
-  "examOfStudentSearch": {
+  "exam": {
     "skill": "Kỹ năng",
     "completeStatus": "Trạng thái",
     "done": "Đã hoàn thành",
     "incomplete":"Chưa hoàn thành",
     "createdAt": "Ngày giao",
-    "deadline": "Hạn nộp"
+    "deadline": "Hạn nộp",
+    "name": "Tên đề thi",
+    "title": "Tạo đề thi mới"
   },
   "exerciseOfStudentSearch": {
     "skill": "Kỹ năng",

@@ -44,7 +44,7 @@
     "deadline": "Deadline",
     "typeGrading": "Type of Assignment"
   },
-  "examOfStudentSearch": {
+  "exam": {
     "skill": "Skill",
     "completeStatus": "Status",
     "done": "Completed",

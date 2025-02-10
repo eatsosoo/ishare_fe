@@ -3,19 +3,23 @@
     <BasicTable @register="registerTable">
       <template #form-custom> custom-slot </template>
       <template #toolbar>
-        <a-button type="primary" @click="getFormValues">{{ t('table.enterData') }}</a-button>
+        <a-button type="primary" @click="openAddModal">{{
+          t('table.examTable.createAction')
+        }}</a-button>
       </template>
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'action'">
+          <a-button size="small" preIcon="ant-design:edit-outlined" class="mr-2" />
           <a-button
             size="small"
             preIcon="ant-design:delete-outlined"
-            class="mr-2"
             @click="examDeleteApi(record.id)"
           />
         </template>
       </template>
     </BasicTable>
+
+    <AddExamModal @register="registerAddModal" @success="handleSuccessModal" />
   </div>
 </template>
 <script lang="ts" setup>
@@ -23,9 +27,11 @@
   import { getFormConfig, getTestColumns } from '@/views/classroom/tableData';
   import { useI18n } from '@/hooks/web/useI18n';
   import { examDeleteApi, examListApi } from '@/api/exam/exam';
+  import { useModal } from '@/components/Modal';
+  import AddExamModal from './AddExamModal.vue';
 
   const { t } = useI18n();
-  const [registerTable, { getForm }] = useTable({
+  const [registerTable, { reload }] = useTable({
     title: t('routes.page.classroomList'),
     api: examListApi(),
     columns: getTestColumns(),
@@ -42,7 +48,10 @@
     },
   });
 
-  function getFormValues() {
-    console.log(getForm().getFieldsValue());
-  }
+  const handleSuccessModal = () => {
+    reload();
+    closeModal();
+  };
+
+  const [registerAddModal, { openModal: openAddModal, closeModal }] = useModal();
 </script>

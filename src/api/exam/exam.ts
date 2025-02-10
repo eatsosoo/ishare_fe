@@ -1,6 +1,7 @@
 import { defHttp } from '@/utils/http/axios';
-import { ExamBasicItem, ExamListGetResultModel } from './examModel';
+import { ExamAddForm, ExamBasicItem, ExamListGetResultModel } from './examModel';
 import { BasicApiResult, BasicPageParams } from '../model/baseModel';
+import { ErrorMessageMode } from '#/axios';
 
 enum Api {
   EXAM_LIST = '/exams',
@@ -26,3 +27,14 @@ export const examDeleteApi = (examId: number) => () => {
     },
   );
 };
+
+export const examCreateApi = (params: ExamAddForm, mode: ErrorMessageMode = 'modal') =>
+  defHttp.post<BasicApiResult<ExamAddForm>>(
+    {
+      url: Api.EXAM_LIST,
+      params,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
