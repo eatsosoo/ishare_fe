@@ -10,7 +10,7 @@ export interface QuestionOptionItem {
   text: string;
 }
 export interface QuestionItem {
-  no: number;
+  question_no: number;
   content: string;
   type: SelectQuestionType;
   options: QuestionOptionItem[];
@@ -18,7 +18,7 @@ export interface QuestionItem {
 }
 
 export interface ReadingPart {
-  key: string;
+  key: string | number;
   tab: string;
   subject: string;
   questions: QuestionItem[];

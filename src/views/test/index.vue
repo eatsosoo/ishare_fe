@@ -9,9 +9,12 @@
       </template>
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'action'">
-          <router-link to="/test/reading">
-            <a-button size="small" preIcon="ant-design:edit-outlined" class="mr-2" />
-          </router-link>
+          <a-button
+            size="small"
+            preIcon="ant-design:edit-outlined"
+            class="mr-2"
+            @click="activateEditorModal(record as ExamListItem)"
+          />
           <a-button
             size="small"
             preIcon="ant-design:delete-outlined"
@@ -22,6 +25,7 @@
     </BasicTable>
 
     <AddExamModal @register="registerAddModal" @success="handleSuccessModal" />
+    <EditorPartModal @register="registerEditorModal" :exam-id="examId" :title="titleEditor" />
   </div>
 </template>
 <script lang="ts" setup>
@@ -31,6 +35,9 @@
   import { examDeleteApi, examListApi } from '@/api/exam/exam';
   import { useModal } from '@/components/Modal';
   import AddExamModal from './AddExamModal.vue';
+  import EditorPartModal from './EditorPartModal.vue';
+  import { ref } from 'vue';
+  import { ExamListItem } from '@/api/exam/examModel';
 
   const { t } = useI18n();
   const [registerTable, { reload }] = useTable({
@@ -49,11 +56,20 @@
       dataIndex: 'action',
     },
   });
+  const examId = ref<number | undefined>(undefined);
+  const titleEditor = ref('');
 
   const handleSuccessModal = () => {
     reload();
     closeModal();
   };
 
+  const activateEditorModal = (record: ExamListItem) => {
+    examId.value = record.id;
+    titleEditor.value = record.title;
+    openEditorModal();
+  };
+
   const [registerAddModal, { openModal: openAddModal, closeModal }] = useModal();
+  const [registerEditorModal, { openModal: openEditorModal }] = useModal();
 </script>

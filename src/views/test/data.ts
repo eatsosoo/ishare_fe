@@ -1,4 +1,4 @@
-import { QuestionType, ReadingPart } from './types/question';
+import { ListeningPart, QuestionType, ReadingPart } from './types/question';
 import { useI18n } from '@/hooks/web/useI18n';
 
 const { t } = useI18n();
@@ -56,11 +56,11 @@ const defaultListeningOptions = Array.from({ length: 3 }, (_, i) => ({
 
 export const readingParts: ReadingPart[] = [
   {
-    key: 'tabs1',
+    key: 0,
     tab: 'Passage 1',
     subject: 'Reading Passage 1',
-    questions: Array.from({ length: 13 }, (_, i) => ({
-      no: i + 1,
+    questions: Array.from({ length: 1 }, (_, i) => ({
+      question_no: i + 1,
       content: `Question ${i + 1} ?`,
       type: 'choice',
       options: defaultReadingOptions,
@@ -68,11 +68,11 @@ export const readingParts: ReadingPart[] = [
     })),
   },
   {
-    key: 'tabs2',
+    key: 1,
     tab: 'Passage 2',
     subject: 'Reading Passage 2',
-    questions: Array.from({ length: 13 }, (_, i) => ({
-      no: i + 13,
+    questions: Array.from({ length: 1 }, (_, i) => ({
+      question_no: i + 13,
       content: `Question ${i + 13} ?`,
       type: 'choice',
       options: defaultReadingOptions,
@@ -80,11 +80,11 @@ export const readingParts: ReadingPart[] = [
     })),
   },
   {
-    key: 'tabs3',
+    key: 2,
     tab: 'Passage 3',
     subject: 'Reading Passage 3',
-    questions: Array.from({ length: 13 }, (_, i) => ({
-      no: i + 26,
+    questions: Array.from({ length: 1 }, (_, i) => ({
+      question_no: i + 26,
       content: `Question ${i + 26} ?`,
       type: 'choice',
       options: defaultReadingOptions,
@@ -93,13 +93,13 @@ export const readingParts: ReadingPart[] = [
   },
 ];
 
-export const listeningParts: ReadingPart[] = [
+export const listeningParts: ListeningPart[] = [
   {
     key: 'tabs1',
     tab: 'Section 1',
     subject: 'Listening Section 1',
     questions: Array.from({ length: 10 }, (_, i) => ({
-      no: i + 1,
+      question_no: i + 1,
       content: `Question ${i + 1} ?`,
       type: 'choice',
       options: defaultListeningOptions,
@@ -111,7 +111,7 @@ export const listeningParts: ReadingPart[] = [
     tab: 'Section 2',
     subject: 'Listening Section 2',
     questions: Array.from({ length: 10 }, (_, i) => ({
-      no: i + 11,
+      question_no: i + 11,
       content: `Question ${i + 11} ?`,
       type: 'choice',
       options: defaultListeningOptions,
@@ -123,11 +123,11 @@ export const listeningParts: ReadingPart[] = [
     tab: 'Section 3',
     subject: 'Listening Section 3',
     questions: Array.from({ length: 10 }, (_, i) => ({
-      no: i + 21,
+      question_no: i + 21,
       content: `Question ${i + 21} ?`,
       type: 'choice',
       options: defaultListeningOptions,
-      answer: null,
+      answer: '',
     })),
   },
   {
@@ -135,7 +135,7 @@ export const listeningParts: ReadingPart[] = [
     tab: 'Section 4',
     subject: 'Listening Section 4',
     questions: Array.from({ length: 10 }, (_, i) => ({
-      no: i + 31,
+      question_no: i + 31,
       content: `Question ${i + 31} ?`,
       type: 'choice',
       options: defaultListeningOptions,

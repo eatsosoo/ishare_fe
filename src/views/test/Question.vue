@@ -179,7 +179,7 @@
       questionFormData.value.options = options;
 
       emit('update:value', { ...questionFormData.value });
-      console.log('submitForm', questionFormData.value);
+      // console.log('submitForm', questionFormData.value);
     } catch (error) {
       console.log('Validation failed:', error);
     }
@@ -201,7 +201,7 @@
       text: '',
     });
     rulesOption.value[newKey] = [{ required: true, message: t('common.inputText') }];
-    console.log(rulesOption.value);
+    // console.log(rulesOption.value);
   };
 
   const handleRemoveAnswer = () => {
@@ -211,7 +211,7 @@
       const lastKey = keys[keys.length - 1];
       delete rulesOption.value[lastKey];
     }
-    console.log(rulesOption.value);
+    // console.log(rulesOption.value);
   };
 
   watch(
@@ -219,7 +219,7 @@
     () => {
       questionFormData.value = { ...props.value };
       handleInitOptions(questionFormData.value.options);
-      console.log(questionFormData.value);
+      // console.log(questionFormData.value);
     },
   );
 </script>
