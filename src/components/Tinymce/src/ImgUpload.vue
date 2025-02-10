@@ -57,9 +57,8 @@
 
   function handleChange(info: Record<string, any>) {
     const file = info.file;
-    console.log(info);
     const status = file?.status;
-    const url = file?.response?.url;
+    const url = file?.response?.result.items;
     const name = file?.name;
 
     if (status === 'uploading') {
