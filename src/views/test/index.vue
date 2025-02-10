@@ -9,7 +9,9 @@
       </template>
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'action'">
-          <a-button size="small" preIcon="ant-design:edit-outlined" class="mr-2" />
+          <router-link to="/test/reading">
+            <a-button size="small" preIcon="ant-design:edit-outlined" class="mr-2" />
+          </router-link>
           <a-button
             size="small"
             preIcon="ant-design:delete-outlined"

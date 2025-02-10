@@ -22,38 +22,38 @@ const test: AppRouteModule = {
         title: t('routes.page.examList'),
       },
     },
-    {
-      path: '/test/reading',
-      name: 'ReadingTest',
-      component: () => import('@/views/test/reading.vue'),
-      meta: {
-        title: t('routes.page.reading'),
-      },
-    },
-    {
-      path: '/test/listening',
-      name: 'ListeningTest',
-      component: () => import('@/views/test/listening.vue'),
-      meta: {
-        title: t('routes.page.listening'),
-      },
-    },
-    {
-      path: '/test/writing',
-      name: 'WritingTest',
-      component: () => import('@/views/test/writing.vue'),
-      meta: {
-        title: t('routes.page.writing'),
-      },
-    },
-    {
-      path: '/test/speaking',
-      name: 'SpeakingTest',
-      component: () => import('@/views/test/speaking.vue'),
-      meta: {
-        title: t('routes.page.speaking'),
-      },
-    },
+    // {
+    //   path: '/test/reading',
+    //   name: 'ReadingTest',
+    //   component: () => import('@/views/test/reading.vue'),
+    //   meta: {
+    //     title: t('routes.page.reading'),
+    //   },
+    // },
+    // {
+    //   path: '/test/listening',
+    //   name: 'ListeningTest',
+    //   component: () => import('@/views/test/listening.vue'),
+    //   meta: {
+    //     title: t('routes.page.listening'),
+    //   },
+    // },
+    // {
+    //   path: '/test/writing',
+    //   name: 'WritingTest',
+    //   component: () => import('@/views/test/writing.vue'),
+    //   meta: {
+    //     title: t('routes.page.writing'),
+    //   },
+    // },
+    // {
+    //   path: '/test/speaking',
+    //   name: 'SpeakingTest',
+    //   component: () => import('@/views/test/speaking.vue'),
+    //   meta: {
+    //     title: t('routes.page.speaking'),
+    //   },
+    // },
   ],
 };
 
