@@ -35,6 +35,8 @@
   "notGiven": "Không được đề cập",
   "updateSuccess": "Cập nhật thành công",
   "uploadAudio": "Tải lên file âm thanh",
+  "uploadFileSuccess": "Tải lên file {name} thành công",
+  "uploadFileFail": "Tải lên file {name} thất bại",
   "listeningContext": "Bối cảnh bài nghe",
   "readingContext": "Bối cảnh bài đọc",
   "speakingSubject": "Chủ đề bài nói",

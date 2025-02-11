@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white px-4 pb-4 mb-8">
+  <div class="bg-white px-2 mb-8">
     <Tabs v-model:activeKey="activeKey" @change="handleChangeTab">
       <TabPane v-for="(item, index) in tabs" :key="item.key" :tab="item.tab">
         <Row :gutter="[16, 16]">
@@ -22,19 +22,19 @@
               </template>
             </div>
             <div class="flex flex-col gap-2 ml-4">
-              <a-button
+              <div
                 v-for="(question, idx) in readingParts[index].questions"
-                :type="
-                  questionCurrent && questionCurrent.question_no === question.question_no
-                    ? 'primary'
-                    : 'default'
-                "
                 :key="`${item.key}_${idx}`"
                 class="border rounded-full h-10 w-10 flex items-center justify-center cursor-pointer"
+                :class="
+                  questionCurrent.question_no === question.question_no
+                    ? 'border-blue text-blue'
+                    : 'border-gray text-gray'
+                "
                 @click="questionCurrent = { ...question }"
               >
                 {{ question.question_no }}
-              </a-button>
+              </div>
               <a-button
                 v-if="readingParts[index].questions.length < 13"
                 class="border rounded-full h-10 w-10 flex items-center justify-center cursor-pointer"
@@ -71,12 +71,11 @@
       default: READING_DEFAULT,
     },
   });
-  // const emit = defineEmits(['change-tab']);
 
   const TabPane = Tabs.TabPane;
 
   const activeKey = ref(0);
-  const questionCurrent = ref<ExtendedQuestionItem | null>(props.value[0].questions[0]);
+  const questionCurrent = ref<ExtendedQuestionItem>(props.value[0].questions[0]);
   const readingParts = ref<ExamPartItem[]>(props.value);
   const loading = ref(false);
   const tabs = computed(() => {
@@ -130,9 +129,6 @@
 
   function handleChangeTab() {
     questionCurrent.value = readingParts.value[activeKey.value].questions[0];
-    // const showOkBtn = readingParts.value[activeKey.value].id ? false : true;
-    // console.log(showOkBtn);
-    // emit('change-tab', showOkBtn);
   }
 
   async function submitAll(examId: number) {
@@ -147,7 +143,6 @@
         duration: 500,
         media: null,
       };
-      console.log(submitForm);
       const result = await examPartApi(submitForm);
       if (result) {
         createSuccessModal({
@@ -179,15 +174,6 @@
       activeKey.value = 0;
     },
   );
-
-  // watch(
-  //   () => activeKey,
-  //   () => {
-  //     const showOkBtn = readingParts.value[activeKey.value].id ? false : true;
-  //     console.log(showOkBtn);
-  //     emit('change-tab', showOkBtn);
-  //   },
-  // );
 
   defineExpose({
     submitAll,
