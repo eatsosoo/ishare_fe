@@ -243,6 +243,50 @@ export function getFormConfig(): Partial<FormProps> {
   };
 }
 
+export function getFormSearchClassConfig(): Partial<FormProps> {
+  return {
+    labelWidth: 100,
+    schemas: [
+      {
+        field: 'class_name',
+        component: 'Input',
+        label: t('form.newClassForm.name'),
+        colProps: {
+          xl: 12,
+          xxl: 12,
+        },
+      },
+      {
+        field: 'teacher',
+        label: t('form.newClassForm.teacher'),
+        component: 'Input',
+        colProps: {
+          xl: 12,
+          xxl: 12,
+        },
+      },
+      {
+        field: 'start_date',
+        label: t('form.newClassForm.openingDay'),
+        component: 'DatePicker',
+        colProps: {
+          xl: 12,
+          xxl: 12,
+        },
+      },
+      {
+        field: 'end_date',
+        label: t('form.newClassForm.endDay'),
+        component: 'DatePicker',
+        colProps: {
+          xl: 12,
+          xxl: 12,
+        },
+      },
+    ],
+  };
+}
+
 export function getSearchFormConfig(): Partial<FormProps> {
   return {
     labelWidth: 100,
@@ -531,6 +575,32 @@ export function getSearchExerciseOfStudentConfig(): Partial<FormProps> {
         field: 'createdAt',
         label: t('form.exerciseOfStudentSearch.createdAt'),
         component: 'DatePicker',
+        colProps: {
+          xl: 6,
+          xxl: 4,
+        },
+      },
+      {
+        field: 'deadline',
+        label: t('form.exerciseOfStudentSearch.deadline'),
+        component: 'DatePicker',
+        colProps: {
+          xl: 6,
+          xxl: 4,
+        },
+      },
+    ],
+  };
+}
+
+export function getExamListConfig(): Partial<FormProps> {
+  return {
+    labelWidth: 100,
+    schemas: [
+      {
+        field: 'title',
+        label: t('form.exam.name'),
+        component: 'Input',
         colProps: {
           xl: 6,
           xxl: 4,

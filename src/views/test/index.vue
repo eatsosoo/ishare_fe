@@ -30,7 +30,7 @@
 </template>
 <script lang="ts" setup>
   import { BasicTable, useTable } from '@/components/Table';
-  import { getFormConfig, getTestColumns } from '@/views/classroom/tableData';
+  import { getExamListConfig, getTestColumns } from '@/views/classroom/tableData';
   import { useI18n } from '@/hooks/web/useI18n';
   import { examDeleteApi, examListApi } from '@/api/exam/exam';
   import { useModal } from '@/components/Modal';
@@ -45,7 +45,7 @@
     api: examListApi(),
     columns: getTestColumns(),
     useSearchForm: true,
-    formConfig: getFormConfig(),
+    formConfig: getExamListConfig(),
     showTableSetting: true,
     tableSetting: { fullScreen: true },
     showIndexColumn: false,
