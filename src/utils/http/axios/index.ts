@@ -57,7 +57,6 @@ const transform: AxiosTransform = {
     // The logic here can be modified according to the project
     const hasSuccess = data && Reflect.has(data, 'statusCode') && statusCode === ResultEnum.SUCCESS;
     if (hasSuccess) {
-      console.log();
       let successMsg = message;
 
       if (isNull(successMsg) || isUndefined(successMsg) || isEmpty(successMsg)) {

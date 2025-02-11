@@ -1,4 +1,5 @@
-import { ListeningPart, QuestionType, ReadingPart } from './types/question';
+import { ExamPartItem } from '@/api/exam/examModel';
+import { ListeningPart, QuestionType } from './types/question';
 import { useI18n } from '@/hooks/web/useI18n';
 
 const { t } = useI18n();
@@ -54,11 +55,11 @@ const defaultListeningOptions = Array.from({ length: 3 }, (_, i) => ({
   text: '',
 }));
 
-export const readingParts: ReadingPart[] = [
+export const READING_DEFAULT: ExamPartItem[] = [
   {
-    key: 0,
-    tab: 'Passage 1',
     subject: 'Reading Passage 1',
+    question_count: 1,
+    duration: 20,
     questions: Array.from({ length: 1 }, (_, i) => ({
       question_no: i + 1,
       content: `Question ${i + 1} ?`,
@@ -67,30 +68,30 @@ export const readingParts: ReadingPart[] = [
       answer: null,
     })),
   },
-  {
-    key: 1,
-    tab: 'Passage 2',
-    subject: 'Reading Passage 2',
-    questions: Array.from({ length: 1 }, (_, i) => ({
-      question_no: i + 13,
-      content: `Question ${i + 13} ?`,
-      type: 'choice',
-      options: defaultReadingOptions,
-      answer: null,
-    })),
-  },
-  {
-    key: 2,
-    tab: 'Passage 3',
-    subject: 'Reading Passage 3',
-    questions: Array.from({ length: 1 }, (_, i) => ({
-      question_no: i + 26,
-      content: `Question ${i + 26} ?`,
-      type: 'choice',
-      options: defaultReadingOptions,
-      answer: null,
-    })),
-  },
+  // {
+  //   subject: 'Reading Passage 2',
+  //   question_count: 1,
+  //   duration: 20,
+  //   questions: Array.from({ length: 1 }, (_, i) => ({
+  //     question_no: i + 13,
+  //     content: `Question ${i + 13} ?`,
+  //     type: 'choice',
+  //     options: defaultReadingOptions,
+  //     answer: null,
+  //   })),
+  // },
+  // {
+  //   subject: 'Reading Passage 3',
+  //   question_count: 1,
+  //   duration: 20,
+  //   questions: Array.from({ length: 1 }, (_, i) => ({
+  //     question_no: i + 26,
+  //     content: `Question ${i + 26} ?`,
+  //     type: 'choice',
+  //     options: defaultReadingOptions,
+  //     answer: null,
+  //   })),
+  // },
 ];
 
 export const listeningParts: ListeningPart[] = [

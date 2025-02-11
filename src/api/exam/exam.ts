@@ -2,6 +2,7 @@ import { defHttp } from '@/utils/http/axios';
 import {
   ExamAddForm,
   ExamBasicItem,
+  ExamDetailItem,
   ExamListGetResultModel,
   ExamPartForm,
   ExamPartItem,
@@ -47,7 +48,7 @@ export const examCreateApi = (params: ExamAddForm, mode: ErrorMessageMode = 'mod
   );
 
 export const examPartApi = (params: ExamPartForm, mode: ErrorMessageMode = 'modal') =>
-  defHttp.post<BasicApiResult<ExamPartItem>>(
+  defHttp.post<ExamPartItem>(
     {
       url: `${Api.EXAM_ACTION}/${params.exam_id}/tests`,
       params,
@@ -56,3 +57,12 @@ export const examPartApi = (params: ExamPartForm, mode: ErrorMessageMode = 'moda
       errorMessageMode: mode,
     },
   );
+
+export const examDetailApi = (examId: number) =>
+  defHttp.get<ExamDetailItem>({
+    url: `${Api.EXAM_ACTION}/${examId}/tests`,
+    headers: {
+      // @ts-ignore
+      ignoreCancelToken: true,
+    },
+  });

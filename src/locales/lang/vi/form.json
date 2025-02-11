@@ -52,7 +52,8 @@
     "createdAt": "Ngày giao",
     "deadline": "Hạn nộp",
     "name": "Tên đề thi",
-    "title": "Tạo đề thi mới"
+    "title": "Tạo đề thi mới",
+    "editSkill": "Cập nhật kỹ năng {skill}"
   },
   "exerciseOfStudentSearch": {
     "skill": "Kỹ năng",

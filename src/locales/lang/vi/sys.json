@@ -25,7 +25,8 @@
   "app": {
     "logoutTip": "Nhắc nhở",
     "logoutMessage": "Xác nhận thoát khỏi hệ thống?",
-    "menuLoading": "Đang tải menu..."
+    "menuLoading": "Đang tải menu...",
+    "dataNotFound": "Không tìm thấy dữ liệu"
   },
   "errorLog": {
     "tableTitle": "Danh sách lỗi",

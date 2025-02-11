@@ -1,19 +1,12 @@
 <template>
   <div class="bg-white px-4 pb-4 mb-8">
-    <Tabs
-      v-model:activeKey="activeKey"
-      @change="questionCurrent = readingExercise[$event].questions[0]"
-    >
-      <TabPane
-        v-for="(item, index) in readingExercise"
-        :key="item.key"
-        v-bind="omit(item, ['questions', 'key'])"
-      >
+    <Tabs v-model:activeKey="activeKey" @change="handleChangeTab">
+      <TabPane v-for="(item, index) in tabs" :key="item.key" :tab="item.tab">
         <Row :gutter="[16, 16]">
           <Col :span="12">
             <div class="p-4 re-box-shadow rounded-lg">
               <h3>{{ t('common.readingContext') }}</h3>
-              <Tinymce v-model="item.subject" @change="handleChange" :height="550" />
+              <Tinymce v-model="readingParts[index].subject" @change="handleChange" :height="550" />
             </div>
           </Col>
           <Col :span="12" class="flex">
@@ -30,20 +23,20 @@
             </div>
             <div class="flex flex-col gap-2 ml-4">
               <a-button
-                v-for="(question, index) in item.questions"
+                v-for="(question, idx) in readingParts[index].questions"
                 :type="
                   questionCurrent && questionCurrent.question_no === question.question_no
                     ? 'primary'
                     : 'default'
                 "
-                :key="`${item.key}_${index}`"
+                :key="`${item.key}_${idx}`"
                 class="border rounded-full h-10 w-10 flex items-center justify-center cursor-pointer"
                 @click="questionCurrent = { ...question }"
               >
                 {{ question.question_no }}
               </a-button>
               <a-button
-                v-if="item.questions.length < 13"
+                v-if="readingParts[index].questions.length < 13"
                 class="border rounded-full h-10 w-10 flex items-center justify-center cursor-pointer"
                 @click="handleAddQuestion(index)"
                 >+</a-button
@@ -52,33 +45,49 @@
           </Col>
         </Row>
       </TabPane>
+
+      <template v-if="readingParts.length < 3" #rightExtra>
+        <a-button type="default" @click="handleAddTab">{{ t('common.add') }} Passage</a-button>
+      </template>
     </Tabs>
   </div>
 </template>
 <script lang="ts" setup>
-  import { ref } from 'vue';
+  import { computed, ref, watch } from 'vue';
   import { Tinymce } from '@/components/Tinymce';
   import { Col, Row, Tabs } from 'ant-design-vue';
   import { useI18n } from '@/hooks/web/useI18n';
-  import { readingParts } from './data';
-  import { omit } from 'lodash-es';
-  import { QuestionItem, ReadingPart } from './types/question';
+  import { READING_DEFAULT } from './data';
+  import { QuestionItem } from './types/question';
   import Question from './Question.vue';
   import { useMessage } from '@/hooks/web/useMessage';
   import { useDesign } from '@/hooks/web/useDesign';
   import { examPartApi } from '@/api/exam/exam';
-  import { ExamPartForm } from '@/api/exam/examModel';
+  import { ExamPartForm, ExamPartItem, ExtendedQuestionItem } from '@/api/exam/examModel';
+
+  const props = defineProps({
+    value: {
+      type: Array as PropType<ExamPartItem[]>,
+      default: READING_DEFAULT,
+    },
+  });
+  // const emit = defineEmits(['change-tab']);
 
   const TabPane = Tabs.TabPane;
-  const { t } = useI18n();
 
   const activeKey = ref(0);
-  const questionCurrent = ref<QuestionItem | null>(readingParts[0].questions[0]);
-  const readingExercise = ref<ReadingPart[]>(readingParts);
+  const questionCurrent = ref<ExtendedQuestionItem | null>(props.value[0].questions[0]);
+  const readingParts = ref<ExamPartItem[]>(props.value);
   const loading = ref(false);
+  const tabs = computed(() => {
+    return Array.from({ length: readingParts.value.length }, (_, i) => ({
+      key: i,
+      tab: `Passage ${i + 1}`,
+    }));
+  });
 
-  const { createMessage } = useMessage();
-  const { createErrorModal, createSuccessModal } = useMessage();
+  const { t } = useI18n();
+  const { createMessage, createErrorModal, createSuccessModal } = useMessage();
   const { prefixCls } = useDesign('register');
 
   function handleChange(value: string) {
@@ -86,18 +95,18 @@
   }
 
   function handleUpdateQuestion(partIdx: number, value: QuestionItem) {
-    const questionIndex = readingExercise.value[partIdx].questions.findIndex(
+    const questionIndex = readingParts.value[partIdx].questions.findIndex(
       (item) => item.question_no === questionCurrent.value?.question_no,
     );
     if (questionIndex !== -1) {
-      readingExercise.value[partIdx].questions[questionIndex] = value;
+      readingParts.value[partIdx].questions[questionIndex] = value;
     }
 
     createMessage.success(t('common.updateSuccess'));
   }
 
   function handleAddQuestion(partIdx: number) {
-    const questions = readingExercise.value[partIdx].questions;
+    const questions = readingParts.value[partIdx].questions;
     const lastEl = questions.at(-1); // Lấy phần tử cuối cùng mà không xóa
 
     const questionNo = lastEl ? lastEl.question_no + 1 : 1; // Nếu rỗng, bắt đầu từ 1
@@ -111,10 +120,25 @@
     });
   }
 
+  function handleAfterSubmit(result: ExamPartItem) {
+    readingParts.value[activeKey.value] = result;
+  }
+
+  function handleAddTab() {
+    readingParts.value.push({ ...READING_DEFAULT[0] });
+  }
+
+  function handleChangeTab() {
+    questionCurrent.value = readingParts.value[activeKey.value].questions[0];
+    // const showOkBtn = readingParts.value[activeKey.value].id ? false : true;
+    // console.log(showOkBtn);
+    // emit('change-tab', showOkBtn);
+  }
+
   async function submitAll(examId: number) {
     try {
       loading.value = true;
-      const { subject, questions } = readingExercise.value[activeKey.value];
+      const { subject, questions } = readingParts.value[activeKey.value];
       const submitForm: ExamPartForm = {
         exam_id: examId,
         type: 'reading',
@@ -124,13 +148,14 @@
         media: null,
       };
       console.log(submitForm);
-      const res = await examPartApi(submitForm);
-      if (res) {
+      const result = await examPartApi(submitForm);
+      if (result) {
         createSuccessModal({
-          title: t('form.newClassForm.title'),
+          title: t('form.exam.title', { skill: 'Reading' }),
           content: t('common.createSuccessfully'),
           getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
         });
+        handleAfterSubmit(result);
       }
     } catch (error) {
       if (error.errorFields) return;
@@ -145,6 +170,24 @@
       loading.value = false;
     }
   }
+
+  watch(
+    () => props.value,
+    (value) => {
+      readingParts.value = value.length === 0 ? READING_DEFAULT : value;
+      questionCurrent.value = readingParts.value[0].questions[0];
+      activeKey.value = 0;
+    },
+  );
+
+  // watch(
+  //   () => activeKey,
+  //   () => {
+  //     const showOkBtn = readingParts.value[activeKey.value].id ? false : true;
+  //     console.log(showOkBtn);
+  //     emit('change-tab', showOkBtn);
+  //   },
+  // );
 
   defineExpose({
     submitAll,
