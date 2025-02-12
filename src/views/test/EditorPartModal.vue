@@ -40,7 +40,7 @@
     },
   });
   const readingRef = ref<InstanceType<typeof Reading> | null>(null);
-  const listeningRef = ref<InstanceType<typeof Reading> | null>(null);
+  const listeningRef = ref<InstanceType<typeof Listening> | null>(null);
   const writingRef = ref<InstanceType<typeof Writing> | null>(null);
   const speakingRef = ref<InstanceType<typeof Speaking> | null>(null);
 

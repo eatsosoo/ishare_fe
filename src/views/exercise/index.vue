@@ -15,8 +15,8 @@
         <template v-if="column.key === 'action'">
           <a-button
             size="small"
-            preIcon="ant-design:user-add-outlined"
-            @click="openHomeworkModal"
+            preIcon="ant-design:home-outlined"
+            @click="activateHomworkModal(record)"
           />
         </template>
       </template>
@@ -67,5 +67,10 @@
 
   function getFormValues() {
     console.log(getForm().getFieldsValue());
+  }
+
+  function activateHomworkModal(record: ClassListItem | any) {
+    targetClass.value = record;
+    openHomeworkModal();
   }
 </script>

@@ -136,19 +136,23 @@ export const searchGradingSchemas: FormSchema[] = [
       options: [
         {
           label: 'Reading',
-          value: '1',
+          value: 'reading',
         },
         {
           label: 'Listening',
-          value: '2',
+          value: 'listening',
         },
         {
           label: 'Speaking',
-          value: '3',
+          value: 'speaking',
         },
         {
           label: 'Writing',
-          value: '4',
+          value: 'writing',
+        },
+        {
+          label: 'Homework',
+          value: 'homework',
         },
       ],
     },
@@ -176,6 +180,60 @@ export const createExamSchemas: FormSchema[] = [
     componentProps: {
       showTime: true,
       format: 'YYYY-MM-DD HH:mm:ss',
+    },
+    required: true,
+    colProps: {
+      span: 24,
+    },
+  },
+];
+
+export const createHomeworkSchemas: FormSchema[] = [
+  {
+    field: 'title',
+    component: 'Input',
+    label: t('form.homework.name'),
+    required: true,
+    colProps: {
+      span: 24,
+    },
+  },
+  {
+    field: 'deadline',
+    label: t('form.exam.deadline'),
+    component: 'DatePicker',
+    componentProps: {
+      showTime: true,
+      format: 'YYYY-MM-DD HH:mm:ss',
+    },
+    required: true,
+    colProps: {
+      span: 24,
+    },
+  },
+  {
+    field: 'skill',
+    label: t('form.gradingSearch.skill'),
+    component: 'Select',
+    componentProps: {
+      options: [
+        {
+          label: 'Reading',
+          value: 'reading',
+        },
+        {
+          label: 'Listening',
+          value: 'listening',
+        },
+        {
+          label: 'Speaking',
+          value: 'speaking',
+        },
+        {
+          label: 'Writing',
+          value: 'writing',
+        },
+      ],
     },
     required: true,
     colProps: {

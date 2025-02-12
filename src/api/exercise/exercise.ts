@@ -1,14 +1,26 @@
-import { otherHttp } from '@/utils/http/axios';
+import { defHttp, otherHttp } from '@/utils/http/axios';
 import { BasicPageParams } from '../model/baseModel';
-import { ExerciseListGetResultModel } from './exerciseModel';
+import { ExerciseListGetResultModel, HomeworkListGetResultModel } from './exerciseModel';
 
 enum Api {
   EXERCISE_LIST = '/table/getExerciseList',
+  HOMEWORK_LIST = 'exams',
 }
 
 export const exerciseListApi = () => (params: BasicPageParams) =>
   otherHttp.get<ExerciseListGetResultModel>({
     url: Api.EXERCISE_LIST,
+    params,
+    headers: {
+      // @ts-ignore
+      ignoreCancelToken: true,
+    },
+  });
+
+// list homework created
+export const homeworkListApi = () => (params: BasicPageParams) =>
+  defHttp.get<HomeworkListGetResultModel>({
+    url: Api.HOMEWORK_LIST,
     params,
     headers: {
       // @ts-ignore

@@ -23,3 +23,13 @@ export const demoListApi = (params: DemoParams) =>
       ignoreCancelToken: true,
     },
   });
+
+export const exerciseListApi = () => (params: DemoParams) =>
+  otherHttp.get<DemoListGetResultModel>({
+    url: Api.EXERCISE_LIST,
+    params,
+    headers: {
+      // @ts-ignore
+      ignoreCancelToken: true,
+    },
+  });

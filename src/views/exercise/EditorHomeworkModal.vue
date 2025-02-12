@@ -1,63 +1,100 @@
 <template>
   <BasicModal
     v-bind="$attrs"
-    :title="props.titleEditor"
+    :title="titleEditor"
     default-fullscreen
     :can-fullscreen="false"
     :loading="loading"
     @ok="handleOk"
   >
-    <Reading ref="readingRef" :value="detail?.reading" />
+    <div class="mb-2">
+      <Select v-model:value="skill" :options="options" />
+    </div>
+
+    <component :is="skillComponents[skill]" ref="skillRefs[skill]" :value="detail[skill]" />
   </BasicModal>
 </template>
+
 <script lang="ts" setup>
   import { BasicModal } from '@/components/Modal';
-  import Reading from './reading.vue';
-  import { ref, watch } from 'vue';
-  import { examDetailApi } from '@/api/exam/exam';
-  import { useMessage } from '@/hooks/web/useMessage';
+  import { ref, computed, watch, shallowRef } from 'vue';
   import { useI18n } from '@/hooks/web/useI18n';
-  import { ExamDetailItem } from '@/api/exam/examModel';
+  import { Select } from 'ant-design-vue';
+  import Reading from '@/views/test/reading.vue';
+  import Listening from '@/views/test/listening.vue';
+  import Writing from '@/views/test/writing.vue';
+  import Speaking from '@/views/test/speaking.vue';
+  import {
+    LISTENING_DEFAULT,
+    READING_DEFAULT,
+    SPEAKING_DEFAULT,
+    WRITING_DEFAULT,
+  } from '@/views/test/data';
+  import { useMessage } from '@/hooks/web/useMessage';
 
   const props = defineProps({
-    classId: {
-      type: Number,
-      default: null,
-    },
+    classId: Number,
     titleEditor: {
       type: String,
-      default: '',
     },
   });
-  const readingRef = ref<InstanceType<typeof Reading> | null>(null);
-  const detail = ref<ExamDetailItem | null>(null);
-  const loading = ref(false);
 
   const { t } = useI18n();
-  const { createMessage } = useMessage();
+  const { createErrorModal } = useMessage();
 
-  function handleOk() {
-    // if (readingRef.value && props.examId) {
-    //   readingRef.value.submitAll(props.examId);
-    // }
-  }
+  const defaultHomeworks = {
+    reading: READING_DEFAULT,
+    listening: LISTENING_DEFAULT,
+    writing: WRITING_DEFAULT,
+    speaking: SPEAKING_DEFAULT,
+  };
 
-  async function getExamDetail(examId: number) {
-    try {
+  const skillRefs = shallowRef({
+    reading: ref<InstanceType<typeof Reading> | null>(null),
+    listening: ref<InstanceType<typeof Listening> | null>(null),
+    writing: ref<InstanceType<typeof Writing> | null>(null),
+    speaking: ref<InstanceType<typeof Speaking> | null>(null),
+  });
+
+  const skillComponents = {
+    reading: Reading,
+    listening: Listening,
+    writing: Writing,
+    speaking: Speaking,
+  };
+
+  const detail = ref({ ...defaultHomeworks });
+  const loading = ref(false);
+  const skill = ref('reading');
+
+  const options = computed(() => [
+    { label: 'Reading', value: 'reading' },
+    { label: 'Listening', value: 'listening' },
+    { label: 'Writing', value: 'writing' },
+    { label: 'Speaking', value: 'speaking' },
+  ]);
+
+  const handleOk = async () => {
+    if (!props.classId) {
+      createErrorModal({
+        title: t('sys.api.errorTip'),
+        content: t('sys.exception.anErrorOccured'),
+      });
+      return;
+    }
+
+    const currentRef = skillRefs.value[skill.value];
+    if (currentRef?.value) {
       loading.value = true;
-      const result = await examDetailApi(examId);
-      detail.value = result;
-    } catch (error) {
-      createMessage.error(t('sys.app.dataNotFound'));
-      console.log(error);
-    } finally {
+      await currentRef.value.submitAll(props.classId);
       loading.value = false;
     }
-  }
+  };
+
   watch(
     () => props.classId,
-    (value) => {
-      getExamDetail(value);
+    () => {
+      detail.value = { ...defaultHomeworks };
     },
   );
 </script>

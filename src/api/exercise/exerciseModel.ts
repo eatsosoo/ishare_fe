@@ -11,7 +11,19 @@ export interface ExerciseListItem {
   deadline: string;
 }
 
+export interface HomeworkListItem {
+  id: number;
+  title: string;
+  deadline: string;
+  teacher: string;
+}
+
 /**
  * @description: Request list return value
  */
 export type ExerciseListGetResultModel = BasicFetchResult<ExerciseListItem>;
+
+/**
+ * @description: Request list return value
+ */
+export type HomeworkListGetResultModel = BasicFetchResult<HomeworkListItem>;
