@@ -46,7 +46,7 @@
 </template>
 <script lang="ts" setup>
   import { BasicTable, useTable } from '@/components/Table';
-  import { getClassColumns, getFormConfig } from '@/views/classroom/tableData';
+  import { getClassColumns, getFormSearchClassConfig } from '@/views/classroom/tableData';
   import { useI18n } from '@/hooks/web/useI18n';
   import DetailClassModal from './DetailClassModal.vue';
   import { useModal } from '@/components/Modal';
@@ -65,7 +65,7 @@
     api: classListApi(),
     columns: getClassColumns(),
     useSearchForm: true,
-    formConfig: getFormConfig(),
+    formConfig: getFormSearchClassConfig(),
     showTableSetting: true,
     tableSetting: { fullScreen: true },
     showIndexColumn: false,

@@ -100,6 +100,8 @@
     "min": "Giá trị phải nhiều hơn {min} kí tự",
     "max": "Giá trị phải nhỏ hơn {max} kí tự",
     "len": "Giá trị phải đủ {len} kí tự",
-    "email": "Vui lòng nhập địa chỉ email"
+    "email": "Vui lòng nhập địa chỉ email",
+    "uploadOnlyAudio": "Bạn chỉ có thể tải lên audio!",
+    "minFileSize": "Kích thước tệp phải nhỏ hơn {size}!"
   }
 }

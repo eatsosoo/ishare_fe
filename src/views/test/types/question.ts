@@ -3,7 +3,13 @@ export interface QuestionType {
   label: string;
 }
 
-export type SelectQuestionType = 'choice' | 'fill_in' | 'true_false_not_given' | 'multiple_choice';
+export type SelectQuestionType =
+  | 'choice'
+  | 'fill_in'
+  | 'true_false_not_given'
+  | 'multiple_choice'
+  | 'writing_task_1_academic'
+  | 'speaking_part_1';
 
 export interface QuestionOptionItem {
   id: string;

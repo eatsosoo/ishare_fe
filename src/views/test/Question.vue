@@ -58,15 +58,20 @@
               allow-clear
             />
           </Form.Item>
-          <a-button type="success" ghost @click="handleAddAnswer">{{ t('common.add') }}</a-button>
+          <a-button
+            type="success"
+            ghost
+            preIcon="ant-design:plus-circle-filled"
+            @click="handleAddAnswer"
+          />
           <a-button
             v-if="Object.keys(optionFormData).length > 1"
             type="error"
             ghost
             class="ml-2"
+            preIcon="ant-design:minus-circle-filled"
             @click="handleRemoveAnswer"
-            >{{ t('common.delText') }}</a-button
-          >
+          />
         </div>
       </Form>
 

@@ -60,7 +60,7 @@
     const status = file?.status;
     const url = file?.response?.result.items;
     const name = file?.name;
-
+    console.log('status', status);
     if (status === 'uploading') {
       if (!uploading) {
         emit('uploading', name);

@@ -94,6 +94,51 @@ export const READING_DEFAULT: ExamPartItem[] = [
   // },
 ];
 
+export const LISTENING_DEFAULT: ExamPartItem[] = [
+  {
+    subject: 'Listening Section 1',
+    question_count: 1,
+    duration: 20,
+    questions: Array.from({ length: 1 }, (_, i) => ({
+      question_no: i + 1,
+      content: `Question ${i + 1} ?`,
+      type: 'choice',
+      options: defaultReadingOptions,
+      answer: null,
+    })),
+  },
+];
+
+export const WRITING_DEFAULT: ExamPartItem[] = [
+  {
+    subject: '',
+    question_count: 1,
+    duration: 60,
+    questions: Array.from({ length: 1 }, (_, i) => ({
+      question_no: i + 1,
+      content: `Question ${i + 1} ?`,
+      type: 'writing_task_1_academic',
+      options: [],
+      answer: null,
+    })),
+  },
+];
+
+export const SPEAKING_DEFAULT: ExamPartItem[] = [
+  {
+    subject: '',
+    question_count: 1,
+    duration: 15,
+    questions: Array.from({ length: 1 }, (_, i) => ({
+      question_no: i + 1,
+      content: `Question ${i + 1} ?`,
+      type: 'speaking_part_1',
+      options: [],
+      answer: null,
+    })),
+  },
+];
+
 export const listeningParts: ListeningPart[] = [
   {
     key: 'tabs1',
