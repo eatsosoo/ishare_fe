@@ -1,4 +1,5 @@
 import { classListApi } from '@/api/class/class';
+import { examListApi } from '@/api/exam/exam';
 import { FormSchema } from '@/components/Form';
 import { useI18n } from '@/hooks/web/useI18n';
 
@@ -188,56 +189,67 @@ export const createExamSchemas: FormSchema[] = [
   },
 ];
 
-export const createHomeworkSchemas: FormSchema[] = [
+export const assignFormSchemas: FormSchema[] = [
   {
-    field: 'title',
-    component: 'Input',
-    label: t('form.homework.name'),
+    field: 'class_id',
+    component: 'ApiSelect',
+    label: t('form.gradingSearch.className'),
+    componentProps: {
+      // more details see /src/components/Form/src/components/ApiSelect.vue
+      api: classListApi(),
+      params: {
+        id: 1,
+      },
+
+      resultField: 'items',
+      // use name as label
+      labelField: 'title',
+      // use id as value
+      valueField: 'id',
+      // not request untill to select
+      immediate: true,
+      onChange: (e, v) => {
+        console.log('ApiSelect====>:', e, v);
+      },
+      // atfer request callback
+      onOptionsChange: (options) => {
+        console.log('get options', options.length, options);
+      },
+    },
     required: true,
     colProps: {
-      span: 24,
+      offset: 1,
     },
   },
   {
-    field: 'deadline',
-    label: t('form.exam.deadline'),
-    component: 'DatePicker',
+    field: 'exam_id',
+    component: 'ApiSelect',
+    label: t('form.gradingSearch.examName'),
     componentProps: {
-      showTime: true,
-      format: 'YYYY-MM-DD HH:mm:ss',
+      // more details see /src/components/Form/src/components/ApiSelect.vue
+      api: examListApi(),
+      params: {
+        id: 1,
+      },
+
+      resultField: 'items',
+      // use name as label
+      labelField: 'title',
+      // use id as value
+      valueField: 'id',
+      // not request untill to select
+      immediate: true,
+      onChange: (e, v) => {
+        console.log('ApiSelect====>:', e, v);
+      },
+      // atfer request callback
+      onOptionsChange: (options) => {
+        console.log('get options', options.length, options);
+      },
     },
     required: true,
     colProps: {
-      span: 24,
-    },
-  },
-  {
-    field: 'skill',
-    label: t('form.gradingSearch.skill'),
-    component: 'Select',
-    componentProps: {
-      options: [
-        {
-          label: 'Reading',
-          value: 'reading',
-        },
-        {
-          label: 'Listening',
-          value: 'listening',
-        },
-        {
-          label: 'Speaking',
-          value: 'speaking',
-        },
-        {
-          label: 'Writing',
-          value: 'writing',
-        },
-      ],
-    },
-    required: true,
-    colProps: {
-      span: 24,
+      offset: 1,
     },
   },
 ];

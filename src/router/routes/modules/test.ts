@@ -22,6 +22,14 @@ const test: AppRouteModule = {
         title: t('routes.page.examList'),
       },
     },
+    {
+      path: '/test/assignment',
+      name: 'ExamList',
+      component: () => import('@/views/test/assignment.vue'),
+      meta: {
+        title: t('routes.page.assignTest'),
+      },
+    },
     // {
     //   path: '/test/reading',
     //   name: 'ReadingTest',

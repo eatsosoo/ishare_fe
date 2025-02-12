@@ -30,7 +30,13 @@
   "gradingSearch": {
     "searchText": "Tìm kiếm theo lớp học và kỹ năng",
     "className": "Tên lớp học",
-    "skill": "Kỹ năng"
+    "skill": "Kỹ năng",
+    "examName": "Tên bài thi",
+    "homeworkName": "Tên bài tập",
+    "titleExam": "Bài thi",
+    "contentExam": "Chọn lớp học và bài thi để giao cho học viên.",
+    "titleHomework": "Bài tập",
+    "contentHomework": "Chọn lớp học và bài tập để giao cho học viên."
   },
   "exerciseSearch": {
     "className": "Tên lớp",
