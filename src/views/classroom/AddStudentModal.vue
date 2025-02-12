@@ -4,6 +4,7 @@
     title="Modal Title"
     width="1100px"
     :can-fullscreen="false"
+    :loading="props.loading"
     @ok="getSelectStudents"
   >
     <BasicTable @register="registerTable" ref="selectTable" />
@@ -12,17 +13,24 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
   import { BasicModal } from '@/components/Modal';
-  import { BasicTable, ColumnChangeParam, useTable } from '@/components/Table';
+  import { BasicTable, useTable } from '@/components/Table';
   import { getSearchStudentConfig, getStudentColumns } from '@/views/classroom/tableData';
   import { useI18n } from '@/hooks/web/useI18n';
-  import { studentListApi } from '@/api/student/student';
+  import { getStudentsOfClassApi } from '@/api/class/class';
+
+  const props = defineProps({
+    loading: {
+      type: Boolean,
+      default: false,
+    },
+  });
 
   const { t } = useI18n();
   const [registerTable, { getSelectRows, clearSelectedRowKeys }] = useTable({
     canResize: true,
     title: t('table.studentList'),
     titleHelpMessage: t('table.addStudentToClass'),
-    api: studentListApi(),
+    api: getStudentsOfClassApi(),
     columns: getStudentColumns(),
     defSort: {
       field: 'name',
@@ -37,16 +45,17 @@
       type: 'checkbox',
     },
     showSelectionBar: true,
-    onColumnsChange: (data: ColumnChangeParam[]) => {
-      console.log('ColumnsChanged', data);
-    },
   });
   const emit = defineEmits(['selectStudents']);
 
   const selectTable = ref<InstanceType<typeof BasicTable> | undefined>();
 
   function getSelectStudents() {
-    emit('selectStudents', getSelectRows());
+    const rows = getSelectRows();
+    const ids = rows.map((row) => {
+      row.id;
+    });
+    emit('selectStudents', ids);
     clearSelectedRowKeys();
   }
 </script>

@@ -50,7 +50,8 @@
     "subTitle500": "Xin lỗi, máy chủ đang gặp sự cố.",
     "noDataTitle": "Không có dữ liệu trên trang hiện tại.",
     "networkErrorTitle": "Lỗi mạng",
-    "networkErrorSubTitle": "Xin lỗi, kết nối mạng của bạn đã bị ngắt, vui lòng kiểm tra lại mạng của bạn!"
+    "networkErrorSubTitle": "Xin lỗi, kết nối mạng của bạn đã bị ngắt, vui lòng kiểm tra lại mạng của bạn!",
+    "anErrorOccured": "Có lỗi xảy ra, hãy tải lại trang trước khi thử lại!"
   },
   "lock": {
     "unlock": "Nhấn để mở khóa",

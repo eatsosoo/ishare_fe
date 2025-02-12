@@ -3,6 +3,8 @@ import {
   ClassAddStudentsParams,
   ClassDeleteStudentsParams,
   ClassListGetResultModel,
+  ClassListItem,
+  ClassStudentGetResultModel,
   CreateClassParams,
 } from './classModel';
 import { BasicPageParams, BasicApiResult } from '../model/baseModel';
@@ -58,21 +60,10 @@ export const classListApi = () => (params: BasicPageParams) =>
     },
   });
 
-export const classAddStudentsApi =
-  () =>
-  (params: ClassAddStudentsParams, mode: ErrorMessageMode = 'modal') =>
-    defHttp.post<BasicApiResult<ClassAddStudentsParams>>(
-      {
-        url: `${Api.CLASS_ROUTE}/${params.class_id}/students`,
-        params,
-      },
-      {
-        errorMessageMode: mode,
-      },
-    );
-
-export const getStudentsOfClassApi = (classId: number) => (params: BasicPageParams) =>
-  defHttp.get<ClassListGetResultModel>({
+export const getStudentsOfClassApi = () => (params: BasicPageParams) => {
+  const useStore = useUserStore();
+  const classId = useStore.getClassId;
+  return defHttp.get<ClassStudentGetResultModel>({
     url: `${Api.CLASS_ROUTE}/${classId}/students`,
     params,
     headers: {
@@ -80,6 +71,7 @@ export const getStudentsOfClassApi = (classId: number) => (params: BasicPagePara
       ignoreCancelToken: true,
     },
   });
+};
 
 export const getHomeworksOfClassApi = () => (params: BasicPageParams) => {
   const useStore = useUserStore();
@@ -93,3 +85,17 @@ export const getHomeworksOfClassApi = () => (params: BasicPageParams) => {
     },
   });
 };
+
+export const addStudentClassApi = (
+  params: ClassAddStudentsParams,
+  mode: ErrorMessageMode = 'modal',
+) =>
+  defHttp.post<BasicApiResult<ClassListItem>>(
+    {
+      url: `${Api.CLASS_ROUTE}/${params.class_id}/students`,
+      params,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );

@@ -16,38 +16,29 @@
           {{ setClassStatus(record.start_date, record.end_date) }}
         </template>
         <template v-if="column.key === 'action'">
-          <Tooltip>
-            <template #title>
-              <div>{{ t('table.viewStudentList') }}</div>
-            </template>
-            <a-button
-              size="small"
-              preIcon="ant-design:ordered-list-outlined"
-              class="mr-2"
-              @click="activateModal(record, 'VIEW')"
-            />
-          </Tooltip>
-          <Tooltip>
-            <template #title>
-              <div>{{ t('table.addStudentToClass') }}</div>
-            </template>
-            <a-button
-              size="small"
-              preIcon="ant-design:user-add-outlined"
-              @click="activateModal(record, 'ADD')"
-            />
-          </Tooltip>
+          <a-button
+            size="small"
+            preIcon="ant-design:ordered-list-outlined"
+            class="mr-2"
+            @click="activateModal(record, 'VIEW')"
+          />
+          <a-button
+            size="small"
+            preIcon="ant-design:user-add-outlined"
+            @click="activateModal(record, 'ADD')"
+          />
         </template>
       </template>
     </BasicTable>
 
     <DetailClassModal
       :title="titleModal"
-      :class-id="targetValue?.id ?? 0"
+      :class-id="targetClass?.id ?? 0"
       @register="registerViewModal"
     />
     <AddStudentModal
       :title="titleModal"
+      :loading="addLoading"
       @register="registerAddModal"
       @select-students="handleAddMoreStudents"
     />
@@ -61,10 +52,9 @@
   import { useModal } from '@/components/Modal';
   import { computed, ref } from 'vue';
   import AddStudentModal from '@/views/classroom/AddStudentModal.vue';
-  import { Tooltip } from 'ant-design-vue';
   import { useMessage } from '@/hooks/web/useMessage';
-  import { classListApi } from '@/api/class/class';
-  import { ClassListItem } from '@/api/class/classModel';
+  import { addStudentClassApi, classListApi } from '@/api/class/class';
+  import { ClassAddStudentsParams, ClassListItem } from '@/api/class/classModel';
   import { useUserStore } from '@/store/modules/user';
 
   const { t } = useI18n();
@@ -87,12 +77,14 @@
     },
   });
 
-  const targetValue = ref<ClassListItem | null>(null);
+  const targetClass = ref<ClassListItem | null>(null);
+  const addLoading = ref(false);
+
   const titleModal = computed(() => {
-    return targetValue.value ? `${targetValue.value.title} - ${targetValue.value.teacher}` : '';
+    return targetClass.value ? `${targetClass.value.title} - ${targetClass.value.teacher}` : '';
   });
 
-  const { createSuccessModal } = useMessage();
+  const { createSuccessModal, createErrorModal } = useMessage();
 
   function getFormValues() {
     console.log(getForm().getFieldsValue());
@@ -101,7 +93,7 @@
   function activateModal(record: ClassListItem | any, type: 'ADD' | 'VIEW') {
     const useStore = useUserStore();
     useStore.setClassId(record.id);
-    targetValue.value = record;
+    targetClass.value = record;
     if (type === 'VIEW') {
       openViewModal();
     } else {
@@ -109,12 +101,38 @@
     }
   }
 
-  function handleAddMoreStudents() {
-    console.log('Add more students');
-    createSuccessModal({
-      title: t('layout.setting.operatingTitle'),
-      content: t('table.addStudentToClassSuccess'),
-    });
+  async function handleAddMoreStudents(students: { id: number }[]) {
+    try {
+      if (!targetClass.value) {
+        createErrorModal({
+          title: t('sys.api.errorTip'),
+          content: t('sys.exception.anErrorOccured'),
+        });
+        return;
+      }
+      addLoading.value = true;
+
+      const formData: ClassAddStudentsParams = {
+        class_id: targetClass.value.id,
+        students,
+      };
+      const result = await addStudentClassApi(formData);
+      if (result) {
+        createSuccessModal({
+          title: t('layout.setting.operatingTitle'),
+          content: t('table.addStudentToClassSuccess'),
+        });
+      }
+    } catch (error) {
+      const apiMessage = error.response.data.message;
+      createErrorModal({
+        title: t('sys.api.errorTip'),
+        content:
+          apiMessage || (error as unknown as Error).message || t('sys.api.networkExceptionMsg'),
+      });
+    } finally {
+      addLoading.value = false;
+    }
   }
 
   function setClassStatus(startDate: string, endDate: string) {
