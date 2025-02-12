@@ -62,5 +62,10 @@
     "incomplete":"Chưa hoàn thành",
     "createdAt": "Ngày giao",
     "deadline": "Hạn nộp"
+  },
+  "homework": {
+    "name": "Tên bài tập",
+    "deadline": "Hạn nộp",
+    "skill": "Kỹ năng"
   }
 }
