@@ -42,7 +42,8 @@
     "createdAt": "Ngày giao",
     "deadline": "Hạn nộp",
     "student": "Tên học sinh",
-    "skill": "Kỹ năng"
+    "skill": "Kỹ năng",
+    "createAction": "Bài tập mới"
   },
   "examTable": {
     "name": "Tên bài thi",

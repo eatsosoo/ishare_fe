@@ -6,7 +6,7 @@
           <Col :span="12">
             <div class="p-4 re-box-shadow rounded-lg">
               <h3>{{ t('common.readingContext') }}</h3>
-              <Tinymce v-model="readingParts[index].subject" @change="handleChange" :height="550" />
+              <Tinymce v-model="readingParts[index].subject" :height="550" />
             </div>
           </Col>
           <Col :span="12" class="flex">
@@ -46,7 +46,7 @@
         </Row>
       </TabPane>
 
-      <template v-if="readingParts.length < 3" #rightExtra>
+      <template v-if="readingParts.length < 3 && props.type === 'reading'" #rightExtra>
         <a-button type="default" @click="handleAddTab">{{ t('common.add') }} Passage</a-button>
       </template>
     </Tabs>
@@ -63,12 +63,21 @@
   import { useMessage } from '@/hooks/web/useMessage';
   import { useDesign } from '@/hooks/web/useDesign';
   import { examPartApi } from '@/api/exam/exam';
-  import { ExamPartForm, ExamPartItem, ExtendedQuestionItem } from '@/api/exam/examModel';
+  import {
+    ExamPartForm,
+    ExamPartItem,
+    ExtendedQuestionItem,
+    SkillType,
+  } from '@/api/exam/examModel';
 
   const props = defineProps({
     value: {
       type: Array as PropType<ExamPartItem[]>,
       default: READING_DEFAULT,
+    },
+    type: {
+      type: String as PropType<SkillType>,
+      default: 'reading',
     },
   });
 
@@ -88,10 +97,6 @@
   const { t } = useI18n();
   const { createMessage, createErrorModal, createSuccessModal } = useMessage();
   const { prefixCls } = useDesign('register');
-
-  function handleChange(value: string) {
-    console.log(value);
-  }
 
   function handleUpdateQuestion(partIdx: number, value: QuestionItem) {
     const questionIndex = readingParts.value[partIdx].questions.findIndex(

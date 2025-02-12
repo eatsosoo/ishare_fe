@@ -36,5 +36,3 @@ export interface ListeningPart {
   subject: string;
   questions: QuestionItem[];
 }
-
-export type SkillType = 'Reading' | 'Listening' | 'Writing' | 'Speaking';

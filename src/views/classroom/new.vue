@@ -35,10 +35,10 @@
   const { t } = useI18n();
   const tableRef = ref<{ getDataSource: () => any } | null>(null);
   const studentsRegistered = ref<StudentListItem[]>([]);
-  const { prefixCls } = useDesign('register');
-  const { createErrorModal, createSuccessModal } = useMessage();
   const loading = ref(false);
 
+  const { prefixCls } = useDesign('register');
+  const { createErrorModal, createSuccessModal } = useMessage();
   const [register, { validate, resetFields }] = useForm({
     layout: 'vertical',
     baseColProps: {

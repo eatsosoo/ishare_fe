@@ -11,12 +11,12 @@
 
     <template #overlay>
       <Menu @click="handleMenuClick">
-        <MenuItem
+        <!-- <MenuItem
           v-if="getShowApi"
           key="api"
           :text="t('layout.header.dropdownChangeApi')"
           icon="ant-design:swap-outlined"
-        />
+        /> -->
         <MenuItem
           v-if="getUseLockPage"
           key="lock"
@@ -63,7 +63,7 @@
 
   const { prefixCls } = useDesign('header-user-dropdown');
   const { t } = useI18n();
-  const { getUseLockPage, getShowApi } = useHeaderSetting();
+  const { getUseLockPage } = useHeaderSetting();
   const userStore = useUserStore();
 
   const getUserInfo = computed(() => {

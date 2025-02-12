@@ -3,50 +3,49 @@
     <BasicTable @register="registerTable">
       <template #form-custom> custom-slot </template>
       <template #toolbar>
-        <a-button type="primary" @click="getFormValues">{{ t('table.enterData') }}</a-button>
+        <a-button type="primary" @click="openAddModal">{{
+          t('table.exerciseTable.createAction')
+        }}</a-button>
       </template>
       <template #bodyCell="{ column, record }">
-        <template v-if="column.key === 'start_date'">
-          {{ record.start_date.split(' ')[0] }}
-        </template>
-        <template v-if="column.key === 'end_date'">
-          {{ record.end_date.split(' ')[0] }}
-        </template>
         <template v-if="column.key === 'action'">
           <a-button
             size="small"
             preIcon="ant-design:home-outlined"
-            @click="activateHomworkModal(record)"
+            class="mr-2"
+            @click="activateEditorModal(record as ExamListItem)"
+          />
+          <a-button
+            size="small"
+            preIcon="ant-design:delete-outlined"
+            @click="examDeleteApi(record.id)"
           />
         </template>
       </template>
     </BasicTable>
 
-    <EditorHomeworkModal
-      :title="titleModal"
-      :class-id="targetClass?.id"
-      @register="registerHomeworkModal"
-    />
+    <AddExamModal @register="registerAddModal" @success="handleSuccessModal" />
+    <EditorHomeworkModal @register="registerEditorModal" :exam-id="examId" :title="titleEditor" />
   </div>
 </template>
 <script lang="ts" setup>
   import { BasicTable, useTable } from '@/components/Table';
-  import { getClassColumns, getFormConfig } from '@/views/classroom/tableData';
+  import { getExamListConfig, getTestColumns } from '@/views/classroom/tableData';
   import { useI18n } from '@/hooks/web/useI18n';
+  import { examDeleteApi, examListApi } from '@/api/exam/exam';
   import { useModal } from '@/components/Modal';
-  import { computed, ref } from 'vue';
-  import { classListApi } from '@/api/class/class';
-  import { ClassListItem } from '@/api/class/classModel';
+  import AddExamModal from '@/views/test/AddExamModal.vue';
+  import { ref } from 'vue';
+  import { ExamListItem } from '@/api/exam/examModel';
   import EditorHomeworkModal from './EditorHomeworkModal.vue';
 
   const { t } = useI18n();
-  const [registerHomeworkModal, { openModal: openHomeworkModal }] = useModal();
-  const [registerTable, { getForm }] = useTable({
+  const [registerTable, { reload }] = useTable({
     title: t('routes.page.classroomList'),
-    api: classListApi(),
-    columns: getClassColumns(),
+    api: examListApi(),
+    columns: getTestColumns(),
     useSearchForm: true,
-    formConfig: getFormConfig(),
+    formConfig: getExamListConfig(),
     showTableSetting: true,
     tableSetting: { fullScreen: true },
     showIndexColumn: false,
@@ -57,20 +56,20 @@
       dataIndex: 'action',
     },
   });
+  const examId = ref<number | undefined>(undefined);
+  const titleEditor = ref('');
 
-  const targetClass = ref<ClassListItem | null>(null);
-  const titleModal = computed(() => {
-    return targetClass.value
-      ? `Class ${targetClass.value.title} - ${t('routes.page.assignHomework')}`
-      : '';
-  });
+  const handleSuccessModal = () => {
+    reload();
+    closeModal();
+  };
 
-  function getFormValues() {
-    console.log(getForm().getFieldsValue());
-  }
+  const activateEditorModal = (record: ExamListItem) => {
+    examId.value = record.id;
+    titleEditor.value = record.title;
+    openEditorModal();
+  };
 
-  function activateHomworkModal(record: ClassListItem | any) {
-    targetClass.value = record;
-    openHomeworkModal();
-  }
+  const [registerAddModal, { openModal: openAddModal, closeModal }] = useModal();
+  const [registerEditorModal, { openModal: openEditorModal }] = useModal();
 </script>

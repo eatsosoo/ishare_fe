@@ -10,6 +10,8 @@ export interface ExamListItem {
 
 export interface ExamBasicItem {}
 
+export type SkillType = 'reading' | 'listening' | 'writing' | 'speaking' | 'homework';
+
 export interface ExamAddForm {
   title: string;
   deadline: string;
@@ -17,7 +19,7 @@ export interface ExamAddForm {
 
 export interface ExamPartForm {
   exam_id: number;
-  type: 'reading' | 'listening' | 'writing' | 'speaking';
+  type: SkillType;
   duration: number;
   media: string | null;
   subject: string;
@@ -27,7 +29,7 @@ export interface ExamPartForm {
 export interface ExamPartItem {
   id?: number;
   subject: string;
-  type?: 'reading' | 'listening' | 'writing' | 'speaking';
+  type?: SkillType;
   question_count: number;
   duration: number;
   audio_url?: string | null;

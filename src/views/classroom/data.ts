@@ -170,7 +170,7 @@ export const createExamSchemas: FormSchema[] = [
     label: t('form.exam.name'),
     required: true,
     colProps: {
-      span: 24,
+      offset: 1,
     },
   },
   {
@@ -183,7 +183,7 @@ export const createExamSchemas: FormSchema[] = [
     },
     required: true,
     colProps: {
-      span: 24,
+      offset: 1,
     },
   },
 ];

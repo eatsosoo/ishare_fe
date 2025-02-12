@@ -25,11 +25,7 @@
               ></audio>
             </div>
             <div class="p-4 re-box-shadow rounded-lg">
-              <Tinymce
-                v-model="listeningParts[index].subject"
-                @change="handleChange"
-                :height="550"
-              />
+              <Tinymce v-model="listeningParts[index].subject" :height="550" />
             </div>
           </Col>
           <Col :span="12">
@@ -69,7 +65,7 @@
         </Row>
       </TabPane>
 
-      <template v-if="listeningParts.length < 3" #rightExtra>
+      <template v-if="listeningParts.length < 3 && props.type === 'listening'" #rightExtra>
         <a-button type="default" @click="handleAddTab">{{ t('common.add') }} Section</a-button>
       </template>
     </Tabs>
@@ -86,7 +82,12 @@
   import { useMessage } from '@/hooks/web/useMessage';
   import { useDesign } from '@/hooks/web/useDesign';
   import { examPartApi } from '@/api/exam/exam';
-  import { ExamPartForm, ExamPartItem, ExtendedQuestionItem } from '@/api/exam/examModel';
+  import {
+    ExamPartForm,
+    ExamPartItem,
+    ExtendedQuestionItem,
+    SkillType,
+  } from '@/api/exam/examModel';
   import { useGlobSetting } from '@/hooks/setting';
   import { getToken } from '@/utils/auth';
 
@@ -94,6 +95,10 @@
     value: {
       type: Array as PropType<ExamPartItem[]>,
       default: LISTENING_DEFAULT,
+    },
+    type: {
+      type: String as PropType<SkillType>,
+      default: 'listening',
     },
   });
 
@@ -121,10 +126,6 @@
   const { createMessage, createErrorModal, createSuccessModal } = useMessage();
   const { prefixCls } = useDesign('register');
   const { uploadUrl } = useGlobSetting();
-
-  function handleChange(value: string) {
-    console.log(value);
-  }
 
   function handleUpdateQuestion(partIdx: number, value: QuestionItem) {
     const questionIndex = listeningParts.value[partIdx].questions.findIndex(
@@ -198,11 +199,11 @@
       const { subject, questions } = listeningParts.value[activeKey.value];
       const submitForm: ExamPartForm = {
         exam_id: examId,
-        type: 'listening',
+        type: props.type,
         subject,
         questions,
         duration: 40,
-        media: null,
+        media: audioUrl.value,
       };
       console.log(submitForm);
       const result = await examPartApi(submitForm);

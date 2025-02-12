@@ -16,12 +16,20 @@ const exercise: AppRouteModule = {
   children: [
     {
       path: '/exercise/index',
-      name: 'AssignHomework',
+      name: 'HomeworkList',
       component: () => import('@/views/exercise/index.vue'),
       meta: {
-        title: t('routes.page.assignHomework'),
+        title: t('routes.page.homeworkList'),
       },
     },
+    // {
+    //   path: '/exercise/index',
+    //   name: 'AssignHomework',
+    //   component: () => import('@/views/exercise/index.vue'),
+    //   meta: {
+    //     title: t('routes.page.assignHomework'),
+    //   },
+    // },
     // {
     //   path: '/exercise/reading',
     //   name: 'ReadingExercise',

@@ -11,7 +11,13 @@
       <Select v-model:value="skill" :options="options" />
     </div>
 
-    <component :is="skillComponents[skill]" ref="skillRefs[skill]" :value="detail[skill]" />
+    <component
+      :is="skillComponents[skill]"
+      ref="skillRefs[skill]"
+      :value="detail[skill]"
+      type="homework"
+      class="mb-4"
+    />
   </BasicModal>
 </template>
 
@@ -33,7 +39,7 @@
   import { useMessage } from '@/hooks/web/useMessage';
 
   const props = defineProps({
-    classId: Number,
+    homeworkId: Number,
     titleEditor: {
       type: String,
     },
@@ -75,7 +81,7 @@
   ]);
 
   const handleOk = async () => {
-    if (!props.classId) {
+    if (!props.homeworkId) {
       createErrorModal({
         title: t('sys.api.errorTip'),
         content: t('sys.exception.anErrorOccured'),
@@ -86,13 +92,13 @@
     const currentRef = skillRefs.value[skill.value];
     if (currentRef?.value) {
       loading.value = true;
-      await currentRef.value.submitAll(props.classId);
+      await currentRef.value.submitAll(props.homeworkId);
       loading.value = false;
     }
   };
 
   watch(
-    () => props.classId,
+    () => props.homeworkId,
     () => {
       detail.value = { ...defaultHomeworks };
     },

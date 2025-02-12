@@ -209,6 +209,33 @@ export function getTestColumns(): BasicColumn[] {
   ];
 }
 
+export function getHomeworkColumns(): BasicColumn[] {
+  return [
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      fixed: 'left',
+      width: 80,
+    },
+    {
+      title: t('table.exerciseTable.name'),
+      dataIndex: 'title',
+    },
+    {
+      title: t('table.examTable.teacher'),
+      dataIndex: 'teacher',
+    },
+    {
+      title: t('table.examTable.createdAt'),
+      dataIndex: 'created_at',
+    },
+    {
+      title: t('table.examTable.deadline'),
+      dataIndex: 'deadline',
+    },
+  ];
+}
+
 export const getAdvanceSchema = (itemNumber = 6): FormSchema[] => {
   const arr: FormSchema[] = [];
   for (let index = 0; index < itemNumber; index++) {

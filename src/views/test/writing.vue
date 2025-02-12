@@ -16,13 +16,17 @@
   import { ref } from 'vue';
   import { Tinymce } from '@/components/Tinymce';
   import { Row, Col } from 'ant-design-vue';
-  import { ExamPartItem } from '@/api/exam/examModel';
+  import { ExamPartItem, SkillType } from '@/api/exam/examModel';
   import { WRITING_DEFAULT } from './data';
 
   const props = defineProps({
     value: {
       type: Array as PropType<ExamPartItem[]>,
       default: WRITING_DEFAULT,
+    },
+    type: {
+      type: String as PropType<SkillType>,
+      default: 'writing',
     },
   });
 
