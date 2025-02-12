@@ -1,29 +1,32 @@
 import { FormSchema } from '@/components/Form';
+import { useI18n } from '@/hooks/web/useI18n';
+
+const { t } = useI18n();
 
 export const formSchema: FormSchema[] = [
   {
     field: 'passwordOld',
-    label: '当前密码',
+    label: t('form.security.oldPassword'),
     component: 'InputPassword',
     required: true,
   },
   {
     field: 'passwordNew',
-    label: '新密码',
+    label: t('form.security.newPassword'),
     component: 'StrengthMeter',
     componentProps: {
-      placeholder: '新密码',
+      placeholder: t('form.security.newPassword'),
     },
     rules: [
       {
         required: true,
-        message: '请输入新密码',
+        message: t('form.security.passwordNotEmpty'),
       },
     ],
   },
   {
     field: 'confirmPassword',
-    label: '确认密码',
+    label: t('form.security.confirmPassword'),
     component: 'InputPassword',
 
     dynamicRules: ({ values }) => {
@@ -32,10 +35,10 @@ export const formSchema: FormSchema[] = [
           required: true,
           validator: (_, value) => {
             if (!value) {
-              return Promise.reject('密码不能为空');
+              return Promise.reject(t('form.security.passwordNotEmpty'));
             }
             if (value !== values.passwordNew) {
-              return Promise.reject('两次输入的密码不一致!');
+              return Promise.reject(t('form.security.confirmPasswordNotMatch'));
             }
             return Promise.resolve();
           },

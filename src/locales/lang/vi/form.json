@@ -67,5 +67,13 @@
     "name": "Tên bài tập",
     "deadline": "Hạn nộp",
     "skill": "Kỹ năng"
+  },
+  "security": {
+    "password": "Mật khẩu",
+    "oldPassword": "Mật khẩu cũ",
+    "newPassword": "Mật khẩu mới",
+    "confirmPassword": "Xác nhận mật khẩu",
+    "passwordNotEmpty": "Mật khẩu không được để trống",
+    "confirmPasswordNotMatch": "Mật khẩu bạn nhập không khớp!"
   }
 }

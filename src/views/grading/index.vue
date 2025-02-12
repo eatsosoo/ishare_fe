@@ -19,7 +19,7 @@
             <a-button
               size="small"
               preIcon="ant-design:edit-filled"
-              @click="clickOpen(record.type, record.student)"
+              @click="clickOpen(record.skill, record.student)"
             />
           </template>
         </template>
@@ -42,7 +42,7 @@
   import { useForm } from '@/components/Form';
   import { searchGradingSchemas } from '@/views/classroom/data';
   import { ref } from 'vue';
-  import { SkillType } from '@/views/test/types/question';
+  import { SkillType } from '@/api/exam/examModel';
 
   const { t } = useI18n();
   const [registerTable] = useTable({
@@ -69,7 +69,7 @@
   });
 
   const showExerciseTable = ref(false);
-  const skillType = ref<SkillType>('Reading');
+  const skillType = ref<SkillType>('reading');
   const modalTitle = ref('');
 
   function clickOpen(skillVal: SkillType, studentName: string) {

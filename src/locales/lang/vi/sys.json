@@ -103,5 +103,9 @@
     "email": "Vui lòng nhập địa chỉ email",
     "uploadOnlyAudio": "Bạn chỉ có thể tải lên audio!",
     "minFileSize": "Kích thước tệp phải nhỏ hơn {size}!"
+  },
+  "changePassword": {
+    "title": "Sửa đổi mật khẩu của người dùng hiện tại",
+    "content": "Sau khi sửa đổi thành công, tài khoản đăng nhập hiện tại sẽ tự động được đăng xuất!"
   }
 }

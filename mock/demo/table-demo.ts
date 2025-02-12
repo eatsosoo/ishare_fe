@@ -116,9 +116,9 @@ const exerciseList = (() => {
   for (let index = 0; index < 40; index++) {
     result.push({
       id: `${index}`,
-      name: '@name',
-      'type|1': ['Reading', 'Listening', 'Speaking', 'Writing'],
-      student: '@name',
+      exam_title: '@name',
+      'skill|1': ['reading', 'listening', 'speaking', 'writing', 'homework'],
+      student_name: '@name',
       'status|1': ['v', 'x'],
       score: '@integer(0, 100)',
       created_at: '@datetime',
