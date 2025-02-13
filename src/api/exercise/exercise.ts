@@ -4,7 +4,7 @@ import { ExerciseListGetResultModel, HomeworkListGetResultModel } from './exerci
 
 enum Api {
   EXERCISE_LIST = '/table/getExerciseList',
-  HOMEWORK_LIST = 'exams',
+  HOMEWORK_LIST = '/exams',
 }
 
 export const exerciseListApi = () => (params: BasicPageParams) =>
@@ -20,7 +20,7 @@ export const exerciseListApi = () => (params: BasicPageParams) =>
 // list homework created
 export const homeworkListApi = () => (params: BasicPageParams) =>
   defHttp.get<HomeworkListGetResultModel>({
-    url: Api.HOMEWORK_LIST,
+    url: `${Api.HOMEWORK_LIST}?type=Homework`,
     params,
     headers: {
       // @ts-ignore

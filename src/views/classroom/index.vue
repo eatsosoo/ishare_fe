@@ -16,15 +16,16 @@
           {{ setClassStatus(record.start_date, record.end_date) }}
         </template>
         <template v-if="column.key === 'action'">
-          <a-button
-            size="small"
-            preIcon="ant-design:ordered-list-outlined"
-            class="mr-2"
+          <Icon
+            :size="20"
+            icon="ant-design:ordered-list-outlined"
+            class="mr-2 cursor-pointer"
             @click="activateModal(record, 'VIEW')"
           />
-          <a-button
-            size="small"
-            preIcon="ant-design:user-add-outlined"
+          <Icon
+            :size="20"
+            icon="ant-design:user-add-outlined"
+            class="cursor-pointer"
             @click="activateModal(record, 'ADD')"
           />
         </template>
@@ -56,6 +57,7 @@
   import { addStudentClassApi, classListApi } from '@/api/class/class';
   import { ClassAddStudentsParams, ClassListItem } from '@/api/class/classModel';
   import { useUserStore } from '@/store/modules/user';
+  import Icon from '@/components/Icon/Icon.vue';
 
   const { t } = useI18n();
   const [registerViewModal, { openModal: openViewModal }] = useModal();

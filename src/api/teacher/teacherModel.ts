@@ -1,17 +1,22 @@
-import { otherHttp } from '@/utils/http/axios';
-import { BasicPageParams } from '../model/baseModel';
-import { TeacherListGetResultModel } from './teacher';
+import { BasicFetchResult } from '../model/baseModel';
 
-enum Api {
-  TEACHER_LIST = '/table/teachers',
+export interface TeacherListItem {
+  id: string;
+  name: string;
+  phone: string;
+  email: string;
+  birthday: string;
+  status: number;
 }
 
-export const teacherListApi = () => (params: BasicPageParams) =>
-  otherHttp.get<TeacherListGetResultModel>({
-    url: Api.TEACHER_LIST,
-    params,
-    headers: {
-      // @ts-ignore
-      ignoreCancelToken: true,
-    },
-  });
+export interface AssignmentForm {
+  title: string;
+  class_id: number;
+  exam_id: number;
+  date: string;
+}
+
+/**
+ * @description: Request list return value
+ */
+export type TeacherListGetResultModel = BasicFetchResult<TeacherListItem>;

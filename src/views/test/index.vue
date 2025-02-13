@@ -9,15 +9,16 @@
       </template>
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'action'">
-          <a-button
-            size="small"
-            preIcon="ant-design:edit-outlined"
-            class="mr-2"
+          <Icon
+            icon="ant-design:edit-outlined"
+            :size="20"
+            class="mr-2 cursor-pointer"
             @click="activateEditorModal(record as ExamListItem)"
           />
-          <a-button
-            size="small"
-            preIcon="ant-design:delete-outlined"
+          <Icon
+            icon="ant-design:delete-outlined"
+            :size="20"
+            class="cursor-pointer"
             @click="examDeleteApi(record.id)"
           />
         </template>
@@ -38,6 +39,7 @@
   import EditorPartModal from './EditorPartModal.vue';
   import { ref } from 'vue';
   import { ExamListItem } from '@/api/exam/examModel';
+  import Icon from '@/components/Icon/Icon.vue';
 
   const { t } = useI18n();
   const [registerTable, { reload }] = useTable({

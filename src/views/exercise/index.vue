@@ -9,15 +9,16 @@
       </template>
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'action'">
-          <a-button
-            size="small"
-            preIcon="ant-design:home-outlined"
-            class="mr-2"
+          <Icon
+            :size="20"
+            icon="ant-design:home-outlined"
+            class="mr-2 cursor-pointer"
             @click="activateEditorModal(record as ExamListItem)"
           />
-          <a-button
-            size="small"
-            preIcon="ant-design:delete-outlined"
+          <Icon
+            :size="20"
+            icon="ant-design:delete-outlined"
+            class="cursor-pointer"
             @click="examDeleteApi(record.id)"
           />
         </template>
@@ -32,17 +33,19 @@
   import { BasicTable, useTable } from '@/components/Table';
   import { getExamListConfig, getTestColumns } from '@/views/classroom/tableData';
   import { useI18n } from '@/hooks/web/useI18n';
-  import { examDeleteApi, examListApi } from '@/api/exam/exam';
+  import { examDeleteApi } from '@/api/exam/exam';
   import { useModal } from '@/components/Modal';
   import AddExamModal from '@/views/test/AddExamModal.vue';
   import { ref } from 'vue';
   import { ExamListItem } from '@/api/exam/examModel';
   import EditorHomeworkModal from './EditorHomeworkModal.vue';
+  import { homeworkListApi } from '@/api/exercise/exercise';
+  import Icon from '@/components/Icon/Icon.vue';
 
   const { t } = useI18n();
   const [registerTable, { reload }] = useTable({
     title: t('routes.page.classroomList'),
-    api: examListApi(),
+    api: homeworkListApi(),
     columns: getTestColumns(),
     useSearchForm: true,
     formConfig: getExamListConfig(),

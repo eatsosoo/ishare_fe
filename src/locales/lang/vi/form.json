@@ -31,11 +31,13 @@
     "searchText": "Tìm kiếm theo lớp học và kỹ năng",
     "className": "Tên lớp học",
     "skill": "Kỹ năng",
+    "title": "Tiêu đề",
+    "deadline": "Hạn nộp",
     "examName": "Tên bài thi",
     "homeworkName": "Tên bài tập",
-    "titleExam": "Bài thi",
+    "titleExam": "Giao bài thi",
     "contentExam": "Chọn lớp học và bài thi để giao cho học viên.",
-    "titleHomework": "Bài tập",
+    "titleHomework": "Giao bài tập",
     "contentHomework": "Chọn lớp học và bài tập để giao cho học viên."
   },
   "exerciseSearch": {

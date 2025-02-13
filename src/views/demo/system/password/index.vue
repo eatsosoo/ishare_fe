@@ -22,7 +22,7 @@
 
   const { t } = useI18n();
   const [register, { validate, resetFields }] = useForm({
-    size: 'large',
+    size: 'default',
     baseColProps: { span: 24 },
     labelWidth: 100,
     showActionButtonGroup: false,

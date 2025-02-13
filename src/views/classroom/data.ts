@@ -1,5 +1,6 @@
 import { classListApi } from '@/api/class/class';
 import { examListApi } from '@/api/exam/exam';
+import { homeworkListApi } from '@/api/exercise/exercise';
 import { FormSchema } from '@/components/Form';
 import { useI18n } from '@/hooks/web/useI18n';
 
@@ -189,7 +190,17 @@ export const createExamSchemas: FormSchema[] = [
   },
 ];
 
-export const assignFormSchemas: FormSchema[] = [
+export const assignTestFormSchemas: FormSchema[] = [
+  {
+    field: 'title',
+    component: 'Input',
+    label: t('form.gradingSearch.title'),
+    required: true,
+    colProps: {
+      offset: 1,
+      span: 12,
+    },
+  },
   {
     field: 'class_id',
     component: 'ApiSelect',
@@ -208,17 +219,11 @@ export const assignFormSchemas: FormSchema[] = [
       valueField: 'id',
       // not request untill to select
       immediate: true,
-      onChange: (e, v) => {
-        console.log('ApiSelect====>:', e, v);
-      },
-      // atfer request callback
-      onOptionsChange: (options) => {
-        console.log('get options', options.length, options);
-      },
     },
     required: true,
     colProps: {
       offset: 1,
+      span: 12,
     },
   },
   {
@@ -239,13 +244,94 @@ export const assignFormSchemas: FormSchema[] = [
       valueField: 'id',
       // not request untill to select
       immediate: true,
-      onChange: (e, v) => {
-        console.log('ApiSelect====>:', e, v);
+    },
+    required: true,
+    colProps: {
+      span: 12,
+      offset: 1,
+    },
+  },
+  {
+    field: 'date',
+    label: t('form.gradingSearch.deadline'),
+    component: 'DatePicker',
+    componentProps: {
+      format: 'YYYY-MM-DD',
+    },
+    required: true,
+    colProps: {
+      offset: 1,
+    },
+  },
+];
+
+export const assignHomeworkFormSchemas: FormSchema[] = [
+  {
+    field: 'title',
+    component: 'Input',
+    label: t('form.gradingSearch.title'),
+    required: true,
+    colProps: {
+      offset: 1,
+      span: 12,
+    },
+  },
+  {
+    field: 'class_id',
+    component: 'ApiSelect',
+    label: t('form.gradingSearch.className'),
+    componentProps: {
+      // more details see /src/components/Form/src/components/ApiSelect.vue
+      api: classListApi(),
+      params: {
+        id: 1,
       },
-      // atfer request callback
-      onOptionsChange: (options) => {
-        console.log('get options', options.length, options);
+
+      resultField: 'items',
+      // use name as label
+      labelField: 'title',
+      // use id as value
+      valueField: 'id',
+      // not request untill to select
+      immediate: true,
+    },
+    required: true,
+    colProps: {
+      offset: 1,
+      span: 12,
+    },
+  },
+  {
+    field: 'exam_id',
+    component: 'ApiSelect',
+    label: t('form.gradingSearch.homeworkName'),
+    componentProps: {
+      // more details see /src/components/Form/src/components/ApiSelect.vue
+      api: homeworkListApi(),
+      params: {
+        id: 1,
       },
+
+      resultField: 'items',
+      // use name as label
+      labelField: 'title',
+      // use id as value
+      valueField: 'id',
+      // not request untill to select
+      immediate: true,
+    },
+    required: true,
+    colProps: {
+      span: 12,
+      offset: 1,
+    },
+  },
+  {
+    field: 'date',
+    label: t('form.gradingSearch.deadline'),
+    component: 'DatePicker',
+    componentProps: {
+      format: 'YYYY-MM-DD',
     },
     required: true,
     colProps: {

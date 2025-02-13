@@ -1,15 +1,30 @@
-import { BasicFetchResult } from '../model/baseModel';
+import { defHttp, otherHttp } from '@/utils/http/axios';
+import { BasicPageParams } from '../model/baseModel';
+import { AssignmentForm, TeacherListGetResultModel } from './teacherModel';
+import { ErrorMessageMode } from '#/axios';
 
-export interface TeacherListItem {
-  id: string;
-  name: string;
-  phone: string;
-  email: string;
-  birthday: string;
-  status: number;
+enum Api {
+  TEACHER_LIST = '/table/teachers',
+  ASSIGNMENT = '/assignments',
 }
 
-/**
- * @description: Request list return value
- */
-export type TeacherListGetResultModel = BasicFetchResult<TeacherListItem>;
+export const teacherListApi = () => (params: BasicPageParams) =>
+  otherHttp.get<TeacherListGetResultModel>({
+    url: Api.TEACHER_LIST,
+    params,
+    headers: {
+      // @ts-ignore
+      ignoreCancelToken: true,
+    },
+  });
+
+export const assignmentApi = (params: AssignmentForm, mode: ErrorMessageMode = 'modal') =>
+  defHttp.post<ExamPartItem>(
+    {
+      url: `${Api.ASSIGNMENT}/${params.exam_id}/classes/${params.class_id}`,
+      params,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
