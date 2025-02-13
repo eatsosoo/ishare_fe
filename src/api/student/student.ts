@@ -6,8 +6,8 @@ enum Api {
   STUDENT_LIST = '/users',
 }
 
-export const studentListApi = () => (params: BasicPageParams) => {
-  return defHttp.get<StudentListGetResultModel>({
+export const classListApi = () => (params: BasicPageParams) =>
+  defHttp.get<StudentListGetResultModel>({
     url: Api.STUDENT_LIST,
     params,
     headers: {
@@ -15,4 +15,3 @@ export const studentListApi = () => (params: BasicPageParams) => {
       ignoreCancelToken: true,
     },
   });
-};

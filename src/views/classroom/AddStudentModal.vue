@@ -16,7 +16,7 @@
   import { BasicTable, useTable } from '@/components/Table';
   import { getSearchStudentConfig, getStudentColumns } from '@/views/classroom/tableData';
   import { useI18n } from '@/hooks/web/useI18n';
-  import { getStudentsOfClassApi } from '@/api/class/class';
+  import { classListApi } from '@/api/student/student';
 
   const props = defineProps({
     loading: {
@@ -30,7 +30,7 @@
     canResize: true,
     title: t('table.studentList'),
     titleHelpMessage: t('table.addStudentToClass'),
-    api: getStudentsOfClassApi(),
+    api: classListApi(),
     columns: getStudentColumns(),
     defSort: {
       field: 'name',

@@ -48,7 +48,7 @@
     "completeStatus": "Trạng thái",
     "done": "Đã hoàn thành",
     "incomplete": "Chưa hoàn thành",
-    "createdAt": "Ngày giao",
+    "createdAt": "Ngày nộp",
     "deadline": "Hạn nộp",
     "typeGrading": "Loại bài"
   },
@@ -57,7 +57,7 @@
     "completeStatus": "Trạng thái",
     "done": "Đã hoàn thành",
     "incomplete":"Chưa hoàn thành",
-    "createdAt": "Ngày giao",
+    "createdAt": "Ngày nộp",
     "deadline": "Hạn nộp",
     "name": "Tên đề thi",
     "title": "Tạo đề thi mới",
@@ -68,7 +68,7 @@
     "completeStatus": "Trạng thái",
     "done": "Đã hoàn thành",
     "incomplete":"Chưa hoàn thành",
-    "createdAt": "Ngày giao",
+    "createdAt": "Ngày nộp",
     "deadline": "Hạn nộp"
   },
   "homework": {

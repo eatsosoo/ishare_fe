@@ -65,7 +65,7 @@ export const basicProps = {
       return FETCH_SETTING;
     },
   },
-  // 立即请求接口
+  // Request interface immediately
   immediate: { type: Boolean, default: true },
   emptyDataIsShowTable: { type: Boolean, default: true },
   // 额外的请求参数

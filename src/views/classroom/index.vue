@@ -60,6 +60,7 @@
   import Icon from '@/components/Icon/Icon.vue';
 
   const { t } = useI18n();
+  const useStore = useUserStore();
   const [registerViewModal, { openModal: openViewModal }] = useModal();
   const [registerAddModal, { openModal: openAddModal }] = useModal();
   const [registerTable, { getForm }] = useTable({
@@ -93,10 +94,9 @@
   }
 
   function activateModal(record: ClassListItem | any, type: 'ADD' | 'VIEW') {
-    const useStore = useUserStore();
     useStore.setClassId(record.id);
-    targetClass.value = record;
     if (type === 'VIEW') {
+      targetClass.value = record;
       openViewModal();
     } else {
       openAddModal();
@@ -105,7 +105,7 @@
 
   async function handleAddMoreStudents(students: { id: number }[]) {
     try {
-      if (!targetClass.value) {
+      if (!useStore.getClassId) {
         createErrorModal({
           title: t('sys.api.errorTip'),
           content: t('sys.exception.anErrorOccured'),
@@ -115,7 +115,7 @@
       addLoading.value = true;
 
       const formData: ClassAddStudentsParams = {
-        class_id: targetClass.value.id,
+        class_id: useStore.getClassId,
         students,
       };
       const result = await addStudentClassApi(formData);

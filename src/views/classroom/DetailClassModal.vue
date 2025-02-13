@@ -7,17 +7,9 @@
     :show-cancel-btn="false"
     :can-fullscreen="false"
   >
-    <Tabs v-model:activeTab="activeTab">
+    <Tabs v-model:activeTab="activeTab" @change="activeKey = $event">
       <TabPane v-for="tab in tabs" :key="tab.key" v-bind="omit(tab, ['content', 'key'])">
-        <BasicTable @register="tab.register" ref="tableRefs">
-          <template #bodyCell="{ column, record }">
-            <template v-if="column.key === 'status'">
-              <Tag :color="record.status === 'v' ? 'green' : 'red'">
-                {{ record.status }}
-              </Tag>
-            </template>
-          </template>
-        </BasicTable>
+        <BasicTable @register="tab.register" ref="tableRefs" class="max-h-[770px]" />
       </TabPane>
     </Tabs>
   </BasicModal>
@@ -25,7 +17,7 @@
 <script lang="ts" setup>
   import { ref, watch } from 'vue';
   import { BasicModal } from '@/components/Modal';
-  import { BasicTable, useTable } from '@/components/Table';
+  import { BasicTable, FormProps, useTable } from '@/components/Table';
   import {
     getExamColumns,
     getExerciseColumns,
@@ -33,10 +25,10 @@
   } from '@/views/classroom/tableData';
   import { useI18n } from '@/hooks/web/useI18n';
   import { omit } from 'lodash-es';
-  import { Tabs, Tag } from 'ant-design-vue';
-  import { studentListApi } from '@/api/student/student';
+  import { Tabs } from 'ant-design-vue';
   import { examListApi } from '@/api/exam/exam';
-  import { getHomeworksOfClassApi } from '@/api/class/class';
+  import { getHomeworksOfClassApi, getStudentsOfClassApi } from '@/api/class/class';
+  import { Key } from 'ant-design-vue/es/_util/type';
 
   const props = defineProps({
     classId: {
@@ -44,18 +36,40 @@
       required: true,
     },
   });
+
   const TabPane = Tabs.TabPane;
+
   const { t } = useI18n();
   const activeTab = ref('1');
+  const activeKey = ref<Key>('1');
   const tableRefs = ref([]);
+  function searchConfig(): Partial<FormProps> {
+    return {
+      labelWidth: 100,
+      schemas: [
+        {
+          field: 'student_name',
+          component: 'Input',
+          label: t('form.exerciseSearch.studentName'),
+          colProps: {
+            xl: 6,
+            xxl: 4,
+          },
+        },
+      ],
+    };
+  }
+
   const [registerTable1, { reload: reload1 }] = useTable({
     canResize: true,
-    api: studentListApi(),
+    api: getStudentsOfClassApi(),
     columns: getStudentColumns(),
     defSort: {
       field: 'name',
       order: 'ascend',
     },
+    useSearchForm: true,
+    formConfig: searchConfig(),
     rowKey: 'id',
     showTableSetting: false,
     showIndexColumn: false,
@@ -69,6 +83,8 @@
       field: 'name',
       order: 'ascend',
     },
+    useSearchForm: true,
+    formConfig: searchConfig(),
     rowKey: 'id',
     showTableSetting: false,
     showIndexColumn: false,
@@ -82,6 +98,8 @@
       field: 'name',
       order: 'ascend',
     },
+    useSearchForm: true,
+    formConfig: searchConfig(),
     rowKey: 'id',
     showTableSetting: false,
     showIndexColumn: false,
@@ -105,20 +123,20 @@
     },
   ];
 
+  const reloadFunctions = [reload1, reload2, reload3];
+
+  const reloadTable = () => {
+    const activeIndex = parseInt(activeKey.value) - 1;
+    if (tableRefs.value[activeIndex]) {
+      reloadFunctions[activeIndex]();
+    }
+  };
+
   watch(
     () => props.classId,
     () => {
-      if (props.classId) {
-        if (tableRefs.value[0]) {
-          reload1();
-        }
-        if (tableRefs.value[1]) {
-          reload2();
-        }
-        if (tableRefs.value[2]) {
-          reload3();
-        }
-      }
+      if (!props.classId) return;
+      reloadTable();
     },
   );
 </script>
