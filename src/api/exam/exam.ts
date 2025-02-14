@@ -66,3 +66,17 @@ export const examDetailApi = (examId: number) =>
       ignoreCancelToken: true,
     },
   });
+
+export const uploadAudioApi = (formData: FormData, mode: ErrorMessageMode = 'modal') =>
+  defHttp.post<Result<string>>(
+    {
+      url: '/files/upload',
+      data: formData,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );

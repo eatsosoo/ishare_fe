@@ -12,6 +12,7 @@
                 :action="uploadUrl"
                 :headers="headers"
                 :showUploadList="false"
+                :customRequest="handleCustomUpload"
                 @change="handleChangeFile"
               >
                 <a-button preIcon="ant-design:upload-outlined" :loading="uploading">{{
@@ -19,7 +20,8 @@
                 }}</a-button>
               </Upload>
               <audio
-                src="https://api-gateway.danda.vn/uploads/uploads/2025/02/1739288105_file_example_MP3_700KB.mp3"
+                v-if="listeningParts[index].media"
+                :src="listeningParts[index].media"
                 controls
                 class="h-8"
               ></audio>
@@ -81,7 +83,7 @@
   import Question from './Question.vue';
   import { useMessage } from '@/hooks/web/useMessage';
   import { useDesign } from '@/hooks/web/useDesign';
-  import { examPartApi } from '@/api/exam/exam';
+  import { examPartApi, uploadAudioApi } from '@/api/exam/exam';
   import { ExamPartForm, ExamPartItem, ExtendedQuestionItem } from '@/api/exam/examModel';
   import { useGlobSetting } from '@/hooks/setting';
   import { getToken } from '@/utils/auth';
@@ -188,10 +190,34 @@
     return isAudio && isLt2M;
   }
 
+  const handleCustomUpload = async ({
+    file,
+    onSuccess,
+    onError,
+  }: {
+    file: any;
+    onSuccess?: any;
+    onError?: any;
+  }) => {
+    const formData = new FormData();
+    formData.append('media', file);
+
+    try {
+      const result = await uploadAudioApi(formData);
+      if (result) {
+        listeningParts.value[activeKey.value].media = result.items;
+      }
+      onSuccess(result);
+    } catch (error) {
+      console.error('Upload failed:', error);
+      onError(error);
+    }
+  };
+
   async function submitAll(examId: number) {
     try {
       loading.value = true;
-      const { subject, questions, id } = listeningParts.value[activeKey.value];
+      const { subject, questions, id, media } = listeningParts.value[activeKey.value];
       const submitForm: ExamPartForm = {
         id: id || null,
         exam_id: examId,
@@ -199,7 +225,7 @@
         subject,
         questions,
         duration: 40,
-        media: audioUrl.value,
+        media,
         questions_count: questions.length,
       };
 

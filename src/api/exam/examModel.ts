@@ -37,7 +37,7 @@ export interface ExamPartItem {
   type?: SkillType;
   question_count: number;
   duration: number;
-  audio_url?: string | null;
+  media: string | null;
   questions: ExtendedQuestionItem[];
 }
 

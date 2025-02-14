@@ -67,31 +67,8 @@ export const READING_DEFAULT: ExamPartItem[] = [
       options: defaultReadingOptions,
       answer: null,
     })),
+    media: null,
   },
-  // {
-  //   subject: 'Reading Part 2',
-  //   question_count: 1,
-  //   duration: 20,
-  //   questions: Array.from({ length: 1 }, (_, i) => ({
-  //     question_no: i + 13,
-  //     content: `Question ${i + 13} ?`,
-  //     type: 'choice',
-  //     options: defaultReadingOptions,
-  //     answer: null,
-  //   })),
-  // },
-  // {
-  //   subject: 'Reading Part 3',
-  //   question_count: 1,
-  //   duration: 20,
-  //   questions: Array.from({ length: 1 }, (_, i) => ({
-  //     question_no: i + 26,
-  //     content: `Question ${i + 26} ?`,
-  //     type: 'choice',
-  //     options: defaultReadingOptions,
-  //     answer: null,
-  //   })),
-  // },
 ];
 
 export const LISTENING_DEFAULT: ExamPartItem[] = [
@@ -106,6 +83,7 @@ export const LISTENING_DEFAULT: ExamPartItem[] = [
       options: defaultReadingOptions,
       answer: null,
     })),
+    media: null,
   },
 ];
 
@@ -121,6 +99,7 @@ export const WRITING_DEFAULT: ExamPartItem[] = [
       options: [],
       answer: null,
     })),
+    media: null,
   },
 ];
 
@@ -136,6 +115,7 @@ export const SPEAKING_DEFAULT: ExamPartItem[] = [
       options: [],
       answer: null,
     })),
+    media: null,
   },
 ];
 

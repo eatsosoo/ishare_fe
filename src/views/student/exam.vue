@@ -104,7 +104,7 @@
   }
 
   function preventF5(event) {
-    if (event.key === 'F5') {
+    if (event.key === 'F5' || event.key === 'Escape') {
       event.preventDefault();
     }
   }
