@@ -63,5 +63,14 @@
     "studentName": "Tên học sinh",
     "skill": "Kỹ năng",
     "type": "Loại bài"
+  },
+  "assignmentTable": {
+    "title": "Tiêu đề",
+    "description": "Mô tả",
+    "deadline": "Hạn nộp",
+    "teacher": "Giáo viên",
+    "className": "Tên lớp",
+    "examTitle": "Tên bài",
+    "assign": "Giao bài"
   }
 }

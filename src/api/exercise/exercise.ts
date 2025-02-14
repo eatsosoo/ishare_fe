@@ -20,7 +20,7 @@ export const exerciseListApi = () => (params: BasicPageParams) =>
 // list homework created
 export const homeworkListApi = () => (params: BasicPageParams) =>
   defHttp.get<HomeworkListGetResultModel>({
-    url: `${Api.HOMEWORK_LIST}?type=Homework`,
+    url: `${Api.HOMEWORK_LIST}?&type=Homework`,
     params,
     headers: {
       // @ts-ignore

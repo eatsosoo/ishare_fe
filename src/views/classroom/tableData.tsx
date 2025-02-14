@@ -236,6 +236,37 @@ export function getHomeworkColumns(): BasicColumn[] {
   ];
 }
 
+export function getAssignmentColumns(): BasicColumn[] {
+  return [
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      fixed: 'left',
+      width: 80,
+    },
+    {
+      title: t('table.assignmentTable.title'),
+      dataIndex: 'title',
+    },
+    {
+      title: t('table.assignmentTable.className'),
+      dataIndex: 'class_name',
+    },
+    {
+      title: t('table.assignmentTable.examTitle'),
+      dataIndex: 'exam_title',
+    },
+    {
+      title: t('table.assignmentTable.teacher'),
+      dataIndex: 'teacher',
+    },
+    {
+      title: t('table.assignmentTable.deadline'),
+      dataIndex: 'deadline',
+    },
+  ];
+}
+
 export const getAdvanceSchema = (itemNumber = 6): FormSchema[] => {
   const arr: FormSchema[] = [];
   for (let index = 0; index < itemNumber; index++) {
@@ -636,6 +667,50 @@ export function getExamListConfig(): Partial<FormProps> {
       {
         field: 'deadline',
         label: t('form.exerciseOfStudentSearch.deadline'),
+        component: 'DatePicker',
+        colProps: {
+          xl: 6,
+          xxl: 4,
+        },
+      },
+    ],
+  };
+}
+
+export function getAssignmentListConfig(): Partial<FormProps> {
+  return {
+    labelWidth: 100,
+    schemas: [
+      {
+        field: 'title',
+        label: t('table.assignmentTable.title'),
+        component: 'Input',
+        colProps: {
+          xl: 6,
+          xxl: 4,
+        },
+      },
+      {
+        field: 'class_name',
+        label: t('table.assignmentTable.className'),
+        component: 'Input',
+        colProps: {
+          xl: 6,
+          xxl: 4,
+        },
+      },
+      {
+        field: 'exam_title',
+        label: t('table.assignmentTable.examTitle'),
+        component: 'Input',
+        colProps: {
+          xl: 6,
+          xxl: 4,
+        },
+      },
+      {
+        field: 'deadline',
+        label: t('table.assignmentTable.deadline'),
         component: 'DatePicker',
         colProps: {
           xl: 6,

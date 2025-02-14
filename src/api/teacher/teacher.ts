@@ -1,6 +1,10 @@
 import { defHttp, otherHttp } from '@/utils/http/axios';
 import { BasicPageParams } from '../model/baseModel';
-import { AssignmentForm, TeacherListGetResultModel } from './teacherModel';
+import {
+  AssignmentForm,
+  AssignmentListGetResultModel,
+  TeacherListGetResultModel,
+} from './teacherModel';
 import { ErrorMessageMode } from '#/axios';
 
 enum Api {
@@ -19,7 +23,7 @@ export const teacherListApi = () => (params: BasicPageParams) =>
   });
 
 export const assignmentApi = (params: AssignmentForm, mode: ErrorMessageMode = 'modal') =>
-  defHttp.post<ExamPartItem>(
+  defHttp.post<Boolean>(
     {
       url: `${Api.ASSIGNMENT}/${params.exam_id}/classes/${params.class_id}`,
       params,
@@ -28,3 +32,15 @@ export const assignmentApi = (params: AssignmentForm, mode: ErrorMessageMode = '
       errorMessageMode: mode,
     },
   );
+
+export const assigmentListApi =
+  (type = '') =>
+  (params: BasicPageParams) =>
+    defHttp.get<AssignmentListGetResultModel>({
+      url: `${Api.ASSIGNMENT}?type=${type}`,
+      params,
+      headers: {
+        // @ts-ignore
+        ignoreCancelToken: true,
+      },
+    });

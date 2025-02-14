@@ -142,11 +142,12 @@
       const { subject, questions } = readingParts.value[activeKey.value];
       const submitForm: ExamPartForm = {
         exam_id: examId,
-        type: 'reading',
+        type: props.type,
         subject,
         questions,
         duration: 500,
         media: null,
+        questions_count: questions.length,
       };
       const result = await examPartApi(submitForm);
       if (result) {

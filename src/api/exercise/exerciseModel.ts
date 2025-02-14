@@ -14,8 +14,10 @@ export interface ExerciseListItem {
 export interface HomeworkListItem {
   id: number;
   title: string;
-  deadline: string;
   teacher: string;
+  deadline: string;
+  part_count: number;
+  student_count: number;
 }
 
 /**

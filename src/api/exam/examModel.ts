@@ -6,6 +6,8 @@ export interface ExamListItem {
   title: string;
   teacher: string;
   deadline: string;
+  part_count: number;
+  student_count: number;
 }
 
 export interface ExamBasicItem {}
@@ -24,6 +26,7 @@ export interface ExamPartForm {
   media: string | null;
   subject: string;
   questions: QuestionItem[];
+  questions_count?: number;
 }
 
 export interface ExamPartItem {

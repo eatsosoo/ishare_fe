@@ -26,7 +26,11 @@
     </BasicTable>
 
     <AddExamModal @register="registerAddModal" @success="handleSuccessModal" />
-    <EditorHomeworkModal @register="registerEditorModal" :exam-id="examId" :title="titleEditor" />
+    <EditorHomeworkModal
+      @register="registerEditorModal"
+      :homework-id="examId"
+      :title-editor="titleEditor"
+    />
   </div>
 </template>
 <script lang="ts" setup>

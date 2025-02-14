@@ -180,8 +180,7 @@ export const createExamSchemas: FormSchema[] = [
     label: t('form.exam.deadline'),
     component: 'DatePicker',
     componentProps: {
-      showTime: true,
-      format: 'YYYY-MM-DD HH:mm:ss',
+      format: 'YYYY-MM-DD',
     },
     required: true,
     colProps: {
@@ -336,6 +335,7 @@ export const assignHomeworkFormSchemas: FormSchema[] = [
     required: true,
     colProps: {
       offset: 1,
+      span: 24,
     },
   },
 ];

@@ -53,6 +53,14 @@ const system: AppRouteModule = {
       },
       component: () => import('@/views/demo/system/password/index.vue'),
     },
+    {
+      path: 'line',
+      name: 'Line',
+      component: () => import('@/views/demo/charts/Line.vue'),
+      meta: {
+        title: t('routes.demo.charts.line'),
+      },
+    },
   ],
 };
 

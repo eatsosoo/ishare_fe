@@ -2,10 +2,10 @@
   <BasicModal
     v-bind="$attrs"
     :title="t('form.exam.title')"
-    width="500px"
+    width="1000px"
     :can-fullscreen="false"
     :loading="loading"
-    @ok="save"
+    @ok="handleSubmit"
     @cancel="resetFields"
   >
     <BasicForm @register="registerForm" ref="formRef" />
@@ -15,18 +15,18 @@
   import { ref } from 'vue';
   import { BasicModal } from '@/components/Modal';
   import { BasicForm, useForm } from '@/components/Form';
-  import { createExamSchemas } from '@/views/classroom/data';
+  import { assignTestFormSchemas } from '@/views/classroom/data';
   import { useI18n } from '@/hooks/web/useI18n';
-  import { ExamAddForm } from '@/api/exam/examModel';
   import { useMessage } from '@/hooks/web/useMessage';
   import { useDesign } from '@/hooks/web/useDesign';
-  import { examCreateApi } from '@/api/exam/exam';
+  import { AssignmentForm } from '@/api/teacher/teacherModel';
+  import { assignmentApi } from '@/api/teacher/teacher';
 
   const { t } = useI18n();
   const { createErrorModal, createSuccessModal } = useMessage();
   const [registerForm, { validate, resetFields }] = useForm({
     labelWidth: 120,
-    schemas: createExamSchemas,
+    schemas: assignTestFormSchemas,
     showActionButtonGroup: false,
     actionColOptions: {
       span: 24,
@@ -39,27 +39,21 @@
 
   const emit = defineEmits(['success']);
 
-  async function save() {
-    if (!formRef.value) {
-      createErrorModal({
-        title: t('sys.api.errorTip'),
-        content: t('sys.api.errorMessage'),
-      });
-      return;
-    }
-
+  async function handleSubmit() {
     try {
-      const values = await validate();
-      const submitForm: ExamAddForm = {
-        title: values.title,
-        deadline: values.deadline.split(' ')[0],
+      const { class_id, exam_id, title, date } = await validate();
+      const submitForm: AssignmentForm = {
+        class_id,
+        exam_id,
+        title,
+        date: date.split(' ')[0],
       };
       loading.value = true;
 
-      const newExam = await examCreateApi(submitForm);
-      if (newExam) {
+      const result = await assignmentApi(submitForm);
+      if (result) {
         createSuccessModal({
-          title: t('form.newClassForm.title'),
+          title: t('form.gradingSearch.titleExam'),
           content: t('common.createSuccessfully'),
           getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
         });

@@ -185,5 +185,6 @@ export const getLineData = (() => {
     barData.push(b);
     lineData.push(d + b);
   }
+  console.log(lineData);
   return { barData, category, lineData };
 })();

@@ -25,7 +25,7 @@ const exercise: AppRouteModule = {
     {
       path: '/exercise/assignment',
       name: 'AssignHomework',
-      component: () => import('@/views/exercise/index.vue'),
+      component: () => import('@/views/exercise/assignment.vue'),
       meta: {
         title: t('routes.page.assignHomework'),
       },

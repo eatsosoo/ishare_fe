@@ -16,7 +16,22 @@ export interface AssignmentForm {
   date: string;
 }
 
+export interface AssignmentLisItem {
+  id: number;
+  title: string;
+  description: null;
+  deadline: string;
+  teacher: string;
+  class_name: string;
+  exam_title: string;
+}
+
 /**
  * @description: Request list return value
  */
 export type TeacherListGetResultModel = BasicFetchResult<TeacherListItem>;
+
+/**
+ * @description: Request list return value
+ */
+export type AssignmentListGetResultModel = BasicFetchResult<AssignmentLisItem>;

@@ -17,7 +17,7 @@ enum Api {
 
 export const examListApi = () => (params: BasicPageParams) =>
   defHttp.get<ExamListGetResultModel>({
-    url: Api.EXAM_LIST,
+    url: `${Api.EXAM_LIST}?type=exam`,
     params,
     headers: {
       // @ts-ignore

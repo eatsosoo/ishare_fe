@@ -11,19 +11,36 @@
       <Select v-model:value="skill" :options="options" />
     </div>
 
-    <component
-      :is="skillComponents[skill]"
-      ref="skillRefs[skill]"
-      :value="detail[skill]"
-      type="homework"
-      class="mb-4"
+    <Reading
+      v-show="skill === 'reading'"
+      ref="readingRef"
+      :value="detail?.reading"
+      tpye="homework"
+    />
+    <Listening
+      v-show="skill === 'listening'"
+      ref="listeningRef"
+      :value="detail?.listening"
+      tpye="homework"
+    />
+    <Writing
+      v-show="skill === 'writing'"
+      ref="writingRef"
+      :value="detail?.writing"
+      tpye="homework"
+    />
+    <Speaking
+      v-show="skill === 'speaking'"
+      ref="speakingRef"
+      :value="detail?.speaking"
+      tpye="homework"
     />
   </BasicModal>
 </template>
 
 <script lang="ts" setup>
   import { BasicModal } from '@/components/Modal';
-  import { ref, computed, watch, shallowRef } from 'vue';
+  import { ref, computed, watch } from 'vue';
   import { useI18n } from '@/hooks/web/useI18n';
   import { Select } from 'ant-design-vue';
   import Reading from '@/views/test/reading.vue';
@@ -55,19 +72,10 @@
     speaking: SPEAKING_DEFAULT,
   };
 
-  const skillRefs = shallowRef({
-    reading: ref<InstanceType<typeof Reading> | null>(null),
-    listening: ref<InstanceType<typeof Listening> | null>(null),
-    writing: ref<InstanceType<typeof Writing> | null>(null),
-    speaking: ref<InstanceType<typeof Speaking> | null>(null),
-  });
-
-  const skillComponents = {
-    reading: Reading,
-    listening: Listening,
-    writing: Writing,
-    speaking: Speaking,
-  };
+  const readingRef = ref<InstanceType<typeof Reading> | null>(null);
+  const listeningRef = ref<InstanceType<typeof Listening> | null>(null);
+  const writingRef = ref<InstanceType<typeof Writing> | null>(null);
+  const speakingRef = ref<InstanceType<typeof Speaking> | null>(null);
 
   const detail = ref({ ...defaultHomeworks });
   const loading = ref(false);
@@ -89,10 +97,17 @@
       return;
     }
 
-    const currentRef = skillRefs.value[skill.value];
-    if (currentRef?.value) {
+    const refMap = {
+      reading: readingRef,
+      listening: listeningRef,
+      writing: writingRef,
+      speaking: speakingRef,
+    };
+
+    const currentRef = refMap[skill.value];
+    if (currentRef.value) {
       loading.value = true;
-      await currentRef.value.submitAll(props.homeworkId);
+      currentRef.value.submitAll(props.homeworkId);
       loading.value = false;
     }
   };
