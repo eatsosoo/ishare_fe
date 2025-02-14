@@ -7,33 +7,33 @@
     :loading="loading"
     @ok="handleOk"
   >
-    <div class="mb-2">
+    <div v-if="!isUpdate" class="mb-2">
       <Select v-model:value="skill" :options="options" />
     </div>
 
     <Reading
       v-show="skill === 'reading'"
       ref="readingRef"
-      :value="detail?.reading"
-      tpye="homework"
+      :value="detail?.Reading"
+      :is-homework="true"
     />
     <Listening
       v-show="skill === 'listening'"
       ref="listeningRef"
-      :value="detail?.listening"
-      tpye="homework"
+      :value="detail?.Listening"
+      :is-homework="true"
     />
     <Writing
       v-show="skill === 'writing'"
       ref="writingRef"
-      :value="detail?.writing"
-      tpye="homework"
+      :value="detail?.Writing"
+      :is-homework="true"
     />
     <Speaking
       v-show="skill === 'speaking'"
       ref="speakingRef"
-      :value="detail?.speaking"
-      tpye="homework"
+      :value="detail?.Speaking"
+      :is-homework="true"
     />
   </BasicModal>
 </template>
@@ -54,6 +54,7 @@
     WRITING_DEFAULT,
   } from '@/views/test/data';
   import { useMessage } from '@/hooks/web/useMessage';
+  import { examDetailApi } from '@/api/exam/exam';
 
   const props = defineProps({
     homeworkId: Number,
@@ -63,13 +64,13 @@
   });
 
   const { t } = useI18n();
-  const { createErrorModal } = useMessage();
+  const { createMessage, createErrorModal } = useMessage();
 
   const defaultHomeworks = {
-    reading: READING_DEFAULT,
-    listening: LISTENING_DEFAULT,
-    writing: WRITING_DEFAULT,
-    speaking: SPEAKING_DEFAULT,
+    Reading: READING_DEFAULT,
+    Listening: LISTENING_DEFAULT,
+    Writing: WRITING_DEFAULT,
+    Speaking: SPEAKING_DEFAULT,
   };
 
   const readingRef = ref<InstanceType<typeof Reading> | null>(null);
@@ -80,6 +81,7 @@
   const detail = ref({ ...defaultHomeworks });
   const loading = ref(false);
   const skill = ref('reading');
+  const isUpdate = ref(false);
 
   const options = computed(() => [
     { label: 'Reading', value: 'reading' },
@@ -112,10 +114,36 @@
     }
   };
 
+  async function getExamDetail(examId: number) {
+    try {
+      loading.value = true;
+      const result = await examDetailApi(examId);
+      detail.value = result;
+
+      const hasContent = ['Reading', 'Listening', 'Writing', 'Speaking'].some((key) => {
+        if (result[key]?.length > 0) {
+          skill.value = key.toLowerCase();
+          return true;
+        }
+        return false;
+      });
+      isUpdate.value = hasContent;
+      console.log(hasContent);
+    } catch (error) {
+      createMessage.error(t('sys.app.dataNotFound'));
+    } finally {
+      loading.value = false;
+    }
+  }
+
   watch(
     () => props.homeworkId,
-    () => {
-      detail.value = { ...defaultHomeworks };
+    (value) => {
+      if (value) {
+        getExamDetail(value);
+      } else {
+        detail.value = { ...defaultHomeworks };
+      }
     },
   );
 </script>

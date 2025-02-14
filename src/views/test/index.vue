@@ -25,7 +25,7 @@
       </template>
     </BasicTable>
 
-    <AddExamModal @register="registerAddModal" @success="handleSuccessModal" />
+    <AddExamModal type="exam" @register="registerAddModal" @success="handleSuccessModal" />
     <EditorPartModal @register="registerEditorModal" :exam-id="examId" :title="titleEditor" />
   </div>
 </template>

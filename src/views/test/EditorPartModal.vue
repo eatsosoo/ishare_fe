@@ -10,10 +10,10 @@
     <div class="mb-2">
       <Select v-model:value="skill" :options="options" />
     </div>
-    <Reading v-show="skill === 'reading'" ref="readingRef" :value="detail?.reading" />
-    <Listening v-show="skill === 'listening'" ref="listeningRef" :value="detail?.listening" />
-    <Writing v-show="skill === 'writing'" ref="writingRef" :value="detail?.writing" />
-    <Speaking v-show="skill === 'speaking'" ref="speakingRef" :value="detail?.speaking" />
+    <Reading v-show="skill === 'reading'" ref="readingRef" :value="detail?.Reading" />
+    <Listening v-show="skill === 'listening'" ref="listeningRef" :value="detail?.Listening" />
+    <Writing v-show="skill === 'writing'" ref="writingRef" :value="detail?.Writing" />
+    <Speaking v-show="skill === 'speaking'" ref="speakingRef" :value="detail?.Speaking" />
   </BasicModal>
 </template>
 <script lang="ts" setup>

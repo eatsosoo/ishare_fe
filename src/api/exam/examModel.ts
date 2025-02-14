@@ -12,11 +12,12 @@ export interface ExamListItem {
 
 export interface ExamBasicItem {}
 
-export type SkillType = 'reading' | 'listening' | 'writing' | 'speaking' | 'homework';
+export type SkillType = 'Reading' | 'Listening' | 'Writing' | 'Speaking';
 
 export interface ExamAddForm {
   title: string;
   deadline: string;
+  type: 'exam' | 'homework';
 }
 
 export interface ExamPartForm {
@@ -47,10 +48,10 @@ export interface ExamDetailItem {
   id: number;
   title: string;
   deadline: string;
-  listening: ExamPartItem[];
-  reading: ExamPartItem[];
-  writing: any;
-  speaking: any;
+  Listening: ExamPartItem[];
+  Reading: ExamPartItem[];
+  Writing: ExamPartItem[];
+  Speaking: ExamPartItem[];
 }
 
 /**

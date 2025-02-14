@@ -25,7 +25,7 @@
       </template>
     </BasicTable>
 
-    <AddExamModal @register="registerAddModal" @success="handleSuccessModal" />
+    <AddExamModal type="homework" @register="registerAddModal" @success="handleSuccessModal" />
     <EditorHomeworkModal
       @register="registerEditorModal"
       :homework-id="examId"

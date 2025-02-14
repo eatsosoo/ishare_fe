@@ -46,7 +46,7 @@
         </Row>
       </TabPane>
 
-      <template v-if="readingParts.length < 3 && props.type === 'reading'" #rightExtra>
+      <template v-if="readingParts.length < 3 && !isHomework" #rightExtra>
         <a-button type="default" @click="handleAddTab">{{ t('common.add') }} Passage</a-button>
       </template>
     </Tabs>
@@ -63,21 +63,16 @@
   import { useMessage } from '@/hooks/web/useMessage';
   import { useDesign } from '@/hooks/web/useDesign';
   import { examPartApi } from '@/api/exam/exam';
-  import {
-    ExamPartForm,
-    ExamPartItem,
-    ExtendedQuestionItem,
-    SkillType,
-  } from '@/api/exam/examModel';
+  import { ExamPartForm, ExamPartItem, ExtendedQuestionItem } from '@/api/exam/examModel';
 
   const props = defineProps({
     value: {
       type: Array as PropType<ExamPartItem[]>,
       default: READING_DEFAULT,
     },
-    type: {
-      type: String as PropType<SkillType>,
-      default: 'reading',
+    isHomework: {
+      type: Boolean,
+      default: false,
     },
   });
 
@@ -142,7 +137,7 @@
       const { subject, questions } = readingParts.value[activeKey.value];
       const submitForm: ExamPartForm = {
         exam_id: examId,
-        type: props.type,
+        type: 'Reading',
         subject,
         questions,
         duration: 500,
@@ -156,7 +151,7 @@
           content: t('common.createSuccessfully'),
           getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
         });
-        handleAfterSubmit(result);
+        // handleAfterSubmit(result);
       }
     } catch (error) {
       if (error.errorFields) return;

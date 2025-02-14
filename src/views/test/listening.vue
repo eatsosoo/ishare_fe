@@ -65,7 +65,7 @@
         </Row>
       </TabPane>
 
-      <template v-if="listeningParts.length < 3 && props.type === 'listening'" #rightExtra>
+      <template v-if="listeningParts.length < 3 && !isHomework" #rightExtra>
         <a-button type="default" @click="handleAddTab">{{ t('common.add') }} Section</a-button>
       </template>
     </Tabs>
@@ -82,12 +82,7 @@
   import { useMessage } from '@/hooks/web/useMessage';
   import { useDesign } from '@/hooks/web/useDesign';
   import { examPartApi } from '@/api/exam/exam';
-  import {
-    ExamPartForm,
-    ExamPartItem,
-    ExtendedQuestionItem,
-    SkillType,
-  } from '@/api/exam/examModel';
+  import { ExamPartForm, ExamPartItem, ExtendedQuestionItem } from '@/api/exam/examModel';
   import { useGlobSetting } from '@/hooks/setting';
   import { getToken } from '@/utils/auth';
 
@@ -96,9 +91,9 @@
       type: Array as PropType<ExamPartItem[]>,
       default: LISTENING_DEFAULT,
     },
-    type: {
-      type: String as PropType<SkillType>,
-      default: 'listening',
+    isHomework: {
+      type: Boolean,
+      default: false,
     },
   });
 
@@ -199,11 +194,12 @@
       const { subject, questions } = listeningParts.value[activeKey.value];
       const submitForm: ExamPartForm = {
         exam_id: examId,
-        type: props.type,
+        type: 'Listening',
         subject,
         questions,
         duration: 40,
         media: audioUrl.value,
+        questions_count: questions.length,
       };
       console.log(submitForm);
       const result = await examPartApi(submitForm);

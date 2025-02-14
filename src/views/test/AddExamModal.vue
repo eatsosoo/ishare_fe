@@ -22,6 +22,13 @@
   import { useDesign } from '@/hooks/web/useDesign';
   import { examCreateApi } from '@/api/exam/exam';
 
+  const props = defineProps({
+    type: {
+      type: String as PropType<'exam' | 'homework'>,
+      required: true,
+    },
+  });
+
   const { t } = useI18n();
   const { createErrorModal, createSuccessModal } = useMessage();
   const [registerForm, { validate, resetFields }] = useForm({
@@ -53,6 +60,7 @@
       const submitForm: ExamAddForm = {
         title: values.title,
         deadline: values.deadline.split(' ')[0],
+        type: props.type,
       };
       loading.value = true;
 
