@@ -1,7 +1,7 @@
 <template>
   <BasicModal
     v-bind="$attrs"
-    title="Modal Title"
+    :title="props.title"
     width="1100px"
     :can-fullscreen="false"
     :loading="props.loading"
@@ -16,9 +16,12 @@
   import { BasicTable, useTable } from '@/components/Table';
   import { getSearchStudentConfig, getStudentColumns } from '@/views/classroom/tableData';
   import { useI18n } from '@/hooks/web/useI18n';
-  import { classListApi } from '@/api/student/student';
+  import { getAllStudentListApi } from '@/api/student/student';
 
   const props = defineProps({
+    title: {
+      type: String,
+    },
     loading: {
       type: Boolean,
       default: false,
@@ -30,7 +33,7 @@
     canResize: true,
     title: t('table.studentList'),
     titleHelpMessage: t('table.addStudentToClass'),
-    api: classListApi(),
+    api: getAllStudentListApi(),
     columns: getStudentColumns(),
     defSort: {
       field: 'name',

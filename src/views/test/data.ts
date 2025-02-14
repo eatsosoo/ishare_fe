@@ -57,7 +57,7 @@ const defaultListeningOptions = Array.from({ length: 3 }, (_, i) => ({
 
 export const READING_DEFAULT: ExamPartItem[] = [
   {
-    subject: 'Reading Passage 1',
+    subject: 'Reading Part 1',
     question_count: 1,
     duration: 20,
     questions: Array.from({ length: 1 }, (_, i) => ({
@@ -69,7 +69,7 @@ export const READING_DEFAULT: ExamPartItem[] = [
     })),
   },
   // {
-  //   subject: 'Reading Passage 2',
+  //   subject: 'Reading Part 2',
   //   question_count: 1,
   //   duration: 20,
   //   questions: Array.from({ length: 1 }, (_, i) => ({
@@ -81,7 +81,7 @@ export const READING_DEFAULT: ExamPartItem[] = [
   //   })),
   // },
   // {
-  //   subject: 'Reading Passage 3',
+  //   subject: 'Reading Part 3',
   //   question_count: 1,
   //   duration: 20,
   //   questions: Array.from({ length: 1 }, (_, i) => ({

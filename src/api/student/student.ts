@@ -1,14 +1,57 @@
 import { defHttp } from '@/utils/http/axios';
 import { StudentListGetResultModel } from './studentModel';
-import { BasicPageParams } from '../model/baseModel';
+import { BasicPageParams, Result } from '../model/baseModel';
+import { ExamPartItem } from '../exam/examModel';
 
 enum Api {
-  STUDENT_LIST = '/users',
+  STUDENT_LIST = '/students',
+  HOMEWORK = '/homework',
+  EXAM = '/exam',
+  CAPACITY = '/exam-capacity',
 }
 
-export const classListApi = () => (params: BasicPageParams) =>
+export const getAllStudentListApi = () => (params: BasicPageParams) =>
   defHttp.get<StudentListGetResultModel>({
     url: Api.STUDENT_LIST,
+    params,
+    headers: {
+      // @ts-ignore
+      ignoreCancelToken: true,
+    },
+  });
+
+export const getHomeworkListOfStudentApi = () => (params: BasicPageParams) =>
+  defHttp.get<StudentListGetResultModel>({
+    url: `${Api.STUDENT_LIST}${Api.HOMEWORK}`,
+    params,
+    headers: {
+      // @ts-ignore
+      ignoreCancelToken: true,
+    },
+  });
+
+export const getExamListOfStudentApi = () => (params: BasicPageParams) =>
+  defHttp.get<StudentListGetResultModel>({
+    url: `${Api.STUDENT_LIST}${Api.EXAM}`,
+    params,
+    headers: {
+      // @ts-ignore
+      ignoreCancelToken: true,
+    },
+  });
+
+export const getTestOfStudentApi = (studentId: number, testId: number) =>
+  defHttp.get<Result<ExamPartItem>>({
+    url: `${Api.STUDENT_LIST}/${studentId}${Api.HOMEWORK}/${testId}`,
+    headers: {
+      // @ts-ignore
+      ignoreCancelToken: true,
+    },
+  });
+
+export const getExamCapacityApi = () => (params: BasicPageParams) =>
+  defHttp.get<Result<ExamPartItem>>({
+    url: `${Api.STUDENT_LIST}${Api.CAPACITY}`,
     params,
     headers: {
       // @ts-ignore

@@ -11,7 +11,7 @@
       <Card>
         <Quiz
           v-for="question in questionsSample"
-          :key="question.no"
+          :key="question.question_no"
           class="mb-4"
           :question="question"
         />
@@ -49,7 +49,7 @@
     </p>
     <ol>
       <li><strong>Reliability:</strong> We have built a strong reputation for delivering quality service.</li>
-      <li><strong>Innovation:</strong> We stay ahead by implementing the latest technologies.</li>
+      <li><strong>Inquestion_novation:</strong> We stay ahead by implementing the latest techquestion_nologies.</li>
       <li><strong>Community:</strong> Join thousands of satisfied users who trust our platform.</li>
     </ol>
 
@@ -77,7 +77,7 @@
   `;
   const questionsSample = [
     {
-      no: 1,
+      question_no: 1,
       content: 'What is the capital of France?',
       type: SelectQuestionType.SingleChoice,
       options: [
@@ -89,7 +89,7 @@
       answer: 'A',
     },
     {
-      no: 2,
+      question_no: 2,
       content: 'What is the capital of Germany?',
       type: SelectQuestionType.SingleChoice,
       options: [
@@ -101,7 +101,7 @@
       answer: 'B',
     },
     {
-      no: 3,
+      question_no: 3,
       content: 'What is the capital of Italy?',
       type: SelectQuestionType.SingleChoice,
       options: [

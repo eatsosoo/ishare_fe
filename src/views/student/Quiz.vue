@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h2 class="text-primary mb-0">Question {{ props.question.no }}</h2>
-    <h3 class="mb-0">{{ props.question.no }}. {{ props.question.content }}</h3>
+    <h2 class="text-primary mb-0">Question {{ props.question.question_no }}</h2>
+    <h3 class="mb-0">{{ props.question.question_no }}. {{ props.question.content }}</h3>
     <ul class="mb-0">
       <li v-for="option in question.options" :key="option.id" class="flex">
         <Radio /><span>{{ option.id }}. {{ option.text }}</span>

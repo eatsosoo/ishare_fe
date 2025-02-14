@@ -7,7 +7,7 @@
             {{ record.status }}
           </Tag>
         </template>
-        <template v-if="column.key === 'action' && record.status === 'x'">
+        <template v-if="column.key === 'action'">
           <a-button size="small" preIcon="ant-design:edit-filled" @click="clickOpen(record.id)" />
         </template>
       </template>
@@ -61,9 +61,9 @@
   import { useTable } from '@/components/Table';
   import { useI18n } from '@/hooks/web/useI18n';
   import { getExamColumns, getSearchExamOfStudentConfig } from '@/views/classroom/tableData';
-  import { examListApi } from '@/api/demo/table';
   import { Card, Tag } from 'ant-design-vue';
   import ExamineType1 from './ExamineType1.vue';
+  import { examListApi } from '@/api/exam/exam';
 
   const domRef = ref<Nullable<HTMLElement>>(null);
   const { toggle: toggleDom, isFullscreen: isDomFullscreen } = useFullscreen(domRef);

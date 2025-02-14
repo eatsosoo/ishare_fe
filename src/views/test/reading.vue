@@ -47,7 +47,7 @@
       </TabPane>
 
       <template v-if="readingParts.length < 3 && !isHomework" #rightExtra>
-        <a-button type="default" @click="handleAddTab">{{ t('common.add') }} Passage</a-button>
+        <a-button type="default" @click="handleAddTab">{{ t('common.add') }} Part</a-button>
       </template>
     </Tabs>
   </div>
@@ -85,7 +85,7 @@
   const tabs = computed(() => {
     return Array.from({ length: readingParts.value.length }, (_, i) => ({
       key: i,
-      tab: `Passage ${i + 1}`,
+      tab: `Part ${i + 1}`,
     }));
   });
 

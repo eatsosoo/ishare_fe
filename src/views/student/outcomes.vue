@@ -16,13 +16,13 @@
   import { useTable } from '@/components/Table';
   import { useI18n } from '@/hooks/web/useI18n';
   import { getExamColumns, getSearchExamOfStudentConfig } from '@/views/classroom/tableData';
-  import { examListApi } from '@/api/demo/table';
   import { Tag } from 'ant-design-vue';
+  import { getExamCapacityApi } from '@/api/student/student';
 
   const { t } = useI18n();
 
   const [registerTable] = useTable({
-    api: examListApi(),
+    api: getExamCapacityApi(),
     columns: getExamColumns(),
     useSearchForm: true,
     formConfig: getSearchExamOfStudentConfig(),
