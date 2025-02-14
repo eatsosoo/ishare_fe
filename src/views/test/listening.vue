@@ -191,8 +191,9 @@
   async function submitAll(examId: number) {
     try {
       loading.value = true;
-      const { subject, questions } = listeningParts.value[activeKey.value];
+      const { subject, questions, id } = listeningParts.value[activeKey.value];
       const submitForm: ExamPartForm = {
+        id: id || null,
         exam_id: examId,
         type: 'Listening',
         subject,
@@ -201,7 +202,7 @@
         media: audioUrl.value,
         questions_count: questions.length,
       };
-      console.log(submitForm);
+
       const result = await examPartApi(submitForm);
       if (result) {
         createSuccessModal({
@@ -209,7 +210,7 @@
           content: t('common.createSuccessfully'),
           getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
         });
-        handleAfterSubmit(result);
+        handleAfterSubmit(result.items);
       }
     } catch (error) {
       const apiMessage = error.response?.data.message;

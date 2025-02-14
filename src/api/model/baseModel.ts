@@ -13,3 +13,7 @@ export interface BasicApiResult<T> {
   statusCode: number;
   message: string;
 }
+
+export interface Result<T> {
+  items: T;
+}

@@ -7,7 +7,7 @@ import {
   ExamPartForm,
   ExamPartItem,
 } from './examModel';
-import { BasicApiResult, BasicPageParams } from '../model/baseModel';
+import { BasicApiResult, BasicPageParams, Result } from '../model/baseModel';
 import { ErrorMessageMode } from '#/axios';
 
 enum Api {
@@ -48,7 +48,7 @@ export const examCreateApi = (params: ExamAddForm, mode: ErrorMessageMode = 'mod
   );
 
 export const examPartApi = (params: ExamPartForm, mode: ErrorMessageMode = 'modal') =>
-  defHttp.post<ExamPartItem>(
+  defHttp.post<Result<ExamPartItem>>(
     {
       url: `${Api.EXAM_ACTION}/${params.exam_id}/tests`,
       params,

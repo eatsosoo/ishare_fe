@@ -21,6 +21,7 @@ export interface ExamAddForm {
 }
 
 export interface ExamPartForm {
+  id: number | null;
   exam_id: number;
   type: SkillType;
   duration: number;

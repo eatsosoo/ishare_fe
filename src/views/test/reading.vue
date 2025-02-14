@@ -27,7 +27,7 @@
                 :key="`${item.key}_${idx}`"
                 class="border rounded-full h-10 w-10 flex items-center justify-center cursor-pointer"
                 :class="
-                  questionCurrent.question_no === question.question_no
+                  questionCurrent?.question_no === question.question_no
                     ? 'border-blue text-blue'
                     : 'border-gray text-gray'
                 "
@@ -79,7 +79,7 @@
   const TabPane = Tabs.TabPane;
 
   const activeKey = ref(0);
-  const questionCurrent = ref<ExtendedQuestionItem>(props.value[0].questions[0]);
+  const questionCurrent = ref<ExtendedQuestionItem | null>(props.value[0].questions[0]);
   const readingParts = ref<ExamPartItem[]>(props.value);
   const loading = ref(false);
   const tabs = computed(() => {
@@ -134,8 +134,9 @@
   async function submitAll(examId: number) {
     try {
       loading.value = true;
-      const { subject, questions } = readingParts.value[activeKey.value];
+      const { subject, questions, id } = readingParts.value[activeKey.value];
       const submitForm: ExamPartForm = {
+        id: id || null,
         exam_id: examId,
         type: 'Reading',
         subject,
@@ -151,7 +152,7 @@
           content: t('common.createSuccessfully'),
           getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
         });
-        // handleAfterSubmit(result);
+        handleAfterSubmit(result.items);
       }
     } catch (error) {
       if (error.errorFields) return;
