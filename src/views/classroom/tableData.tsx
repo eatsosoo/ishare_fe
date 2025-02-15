@@ -222,6 +222,35 @@ export function getExamColumns(): BasicColumn[] {
   ];
 }
 
+export function getExamOfStudentColumns(): BasicColumn[] {
+  return [
+    {
+      title: t('table.examTable.name'),
+      dataIndex: 'exam_title',
+    },
+    {
+      title: t('table.examTable.type'),
+      dataIndex: 'skill',
+    },
+    {
+      title: t('table.examTable.student'),
+      dataIndex: 'student_name',
+    },
+    {
+      title: t('table.examTable.status'),
+      dataIndex: 'status',
+    },
+    {
+      title: t('table.examTable.score'),
+      dataIndex: 'score',
+    },
+    {
+      title: t('table.examTable.createdAt'),
+      dataIndex: 'created_at',
+    },
+  ];
+}
+
 export function getTestColumns(): BasicColumn[] {
   return [
     {
@@ -461,6 +490,41 @@ export function getSearchStudentConfig(): Partial<FormProps> {
       {
         field: 'phone',
         label: t('form.exerciseSearch.phone'),
+        component: 'Input',
+        colProps: {
+          xl: 6,
+          xxl: 4,
+        },
+      },
+    ],
+  };
+}
+
+export function getSearchUserConfig(): Partial<FormProps> {
+  return {
+    labelWidth: 100,
+    schemas: [
+      {
+        field: 'name',
+        component: 'Input',
+        label: t('table.name'),
+        colProps: {
+          xl: 6,
+          xxl: 4,
+        },
+      },
+      {
+        field: 'phone',
+        label: t('table.phone'),
+        component: 'Input',
+        colProps: {
+          xl: 6,
+          xxl: 4,
+        },
+      },
+      {
+        field: 'email',
+        label: t('table.email'),
         component: 'Input',
         colProps: {
           xl: 6,

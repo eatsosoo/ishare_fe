@@ -21,7 +21,7 @@
   import Icon from '@/components/Icon/Icon.vue';
   import { BasicTable, useTable } from '@/components/Table';
   import { useI18n } from '@/hooks/web/useI18n';
-  import { getAccountColumns, getSearchStudentConfig } from '@/views/classroom/tableData';
+  import { getAccountColumns, getSearchUserConfig } from '@/views/classroom/tableData';
 
   const { t } = useI18n();
   const [registerTable, { getSelectRows, clearSelectedRowKeys }] = useTable({
@@ -38,7 +38,7 @@
     showTableSetting: true,
     showIndexColumn: false,
     useSearchForm: true,
-    formConfig: getSearchStudentConfig(),
+    formConfig: getSearchUserConfig(),
     rowSelection: {
       type: 'checkbox',
     },

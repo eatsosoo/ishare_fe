@@ -60,10 +60,13 @@
   import BasicTable from '@/components/Table/src/BasicTable.vue';
   import { useTable } from '@/components/Table';
   import { useI18n } from '@/hooks/web/useI18n';
-  import { getExamColumns, getSearchExamOfStudentConfig } from '@/views/classroom/tableData';
+  import {
+    getExamOfStudentColumns,
+    getSearchExamOfStudentConfig,
+  } from '@/views/classroom/tableData';
   import { Card, Tag } from 'ant-design-vue';
   import ExamineType1 from './ExamineType1.vue';
-  import { examListApi } from '@/api/exam/exam';
+  import { getExamListOfStudentApi } from '@/api/student/student';
 
   const domRef = ref<Nullable<HTMLElement>>(null);
   const { toggle: toggleDom, isFullscreen: isDomFullscreen } = useFullscreen(domRef);
@@ -83,13 +86,13 @@
   }, 1000);
 
   const [registerTable] = useTable({
-    api: examListApi(),
-    columns: getExamColumns(),
+    api: getExamListOfStudentApi(),
+    columns: getExamOfStudentColumns(),
     useSearchForm: true,
     formConfig: getSearchExamOfStudentConfig(),
     showTableSetting: false,
     tableSetting: { fullScreen: true },
-    showIndexColumn: false,
+    showIndexColumn: true,
     rowKey: 'id',
     showSelectionBar: false,
     actionColumn: {
