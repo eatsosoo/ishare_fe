@@ -2,6 +2,7 @@ import type { AppRouteModule } from '@/router/types';
 
 import { LAYOUT } from '@/router/constant';
 import { t } from '@/hooks/web/useI18n';
+import { RoleEnum } from '@/enums/roleEnum';
 
 const classroom: AppRouteModule = {
   path: '/class',
@@ -12,6 +13,7 @@ const classroom: AppRouteModule = {
     orderNo: 10,
     icon: 'ion:grid-outline',
     title: t('routes.page.classManagement'),
+    roles: [RoleEnum.SUPER, RoleEnum.TEACHER],
   },
   children: [
     {

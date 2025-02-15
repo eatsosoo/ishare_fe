@@ -120,6 +120,7 @@ export const useUserStore = defineStore({
       const userInfo = await this.getUserInfoAction();
 
       const sessionTimeout = this.sessionTimeout;
+      console.log(sessionTimeout);
       if (sessionTimeout) {
         this.setSessionTimeout(false);
       } else {
@@ -128,6 +129,7 @@ export const useUserStore = defineStore({
         // 动态路由加载（首次）
         if (!permissionStore.isDynamicAddedRoute) {
           const routes = await permissionStore.buildRoutesAction();
+          console.log(routes);
           [...routes, PAGE_NOT_FOUND_ROUTE].forEach((route) => {
             router.addRoute(route as unknown as RouteRecordRaw);
           });

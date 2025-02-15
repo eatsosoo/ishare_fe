@@ -2,6 +2,7 @@ import type { AppRouteModule } from '@/router/types';
 
 import { LAYOUT } from '@/router/constant';
 import { t } from '@/hooks/web/useI18n';
+import { RoleEnum } from '@/enums/roleEnum';
 
 const system: AppRouteModule = {
   path: '/system',
@@ -20,6 +21,7 @@ const system: AppRouteModule = {
       meta: {
         title: t('routes.demo.system.account'),
         ignoreKeepAlive: false,
+        roles: [RoleEnum.SUPER],
       },
       component: () => import('@/views/demo/system/account/index.vue'),
     },
@@ -32,6 +34,7 @@ const system: AppRouteModule = {
         ignoreKeepAlive: true,
         showMenu: false,
         currentActiveMenu: '/system/account',
+        // roles: [RoleEnum.SUPER],
       },
       component: () => import('@/views/demo/system/account/AccountDetail.vue'),
     },
@@ -41,6 +44,7 @@ const system: AppRouteModule = {
       meta: {
         title: t('routes.demo.system.role'),
         ignoreKeepAlive: true,
+        roles: [RoleEnum.SUPER],
       },
       component: () => import('@/views/demo/system/role/index.vue'),
     },
@@ -53,14 +57,14 @@ const system: AppRouteModule = {
       },
       component: () => import('@/views/demo/system/password/index.vue'),
     },
-    {
-      path: 'line',
-      name: 'Line',
-      component: () => import('@/views/demo/charts/Line.vue'),
-      meta: {
-        title: t('routes.demo.charts.line'),
-      },
-    },
+    // {
+    //   path: 'line',
+    //   name: 'Line',
+    //   component: () => import('@/views/demo/charts/Line.vue'),
+    //   meta: {
+    //     title: t('routes.demo.charts.line'),
+    //   },
+    // },
   ],
 };
 

@@ -5,9 +5,11 @@ import {
   GetUserInfoModel,
   RegisterParams,
   RegisterResultModel,
+  ChangePasswordParams,
 } from './model/userModel';
 
 import { ErrorMessageMode } from '#/axios';
+import { Result } from '../model/baseModel';
 
 enum Api {
   Login = '/login',
@@ -16,6 +18,7 @@ enum Api {
   GetPermCode = '/getPermCode',
   TestRetry = '/testRetry',
   Register = '/register',
+  ChangePassword = '/profile/change-password',
 }
 
 /**
@@ -72,6 +75,18 @@ export function testRetry() {
         count: 0,
         waitTime: 1000,
       },
+    },
+  );
+}
+
+export function changePassword(params: ChangePasswordParams, mode: ErrorMessageMode = 'modal') {
+  return defHttp.put<Result<boolean>>(
+    {
+      url: Api.ChangePassword,
+      params,
+    },
+    {
+      errorMessageMode: mode,
     },
   );
 }

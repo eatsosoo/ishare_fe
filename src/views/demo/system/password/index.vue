@@ -17,9 +17,12 @@
 
   import { formSchema } from './pwd.data';
   import { useI18n } from '@/hooks/web/useI18n';
+  import { changePassword } from '@/api/sys/user';
+  import { useUserStore } from '@/store/modules/user';
 
   defineOptions({ name: 'ChangePassword' });
 
+  const useStore = useUserStore();
   const { t } = useI18n();
   const [register, { validate, resetFields }] = useForm({
     size: 'default',
@@ -32,12 +35,16 @@
   async function handleSubmit() {
     try {
       const values = await validate();
-      const { passwordOld, passwordNew } = values;
+      const { passwordOld, passwordNew, confirmPassword } = values;
 
-      // TODO custom api
-      console.log(passwordOld, passwordNew);
-      // const { router } = useRouter();
-      // router.push(pageEnum.BASE_LOGIN);
+      const result = await changePassword({
+        current_password: passwordOld,
+        password: passwordNew,
+        password_confirmation: confirmPassword,
+      });
+      if (result) {
+        useStore.logout();
+      }
     } catch (error) {
       console.error(error);
     }

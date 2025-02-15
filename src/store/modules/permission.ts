@@ -118,7 +118,7 @@ export const usePermissionStore = defineStore({
       this.setPermCodeList(codeList);
     },
 
-    // 构建路由
+    // Build routes
     async buildRoutesAction(): Promise<AppRouteRecordRaw[]> {
       const { t } = useI18n();
       const userStore = useUserStore();
@@ -128,26 +128,26 @@ export const usePermissionStore = defineStore({
       const roleList = toRaw(userStore.getRoleList) || [];
       const { permissionMode = projectSetting.permissionMode } = appStore.getProjectConfig;
 
-      // 路由过滤器 在 函数filter 作为回调传入遍历使用
+      // The route filter is used as a callback in the function filter.
       const routeFilter = (route: AppRouteRecordRaw) => {
         const { meta } = route;
-        // 抽出角色
+        // Extract the role
         const { roles } = meta || {};
         if (!roles) return true;
-        // 进行角色权限判断
+        // Determine role permissions
         return roleList.some((role) => roles.includes(role));
       };
 
       const routeRemoveIgnoreFilter = (route: AppRouteRecordRaw) => {
         const { meta } = route;
-        // ignoreRoute 为true 则路由仅用于菜单生成，不会在实际的路由表中出现
+        // If ignoreRoute is true, the route is only used for menu generation and will not appear in the actual routing table.
         const { ignoreRoute } = meta || {};
-        // arr.filter 返回 true 表示该元素通过测试
+        // arr.filter returns true if the element passes the test
         return !ignoreRoute;
       };
 
       /**
-       * @description 根据设置的首页path，修正routes中的affix标记（固定首页）
+       * @description Fix the affix mark in routes according to the set homepage path (fix the homepage)
        * */
       const patchHomeAffix = (routes: AppRouteRecordRaw[]) => {
         if (!routes || routes.length === 0) return;
@@ -173,56 +173,56 @@ export const usePermissionStore = defineStore({
         try {
           patcher(routes);
         } catch (e) {
-          // 已处理完毕跳出循环
+          // Processed, exit the loop
         }
         return;
       };
 
       switch (permissionMode) {
-        // 角色权限
+        // Role permissions
         case PermissionModeEnum.ROLE:
           const staticMenuList = transformMenuModules(menuModules);
           staticMenuList.sort((a, b) => {
             return (a.orderNo || 0) - (b.orderNo || 0);
           });
-          // 设置菜单列表
+          // Set the menu list
           this.setStaticMenuList(staticMenuList);
-          // 对非一级路由进行过滤
+          // Filter non-primary routes
           routes = filter(asyncRoutes, routeFilter);
-          // 对一级路由根据角色权限过滤
+          // Filter primary routes based on role permissions
           routes = routes.filter(routeFilter);
           // Convert multi-level routing to level 2 routing
-          // 将多级路由转换为 2 级路由
+          // Convert multi-level routing to level 2 routing
           routes = flatMultiLevelRoutes(routes);
           break;
 
-        // 路由映射， 默认进入该case
+        // Route mapping, default case
         case PermissionModeEnum.ROUTE_MAPPING:
-          // 对非一级路由进行过滤
+          // Filter non-primary routes
           routes = filter(asyncRoutes, routeFilter);
-          // 对一级路由再次根据角色权限过滤
+          // Filter primary routes based on role permissions again
           routes = routes.filter(routeFilter);
-          // 将路由转换成菜单
+          // Convert routes to menus
           const menuList = transformRouteToMenu(routes, true);
-          // 移除掉 ignoreRoute: true 的路由 非一级路由
+          // Remove routes with ignoreRoute: true that are not top-level routes
           routes = filter(routes, routeRemoveIgnoreFilter);
-          // 移除掉 ignoreRoute: true 的路由 一级路由；
+          // Remove routes with ignoreRoute: true that are top-level routes;
           routes = routes.filter(routeRemoveIgnoreFilter);
-          // 对菜单进行排序
+          // Sort the menu
           menuList.sort((a, b) => {
             return (a.meta?.orderNo || 0) - (b.meta?.orderNo || 0);
           });
 
-          // 设置菜单列表
+          // Set the menu list
           this.setFrontMenuList(menuList);
 
           // Convert multi-level routing to level 2 routing
-          // 将多级路由转换为 2 级路由
+          // Convert multi-level routing to level 2 routing
           routes = flatMultiLevelRoutes(routes);
           break;
 
         //  If you are sure that you do not need to do background dynamic permissions, please comment the entire judgment below
-        //  如果确定不需要做后台动态权限，请在下方注释整个判断
+        // If you are sure that you do not need to do background dynamic permissions, please comment the entire judgment below
         case PermissionModeEnum.BACK:
           const { createMessage } = useMessage();
 
@@ -232,9 +232,9 @@ export const usePermissionStore = defineStore({
           });
 
           // !Simulate to obtain permission codes from the background,
-          // 模拟从后台获取权限码，
+          // Simulate obtaining permission codes from the backend,
           // this function may only need to be executed once, and the actual project can be put at the right time by itself
-          // 这个功能可能只需要执行一次，实际项目可以自己放在合适的时间
+          // This function may only need to be executed once, and the actual project can be put at the right time by itself
           let routeList: AppRouteRecordRaw[] = [];
           try {
             await this.changePermissionCode();
@@ -244,16 +244,15 @@ export const usePermissionStore = defineStore({
           }
 
           // Dynamically introduce components
-          // 动态引入组件
+          // Dynamically import components
           routeList = transformObjToRoute(routeList);
 
           //  Background routing to menu structure
-          //  后台路由到菜单结构
+          // Convert backend routes to menu structure
           const backMenuList = transformRouteToMenu(routeList);
           this.setBackMenuList(backMenuList);
 
           // remove meta.ignoreRoute item
-          // 删除 meta.ignoreRoute 项
           routeList = filter(routeList, routeRemoveIgnoreFilter);
           routeList = routeList.filter(routeRemoveIgnoreFilter);
 
@@ -270,7 +269,6 @@ export const usePermissionStore = defineStore({
 });
 
 // Need to be used outside the setup
-// 需要在设置之外使用
 export function usePermissionStoreWithOut() {
   return usePermissionStore(store);
 }

@@ -15,7 +15,7 @@ export function createFakeUserList() {
       roles: [
         {
           roleName: 'Super Admin',
-          value: 'super',
+          value: 'Student',
         },
       ],
     },

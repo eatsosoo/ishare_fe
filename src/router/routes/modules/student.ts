@@ -2,6 +2,7 @@ import type { AppRouteModule } from '@/router/types';
 
 import { LAYOUT } from '@/router/constant';
 import { t } from '@/hooks/web/useI18n';
+import { RoleEnum } from '@/enums/roleEnum';
 
 const student: AppRouteModule = {
   path: '/student',
@@ -12,6 +13,7 @@ const student: AppRouteModule = {
     orderNo: 25,
     icon: 'ion:edit',
     title: t('routes.page.studentManagement'),
+    roles: [RoleEnum.STUDENT],
   },
   children: [
     {

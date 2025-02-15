@@ -2,6 +2,7 @@ import type { AppRouteModule } from '@/router/types';
 
 import { LAYOUT } from '@/router/constant';
 import { t } from '@/hooks/web/useI18n';
+import { RoleEnum } from '@/enums/roleEnum';
 
 const grading: AppRouteModule = {
   path: '/grading',
@@ -12,6 +13,7 @@ const grading: AppRouteModule = {
     orderNo: 15,
     icon: 'ion:checkmark-done-outline',
     title: t('routes.page.testGradingManagement'),
+    roles: [RoleEnum.SUPER, RoleEnum.TEACHER],
   },
   children: [
     {

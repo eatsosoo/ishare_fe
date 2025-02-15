@@ -2,6 +2,7 @@ import type { AppRouteModule } from '@/router/types';
 
 import { LAYOUT } from '@/router/constant';
 import { t } from '@/hooks/web/useI18n';
+import { RoleEnum } from '@/enums/roleEnum';
 
 const test: AppRouteModule = {
   path: '/test',
@@ -12,6 +13,7 @@ const test: AppRouteModule = {
     orderNo: 10,
     icon: 'ion:list-outline',
     title: t('routes.page.testManagement'),
+    roles: [RoleEnum.SUPER, RoleEnum.TEACHER],
   },
   children: [
     {

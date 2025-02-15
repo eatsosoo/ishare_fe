@@ -23,8 +23,8 @@
         <a-button @click="changeRole(RoleEnum.SUPER)" :type="isSuper ? 'primary' : 'default'">
           {{ RoleEnum.SUPER }}
         </a-button>
-        <a-button @click="changeRole(RoleEnum.TEST)" :type="isTest ? 'primary' : 'default'">
-          {{ RoleEnum.TEST }}
+        <a-button @click="changeRole(RoleEnum.TEACHER)" :type="isTest ? 'primary' : 'default'">
+          {{ RoleEnum.TEACHER }}
         </a-button>
       </Space>
     </div>
@@ -33,11 +33,11 @@
       <a-button type="primary" class="mx-4"> Chỉ hiển thị với quyền super </a-button>
     </Authority>
 
-    <Authority :value="RoleEnum.TEST">
+    <Authority :value="RoleEnum.TEACHER">
       <a-button color="success" class="mx-4"> Chỉ hiển thị với quyền test </a-button>
     </Authority>
 
-    <Authority :value="[RoleEnum.TEST, RoleEnum.SUPER]">
+    <Authority :value="[RoleEnum.TEACHER, RoleEnum.SUPER]">
       <a-button color="error" class="mx-4"> Chỉ hiển thị với quyền [test, super] </a-button>
     </Authority>
 
@@ -46,11 +46,11 @@
       Chỉ hiển thị với quyền super
     </a-button>
 
-    <a-button v-if="hasPermission(RoleEnum.TEST)" color="success" class="mx-4">
+    <a-button v-if="hasPermission(RoleEnum.TEACHER)" color="success" class="mx-4">
       Chỉ hiển thị với quyền test
     </a-button>
 
-    <a-button v-if="hasPermission([RoleEnum.TEST, RoleEnum.SUPER])" color="error" class="mx-4">
+    <a-button v-if="hasPermission([RoleEnum.TEACHER, RoleEnum.SUPER])" color="error" class="mx-4">
       Chỉ hiển thị với quyền [test, super]
     </a-button>
 
@@ -61,11 +61,11 @@
       Chỉ hiển thị với quyền super
     </a-button>
 
-    <a-button v-auth="RoleEnum.TEST" color="success" class="mx-4">
+    <a-button v-auth="RoleEnum.TEACHER" color="success" class="mx-4">
       Chỉ hiển thị với quyền test
     </a-button>
 
-    <a-button v-auth="[RoleEnum.TEST, RoleEnum.SUPER]" color="error" class="mx-4">
+    <a-button v-auth="[RoleEnum.TEACHER, RoleEnum.SUPER]" color="error" class="mx-4">
       Chỉ hiển thị với quyền [test, super]
     </a-button>
   </PageWrapper>
@@ -85,7 +85,7 @@
   const userStore = useUserStore();
 
   const isSuper = computed(() => userStore.getRoleList.includes(RoleEnum.SUPER));
-  const isTest = computed(() => userStore.getRoleList.includes(RoleEnum.TEST));
+  const isTest = computed(() => userStore.getRoleList.includes(RoleEnum.TEACHER));
 </script>
 <style lang="less" scoped>
   .demo {

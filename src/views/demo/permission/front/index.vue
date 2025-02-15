@@ -23,8 +23,8 @@
         <a-button @click="changeRole(RoleEnum.SUPER)" :type="isSuper ? 'primary' : 'default'">
           {{ RoleEnum.SUPER }}
         </a-button>
-        <a-button @click="changeRole(RoleEnum.TEST)" :type="isTest ? 'primary' : 'default'">
-          {{ RoleEnum.TEST }}
+        <a-button @click="changeRole(RoleEnum.TEACHER)" :type="isTest ? 'primary' : 'default'">
+          {{ RoleEnum.TEACHER }}
         </a-button>
       </Space>
     </div>
@@ -43,7 +43,7 @@
   const userStore = useUserStore();
 
   const isSuper = computed(() => userStore.getRoleList.includes(RoleEnum.SUPER));
-  const isTest = computed(() => userStore.getRoleList.includes(RoleEnum.TEST));
+  const isTest = computed(() => userStore.getRoleList.includes(RoleEnum.TEACHER));
 </script>
 <style lang="less" scoped>
   .demo {

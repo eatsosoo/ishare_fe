@@ -1,7 +1,8 @@
 export enum RoleEnum {
   // super admin
-  SUPER = 'super',
-
-  // tester
-  TEST = 'test',
+  SUPER = 'Admin',
+  // teacher
+  TEACHER = 'Teacher',
+  // student
+  STUDENT = 'Student',
 }
