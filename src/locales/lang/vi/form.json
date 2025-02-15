@@ -60,7 +60,7 @@
     "createdAt": "Ngày nộp",
     "deadline": "Hạn nộp",
     "name": "Tên đề thi",
-    "title": "Tạo đề thi mới",
+    "title": "Chỉnh sửa nội dung",
     "editSkill": "Cập nhật kỹ năng {skill}"
   },
   "exerciseOfStudentSearch": {

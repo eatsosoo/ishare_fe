@@ -8,7 +8,7 @@
     @ok="handleOk"
   >
     <div class="mb-2">
-      <Select v-model:value="skill" :options="options" />
+      <Select v-model:value="skill" :options="SKILL_OPTIONS" />
     </div>
     <Reading v-show="skill === 'reading'" ref="readingRef" :value="detail?.Reading" />
     <Listening v-show="skill === 'listening'" ref="listeningRef" :value="detail?.Listening" />
@@ -24,10 +24,11 @@
   import { useI18n } from '@/hooks/web/useI18n';
   import { ExamDetailItem } from '@/api/exam/examModel';
   import { Select } from 'ant-design-vue';
-  import Reading from './reading.vue';
-  import Listening from './listening.vue';
-  import Writing from './writing.vue';
-  import Speaking from './speaking.vue';
+  import Reading from '@/views/test/skill/Reading2.vue';
+  import Listening from '@/views/test/skill/Listening2.vue';
+  import Writing from '@/views/test/skill/Writing2.vue';
+  import Speaking from '@/views/test/skill/Speaking2.vue';
+  import { SKILL_OPTIONS } from '@/views/test/data';
 
   const props = defineProps({
     examId: {
@@ -47,13 +48,6 @@
   const detail = ref<ExamDetailItem | null>(null);
   const loading = ref(false);
   const skill = ref('reading');
-
-  const options = [
-    { label: 'Reading', value: 'reading' },
-    { label: 'Listening', value: 'listening' },
-    { label: 'Writing', value: 'writing' },
-    { label: 'Speaking', value: 'speaking' },
-  ];
 
   const { t } = useI18n();
   const { createMessage } = useMessage();

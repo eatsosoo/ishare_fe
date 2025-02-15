@@ -78,9 +78,9 @@
   import { Tinymce } from '@/components/Tinymce';
   import { Col, Row, Tabs, Upload } from 'ant-design-vue';
   import { useI18n } from '@/hooks/web/useI18n';
-  import { LISTENING_DEFAULT } from './data';
-  import { QuestionItem } from './types/question';
-  import Question from './Question.vue';
+  import { LISTENING_DEFAULT } from '@/views/test/data';
+  import { QuestionItem } from '@/views/test/types/question';
+  import Question from '@/views/test/Question.vue';
   import { useMessage } from '@/hooks/web/useMessage';
   import { useDesign } from '@/hooks/web/useDesign';
   import { examPartApi, uploadAudioApi } from '@/api/exam/exam';
@@ -232,7 +232,7 @@
       const result = await examPartApi(submitForm);
       if (result) {
         createSuccessModal({
-          title: t('form.exam.title', { skill: 'Reading' }),
+          title: t('form.exam.editSkill', { skill: 'Reading' }),
           content: t('common.createSuccessfully'),
           getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
         });

@@ -1,5 +1,5 @@
 import { ExamPartItem } from '@/api/exam/examModel';
-import { ListeningPart, QuestionType } from './types/question';
+import { QuestionType } from './types/question';
 import { useI18n } from '@/hooks/web/useI18n';
 
 const { t } = useI18n();
@@ -35,6 +35,13 @@ export const questionTypes: QuestionType[] = [
   },
 ];
 
+export const SKILL_OPTIONS = [
+  { label: 'Reading', value: 'reading' },
+  { label: 'Listening', value: 'listening' },
+  { label: 'Writing', value: 'writing' },
+  { label: 'Speaking', value: 'speaking' },
+];
+
 export const trueFalseNotGivenOptions = [
   {
     value: 'true',
@@ -65,12 +72,7 @@ export const yesNoNotGivenOptions = [
   },
 ];
 
-const defaultReadingOptions = Array.from({ length: 2 }, (_, i) => ({
-  id: String.fromCharCode(65 + i),
-  text: String.fromCharCode(65 + i),
-}));
-
-const defaultListeningOptions = Array.from({ length: 2 }, (_, i) => ({
+const defaultOptions = Array.from({ length: 2 }, (_, i) => ({
   id: String.fromCharCode(65 + i),
   text: String.fromCharCode(65 + i),
 }));
@@ -82,9 +84,9 @@ export const READING_DEFAULT: ExamPartItem[] = [
     duration: 20,
     questions: Array.from({ length: 1 }, (_, i) => ({
       question_no: i + 1,
-      content: `Question ${i + 1} ?`,
+      content: '',
       type: 'choice',
-      options: defaultReadingOptions,
+      options: defaultOptions,
       answer: null,
     })),
     media: null,
@@ -95,12 +97,12 @@ export const LISTENING_DEFAULT: ExamPartItem[] = [
   {
     subject: 'Listening Section 1',
     question_count: 1,
-    duration: 20,
+    duration: 10,
     questions: Array.from({ length: 1 }, (_, i) => ({
       question_no: i + 1,
-      content: `Question ${i + 1} ?`,
+      content: '',
       type: 'choice',
-      options: defaultReadingOptions,
+      options: defaultOptions,
       answer: null,
     })),
     media: null,
@@ -114,10 +116,10 @@ export const WRITING_DEFAULT: ExamPartItem[] = [
     duration: 60,
     questions: Array.from({ length: 1 }, (_, i) => ({
       question_no: i + 1,
-      content: `Question ${i + 1} ?`,
+      content: 'Writing ... about this subject',
       type: 'writing_task_1_academic',
-      options: [],
-      answer: null,
+      options: defaultOptions,
+      answer: 'custom_answer',
     })),
     media: null,
   },
@@ -130,63 +132,12 @@ export const SPEAKING_DEFAULT: ExamPartItem[] = [
     duration: 15,
     questions: Array.from({ length: 1 }, (_, i) => ({
       question_no: i + 1,
-      content: `Question ${i + 1} ?`,
+      content: 'Speaking ... about this subject',
       type: 'speaking_part_1',
-      options: [],
-      answer: null,
+      options: defaultOptions,
+      answer: 'custom_answer',
     })),
     media: null,
-  },
-];
-
-export const listeningParts: ListeningPart[] = [
-  {
-    key: 'tabs1',
-    tab: 'Section 1',
-    subject: 'Listening Section 1',
-    questions: Array.from({ length: 10 }, (_, i) => ({
-      question_no: i + 1,
-      content: `Question ${i + 1} ?`,
-      type: 'choice',
-      options: defaultListeningOptions,
-      answer: null,
-    })),
-  },
-  {
-    key: 'tabs2',
-    tab: 'Section 2',
-    subject: 'Listening Section 2',
-    questions: Array.from({ length: 10 }, (_, i) => ({
-      question_no: i + 11,
-      content: `Question ${i + 11} ?`,
-      type: 'choice',
-      options: defaultListeningOptions,
-      answer: null,
-    })),
-  },
-  {
-    key: 'tabs3',
-    tab: 'Section 3',
-    subject: 'Listening Section 3',
-    questions: Array.from({ length: 10 }, (_, i) => ({
-      question_no: i + 21,
-      content: `Question ${i + 21} ?`,
-      type: 'choice',
-      options: defaultListeningOptions,
-      answer: '',
-    })),
-  },
-  {
-    key: 'tabs4',
-    tab: 'Section 4',
-    subject: 'Listening Section 4',
-    questions: Array.from({ length: 10 }, (_, i) => ({
-      question_no: i + 31,
-      content: `Question ${i + 31} ?`,
-      type: 'choice',
-      options: defaultListeningOptions,
-      answer: null,
-    })),
   },
 ];
 

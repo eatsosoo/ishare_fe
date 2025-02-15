@@ -8,7 +8,7 @@
     @ok="handleOk"
   >
     <div v-if="!isUpdate" class="mb-2">
-      <Select v-model:value="skill" :options="options" />
+      <Select v-model:value="skill" :options="SKILL_OPTIONS" />
     </div>
 
     <Reading
@@ -40,16 +40,17 @@
 
 <script lang="ts" setup>
   import { BasicModal } from '@/components/Modal';
-  import { ref, computed, watch } from 'vue';
+  import { ref, watch } from 'vue';
   import { useI18n } from '@/hooks/web/useI18n';
   import { Select } from 'ant-design-vue';
-  import Reading from '@/views/test/reading.vue';
-  import Listening from '@/views/test/listening.vue';
-  import Writing from '@/views/test/writing.vue';
-  import Speaking from '@/views/test/speaking.vue';
+  import Reading from '@/views/test/skill/Reading2.vue';
+  import Listening from '@/views/test/skill/Listening2.vue';
+  import Writing from '@/views/test/skill/Writing2.vue';
+  import Speaking from '@/views/test/skill/Speaking2.vue';
   import {
     LISTENING_DEFAULT,
     READING_DEFAULT,
+    SKILL_OPTIONS,
     SPEAKING_DEFAULT,
     WRITING_DEFAULT,
   } from '@/views/test/data';
@@ -82,13 +83,6 @@
   const loading = ref(false);
   const skill = ref('reading');
   const isUpdate = ref(false);
-
-  const options = computed(() => [
-    { label: 'Reading', value: 'reading' },
-    { label: 'Listening', value: 'listening' },
-    { label: 'Writing', value: 'writing' },
-    { label: 'Speaking', value: 'speaking' },
-  ]);
 
   const handleOk = async () => {
     if (!props.homeworkId) {
