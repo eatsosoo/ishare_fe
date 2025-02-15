@@ -1,3 +1,6 @@
+import { BasicFetchResult } from '@/api/model/baseModel';
+import { RoleEnum } from '@/enums/roleEnum';
+
 /**
  * @description: Login interface parameters
  */
@@ -49,19 +52,31 @@ export interface RegisterResultModel {
   };
 }
 
+export interface UserListItem {
+  id: string;
+  name: string;
+  phone_number: string;
+  email: string;
+  date_of_birth: string;
+  user_name: string;
+}
+
 /**
  * @description: Get user information return value
  */
 export interface GetUserInfoModel {
-  roles: RoleInfo[];
-  // 用户id
-  userId: string | number;
-  // 用户名
+  id: number;
+  name: string;
   username: string;
-  // 真实名字
-  realName: string;
-  // 头像
+  email: string;
+  role_name: RoleEnum;
+  date_of_birth: string;
+  phone_number: string;
+  home_path: string;
   avatar: string;
-  // 介绍
-  desc?: string;
 }
+
+/**
+ * @description: Request list return value
+ */
+export type UserListGetResultModel = BasicFetchResult<UserListItem>;

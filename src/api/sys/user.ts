@@ -2,23 +2,25 @@ import { defHttp, otherHttp } from '@/utils/http/axios';
 import {
   LoginParams,
   LoginResultModel,
-  GetUserInfoModel,
   RegisterParams,
   RegisterResultModel,
   ChangePasswordParams,
+  UserListGetResultModel,
 } from './model/userModel';
 
 import { ErrorMessageMode } from '#/axios';
-import { Result } from '../model/baseModel';
+import { BasicPageParams, Result } from '../model/baseModel';
+import { UserInfo } from '#/store';
 
 enum Api {
   Login = '/login',
   Logout = '/logout',
-  GetUserInfo = '/getUserInfo',
+  GetUserInfo = '/profile',
   GetPermCode = '/getPermCode',
   TestRetry = '/testRetry',
   Register = '/register',
   ChangePassword = '/profile/change-password',
+  User = '/users',
 }
 
 /**
@@ -55,11 +57,11 @@ export function registerApi(params: RegisterParams, mode: ErrorMessageMode = 'mo
  * @description: getUserInfo
  */
 export function getUserInfo() {
-  return otherHttp.get<GetUserInfoModel>({ url: Api.GetUserInfo }, { errorMessageMode: 'none' });
+  return defHttp.get<Result<UserInfo>>({ url: Api.GetUserInfo }, { errorMessageMode: 'none' });
 }
 
 export function getPermCode() {
-  return defHttp.get<string[]>({ url: Api.GetPermCode });
+  return otherHttp.get<string[]>({ url: Api.GetPermCode });
 }
 
 export function doLogout() {
@@ -67,7 +69,7 @@ export function doLogout() {
 }
 
 export function testRetry() {
-  return defHttp.get(
+  return otherHttp.get(
     { url: Api.TestRetry },
     {
       retryRequest: {
@@ -90,3 +92,13 @@ export function changePassword(params: ChangePasswordParams, mode: ErrorMessageM
     },
   );
 }
+
+export const getAllUserListApi = () => (params: BasicPageParams) =>
+  defHttp.get<UserListGetResultModel>({
+    url: Api.User,
+    params,
+    headers: {
+      // @ts-ignore
+      ignoreCancelToken: true,
+    },
+  });

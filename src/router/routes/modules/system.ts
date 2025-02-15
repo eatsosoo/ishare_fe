@@ -23,7 +23,7 @@ const system: AppRouteModule = {
         ignoreKeepAlive: false,
         roles: [RoleEnum.SUPER],
       },
-      component: () => import('@/views/demo/system/account/index.vue'),
+      component: () => import('@/views/sys/account/index.vue'),
     },
     {
       path: 'account_detail/:id',

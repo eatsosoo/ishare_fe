@@ -108,6 +108,46 @@ export function getStudentColumns(): BasicColumn[] {
   ];
 }
 
+export function getAccountColumns(): BasicColumn[] {
+  return [
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      fixed: 'left',
+      width: 80,
+    },
+    {
+      title: t('table.name'),
+      dataIndex: 'name',
+      align: 'left',
+    },
+    {
+      title: t('table.phone'),
+      dataIndex: 'phone_number',
+      align: 'left',
+    },
+    {
+      title: t('table.email'),
+      dataIndex: 'email',
+      align: 'left',
+    },
+    {
+      title: t('table.birthday'),
+      dataIndex: 'date_of_birth',
+      align: 'left',
+    },
+    {
+      title: t('table.status'),
+      dataIndex: 'status',
+      align: 'left',
+    },
+    {
+      title: t('table.action'),
+      dataIndex: 'action',
+    },
+  ];
+}
+
 export function getExerciseColumns(): BasicColumn[] {
   return [
     {
