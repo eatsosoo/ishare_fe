@@ -7,8 +7,9 @@ const { t } = useI18n();
 export enum SelectQuestionType {
   SingleChoice = 'choice',
   MultipleChoice = 'multiple_choice',
-  FillIn = 'fill_in',
+  FillIn = 'matching',
   TrueFalseNotGiven = 'true_false_not_given',
+  YesNoNotGiven = 'yes_no_not_given',
 }
 
 export const questionTypes: QuestionType[] = [
@@ -28,6 +29,10 @@ export const questionTypes: QuestionType[] = [
     value: SelectQuestionType.TrueFalseNotGiven,
     label: 'Đúng/Sai/Không được đề cập',
   },
+  {
+    value: SelectQuestionType.YesNoNotGiven,
+    label: 'Có/Không/Không được đề cập',
+  },
 ];
 
 export const trueFalseNotGivenOptions = [
@@ -45,14 +50,29 @@ export const trueFalseNotGivenOptions = [
   },
 ];
 
-const defaultReadingOptions = Array.from({ length: 4 }, (_, i) => ({
+export const yesNoNotGivenOptions = [
+  {
+    value: 'true',
+    label: t('common.true'),
+  },
+  {
+    value: 'false',
+    label: t('common.false'),
+  },
+  {
+    value: 'not_given',
+    label: t('common.notGiven'),
+  },
+];
+
+const defaultReadingOptions = Array.from({ length: 2 }, (_, i) => ({
   id: String.fromCharCode(65 + i),
-  text: '',
+  text: String.fromCharCode(65 + i),
 }));
 
-const defaultListeningOptions = Array.from({ length: 3 }, (_, i) => ({
+const defaultListeningOptions = Array.from({ length: 2 }, (_, i) => ({
   id: String.fromCharCode(65 + i),
-  text: '',
+  text: String.fromCharCode(65 + i),
 }));
 
 export const READING_DEFAULT: ExamPartItem[] = [

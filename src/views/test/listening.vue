@@ -143,9 +143,9 @@
 
     questions.push({
       question_no: questionNo,
-      content: `Question ${questionNo} ?`,
+      content: ``,
       type: 'choice',
-      options: ['A', 'B', 'C', 'D'].map((id) => ({ id, text: '' })),
+      options: ['A', 'B'].map((id) => ({ id, text: id })),
       answer: null,
     });
   }

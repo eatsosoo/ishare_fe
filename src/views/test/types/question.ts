@@ -5,8 +5,9 @@ export interface QuestionType {
 
 export type SelectQuestionType =
   | 'choice'
-  | 'fill_in'
+  | 'matching'
   | 'true_false_not_given'
+  | 'yes_no_not_given'
   | 'multiple_choice'
   | 'writing_task_1_academic'
   | 'speaking_part_1';

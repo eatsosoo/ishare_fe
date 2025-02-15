@@ -32,6 +32,8 @@
   "correctAnswer": "Đáp án đúng",
   "true": "Đúng",
   "false": "Sai",
+  "yes": "Có",
+  "no": "không",
   "notGiven": "Không được đề cập",
   "updateSuccess": "Cập nhật thành công",
   "uploadAudio": "Tải lên file âm thanh",
