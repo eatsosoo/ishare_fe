@@ -1,0 +1,1 @@
+import{d as t}from"./entry/index-BcidWyMC.js";import{Z as e,_ as o}from"./vue-DhXvXWyK.js";import"./antd-BFwNME3X.js";const c={},a={class:"m-10 auth-page"};function r(s,_){return e(),o("div",a,"Hiển thị theo vai trò Test")}const f=t(c,[["render",r],["__scopeId","data-v-9cb381f2"]]);export{f as default};
