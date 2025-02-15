@@ -16,7 +16,7 @@
       <Col :span="12">
         <div class="shadow-lg rounded-md p-4 mb-4">
           <h1>Bài làm của học sinh</h1>
-          <template v-if="props.skillType === 'reading' || props.skillType === 'listening'">
+          <template v-if="props.skillType === 'Reading' || props.skillType === 'Listening'">
             <div v-for="question in questionsSample" :key="question.no" class="mb-4">
               <h2 class="text-primary mb-0">Question {{ question.no }}</h2>
               <h3 class="mb-0">{{ question.no }}. {{ question.content }}</h3>

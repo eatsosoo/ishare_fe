@@ -3,8 +3,8 @@
     <BasicTable @register="registerTable">
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'status'">
-          <Tag :color="record.status === 'v' ? 'green' : 'red'">
-            {{ record.status }}
+          <Tag :color="record.score ? 'green' : 'red'">
+            {{ record.score ? 'v' : 'x' }}
           </Tag>
         </template>
         <template v-if="column.key === 'action'">

@@ -232,10 +232,10 @@ export function getExamOfStudentColumns(): BasicColumn[] {
       title: t('table.examTable.type'),
       dataIndex: 'skill',
     },
-    {
-      title: t('table.examTable.student'),
-      dataIndex: 'student_name',
-    },
+    // {
+    //   title: t('table.examTable.student'),
+    //   dataIndex: 'student_name',
+    // },
     {
       title: t('table.examTable.status'),
       dataIndex: 'status',
@@ -243,6 +243,9 @@ export function getExamOfStudentColumns(): BasicColumn[] {
     {
       title: t('table.examTable.score'),
       dataIndex: 'score',
+      customRender: ({ text }) => {
+        return text || t('common.noScoreYet');
+      },
     },
     {
       title: t('table.examTable.createdAt'),
