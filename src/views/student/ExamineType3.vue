@@ -29,19 +29,19 @@
 
 <script lang="ts" setup>
   import { Card, Col, Row } from 'ant-design-vue';
-  import { ExamPartItem } from '@/api/exam/examModel';
+  import { ResponseExamPartItem } from '@/api/exam/examModel';
   import { ref, watch } from 'vue';
-  import { QuestionItem } from '../test/types/question';
+  import { QuizItem } from '@/views/test/types/question';
   import { Tinymce } from '@/components/Tinymce';
 
   const props = defineProps({
     value: {
-      type: Array as PropType<ExamPartItem[]>,
+      type: Array as PropType<ResponseExamPartItem[]>,
       default: () => [],
     },
   });
   const subjectRef = ref('');
-  const questionsRef = ref<QuestionItem[]>([]);
+  const questionsRef = ref<QuizItem[]>([]);
   const final = ref<{ question_id: number; answer: string | string[] }[]>([]);
   const audioUrl = ref<string | null>('');
   const inputEditor = ref('');

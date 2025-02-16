@@ -32,12 +32,12 @@
 <script setup lang="ts">
   import { ref, watch } from 'vue';
   import { uploadAudioApi } from '@/api/exam/exam';
-  import { ExamPartItem } from '@/api/exam/examModel';
+  import { ResponseExamPartItem } from '@/api/exam/examModel';
   import { Card, Col, Row } from 'ant-design-vue';
 
   const props = defineProps({
     value: {
-      type: Array as PropType<ExamPartItem[]>,
+      type: Array as PropType<ResponseExamPartItem[]>,
       default: () => [],
     },
   });

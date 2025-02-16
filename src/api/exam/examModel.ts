@@ -1,4 +1,4 @@
-import { QuestionItem } from '@/views/test/types/question';
+import { QuestionItem, QuizItem } from '@/views/test/types/question';
 import { BasicApiResult, BasicFetchResult } from '../model/baseModel';
 
 export interface ExamListItem {
@@ -35,10 +35,20 @@ export interface ExamPartItem {
   id?: number;
   subject: string;
   type?: SkillType;
-  question_count: number;
+  questions_count: number;
   duration: number;
   media: string | null;
   questions: ExtendedQuestionItem[];
+}
+
+export interface ResponseExamPartItem {
+  id: number;
+  subject: string;
+  type: SkillType;
+  questions_count: number;
+  duration: number;
+  media: string | null;
+  questions: QuizItem[];
 }
 
 export interface ExtendedQuestionItem extends QuestionItem {
@@ -57,7 +67,7 @@ export interface ExamDetailItem {
 
 export interface SubmitExam {
   type: SkillType;
-  answers{ question_id: number; answer: string | string[] }[];
+  answers: { question_id: number; answer: string | string[] }[];
 }
 
 /**

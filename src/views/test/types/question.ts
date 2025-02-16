@@ -25,6 +25,15 @@ export interface QuestionItem {
   answer: any;
 }
 
+export interface QuizItem {
+  id: number;
+  question_no: number;
+  content: string;
+  type: SelectQuestionType;
+  options: QuestionOptionItem[];
+  your_answer: any;
+}
+
 export interface ReadingPart {
   key: string | number;
   tab: string;

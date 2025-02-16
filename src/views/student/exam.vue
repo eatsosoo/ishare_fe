@@ -21,11 +21,11 @@
     </BasicTable>
 
     <div ref="domRef" v-show="isDomFullscreen" class="bg-white">
-      <div class="mb-4 flex items-center justify-end gap-2 m-4">
+      <div class="p-4 flex items-center justify-end gap-2 border-b-gray-200 border-b-1">
         <a-button type="default">Thời gian: {{ timeLeft }}</a-button>
         <a-button type="primary" @click="submitExam"> Nộp bài </a-button>
       </div>
-      <div class="px-4 h-full">
+      <div class="h-full">
         <ExamineType1
           v-if="currentType === 'Reading' || currentType === 'Listening'"
           :value="examPart"
@@ -61,7 +61,7 @@
   import ExamineType1 from './ExamineType1.vue';
   import { getExamListOfStudentApi } from '@/api/student/student';
   import { examDetailApi, examSubmitApi } from '@/api/exam/exam';
-  import { ExamPartItem, SkillType } from '@/api/exam/examModel';
+  import { ResponseExamPartItem, SkillType } from '@/api/exam/examModel';
   import { BasicModal, useModal } from '@/components/Modal';
   import { useMessage } from '@/hooks/web/useMessage';
   import ExamineType3 from './ExamineType3.vue';
@@ -70,13 +70,13 @@
   const domRef = ref<Nullable<HTMLElement>>(null);
   const { toggle: toggleDom, isFullscreen: isDomFullscreen } = useFullscreen(domRef);
   const { t } = useI18n();
-  const [register, { openModal }] = useModal();
+  const [register] = useModal();
   const { createMessage } = useMessage();
 
   const timeLeft = ref('');
   const examDuration = ref(40 * 60); // Example: 1 hour in seconds
   const loading = ref(false);
-  const examPart = ref<ExamPartItem[]>([]);
+  const examPart = ref<ResponseExamPartItem[]>([]);
   const answer = ref<{ question_id: number; answer: string | string[] }[]>([]);
   const currentExamId = ref<number | null>(null);
   const currentType = ref<SkillType>('Reading');

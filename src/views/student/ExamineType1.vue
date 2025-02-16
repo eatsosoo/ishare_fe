@@ -1,25 +1,27 @@
 <template>
   <div class="h-full relative">
-    <Row :gutter="[16, 16]">
-      <Col :span="12">
-        <audio v-if="audioUrl" :src="audioUrl" controls class="h-8" autoplay></audio>
-        <Card>
+    <Row :gutter="[16, 16]" class="h-full">
+      <Col :span="12" class="bg-[aliceblue] border-r-2 border-gray">
+        <div class="p-4">
+          <audio v-if="audioUrl" :src="audioUrl" controls class="h-8" autoplay></audio>
           <div>
             <div v-html="subjectRef"></div>
           </div>
-        </Card>
+        </div>
       </Col>
-      <Col :span="12">
-        <Card>
+      <Col :span="12" class="border-l-2 border-gray">
+        <div v-if="questionsRef.length > 0" class="p-4">
+          <h2 class="text-primary mb-4"
+            >Question {{ questionsRef[0].question_no }} - {{ questionsRef.at(-1)?.question_no }}</h2
+          >
           <div
             v-for="question in questionsRef"
             :key="question.question_no"
-            class="mb-4"
+            class="mb-6"
             :question="question"
           >
             <div>
-              <h2 class="text-primary mb-0">Question {{ question.question_no }}</h2>
-              <h3 class="mb-0">{{ question.question_no }}. {{ question.content }}</h3>
+              <h3>{{ question.question_no }}. {{ question.content }}</h3>
               <div v-if="question.type === SelectQuestionType.MultipleChoice" class="mb-0">
                 <CheckboxGroup
                   v-model:value="question.your_answer"
@@ -27,17 +29,19 @@
                   @change="updateAnswer(question.id, $event)"
                 >
                   <Checkbox
-                    v-for="value in question.options"
-                    :key="`question_${question.id}_answer_${value.id}`"
-                    :value="value.id"
+                    v-for="option in question.options"
+                    :key="`question_${question.id}_answer_${option.id}`"
+                    :value="option.id"
                   >
-                    {{ value.text }}
+                    {{ option.id }}. {{ option.text }}
                   </Checkbox>
                 </CheckboxGroup>
               </div>
               <div v-else-if="question.type === SelectQuestionType.FillIn">
+                {{ t('common.enterAnswer') }}:
                 <Input
                   v-model:value="question.your_answer"
+                  class="w-40"
                   @change="updateAnswer(question.id, $event.target.value)"
                 />
               </div>
@@ -70,41 +74,31 @@
                   @change="updateAnswer(question.id, $event.target.value)"
                 >
                   <Radio
-                    v-for="value in question.options"
-                    :key="`question_${question.id}_answer_${value.id}`"
-                    :value="value.id"
+                    v-for="option in question.options"
+                    :key="`question_${question.id}_answer_${option.id}`"
+                    :value="option.id"
                   >
-                    {{ value.text }}
-                  </Radio>
-                </RadioGroup>
-              </div>
-              <div v-else class="mb-0">
-                <RadioGroup
-                  v-model:value="question.your_answer"
-                  class="flex flex-col"
-                  @change="updateAnswer(question.id, $event.target.value)"
-                >
-                  <Radio
-                    v-for="value in question.options"
-                    :key="`question_${question.id}_answer_${value.id}`"
-                    :value="value.id"
-                  >
-                    {{ value.text }}
+                    {{ option.id }}. {{ option.text }}
                   </Radio>
                 </RadioGroup>
               </div>
             </div>
           </div>
-        </Card>
+        </div>
       </Col>
     </Row>
-    <div class="absolute bottom-[68px] bg-white box-shadow border-t w-full border-gray">
+    <div
+      class="absolute bottom-[68px] bg-white box-shadow border-t w-full border-gray-200 border-t-1"
+    >
       <div class="flex gap-4 py-2 px-2">
-        <Card
+        <div
           v-for="(p, index) in props.value"
           :key="p.id"
           @click="clickTab(index)"
-          :class="tabActive === index ? 'shrink-0 border-[#0960bd]' : 'flex-1 cursor-pointer'"
+          :class="
+            tabActive === index ? 'shrink-0 border-[#0960bd]' : 'flex-1 cursor-pointer border-gray'
+          "
+          class="border-1 py-2 px-4 rounded-lg"
         >
           <div v-if="tabActive === index" class="flex items-center">
             <div class="text-xl font-semibold mr-2">Part {{ index + 1 }}</div>
@@ -123,38 +117,32 @@
             <!-- <span class="font-light">0 of 13 questions</span> -->
             <span class="font-light">{{ p.questions_count }} questions</span>
           </div>
-        </Card>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import {
-    Card,
-    Checkbox,
-    CheckboxGroup,
-    Col,
-    Input,
-    Radio,
-    RadioGroup,
-    Row,
-  } from 'ant-design-vue';
-  import { ExamPartItem } from '@/api/exam/examModel';
+  import { Checkbox, CheckboxGroup, Col, Input, Radio, RadioGroup, Row } from 'ant-design-vue';
+  import { ResponseExamPartItem } from '@/api/exam/examModel';
   import { ref, watch } from 'vue';
-  import { QuestionItem } from '../test/types/question';
-  import { SelectQuestionType } from '../test/data';
+  import { QuizItem } from '@/views/test/types/question';
+  import { SelectQuestionType } from '@/views/test/data';
   import { isArray } from 'xe-utils';
+  import { useI18n } from '@/hooks/web/useI18n';
 
   const props = defineProps({
     value: {
-      type: Array as PropType<ExamPartItem[]>,
+      type: Array as PropType<ResponseExamPartItem[]>,
       default: () => [],
     },
   });
+
+  const { t } = useI18n();
   const tabActive = ref(0);
   const subjectRef = ref('');
-  const questionsRef = ref<QuestionItem[]>([]);
+  const questionsRef = ref<QuizItem[]>([]);
   const final = ref<{ question_id: number; answer: string | string[] }[]>([]);
   const audioUrl = ref<string | null>('');
 
@@ -209,16 +197,4 @@
       );
     },
   );
-
-  // watch(
-  //   () => questionsRef.value,
-  //   (value) => {
-  //     const updateData = value.map((question) => ({
-  //       question_id: question.id,
-  //       answer: question.your_answer,
-  //     }));
-  //     console.log(updateData);
-  //     emit('updateAnswer', updateData);
-  //   },
-  // );
 </script>
