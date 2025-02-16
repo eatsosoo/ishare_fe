@@ -247,6 +247,9 @@ export function getExamOfStudentColumns(): BasicColumn[] {
     {
       title: t('table.completedAt'),
       dataIndex: 'completed_at',
+      customRender: ({ text }) => {
+        return text || 'Chưa nộp';
+      },
     },
   ];
 }

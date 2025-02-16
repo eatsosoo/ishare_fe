@@ -55,6 +55,11 @@ export interface ExamDetailItem {
   Speaking: ExamPartItem[];
 }
 
+export interface SubmitExam {
+  type: SkillType;
+  answers{ question_id: number; answer: string | string[] }[];
+}
+
 /**
  * @description: Request list return value
  */

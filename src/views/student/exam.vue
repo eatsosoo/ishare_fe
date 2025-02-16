@@ -23,12 +23,21 @@
     <div ref="domRef" v-show="isDomFullscreen" class="bg-white">
       <div class="mb-4 flex items-center justify-end gap-2 m-4">
         <a-button type="default">Thời gian: {{ timeLeft }}</a-button>
-        <a-button type="primary" @click="toggleDom"> Nộp bài </a-button>
+        <a-button type="primary" @click="submitExam"> Nộp bài </a-button>
       </div>
       <div class="px-4 h-full">
-        <ExamineType1 :value="examPart" />
+        <ExamineType1
+          v-if="currentType === 'Reading' || currentType === 'Listening'"
+          :value="examPart"
+          @update-answer="answer = $event"
+        />
+        <ExamineType3 v-else :value="examPart" @update-answer="answer = $event" />
       </div>
     </div>
+
+    <BasicModal @register="register" title="Xác nhận" width="50%" @ok="submitExam">
+      <p>Bạn có muốn nộp bài trước thời hạn không?</p>
+    </BasicModal>
   </div>
 </template>
 <script lang="ts" setup>
@@ -46,17 +55,25 @@
   import { Tag } from 'ant-design-vue';
   import ExamineType1 from './ExamineType1.vue';
   import { getExamListOfStudentApi } from '@/api/student/student';
-  import { examDetailApi } from '@/api/exam/exam';
-  import { ExamPartItem } from '@/api/exam/examModel';
+  import { examDetailApi, examSubmitApi } from '@/api/exam/exam';
+  import { ExamPartItem, SkillType } from '@/api/exam/examModel';
+  import { BasicModal, useModal } from '@/components/Modal';
+  import { useMessage } from '@/hooks/web/useMessage';
+  import ExamineType3 from './ExamineType3.vue';
 
   const domRef = ref<Nullable<HTMLElement>>(null);
   const { toggle: toggleDom, isFullscreen: isDomFullscreen } = useFullscreen(domRef);
   const { t } = useI18n();
+  const [register, { openModal }] = useModal();
+  const { createMessage } = useMessage();
 
   const timeLeft = ref('');
   const examDuration = ref(40 * 60); // Example: 1 hour in seconds
   const loading = ref(false);
   const examPart = ref<ExamPartItem[]>([]);
+  const answer = ref<{ question_id: number; answer: string | string[] }[]>([]);
+  const currentExamId = ref<number | null>(null);
+  const currentType = ref<SkillType>('Reading');
 
   const interval = setInterval(() => {
     const minutes = Math.floor(examDuration.value / 60);
@@ -69,7 +86,7 @@
     examDuration.value--;
   }, 1000);
 
-  const [registerTable] = useTable({
+  const [registerTable, { reload }] = useTable({
     api: getExamListOfStudentApi(),
     columns: getExamOfStudentColumns(),
     useSearchForm: true,
@@ -85,10 +102,16 @@
     },
   });
 
-  function clickOpen(examId: number, skill: string) {
+  function clickOpen(examId: number, skill: SkillType) {
+    if (skill === 'Speaking') {
+      createMessage.warning('Comming soon');
+      return;
+    }
     console.log(examId);
-    // toggleDom();
+    currentExamId.value = examId;
+    currentType.value = skill;
     getExamDetail(examId, skill);
+    toggleDom();
   }
 
   function preventF5(event) {
@@ -102,6 +125,7 @@
       loading.value = true;
       const result = await examDetailApi(examId);
       examPart.value = result[skill];
+      examDuration.value = result[skill].reduce((total, part) => total + part.duration, 0) * 60;
     } catch (error) {
       console.log(error);
       // createMessage.error(t('sys.app.dataNotFound'));
@@ -109,6 +133,40 @@
       loading.value = false;
     }
   }
+
+  async function submitExam() {
+    if (!currentExamId.value) return;
+    try {
+      loading.value = true;
+      const formData = {
+        type: currentType.value,
+        answers: answer.value,
+      };
+      const result = await examSubmitApi(currentExamId.value, formData);
+      if (result) {
+        createMessage.success('Nộp bài thành công');
+        toggleDom();
+        reload();
+      }
+    } catch (error) {
+      console.log(error);
+      createMessage.warning('Bạn cần hoàn thành hết câu hỏi!');
+
+      // createMessage.error(t('sys.app.dataNotFound'));
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  // watch(
+  //   () => examDuration.value,
+  //   () => {
+  //     if (examDuration.value === 0) {
+
+  //       submitExam();
+  //     }
+  //   },
+  // );
 
   onMounted(() => {
     window.addEventListener('keydown', preventF5);

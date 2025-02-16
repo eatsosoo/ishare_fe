@@ -17,6 +17,7 @@ export interface QuestionOptionItem {
   text: string;
 }
 export interface QuestionItem {
+  id?: number;
   question_no: number;
   content: string;
   type: SelectQuestionType;

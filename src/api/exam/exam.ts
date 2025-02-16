@@ -6,6 +6,7 @@ import {
   ExamListGetResultModel,
   ExamPartForm,
   ExamPartItem,
+  SubmitExam,
 } from './examModel';
 import { BasicApiResult, BasicPageParams, Result } from '../model/baseModel';
 import { ErrorMessageMode } from '#/axios';
@@ -66,6 +67,21 @@ export const examDetailApi = (examId: number) =>
       ignoreCancelToken: true,
     },
   });
+
+export const examSubmitApi = (
+  examId: number,
+  params: SubmitExam,
+  mode: ErrorMessageMode = 'modal',
+) =>
+  defHttp.post<Result<ExamPartItem>>(
+    {
+      url: `${Api.EXAM_LIST}/${examId}/submit`,
+      params,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
 
 export const uploadAudioApi = (formData: FormData, mode: ErrorMessageMode = 'modal') =>
   defHttp.post<Result<string>>(
