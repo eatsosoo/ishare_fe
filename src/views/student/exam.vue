@@ -31,6 +31,11 @@
           :value="examPart"
           @update-answer="answer = $event"
         />
+        <ExamineType2
+          v-else-if="currentType === 'Speaking'"
+          :value="examPart"
+          @update-answer="answer = $event"
+        />
         <ExamineType3 v-else :value="examPart" @update-answer="answer = $event" />
       </div>
     </div>
@@ -60,6 +65,7 @@
   import { BasicModal, useModal } from '@/components/Modal';
   import { useMessage } from '@/hooks/web/useMessage';
   import ExamineType3 from './ExamineType3.vue';
+  import ExamineType2 from './ExamineType2.vue';
 
   const domRef = ref<Nullable<HTMLElement>>(null);
   const { toggle: toggleDom, isFullscreen: isDomFullscreen } = useFullscreen(domRef);
@@ -103,10 +109,6 @@
   });
 
   function clickOpen(examId: number, skill: SkillType) {
-    if (skill === 'Speaking') {
-      createMessage.warning('Comming soon');
-      return;
-    }
     console.log(examId);
     currentExamId.value = examId;
     currentType.value = skill;
