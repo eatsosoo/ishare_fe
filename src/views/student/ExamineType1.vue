@@ -115,7 +115,9 @@
           <div v-else class="text-lg text-center">
             <span class="font-semibold mr-4">Part {{ index + 1 }}</span>
             <!-- <span class="font-light">0 of 13 questions</span> -->
-            <span class="font-light">{{ p.questions_count }} questions</span>
+            <span class="font-light"
+              >{{ completeCount[index] }} of {{ p.questions_count }} questions</span
+            >
           </div>
         </div>
       </div>
@@ -126,7 +128,7 @@
 <script lang="ts" setup>
   import { Checkbox, CheckboxGroup, Col, Input, Radio, RadioGroup, Row } from 'ant-design-vue';
   import { ResponseExamPartItem } from '@/api/exam/examModel';
-  import { ref, watch } from 'vue';
+  import { computed, ref, watch } from 'vue';
   import { QuizItem } from '@/views/test/types/question';
   import { SelectQuestionType } from '@/views/test/data';
   import { isArray } from 'xe-utils';
@@ -147,6 +149,16 @@
   const audioUrl = ref<string | null>('');
 
   const emit = defineEmits(['updateAnswer']);
+
+  const completeCount = computed(() => {
+    const counts: number[] = [];
+    props.value.forEach((part) => {
+      const count = part.questions.filter((question) => question.your_answer === null).length;
+      counts.push(count);
+    });
+
+    return counts;
+  });
 
   function clickTab(index: number) {
     const { subject, questions, media } = props.value[index];
