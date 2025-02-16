@@ -1,29 +1,25 @@
 <template>
-  <div class="audio-recorder">
-    <Row :gutter="[16, 16]">
-      <Col :span="12">
-        <Card>
-          <div>
-            <div v-html="subjectRef"></div>
-          </div>
-        </Card>
+  <div class="h-full audio-recorder">
+    <Row :gutter="[16, 16]" class="h-full">
+      <Col :span="12" class="bg-[aliceblue] border-r-2 border-gray">
+        <div class="p-4">
+          <div v-html="subjectRef"></div>
+        </div>
       </Col>
-      <Col :span="12">
-        <Card>
-          <div class="">
-            <div class="mb-2 flex items-center">
-              <a-button class="mr-2" @click="startRecording" :disabled="isRecording"
-                >Start Recording</a-button
-              >
-              <a-button class="mr-2" @click="stopRecording" :disabled="!isRecording"
-                >Stop Recording</a-button
-              >
-              <p class="pt-3">{{ isRecording ? 'Recording' : '' }}</p>
-            </div>
-            <audio v-if="audioUrl" :src="audioUrl" controls class="h-8"></audio>
-            <!-- <a-button v-if="audioFile" @click="uploadAudio">Upload Audio</a-button> -->
+      <Col :span="12" class="border-l-2 border-gray">
+        <div class="p-4">
+          <div class="mb-2 flex items-center">
+            <a-button class="mr-2" @click="startRecording" :disabled="isRecording"
+              >Start Recording</a-button
+            >
+            <a-button class="mr-2" @click="stopRecording" :disabled="!isRecording"
+              >Stop Recording</a-button
+            >
+            <p class="pt-3">{{ isRecording ? 'Recording' : '' }}</p>
           </div>
-        </Card>
+          <audio v-if="audioUrl" :src="audioUrl" controls class="h-8"></audio>
+          <!-- <a-button v-if="audioFile" @click="uploadAudio">Upload Audio</a-button> -->
+        </div>
       </Col>
     </Row>
   </div>
@@ -33,7 +29,7 @@
   import { ref, watch } from 'vue';
   import { uploadAudioApi } from '@/api/exam/exam';
   import { ResponseExamPartItem } from '@/api/exam/examModel';
-  import { Card, Col, Row } from 'ant-design-vue';
+  import { Col, Row } from 'ant-design-vue';
 
   const props = defineProps({
     value: {
