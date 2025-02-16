@@ -2,13 +2,20 @@
   <div>
     <BasicTable @register="registerTable">
       <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'score'">{{
+          record.score ? `${record.score}/${record.total_questions}` : t('common.noScoreYet')
+        }}</template>
         <template v-if="column.key === 'status'">
-          <Tag :color="record.score ? 'green' : 'red'">
-            {{ record.score ? 'v' : 'x' }}
+          <Tag :color="record.completed_at ? 'green' : 'red'">
+            {{ record.completed_at ? 'v' : 'x' }}
           </Tag>
         </template>
-        <template v-if="column.key === 'action'">
-          <a-button size="small" preIcon="ant-design:edit-filled" @click="clickOpen(record.id)" />
+        <template v-if="column.key === 'action' && !record.completed_at">
+          <a-button
+            size="small"
+            preIcon="ant-design:edit-filled"
+            @click="clickOpen(record.exam_id, record.skill)"
+          />
         </template>
       </template>
     </BasicTable>
@@ -19,35 +26,7 @@
         <a-button type="primary" @click="toggleDom"> Nộp bài </a-button>
       </div>
       <div class="px-4 h-full">
-        <ExamineType1 />
-      </div>
-
-      <div class="sticky bottom-0 bg-white box-shadow">
-        <div class="flex gap-4 py-2 px-2">
-          <Card
-            v-for="p in 3"
-            :key="p"
-            @click="tabActive = p"
-            :class="tabActive === p ? 'shrink-0 border-[#0960bd]' : 'flex-1 cursor-pointer'"
-          >
-            <div v-if="tabActive === p" class="flex items-center">
-              <div class="text-xl font-semibold mr-2">Part {{ p }}</div>
-              <div class="flex gap-2">
-                <div
-                  v-for="q in 13"
-                  :key="q"
-                  class="rounded-full h-8 w-8 border flex items-center justify-center border-gray-200"
-                >
-                  {{ q }}
-                </div>
-              </div>
-            </div>
-            <div v-else class="text-lg text-center">
-              <span class="font-semibold mr-4">Part {{ p }}</span>
-              <span class="font-light">0 of 13 questions</span>
-            </div>
-          </Card>
-        </div>
+        <ExamineType1 :value="examPart" />
       </div>
     </div>
   </div>
@@ -64,16 +43,21 @@
     getExamOfStudentColumns,
     getSearchExamOfStudentConfig,
   } from '@/views/classroom/tableData';
-  import { Card, Tag } from 'ant-design-vue';
+  import { Tag } from 'ant-design-vue';
   import ExamineType1 from './ExamineType1.vue';
   import { getExamListOfStudentApi } from '@/api/student/student';
+  import { examDetailApi } from '@/api/exam/exam';
+  import { ExamPartItem } from '@/api/exam/examModel';
 
   const domRef = ref<Nullable<HTMLElement>>(null);
   const { toggle: toggleDom, isFullscreen: isDomFullscreen } = useFullscreen(domRef);
   const { t } = useI18n();
-  const tabActive = ref(1);
+
   const timeLeft = ref('');
   const examDuration = ref(40 * 60); // Example: 1 hour in seconds
+  const loading = ref(false);
+  const examPart = ref<ExamPartItem[]>([]);
+
   const interval = setInterval(() => {
     const minutes = Math.floor(examDuration.value / 60);
     const seconds = examDuration.value % 60;
@@ -101,14 +85,28 @@
     },
   });
 
-  function clickOpen(examId: string) {
+  function clickOpen(examId: number, skill: string) {
     console.log(examId);
-    toggleDom();
+    // toggleDom();
+    getExamDetail(examId, skill);
   }
 
   function preventF5(event) {
     if (event.key === 'F5' || event.key === 'Escape') {
       event.preventDefault();
+    }
+  }
+
+  async function getExamDetail(examId: number, skill: string) {
+    try {
+      loading.value = true;
+      const result = await examDetailApi(examId);
+      examPart.value = result[skill];
+    } catch (error) {
+      console.log(error);
+      // createMessage.error(t('sys.app.dataNotFound'));
+    } finally {
+      loading.value = false;
     }
   }
 

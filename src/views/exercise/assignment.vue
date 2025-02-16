@@ -18,14 +18,14 @@
   import { useI18n } from '@/hooks/web/useI18n';
   import { BasicTable, useTable } from '@/components/Table';
   import AssignmentModal from '@/views/test/AssignmentModal.vue';
-  import { assigmentListApi } from '@/api/teacher/teacher';
+  import { assignmentListApi } from '@/api/teacher/teacher';
   import { getAssignmentColumns, getAssignmentListConfig } from '@/views/classroom/tableData';
   import { useModal } from '@/components/Modal';
 
   const { t } = useI18n();
   const [registerTable, { reload }] = useTable({
     title: t('routes.page.assignmentList'),
-    api: assigmentListApi('Homework', 'N'),
+    api: assignmentListApi('Homework', 'N'),
     columns: getAssignmentColumns(),
     useSearchForm: true,
     formConfig: getAssignmentListConfig(),

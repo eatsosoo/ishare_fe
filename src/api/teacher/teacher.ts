@@ -33,7 +33,7 @@ export const assignmentApi = (params: AssignmentForm, mode: ErrorMessageMode = '
     },
   );
 
-export const assigmentListApi =
+export const assignmentListApi =
   (type = '') =>
   (params: BasicPageParams) =>
     defHttp.get<AssignmentListGetResultModel>({

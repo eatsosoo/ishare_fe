@@ -243,13 +243,10 @@ export function getExamOfStudentColumns(): BasicColumn[] {
     {
       title: t('table.examTable.score'),
       dataIndex: 'score',
-      customRender: ({ text }) => {
-        return text || t('common.noScoreYet');
-      },
     },
     {
-      title: t('table.examTable.createdAt'),
-      dataIndex: 'created_at',
+      title: t('table.completedAt'),
+      dataIndex: 'completed_at',
     },
   ];
 }

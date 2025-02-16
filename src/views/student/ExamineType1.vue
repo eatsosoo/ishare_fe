@@ -1,116 +1,74 @@
 <template>
-  <Row :gutter="[16, 16]">
-    <Col :span="12">
-      <Card>
-        <div>
-          <div v-html="sample"></div>
-        </div>
-      </Card>
-    </Col>
-    <Col :span="12">
-      <Card>
-        <Quiz
-          v-for="question in questionsSample"
-          :key="question.question_no"
-          class="mb-4"
-          :question="question"
-        />
-      </Card>
-    </Col>
-  </Row>
+  <div>
+    <Row :gutter="[16, 16]">
+      <Col :span="12">
+        <Card>
+          <div>
+            <div v-html="subjectRef"></div>
+          </div>
+        </Card>
+      </Col>
+      <Col :span="12">
+        <Card>
+          <Quiz
+            v-for="question in questionsRef"
+            :key="question.question_no"
+            class="mb-4"
+            :question="question"
+          />
+        </Card>
+      </Col>
+    </Row>
+    <div class="sticky bottom-0 bg-white box-shadow">
+      <div class="flex gap-4 py-2 px-2">
+        <Card
+          v-for="(p, index) in props.value"
+          :key="p.id"
+          @click="clickTab(index)"
+          :class="tabActive === index ? 'shrink-0 border-[#0960bd]' : 'flex-1 cursor-pointer'"
+        >
+          <div v-if="tabActive === index" class="flex items-center">
+            <div class="text-xl font-semibold mr-2">Part {{ p }}</div>
+            <div class="flex gap-2">
+              <div
+                v-for="q in p.questions"
+                :key="q.id"
+                class="rounded-full h-8 w-8 border flex items-center justify-center border-gray-200"
+              >
+                {{ q }}
+              </div>
+            </div>
+          </div>
+          <div v-else class="text-lg text-center">
+            <span class="font-semibold mr-4">Part {{ index + 1 }}</span>
+            <!-- <span class="font-light">0 of 13 questions</span> -->
+            <span class="font-light">{{ p.question_count }} questions</span>
+          </div>
+        </Card>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
   import { Card, Col, Row } from 'ant-design-vue';
   import Quiz from './Quiz.vue';
-  import { SelectQuestionType } from '@/views/test/data';
+  import { ExamPartItem } from '@/api/exam/examModel';
+  import { ref } from 'vue';
+  import { QuestionItem } from '../test/types/question';
 
-  const sample = `
-    <h2>Welcome to Our Platform</h2>
-    <p>
-      Thank you for visiting our website! We are dedicated to providing you with the best experience possible. 
-      Whether you are here to explore new opportunities, learn something new, or simply browse, we have something for everyone.
-    </p>
-    
-    <h3>Our Features</h3>
-    <p>
-      Our platform is designed with user-friendliness in mind. Here are some of the key features you can enjoy:
-    </p>
-    <ul>
-      <li><strong>Fast and Secure:</strong> We prioritize security while ensuring smooth and fast performance.</li>
-      <li><strong>Responsive Design:</strong> Enjoy a seamless experience on any device, whether mobile, tablet, or desktop.</li>
-      <li><strong>24/7 Customer Support:</strong> Our support team is always ready to assist you.</li>
-      <li><strong>Regular Updates:</strong> We continuously improve our platform based on user feedback.</li>
-    </ul>
-
-    <h3>Why Choose Us?</h3>
-    <p>
-      There are many platforms available, but here’s why our service stands out:
-    </p>
-    <ol>
-      <li><strong>Reliability:</strong> We have built a strong reputation for delivering quality service.</li>
-      <li><strong>Inquestion_novation:</strong> We stay ahead by implementing the latest techquestion_nologies.</li>
-      <li><strong>Community:</strong> Join thousands of satisfied users who trust our platform.</li>
-    </ol>
-
-    <h3>Get Started Today</h3>
-    <p>
-      Signing up is quick and easy. Click <a href="#" style="color: blue; text-decoration: underline;">here</a> to create an account and start exploring the amazing features we offer. 
-      If you have any questions, feel free to <a href="#" style="color: blue; text-decoration: underline;">contact us</a>.
-    </p>
-
-    <p>We look forward to serving you!</p>
-    <h2>Welcome to Our Website</h2>
-    <p>
-      We are thrilled to have you here! Our platform offers a variety of features 
-      to enhance your experience. Explore our latest updates and discover new possibilities.
-    </p>
-    <ul>
-      <li>✔ Fast and secure services</li>
-      <li>✔ User-friendly interface</li>
-      <li>✔ 24/7 customer support</li>
-    </ul>
-    <p>
-      Stay connected and enjoy seamless browsing. If you have any questions, feel free 
-      to <a href='#' style='color: blue; text-decoration: underline;'>contact us</a>.
-    </p>
-  `;
-  const questionsSample = [
-    {
-      question_no: 1,
-      content: 'What is the capital of France?',
-      type: SelectQuestionType.SingleChoice,
-      options: [
-        { id: 'A', text: 'Option A' },
-        { id: 'B', text: 'Option B' },
-        { id: 'C', text: 'Option C' },
-        { id: 'D', text: 'Option D' },
-      ],
-      answer: 'A',
+  const props = defineProps({
+    value: {
+      type: Array as PropType<ExamPartItem[]>,
+      default: () => [],
     },
-    {
-      question_no: 2,
-      content: 'What is the capital of Germany?',
-      type: SelectQuestionType.SingleChoice,
-      options: [
-        { id: 'A', text: 'Option A' },
-        { id: 'B', text: 'Option B' },
-        { id: 'C', text: 'Option C' },
-        { id: 'D', text: 'Option D' },
-      ],
-      answer: 'B',
-    },
-    {
-      question_no: 3,
-      content: 'What is the capital of Italy?',
-      type: SelectQuestionType.SingleChoice,
-      options: [
-        { id: 'A', text: 'Option A' },
-        { id: 'B', text: 'Option B' },
-        { id: 'C', text: 'Option C' },
-        { id: 'D', text: 'Option D' },
-      ],
-      answer: 'C',
-    },
-  ];
+  });
+  const tabActive = ref(0);
+  const subjectRef = ref('');
+  const questionsRef = ref<QuestionItem[]>([]);
+
+  function clickTab(index: number) {
+    const { subject } = props.value[index];
+    subjectRef.value = subject;
+  }
 </script>
