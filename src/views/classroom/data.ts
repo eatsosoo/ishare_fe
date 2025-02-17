@@ -112,7 +112,7 @@ export const searchGradingSchemas: FormSchema[] = [
 
       resultField: 'items',
       // use name as label
-      labelField: 'className',
+      labelField: 'title',
       // use id as value
       valueField: 'id',
       // not request untill to select

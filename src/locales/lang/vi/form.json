@@ -61,7 +61,8 @@
     "deadline": "Hạn nộp",
     "name": "Tên đề thi",
     "title": "Chỉnh sửa nội dung",
-    "editSkill": "Cập nhật kỹ năng {skill}"
+    "editSkill": "Cập nhật kỹ năng {skill}",
+    "gradingSkill": "Chấm điểm ký năng {skill"
   },
   "exerciseOfStudentSearch": {
     "skill": "Kỹ năng",

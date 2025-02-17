@@ -102,9 +102,8 @@ export const uploadAudioApi = (formData: FormData, mode: ErrorMessageMode = 'mod
 export const examGradingListApi = () => (params: BasicPageParams) => {
   const useStore = useUserStore();
   const classId = useStore.getClassId;
-  const gradingType = useStore.getGradingType;
   return defHttp.get<ExamGradingGetResultModel>({
-    url: `${Api.EXAM_LIST}/${classId}/students?type=${gradingType}`,
+    url: `${Api.EXAM_LIST}/${classId}/students?type=Reading`,
     params,
     headers: {
       // @ts-ignore

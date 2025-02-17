@@ -3,6 +3,7 @@ import { BasicPageParams } from '../model/baseModel';
 import {
   AssignmentForm,
   AssignmentListGetResultModel,
+  GradingForm,
   TeacherListGetResultModel,
 } from './teacherModel';
 import { ErrorMessageMode } from '#/axios';
@@ -10,6 +11,7 @@ import { ErrorMessageMode } from '#/axios';
 enum Api {
   TEACHER_LIST = '/table/teachers',
   ASSIGNMENT = '/assignments',
+  EXAM = '/exams',
 }
 
 export const teacherListApi = () => (params: BasicPageParams) =>
@@ -44,3 +46,14 @@ export const assignmentListApi =
         ignoreCancelToken: true,
       },
     });
+
+export const submitGradingApi = (params: GradingForm, mode: ErrorMessageMode = 'modal') =>
+  defHttp.post<Boolean>(
+    {
+      url: `${Api.EXAM}/${params.exam_id}/teacher-submit`,
+      params,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
