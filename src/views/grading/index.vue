@@ -7,7 +7,7 @@
         @reset="showExerciseTable = false"
       />
     </Card>
-    <Card v-if="showExerciseTable" :title="t('common.resultList')" :bordered="false">
+    <Card :title="t('common.resultList')" :bordered="false">
       <BasicTable @register="registerTable">
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'completed_at'">{{
@@ -110,6 +110,7 @@
       const [values] = await Promise.all([validate()]);
       console.log(values);
       useStore.setClassId(values.classId);
+      useStore.setGradingType(values.typeExercise);
       reload();
       showExerciseTable.value = true;
     } catch (error) {

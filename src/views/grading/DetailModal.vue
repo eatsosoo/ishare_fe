@@ -19,40 +19,31 @@
           <h1>Bài làm của học sinh</h1>
           <template v-if="props.skillType === 'Reading' || props.skillType === 'Listening'">
             <div v-for="question in questionsRef" :key="question.question_no" class="mb-4">
-              <h2 class="text-primary mb-0">Question {{ question.question_no }}</h2>
-              <h3 class="mb-0">{{ question.question_no }}. {{ question.content }}</h3>
-              <ul class="mb-0">
-                <li v-for="option in question.options" :key="option.id">
-                  <template
-                    v-if="
-                      option.id === question.answer && question.answer === question.student_answer
-                    "
-                  >
-                    <span class="text-green-500">{{ option.id + '. ' + option.text }}</span>
-                  </template>
-                  <template
-                    v-else-if="
-                      option.id === question.answer && question.answer !== question.student_answer
-                    "
-                  >
-                    <span class="text-red-500">{{ option.id + '. ' + option.text }}</span>
-                  </template>
-                  <template v-else>
-                    <span class="text-danger">{{ option.id + '. ' + option.text }}</span>
-                  </template>
-                </li>
-              </ul>
-              <h4>Đáp án đúng: {{ question.answer }}</h4>
+              <div class="flex items-center">
+                <h3 class="text-primary mr-2">Question {{ question.question_no }}: </h3>
+                <h3>{{ question.content }}</h3>
+              </div>
+
+              <p class="mb-0">Đáp học sinh: {{ question.student_answer }}</p>
+              <p class="mb-0">Đáp án đúng: {{ question.answer }}</p>
             </div>
           </template>
           <template v-else>
             <!-- <div v-html="questionsRef[0].student_answer" class="mb-4"></div> -->
             <Form :model="gradingFormData">
-              <div
-                v-if="questionsRef[0]"
-                v-html="questionsRef[0].student_answer"
-                class="mb-4"
-              ></div>
+              <template v-if="questionsRef[0]">
+                <div
+                  v-if="skillType === 'Writing'"
+                  v-html="questionsRef[0].student_answer"
+                  class="mb-4"
+                ></div>
+                <audio
+                  v-else-if="skillType === 'Speaking'"
+                  :src="questionsRef[0].student_answer"
+                  controls
+                  class="h-8"
+                ></audio>
+              </template>
               <h3>Chấm điểm và nhận xét</h3>
 
               <FormItem label="Điểm" name="score" :label-col="{ span: 4 }" label-align="left">
@@ -170,7 +161,7 @@
         exam_id: examId,
         type: skillType,
         score,
-        answer: [
+        answers: [
           {
             question_id: questionId,
             is_correct: true,
@@ -226,6 +217,8 @@
   watch(
     () => completedAssignment.value,
     () => {
+      gradingFormData.value.score = 0;
+      gradingFormData.value.feedback = '';
       clickTab(0);
     },
   );
