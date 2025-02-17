@@ -8,7 +8,7 @@
       />
     </Card>
     <Card :title="t('common.resultList')" :bordered="false">
-      <BasicTable @register="registerTable">
+      <BasicTable v-if="showExerciseTable" @register="registerTable">
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'completed_at'">{{
             record.completed_at || record.status

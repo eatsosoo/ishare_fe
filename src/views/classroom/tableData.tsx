@@ -136,11 +136,11 @@ export function getAccountColumns(): BasicColumn[] {
       dataIndex: 'date_of_birth',
       align: 'left',
     },
-    {
-      title: t('table.status'),
-      dataIndex: 'status',
-      align: 'left',
-    },
+    // {
+    //   title: t('table.status'),
+    //   dataIndex: 'status',
+    //   align: 'left',
+    // },
     {
       title: t('table.roleName'),
       dataIndex: 'role_name',

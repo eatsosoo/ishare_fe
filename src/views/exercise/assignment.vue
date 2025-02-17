@@ -10,7 +10,7 @@
         }}</a-button>
       </template>
     </BasicTable>
-    <AssignmentModal @register="registerAssignModal" @success="handleOk" />
+    <AssignmentModal type="homework" @register="registerAssignModal" @success="handleOk" />
   </PageWrapper>
 </template>
 <script lang="ts" setup>
@@ -25,7 +25,7 @@
   const { t } = useI18n();
   const [registerTable, { reload }] = useTable({
     title: t('routes.page.assignmentList'),
-    api: assignmentListApi('Homework', 'N'),
+    api: assignmentListApi('homework'),
     columns: getAssignmentColumns(),
     useSearchForm: true,
     formConfig: getAssignmentListConfig(),

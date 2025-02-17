@@ -25,7 +25,7 @@
   const { t } = useI18n();
   const [registerTable, { reload }] = useTable({
     title: t('routes.page.assignmentList'),
-    api: assignmentListApi(),
+    api: assignmentListApi('exam'),
     columns: getAssignmentColumns(),
     useSearchForm: true,
     formConfig: getAssignmentListConfig(),

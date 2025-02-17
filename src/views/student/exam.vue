@@ -2,9 +2,13 @@
   <div>
     <BasicTable @register="registerTable">
       <template #bodyCell="{ column, record }">
-        <template v-if="column.key === 'score'">{{
-          record.score ? `${record.score}/${record.total_questions}` : t('common.noScoreYet')
-        }}</template>
+        <template v-if="column.key === 'score'">
+          {{
+            record.score
+              ? `${record.score}/${['Writing', 'Speaking'].includes(record.skill) ? 100 : record.total_questions} ${['Writing', 'Speaking'].includes(record.skill) ? 'điểm' : 'câu'}`
+              : t('common.noScoreYet')
+          }}
+        </template>
         <template v-if="column.key === 'status'">
           <Tag :color="record.completed_at ? 'green' : 'red'">
             {{ record.completed_at ? 'v' : 'x' }}
