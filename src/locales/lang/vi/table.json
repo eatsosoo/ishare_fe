@@ -39,6 +39,7 @@
   "blockAccount": "Khóa tài khoản",
   "unblockAccount": "Mở khóa tài khoản",
   "completedAt": "Ngày nộp",
+  "roleName": "Tên vai trò",
   "exerciseTable": {
     "name": "Tên bài tập",
     "score": "Điểm",

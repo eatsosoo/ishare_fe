@@ -142,6 +142,11 @@ export function getAccountColumns(): BasicColumn[] {
       align: 'left',
     },
     {
+      title: t('table.roleName'),
+      dataIndex: 'role_name',
+      align: 'left',
+    },
+    {
       title: t('table.action'),
       dataIndex: 'action',
     },
