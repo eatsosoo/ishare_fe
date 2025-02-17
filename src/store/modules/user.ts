@@ -15,6 +15,7 @@ import { usePermissionStore } from '@/store/modules/permission';
 import { RouteRecordRaw } from 'vue-router';
 import { PAGE_NOT_FOUND_ROUTE } from '@/router/routes/basic';
 import { h } from 'vue';
+import { SkillType } from '@/api/exam/examModel';
 
 interface UserState {
   userInfo: Nullable<UserInfo>;
@@ -23,6 +24,7 @@ interface UserState {
   sessionTimeout?: boolean;
   lastUpdateTime: number;
   classId: number | null;
+  gradingType: SkillType;
 }
 
 export const useUserStore = defineStore({
@@ -40,6 +42,8 @@ export const useUserStore = defineStore({
     lastUpdateTime: 0,
     //
     classId: null,
+    //
+    gradingType: 'Reading',
   }),
   getters: {
     getUserInfo(state): UserInfo {
@@ -59,6 +63,9 @@ export const useUserStore = defineStore({
     },
     getClassId(state): number | null {
       return state.classId;
+    },
+    getGradingType(state): SkillType {
+      return state.gradingType;
     },
   },
   actions: {
@@ -80,6 +87,9 @@ export const useUserStore = defineStore({
     },
     setClassId(id: number | null) {
       this.classId = id;
+    },
+    setGradingType(type: SkillType) {
+      this.gradingType = type;
     },
     resetState() {
       this.userInfo = null;

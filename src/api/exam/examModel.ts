@@ -70,6 +70,20 @@ export interface SubmitExam {
   answers: { question_id: number; answer: string | string[] }[];
 }
 
+export interface ExamGradingListItem {
+  user_id: number;
+  name: string;
+  exam_id: number;
+  exam_title: string;
+  status: string;
+  score: string;
+  skill: SkillType;
+  completed_at: string;
+  score_id: number;
+  times: number;
+  deadline: string;
+}
+
 /**
  * @description: Request list return value
  */
@@ -79,3 +93,8 @@ export type ExamListGetResultModel = BasicFetchResult<ExamListItem>;
  * @description: Request detail return value
  */
 export type ExamDetailGetResultModel = BasicApiResult<ExamDetailItem>;
+
+/**
+ * @description: Request detail return value
+ */
+export type ExamGradingGetResultModel = BasicApiResult<ExamGradingListItem>;

@@ -1,7 +1,7 @@
 import { defHttp } from '@/utils/http/axios';
 import { StudentListGetResultModel } from './studentModel';
 import { BasicPageParams, Result } from '../model/baseModel';
-import { ExamPartItem } from '../exam/examModel';
+import { ExamPartItem, SkillType } from '../exam/examModel';
 
 enum Api {
   STUDENT_LIST = '/students',
@@ -53,6 +53,15 @@ export const getExamCapacityApi = () => (params: BasicPageParams) =>
   defHttp.get<Result<ExamPartItem>>({
     url: `${Api.STUDENT_LIST}${Api.CAPACITY}`,
     params,
+    headers: {
+      // @ts-ignore
+      ignoreCancelToken: true,
+    },
+  });
+
+export const getDetailExamOfStudent = (studentId: number, examId: number, type: SkillType) =>
+  defHttp.get<Result<ExamPartItem[]>>({
+    url: `${Api.STUDENT_LIST}/${studentId}/tests/${examId}?type=${type}`,
     headers: {
       // @ts-ignore
       ignoreCancelToken: true,

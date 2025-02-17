@@ -3,6 +3,7 @@ import {
   ExamAddForm,
   ExamBasicItem,
   ExamDetailItem,
+  ExamGradingGetResultModel,
   ExamListGetResultModel,
   ExamPartForm,
   ExamPartItem,
@@ -10,6 +11,7 @@ import {
 } from './examModel';
 import { BasicApiResult, BasicPageParams, Result } from '../model/baseModel';
 import { ErrorMessageMode } from '#/axios';
+import { useUserStore } from '@/store/modules/user';
 
 enum Api {
   EXAM_LIST = '/exams',
@@ -96,3 +98,17 @@ export const uploadAudioApi = (formData: FormData, mode: ErrorMessageMode = 'mod
       errorMessageMode: mode,
     },
   );
+
+export const examGradingListApi = () => (params: BasicPageParams) => {
+  const useStore = useUserStore();
+  const classId = useStore.getClassId;
+  const gradingType = useStore.getGradingType;
+  return defHttp.get<ExamGradingGetResultModel>({
+    url: `${Api.EXAM_LIST}/${classId}/students?type=${gradingType}`,
+    params,
+    headers: {
+      // @ts-ignore
+      ignoreCancelToken: true,
+    },
+  });
+};

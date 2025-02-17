@@ -46,7 +46,7 @@
       subjectRef.value = value[0].subject;
       questionsRef.value = value[0].questions.map((question) => ({
         ...question,
-        your_answer: null,
+        student_answer: null,
       }));
 
       final.value = value.flatMap((part) =>

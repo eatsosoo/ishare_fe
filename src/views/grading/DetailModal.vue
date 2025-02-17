@@ -2,7 +2,7 @@
   <BasicModal
     v-bind="$attrs"
     default-fullscreen
-    :show-cancel-btn="false"
+    :show-cancel-btn="true"
     :show-ok-btn="false"
     :can-fullscreen="false"
   >
@@ -69,21 +69,29 @@
         </div>
       </Col>
     </Row>
+    <template #footer></template>
   </BasicModal>
 </template>
 
 <script lang="ts" setup>
   import { BasicModal } from '@/components/Modal';
   import { Row, Col, InputNumber, Form, FormItem, Input } from 'ant-design-vue';
-  import { ref, type PropType } from 'vue';
+  import { ref, type PropType, watch } from 'vue';
   import { useI18n } from '@/hooks/web/useI18n';
-  import { SkillType } from '@/api/exam/examModel';
+  import { SkillType, ExamPartItem } from '@/api/exam/examModel';
+  import { getDetailExamOfStudent } from '@/api/student/student';
 
   const InputTextArea = Input.TextArea;
   const props = defineProps({
     skillType: {
       type: String as PropType<SkillType>,
-      default: '',
+      default: 'Reading',
+    },
+    examId: {
+      type: Number,
+    },
+    studentId: {
+      type: Number,
     },
   });
   const { t } = useI18n();
@@ -91,6 +99,7 @@
     score: 0,
     feedback: '',
   });
+  const completedAssignment = ref<ExamPartItem[]>([]);
 
   const sample = `
     <h2>Welcome to Our Platform</h2>
@@ -188,4 +197,22 @@
   function submitForm() {
     console.log('submit form');
   }
+
+  async function getExamOfStudent(studentId: number, examId: number, type: SkillType) {
+    try {
+      const result = await getDetailExamOfStudent(studentId, examId, type);
+      completedAssignment.value = result.items;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  watch(
+    () => [props.examId, props.studentId],
+    ([newExamId, newStudentId]) => {
+      if (newExamId && newStudentId) {
+        getExamOfStudent(newStudentId, newExamId, props.skillType);
+      }
+    },
+  );
 </script>

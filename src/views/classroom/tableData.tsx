@@ -187,6 +187,39 @@ export function getExerciseColumns(): BasicColumn[] {
   ];
 }
 
+export function getExamGradingColumns(): BasicColumn[] {
+  return [
+    {
+      title: t('table.exerciseTable.name'),
+      dataIndex: 'exam_title',
+    },
+    {
+      title: t('table.exerciseTable.skill'),
+      dataIndex: 'skill',
+    },
+    {
+      title: t('table.exerciseTable.student'),
+      dataIndex: 'name',
+    },
+    {
+      title: t('table.exerciseTable.status'),
+      dataIndex: 'status',
+    },
+    {
+      title: t('table.exerciseTable.score'),
+      dataIndex: 'score',
+    },
+    {
+      title: t('table.exerciseTable.createdAt'),
+      dataIndex: 'completed_at',
+    },
+    {
+      title: t('table.exerciseTable.deadline'),
+      dataIndex: 'deadline',
+    },
+  ];
+}
+
 export function getExamColumns(): BasicColumn[] {
   return [
     {

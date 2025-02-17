@@ -10,29 +10,33 @@
     <Card v-if="showExerciseTable" :title="t('common.resultList')" :bordered="false">
       <BasicTable @register="registerTable">
         <template #bodyCell="{ column, record }">
+          <template v-if="column.key === 'completed_at'">{{
+            record.completed_at || record.status
+          }}</template>
           <template v-if="column.key === 'status'">
-            <Tag :color="record.status === 'v' ? 'green' : 'red'">
-              {{ record.status }}
+            <Tag :color="record.completed_at ? 'green' : 'red'">
+              {{ record.completed_at ? 'v' : 'x' }}
             </Tag>
           </template>
-          <template v-if="column.key === 'action' && record.status === 'v'">
-            <a-button
-              size="small"
-              preIcon="ant-design:edit-filled"
-              @click="clickOpen(record.skill, record.student)"
-            />
+          <template v-if="column.key === 'action' && record.completed_at">
+            <a-button size="small" preIcon="ant-design:edit-filled" @click="clickOpen(record)" />
           </template>
         </template>
       </BasicTable>
     </Card>
 
-    <DetailModal :title="modalTitle" :skill-type="skillType" @register="registerDetailModal" />
+    <DetailModal
+      :title="modalTitle"
+      :skill-type="skillType"
+      :exam-id="examIdRef"
+      :student-id="studentIdRef"
+      @register="registerDetailModal"
+    />
   </PageWrapper>
 </template>
 <script lang="ts" setup>
   import { BasicTable, useTable } from '@/components/Table';
-  import { getExerciseColumns, getSearchExerciseConfig } from '@/views/classroom/tableData';
-  import { exerciseListApi } from '@/api/demo/table';
+  import { getExamGradingColumns, getSearchExerciseConfig } from '@/views/classroom/tableData';
   import { useI18n } from '@/hooks/web/useI18n';
   import { Card, Tag } from 'ant-design-vue';
   import DetailModal from './DetailModal.vue';
@@ -42,16 +46,19 @@
   import { useForm } from '@/components/Form';
   import { searchGradingSchemas } from '@/views/classroom/data';
   import { ref } from 'vue';
-  import { SkillType } from '@/api/exam/examModel';
+  import { ExamGradingListItem, SkillType } from '@/api/exam/examModel';
+  import { examGradingListApi } from '@/api/exam/exam';
+  import { useUserStore } from '@/store/modules/user';
 
   const { t } = useI18n();
-  const [registerTable] = useTable({
-    api: exerciseListApi(),
-    columns: getExerciseColumns(),
-    useSearchForm: true,
+  const useStore = useUserStore();
+  const [registerTable, { reload }] = useTable({
+    api: examGradingListApi(),
+    columns: getExamGradingColumns(),
+    useSearchForm: false,
     formConfig: getSearchExerciseConfig(),
     tableSetting: { fullScreen: true },
-    showIndexColumn: false,
+    showIndexColumn: true,
     rowKey: 'id',
     showSelectionBar: false,
     actionColumn: {
@@ -69,23 +76,25 @@
   });
 
   const showExerciseTable = ref(false);
-  const skillType = ref<SkillType>('reading');
+  const skillType = ref<SkillType>('Reading');
   const modalTitle = ref('');
+  const examIdRef = ref<number | undefined>(undefined);
+  const studentIdRef = ref<number | undefined>(undefined);
 
-  function clickOpen(skillVal: SkillType, studentName: string) {
-    skillType.value = skillVal;
-    modalTitle.value = `Học sinh: ${studentName} - Kỹ năng: ${skillVal}`;
+  function clickOpen(item: ExamGradingListItem) {
+    skillType.value = item.skill;
+    modalTitle.value = `Học sinh: ${item.name} - Kỹ năng: ${item.skill}`;
+    examIdRef.value = item.exam_id;
+    studentIdRef.value = item.user_id;
     openDetailModal();
   }
 
   async function findExerciseOfClass() {
     try {
-      // if (tableRef.value) {
-      //   console.log('table data:', tableRef.value.getDataSource());
-      // }
-
       const [values] = await Promise.all([validate()]);
-      console.log('form data:', { ...values });
+      console.log(values);
+      useStore.setClassId(values.classId);
+      reload();
       showExerciseTable.value = true;
     } catch (error) {
       console.log(error);

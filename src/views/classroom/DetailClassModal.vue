@@ -107,17 +107,17 @@
 
   const tabs = [
     {
-      key: '1',
+      key: 0,
       tab: t('table.studentList'),
       register: registerTable1,
     },
     {
-      key: '2',
+      key: 1,
       tab: t('table.homeWorkList'),
       register: registerTable2,
     },
     {
-      key: '3',
+      key: 2,
       tab: t('table.monthlyTestScore'),
       register: registerTable3,
     },
@@ -126,9 +126,14 @@
   const reloadFunctions = [reload1, reload2, reload3];
 
   const reloadTable = () => {
-    const activeIndex = parseInt(activeKey.value) - 1;
-    if (tableRefs.value[activeIndex]) {
-      reloadFunctions[activeIndex]();
+    if (tableRefs.value[0]) {
+      reloadFunctions[0]();
+    }
+    if (tableRefs.value[1]) {
+      reloadFunctions[1]();
+    }
+    if (tableRefs.value[2]) {
+      reloadFunctions[2]();
     }
   };
 

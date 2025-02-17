@@ -117,13 +117,6 @@ export const searchGradingSchemas: FormSchema[] = [
       valueField: 'id',
       // not request untill to select
       immediate: true,
-      onChange: (e, v) => {
-        console.log('ApiSelect====>:', e, v);
-      },
-      // atfer request callback
-      onOptionsChange: (options) => {
-        console.log('get options', options.length, options);
-      },
     },
     required: true,
     colProps: {
@@ -138,23 +131,19 @@ export const searchGradingSchemas: FormSchema[] = [
       options: [
         {
           label: 'Reading',
-          value: 'reading',
+          value: 'Reading',
         },
         {
           label: 'Listening',
-          value: 'listening',
+          value: 'Listening',
         },
         {
           label: 'Speaking',
-          value: 'speaking',
+          value: 'Speaking',
         },
         {
           label: 'Writing',
-          value: 'writing',
-        },
-        {
-          label: 'Homework',
-          value: 'homework',
+          value: 'Writing',
         },
       ],
     },

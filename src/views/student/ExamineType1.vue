@@ -24,7 +24,7 @@
               <h3>{{ question.question_no }}. {{ question.content }}</h3>
               <div v-if="question.type === SelectQuestionType.MultipleChoice" class="mb-0">
                 <CheckboxGroup
-                  v-model:value="question.your_answer"
+                  v-model:value="question.student_answer"
                   class="flex flex-col"
                   @change="updateAnswer(question.id, $event)"
                 >
@@ -40,14 +40,14 @@
               <div v-else-if="question.type === SelectQuestionType.FillIn">
                 {{ t('common.enterAnswer') }}:
                 <Input
-                  v-model:value="question.your_answer"
+                  v-model:value="question.student_answer"
                   class="w-40"
                   @change="updateAnswer(question.id, $event.target.value)"
                 />
               </div>
               <div v-else-if="question.type === SelectQuestionType.YesNoNotGiven">
                 <RadioGroup
-                  v-model:value="question.your_answer"
+                  v-model:value="question.student_answer"
                   class="flex flex-col"
                   @change="updateAnswer(question.id, $event.target.value)"
                 >
@@ -58,7 +58,7 @@
               </div>
               <div v-else-if="question.type === SelectQuestionType.TrueFalseNotGiven">
                 <RadioGroup
-                  v-model:value="question.your_answer"
+                  v-model:value="question.student_answer"
                   class="flex flex-col"
                   @change="updateAnswer(question.id, $event.target.value)"
                 >
@@ -69,7 +69,7 @@
               </div>
               <div v-else class="mb-0">
                 <RadioGroup
-                  v-model:value="question.your_answer"
+                  v-model:value="question.student_answer"
                   class="flex flex-col"
                   @change="updateAnswer(question.id, $event.target.value)"
                 >
@@ -153,7 +153,7 @@
   const completeCount = computed(() => {
     const counts: number[] = [];
     props.value.forEach((part) => {
-      const count = part.questions.filter((question) => question.your_answer === null).length;
+      const count = part.questions.filter((question) => question.student_answer === null).length;
       counts.push(count);
     });
 
@@ -171,7 +171,7 @@
   function updateAnswer(questionId: number, value: any) {
     questionsRef.value = questionsRef.value.map((question) => {
       if (question.id === questionId) {
-        question.your_answer = value;
+        question.student_answer = value;
       }
       return question;
     });
@@ -197,7 +197,7 @@
       subjectRef.value = value[0].subject;
       questionsRef.value = value[0].questions.map((question) => ({
         ...question,
-        your_answer: null,
+        student_answer: null,
       }));
       audioUrl.value = value[0].media;
 

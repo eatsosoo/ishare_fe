@@ -31,7 +31,7 @@ export interface QuizItem {
   content: string;
   type: SelectQuestionType;
   options: QuestionOptionItem[];
-  your_answer: any;
+  student_answer: any;
 }
 
 export interface ReadingPart {
