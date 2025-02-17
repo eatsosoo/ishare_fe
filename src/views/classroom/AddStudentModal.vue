@@ -55,10 +55,7 @@
 
   function getSelectStudents() {
     const rows = getSelectRows();
-    const ids = rows.map((row) => {
-      row.id;
-    });
-    emit('selectStudents', ids);
+    emit('selectStudents', rows);
     clearSelectedRowKeys();
   }
 </script>

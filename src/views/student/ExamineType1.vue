@@ -1,7 +1,7 @@
 <template>
   <div class="h-full relative">
     <Row :gutter="[16, 16]" class="h-full">
-      <Col :span="12" class="bg-[aliceblue] border-r-2 border-gray">
+      <Col :span="12" class="bg-[aliceblue] border-r-2 border-gray h-full overflow-auto">
         <div class="p-4">
           <audio v-if="audioUrl" :src="audioUrl" controls class="h-8" autoplay></audio>
           <div>
@@ -9,7 +9,7 @@
           </div>
         </div>
       </Col>
-      <Col :span="12" class="border-l-2 border-gray">
+      <Col :span="12" class="border-l-2 border-gray h-full overflow-auto">
         <div v-if="questionsRef.length > 0" class="p-4">
           <h2 class="text-primary mb-4"
             >Question {{ questionsRef[0].question_no }} - {{ questionsRef.at(-1)?.question_no }}</h2
@@ -88,7 +88,7 @@
       </Col>
     </Row>
     <div
-      class="absolute bottom-[68px] bg-white box-shadow border-t w-full border-gray-200 border-t-1"
+      class="absolute bottom-[65px] bg-white box-shadow border-t w-full border-gray-200 border-t-1"
     >
       <div class="flex gap-4 py-2 px-2">
         <div

@@ -300,7 +300,8 @@
       return;
     }
     const content = editor?.getContent() ?? '';
-    const val = content?.replace(getUploadingImgName(name), `<img src="${url}"/>`) ?? '';
+    const val =
+      content?.replace(getUploadingImgName(name), `<img src="${url}" width="500px"/>`) ?? '';
     setValue(editor, val);
   }
 

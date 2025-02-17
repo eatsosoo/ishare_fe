@@ -1,10 +1,6 @@
 <template>
   <div>
     <BasicTable @register="registerTable">
-      <template #form-custom> custom-slot </template>
-      <template #toolbar>
-        <a-button type="primary" @click="getFormValues">{{ t('table.enterData') }}</a-button>
-      </template>
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'start_date'">
           {{ record.start_date.split(' ')[0] }}
@@ -89,10 +85,6 @@
 
   const { createSuccessModal, createErrorModal } = useMessage();
 
-  function getFormValues() {
-    console.log(getForm().getFieldsValue());
-  }
-
   function activateModal(record: ClassListItem | any, type: 'ADD' | 'VIEW') {
     useStore.setClassId(record.id);
     if (type === 'VIEW') {
@@ -116,7 +108,7 @@
 
       const formData: ClassAddStudentsParams = {
         class_id: useStore.getClassId,
-        students,
+        students: students.map((student) => ({ id: student.id })),
       };
       const result = await addStudentClassApi(formData);
       if (result) {

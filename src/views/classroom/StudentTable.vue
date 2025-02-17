@@ -42,7 +42,7 @@
     },
     {
       title: t('table.phone'),
-      dataIndex: 'phone',
+      dataIndex: 'phone_number',
       align: 'left',
     },
     {
@@ -78,6 +78,7 @@
 
   function handleSelectStudents(students: StudentListItem[]) {
     const data = getDataSource();
+    console.log(students);
     students.forEach((student) => {
       if (data.some((item) => item.id === student.id)) {
         return;

@@ -19,7 +19,11 @@
             </Tag>
           </template>
           <template v-if="column.key === 'action' && record.completed_at">
-            <a-button size="small" preIcon="ant-design:edit-filled" @click="clickOpen(record)" />
+            <a-button
+              size="small"
+              preIcon="ant-design:edit-filled"
+              @click="clickOpen(record as ExamGradingListItem)"
+            />
           </template>
         </template>
       </BasicTable>
@@ -30,7 +34,10 @@
       :skill-type="skillType"
       :exam-id="examIdRef"
       :student-id="studentIdRef"
+      :score-id="scoreIdRef"
+      :times="timesRef"
       @register="registerDetailModal"
+      @submit-grading="reload"
     />
   </PageWrapper>
 </template>
@@ -80,12 +87,21 @@
   const modalTitle = ref('');
   const examIdRef = ref<number | undefined>(undefined);
   const studentIdRef = ref<number | undefined>(undefined);
+  const scoreIdRef = ref<number | undefined>(undefined);
+  const timesRef = ref<number | undefined>(undefined);
 
   function clickOpen(item: ExamGradingListItem) {
-    skillType.value = item.skill;
-    modalTitle.value = `Học sinh: ${item.name} - Kỹ năng: ${item.skill}`;
-    examIdRef.value = item.exam_id;
-    studentIdRef.value = item.user_id;
+    const { exam_id, skill, name, user_id, score_id, times } = item;
+    if (!exam_id || !user_id || !score_id || !times) {
+      return;
+    }
+
+    skillType.value = skill;
+    modalTitle.value = `Học sinh: ${name} - Kỹ năng: ${skill}`;
+    examIdRef.value = exam_id;
+    studentIdRef.value = user_id;
+    scoreIdRef.value = score_id;
+    timesRef.value = times;
     openDetailModal();
   }
 
