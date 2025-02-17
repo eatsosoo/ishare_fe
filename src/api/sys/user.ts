@@ -6,6 +6,7 @@ import {
   RegisterResultModel,
   ChangePasswordParams,
   UserListGetResultModel,
+  ChangeRoleParams,
 } from './model/userModel';
 
 import { ErrorMessageMode } from '#/axios';
@@ -102,3 +103,15 @@ export const getAllUserListApi = () => (params: BasicPageParams) =>
       ignoreCancelToken: true,
     },
   });
+
+export function changeRoleApi(params: ChangeRoleParams, mode: ErrorMessageMode = 'modal') {
+  return defHttp.put<Result<boolean>>(
+    {
+      url: '/users/change-role',
+      params,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+}

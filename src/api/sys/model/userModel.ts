@@ -23,6 +23,11 @@ export interface ChangePasswordParams {
   password_confirmation: string;
 }
 
+export interface ChangeRoleParams {
+  user_id: number;
+  role_id: number;
+}
+
 export interface RoleInfo {
   roleName: string;
   value: string;
