@@ -28,6 +28,7 @@
             v-model:value="questionFormData.type"
             placeholder="Enter question"
             :options="questionTypes"
+            @change="handleChangeQuestionType($event)"
           />
         </Form.Item>
       </div>
@@ -235,6 +236,22 @@
       const lastKey = keys[keys.length - 1];
       delete rulesOption.value[lastKey];
       delete optionFormData.value[lastKey];
+    }
+  };
+
+  const handleChangeQuestionType = (type: any) => {
+    if (type === SelectQuestionType.TrueFalseNotGiven) {
+      optionFormData.value = {
+        true: 'True',
+        false: 'False',
+        not_given: 'Not given',
+      };
+    } else if (type === SelectQuestionType.YesNoNotGiven) {
+      optionFormData.value = {
+        yes: 'Yes',
+        no: 'No',
+        not_given: 'Not given',
+      };
     }
   };
 

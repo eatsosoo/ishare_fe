@@ -134,14 +134,14 @@
   async function submitAll(examId: number) {
     try {
       loading.value = true;
-      const { subject, questions, id } = readingParts.value[activeKey.value];
+      const { subject, questions, id, duration } = readingParts.value[activeKey.value];
       const submitForm: ExamPartForm = {
         id: id || null,
         exam_id: examId,
         type: 'Reading',
         subject,
         questions,
-        duration: 500,
+        duration,
         media: null,
         questions_count: questions.length,
       };

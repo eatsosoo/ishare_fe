@@ -183,11 +183,12 @@
     if (!isAudio) {
       createMessage.error(t('sys.validate.uploadOnlyAudio'));
     }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-      createMessage.error(t('sys.validate.minFileSize', { size: '2MB' }));
-    }
-    return isAudio && isLt2M;
+    // const isLt2M = file.size / 1024 / 1024 < 2;
+    // if (!isLt2M) {
+    //   createMessage.error(t('sys.validate.minFileSize', { size: '2MB' }));
+    // }
+    // return isAudio && isLt2M;
+    return isAudio;
   }
 
   const handleCustomUpload = async ({
@@ -203,6 +204,7 @@
     formData.append('media', file);
 
     try {
+      uploading.value = true;
       const result = await uploadAudioApi(formData);
       if (result) {
         listeningParts.value[activeKey.value].media = result.items;
@@ -211,20 +213,22 @@
     } catch (error) {
       console.error('Upload failed:', error);
       onError(error);
+    } finally {
+      uploading.value = false;
     }
   };
 
   async function submitAll(examId: number) {
     try {
       loading.value = true;
-      const { subject, questions, id, media } = listeningParts.value[activeKey.value];
+      const { subject, questions, id, media, duration } = listeningParts.value[activeKey.value];
       const submitForm: ExamPartForm = {
         id: id || null,
         exam_id: examId,
         type: 'Listening',
         subject,
         questions,
-        duration: 40,
+        duration,
         media,
         questions_count: questions.length,
       };
