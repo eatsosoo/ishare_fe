@@ -316,6 +316,8 @@
     const val =
       content?.replace(getUploadingImgName(name), `<img src="${url}" width="500px"/>`) ?? '';
     setValue(editor, val);
+    console.log(val);
+    emit('change', val);
   }
 
   function getUploadingImgName(name: string) {

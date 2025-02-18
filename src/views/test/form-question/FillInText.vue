@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="wrap-question-form">
     <h3>Tạo câu hỏi điền từ</h3>
 
     <!-- Ô nhập đoạn văn -->
@@ -14,7 +14,6 @@
       v-model="questionText"
       :toolbar="toolbar"
       :plugins="plugins"
-      :show-image-upload="false"
       @select-text="selectedText = $event"
       @change="handleChange"
     />
@@ -31,7 +30,7 @@
     </div>
 
     <!-- Xem trước đoạn văn với placeholders -->
-    <div v-html="previewText" class="preview line-height-[2]"></div>
+    <div v-html="previewText" class="html-preview"></div>
 
     <!-- Nhập đáp án đúng cho từng input -->
     <div v-for="(value, key) in answers" :key="key" class="my-2">
@@ -56,7 +55,7 @@
   const toolbar = [
     'fontsizeselect lineheight bold italic underline undo redo removeformat bullist numlist preview fullscreen',
   ];
-  const plugins = [];
+  const plugins = ['table'];
 
   const props = defineProps({
     questions: {
@@ -123,35 +122,52 @@
     renderPreview();
   };
 
+  const generateOptions = (length) => {
+    return Array.from({ length }, (_, i) => {
+      const value = String.fromCharCode(65 + i); // A, B, C, ...
+      return `<option value="${value}">${value}</option>`;
+    }).join('\n');
+  };
+
   const renderPreview = () => {
-    if (props.typeAnswer === 'fill_in') {
-      previewText.value = questionText.value.replace(/\[blank_(\d+)]/g, (match) => {
-        const formatMatch = match.slice(1, -1);
-        return `<input value="${answers.value[formatMatch]}" class="rounded-full border-red border-1 outline-red bg-white text-center" disabled h-7 />`;
-      });
-    } else if (props.typeAnswer === 'true_false_not_given') {
-      previewText.value = questionText.value.replace(/\[select_(\d+)]/g, (match) => {
-        const formatMatch = match.slice(1, -1);
-        return `<select value="${answers.value[formatMatch]}" class="rounded-full border-red border-1 outline-red bg-white text-center" disabled h-7>
-          <option value="true">True</option>
-          <option value="false">False</option>
-          <option value="not_given">Not given</option>
-        </select>`;
-      });
-    } else if (props.typeAnswer === 'correct_letter') {
-      const abc = Array.from({ length: props.questions.length }, (_, i) =>
-        String.fromCharCode(65 + i),
-      );
-      const genOptions = abc
-        .map((value) => `<option value="${value}">${value}</option>`)
-        .join('\n'); // Thêm dấu xuống dòng cho đẹp
-      previewText.value = questionText.value.replace(/\[correct_letter_(\d+)]/g, (match) => {
-        const formatMatch = match.slice(1, -1);
-        return `<select value="${answers.value[formatMatch]}" class="rounded-full border-red border-1 outline-red bg-white text-center" disabled h-7>
+    let regex, replaceFn;
+
+    switch (props.typeAnswer) {
+      case 'fill_in':
+        regex = /\[blank_(\d+)]/g;
+        replaceFn = (_, index) =>
+          `<input value="${answers.value[`blank_${index}`] || ''}" 
+        class="rounded-full border-red border-1 outline-red bg-white text-center h-7" disabled />`;
+        break;
+
+      case 'true_false_not_given':
+        regex = /\[select_(\d+)]/g;
+        replaceFn = (_, index) =>
+          `<select value="${answers.value[`select_${index}`] || ''}" 
+          class="rounded-full border-red border-1 outline-red bg-white text-center h-7" disabled>
+            <option value="true">True</option>
+            <option value="false">False</option>
+            <option value="not_given">Not given</option>
+          </select>`;
+        break;
+
+      case 'correct_letter':
+        regex = /\[correct_letter_(\d+)]/g;
+        const genOptions = generateOptions(props.questions.length);
+        replaceFn = (_, index) =>
+          `<select value="${answers.value[`correct_letter_${index}`] || ''}" 
+        class="rounded-full border-red border-1 outline-red bg-white text-center h-7" disabled>
           ${genOptions}
         </select>`;
-      });
+        break;
+
+      default:
+        console.warn(`Unknown typeAnswer: ${props.typeAnswer}`);
+        return;
     }
+
+    previewText.value = questionText.value.replace(regex, replaceFn);
+    console.log(previewText.value);
   };
 
   // Hàm lưu vào DB
@@ -168,22 +184,29 @@
     renderPreview();
   };
 
-  const handleChange = debounce(() => {
+  const handleChange = debounce((text: string) => {
+    console.log('text', text);
     renderPreview();
   }, 1000);
 </script>
 
-<style>
-  .text-input {
+<style lang="scss" scoped>
+  /* .text-input {
     width: 100%;
     height: 100px;
     padding: 5px;
     border: 1px solid #ccc;
-  }
-
-  .preview {
+  } */
+  .html-preview {
     margin-top: 10px;
     padding: 10px;
     background: #f8f8f8;
+
+    table,
+    th,
+    td {
+      border-collapse: collapse;
+      border: 1px solid black;
+    }
   }
 </style>

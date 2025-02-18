@@ -29,7 +29,7 @@
                 class="border rounded-full h-10 w-10 flex items-center justify-center cursor-pointer"
                 :class="
                   questionCurrent?.question_no === question.question_no
-                    ? 'border-blue text-blue'
+                    ? 'border-red text-red'
                     : 'border-gray text-gray'
                 "
                 @click="questionCurrent = { ...question }"
