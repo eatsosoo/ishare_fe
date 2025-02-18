@@ -19,43 +19,46 @@
           <h1>Bài làm của học sinh</h1>
           <template v-if="props.skillType === 'Reading' || props.skillType === 'Listening'">
             <div v-for="question in questionsRef" :key="question.question_no" class="mb-4">
-              <div class="flex items-center">
-                <h3 class="text-primary mr-2">Question {{ question.question_no }}: </h3>
-                <h3>{{ question.content }}</h3>
-              </div>
-
-              <p class="mb-0">Đáp học sinh: {{ question.student_answer }}</p>
-              <p class="mb-0">Đáp án đúng: {{ question.answer }}</p>
+              <h2 class="text-primary mb-0">Question {{ question.question_no }}</h2>
+              <h3 class="mb-0">{{ question.question_no }}. {{ question.content }}</h3>
+              <ul class="mb-0">
+                <li v-for="option in question.options" :key="option.id">
+                  <template
+                    v-if="
+                      option.id === question.answer && question.answer === question.student_answer
+                    "
+                  >
+                    <span class="text-green-500">{{ option.id + '. ' + option.text }}</span>
+                  </template>
+                  <template
+                    v-else-if="
+                      option.id === question.answer && question.answer !== question.student_answer
+                    "
+                  >
+                    <span class="text-red-500">{{ option.id + '. ' + option.text }}</span>
+                  </template>
+                  <template v-else>
+                    <span class="text-danger">{{ option.id + '. ' + option.text }}</span>
+                  </template>
+                </li>
+              </ul>
+              <h4>Đáp án đúng: {{ question.answer }}</h4>
             </div>
           </template>
           <template v-else>
-            <!-- <div v-html="questionsRef[0].student_answer" class="mb-4"></div> -->
+            <div v-html="questionsRef[0].student_answer" class="mb-4"></div>
+            <h3>Chấm điểm và nhận xét</h3>
             <Form :model="gradingFormData">
-              <template v-if="questionsRef[0]">
-                <div
-                  v-if="skillType === 'Writing'"
-                  v-html="questionsRef[0].student_answer"
-                  class="mb-4"
-                ></div>
-                <audio
-                  v-else-if="skillType === 'Speaking'"
-                  :src="questionsRef[0].student_answer"
-                  controls
-                  class="h-8"
-                ></audio>
-              </template>
-              <h3>Chấm điểm và nhận xét</h3>
-
-              <FormItem label="Điểm" name="score" :label-col="{ span: 4 }" label-align="left">
-                <InputNumber v-model:value="gradingFormData.score" :min="0" :max="100" required />
+              <FormItem label="Điểm" name="score" :label-col="{ span: 3 }" label-align="left">
+                <InputNumber v-model:value="gradingFormData.score" :min="0" :max="10" required />
               </FormItem>
               <FormItem
                 label="Nhận xét"
                 name="feedback"
-                :label-col="{ span: 4 }"
+                :label-col="{ span: 3 }"
                 label-align="left"
               >
-                <InputTextArea v-model:value="gradingFormData.feedback" :rows="10" />
+                <InputTextArea v-model:value="gradingFormData.feedback" />
               </FormItem>
               <div class="flex justify-end">
                 <a-button type="primary" @click="submitAll">{{ t('common.confirm') }}</a-button>
@@ -94,8 +97,8 @@
   import { QuizItem } from '@/views/test/types/question';
   import { useMessage } from '@/hooks/web/useMessage';
   import { useDesign } from '@/hooks/web/useDesign';
-  import { submitGradingApi } from '@/api/teacher/teacher';
   import { GradingForm } from '@/api/teacher/teacherModel';
+  import { submitGradingApi } from '@/api/teacher/teacher';
 
   const InputTextArea = Input.TextArea;
   const props = defineProps({
@@ -114,9 +117,6 @@
     scoreId: {
       type: Number,
     },
-    times: {
-      type: Number, // giao bài cùng cái đề thi ấy lần thứ 2
-    },
   });
 
   const emit = defineEmits(['submit-grading']);
@@ -133,7 +133,7 @@
   const questionsRef = ref<QuizItem[]>([]);
   const mediaRef = ref<string | null>(null);
 
-  const { createMessage, createSuccessModal, createErrorModal } = useMessage();
+  const { createSuccessModal, createErrorModal } = useMessage();
   const { prefixCls } = useDesign('register');
 
   function clickTab(index: number) {
@@ -145,36 +145,27 @@
   }
 
   async function submitAll() {
-    const { studentId, scoreId, times, examId, skillType } = props;
-    const questionId = questionsRef.value[0].id;
-
-    if (!studentId || !examId || !studentId || !questionId) {
-      createMessage.error('sys.exception.anErrorOccured');
-    }
     try {
       loading.value = true;
-      const { feedback, score } = gradingFormData.value;
       const submitForm: GradingForm = {
-        user_id: studentId,
-        score_id: scoreId,
-        times: times,
-        exam_id: examId,
-        type: skillType,
-        score,
+        user_id: props.studentId,
+        score_id: props.scoreId,
+        times: props.times,
+        type: props.skillType,
         answers: [
           {
-            question_id: questionId,
+            question_id: 24,
             is_correct: true,
-            explanation: feedback,
+            explanation: null,
           },
         ],
       };
-      console.log(submitForm);
+
       const result = await submitGradingApi(submitForm);
       if (result) {
         createSuccessModal({
-          title: t('form.exam.gradingSkill', { skill: props.skillType }),
-          content: t('common.saveSuccessfully'),
+          title: t('form.exam.editSkill', { skill: 'Reading' }),
+          content: t('common.createSuccessfully'),
           getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
         });
         emit('submit-grading');
@@ -217,8 +208,6 @@
   watch(
     () => completedAssignment.value,
     () => {
-      gradingFormData.value.score = 0;
-      gradingFormData.value.feedback = '';
       clickTab(0);
     },
   );

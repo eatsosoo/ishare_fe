@@ -7,8 +7,8 @@
         @reset="showExerciseTable = false"
       />
     </Card>
-    <Card :title="t('common.resultList')" :bordered="false">
-      <BasicTable v-if="showExerciseTable" @register="registerTable">
+    <Card v-if="showExerciseTable" :title="t('common.resultList')" :bordered="false">
+      <BasicTable @register="registerTable">
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'completed_at'">{{
             record.completed_at || record.status
@@ -35,9 +35,7 @@
       :exam-id="examIdRef"
       :student-id="studentIdRef"
       :score-id="scoreIdRef"
-      :times="timesRef"
       @register="registerDetailModal"
-      @submit-grading="reload"
     />
   </PageWrapper>
 </template>
@@ -88,11 +86,10 @@
   const examIdRef = ref<number | undefined>(undefined);
   const studentIdRef = ref<number | undefined>(undefined);
   const scoreIdRef = ref<number | undefined>(undefined);
-  const timesRef = ref<number | undefined>(undefined);
 
   function clickOpen(item: ExamGradingListItem) {
-    const { exam_id, skill, name, user_id, score_id, times } = item;
-    if (!exam_id || !user_id || !score_id || !times) {
+    const { exam_id, skill, name, user_id, score_id } = item;
+    if (!exam_id || !user_id || !score_id) {
       return;
     }
 
@@ -101,7 +98,6 @@
     examIdRef.value = exam_id;
     studentIdRef.value = user_id;
     scoreIdRef.value = score_id;
-    timesRef.value = times;
     openDetailModal();
   }
 
@@ -110,7 +106,6 @@
       const [values] = await Promise.all([validate()]);
       console.log(values);
       useStore.setClassId(values.classId);
-      useStore.setGradingType(values.typeExercise);
       reload();
       showExerciseTable.value = true;
     } catch (error) {
