@@ -30,7 +30,7 @@
     </div>
 
     <!-- Xem trước đoạn văn với placeholders -->
-    <div v-html="previewText" class="html-preview"></div>
+    <div v-html="previewText" class="custom-html"></div>
 
     <!-- Nhập đáp án đúng cho từng input -->
     <div v-for="(value, key) in answers" :key="key" class="my-2">
@@ -190,23 +190,34 @@
   }, 1000);
 </script>
 
-<style lang="scss" scoped>
+<style>
   /* .text-input {
     width: 100%;
     height: 100px;
     padding: 5px;
     border: 1px solid #ccc;
   } */
-  .html-preview {
+
+  .custom-html {
     margin-top: 10px;
     padding: 10px;
     background: #f8f8f8;
+  }
 
-    table,
-    th,
-    td {
-      border-collapse: collapse;
-      border: 1px solid black;
-    }
+  .custom-html table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .custom-html table,
+  .custom-html th,
+  .custom-html td {
+    border: 1px solid black;
+  }
+
+  .custom-html th,
+  .custom-html td {
+    padding: 8px;
+    text-align: left;
   }
 </style>
