@@ -9,3 +9,7 @@ export function convertArrayToString(array: string[]): string {
 export function getLeftValue(value: string): string {
   return value.split(' ')[0];
 }
+
+export function getRightValue(value: string): string {
+  return value.split(' ')[0];
+}

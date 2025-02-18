@@ -74,7 +74,7 @@
           v-for="(p, index) in completedAssignment"
           :key="p.id"
           @click="clickTab(index)"
-          :class="tabActive === index ? ' border-[#0960bd]' : 'cursor-pointer border-gray'"
+          :class="tabActive === index ? ' border-[#e8202a]' : 'cursor-pointer border-gray'"
           class="border-1 px-4 rounded-lg flex-1"
         >
           <div class="text-lg text-center">

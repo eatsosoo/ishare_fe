@@ -162,9 +162,9 @@
     trueFalseNotGivenOptions,
     SelectQuestionType,
     yesNoNotGivenOptions,
-  } from './data';
+  } from '@/views/test/data';
   import { useI18n } from '@/hooks/web/useI18n';
-  import { QuestionItem, QuestionOptionItem } from './types/question';
+  import { QuestionItem, QuestionOptionItem } from '@/views/test/types/question';
   import { ref, watch } from 'vue';
 
   const { t } = useI18n();

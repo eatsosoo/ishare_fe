@@ -80,7 +80,7 @@ const defaultOptions = Array.from({ length: 2 }, (_, i) => ({
 export const READING_DEFAULT: ExamPartItem[] = [
   {
     subject: 'Reading Part 1',
-    question_count: 1,
+    questions_count: 1,
     duration: 20,
     questions: Array.from({ length: 1 }, (_, i) => ({
       question_no: i + 1,
@@ -96,7 +96,7 @@ export const READING_DEFAULT: ExamPartItem[] = [
 export const LISTENING_DEFAULT: ExamPartItem[] = [
   {
     subject: 'Listening Section 1',
-    question_count: 1,
+    questions_count: 1,
     duration: 10,
     questions: Array.from({ length: 1 }, (_, i) => ({
       question_no: i + 1,
@@ -112,7 +112,7 @@ export const LISTENING_DEFAULT: ExamPartItem[] = [
 export const WRITING_DEFAULT: ExamPartItem[] = [
   {
     subject: '',
-    question_count: 1,
+    questions_count: 1,
     duration: 60,
     questions: Array.from({ length: 1 }, (_, i) => ({
       question_no: i + 1,
@@ -128,7 +128,7 @@ export const WRITING_DEFAULT: ExamPartItem[] = [
 export const SPEAKING_DEFAULT: ExamPartItem[] = [
   {
     subject: '',
-    question_count: 1,
+    questions_count: 1,
     duration: 15,
     questions: Array.from({ length: 1 }, (_, i) => ({
       question_no: i + 1,

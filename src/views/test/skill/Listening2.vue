@@ -80,7 +80,7 @@
   import { useI18n } from '@/hooks/web/useI18n';
   import { LISTENING_DEFAULT } from '@/views/test/data';
   import { QuestionItem } from '@/views/test/types/question';
-  import Question from '@/views/test/Question.vue';
+  import Question from '@/views/test/form-question/Question.vue';
   import { useMessage } from '@/hooks/web/useMessage';
   import { useDesign } from '@/hooks/web/useDesign';
   import { examPartApi, uploadAudioApi } from '@/api/exam/exam';

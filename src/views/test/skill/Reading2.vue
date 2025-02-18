@@ -12,10 +12,11 @@
           <Col :span="12" class="flex">
             <div class="re-box-shadow rounded-lg pa-4 w-full">
               <template v-if="questionCurrent">
-                <Question
+                <!-- <Question
                   :value="questionCurrent"
                   @update:value="handleUpdateQuestion(index, $event)"
-                />
+                /> -->
+                <FillInText />
               </template>
               <template v-else>
                 <h3>{{ `${t('common.pleaseSelectQuestion')} ${item.tab}` }}</h3>
@@ -59,11 +60,11 @@
   import { useI18n } from '@/hooks/web/useI18n';
   import { READING_DEFAULT } from '@/views/test/data';
   import { QuestionItem } from '@/views/test/types/question';
-  import Question from '@/views/test/Question.vue';
   import { useMessage } from '@/hooks/web/useMessage';
   import { useDesign } from '@/hooks/web/useDesign';
   import { examPartApi } from '@/api/exam/exam';
   import { ExamPartForm, ExamPartItem, ExtendedQuestionItem } from '@/api/exam/examModel';
+  import FillInText from '../form-question/FillInText.vue';
 
   const props = defineProps({
     value: {

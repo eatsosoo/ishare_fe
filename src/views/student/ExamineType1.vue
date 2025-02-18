@@ -96,7 +96,7 @@
           :key="p.id"
           @click="clickTab(index)"
           :class="
-            tabActive === index ? 'shrink-0 border-[#0960bd]' : 'flex-1 cursor-pointer border-gray'
+            tabActive === index ? 'shrink-0 border-[#e8202a]' : 'flex-1 cursor-pointer border-gray'
           "
           class="border-1 py-2 px-4 rounded-lg"
         >

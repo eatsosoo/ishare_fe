@@ -46,7 +46,7 @@
   import 'tinymce/plugins/searchreplace';
   import 'tinymce/plugins/spellchecker';
   import 'tinymce/plugins/tabfocus';
-  // import 'tinymce/plugins/table';
+  import 'tinymce/plugins/table';
   import 'tinymce/plugins/template';
   import 'tinymce/plugins/textpattern';
   import 'tinymce/plugins/visualblocks';
@@ -112,7 +112,7 @@
     },
   });
 
-  const emit = defineEmits(['change', 'update:modelValue', 'inited', 'init-error']);
+  const emit = defineEmits(['change', 'update:modelValue', 'inited', 'init-error', 'select-text']);
 
   const attrs = useAttrs();
   const editorRef = ref<Editor | null>(null);
@@ -160,10 +160,23 @@
       skin: skinName.value,
       skin_url: publicPath + 'resource/tinymce/skins/ui/' + skinName.value,
       content_css: publicPath + 'resource/tinymce/skins/ui/' + skinName.value + '/content.min.css',
+      font_formats:
+        'Roboto=Roboto,sans-serif; Arial=arial,helvetica,sans-serif; Times New Roman=times new roman,times;',
+      // Nhúng Google Font
+      content_style: `
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+        body { font-family: Roboto, sans-serif; }
+      `,
       ...options,
       setup: (editor: Editor) => {
         editorRef.value = editor;
         editor.on('init', (e) => initSetup(e));
+        editor.on('mouseup', () => {
+          const selectedText = editor.selection.getContent({ format: 'text' });
+          if (selectedText) {
+            emit('select-text', selectedText);
+          }
+        });
       },
     };
   });
