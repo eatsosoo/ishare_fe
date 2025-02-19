@@ -3,46 +3,39 @@
     <Tabs v-model:activeKey="activeKey" @change="handleChangeTab">
       <TabPane v-for="(item, index) in tabs" :key="item.key" :tab="item.tab">
         <Row :gutter="[16, 16]">
-          <Col :span="12">
-            <div class="p-4 re-box-shadow rounded-lg">
-              <h3>{{ t('common.readingContext') }}</h3>
-              <Tinymce v-model="readingParts[index].subject" :height="550" />
-            </div>
-          </Col>
-          <Col :span="12" class="flex">
+          <Col :span="24" class="flex">
             <div class="re-box-shadow rounded-lg pa-4 w-full">
-              <template v-if="questionCurrent">
-                <!-- <Question
-                  :value="questionCurrent"
-                  @update:value="handleUpdateQuestion(index, $event)"
-                /> -->
-                <!-- <QuestionEditor /> -->
+              <template v-if="groupActive">
                 <GroupQuestions />
               </template>
               <template v-else>
-                <h3>{{ `${t('common.pleaseSelectQuestion')} ${item.tab}` }}</h3>
+                <div class="flex flex-col items-center justify-center h-full min-h-30">
+                  <img src="@/assets/svg/empty.svg" />
+                  <p class="text-gray">{{ t('common.empty') }}</p>
+                </div>
               </template>
             </div>
-            <div class="flex flex-col gap-2 ml-4">
+            <div class="ml-4">
               <div
-                v-for="(question, idx) in readingParts[index].questions"
+                v-for="(question_group, idx) in readingParts[index].question_groups"
                 :key="`${item.key}_${idx}`"
-                class="border rounded-full h-10 w-10 flex items-center justify-center cursor-pointer"
                 :class="
-                  questionCurrent?.question_no === question.question_no
-                    ? 'border-red text-red'
-                    : 'border-gray text-gray'
+                  groupActive?.question_no === question_group.question_no
+                    ? 'border-red'
+                    : 'border-gray'
                 "
-                @click="questionCurrent = { ...question }"
+                class="border rounded-lg p-2 flex flex-col items-center gap-2 mb-4 cursor-pointer"
+                @click="groupActive = { ...question_group }"
               >
-                {{ question.question_no }}
+                <div
+                  v-for="no in question_group.question_no"
+                  :key="no"
+                  class="bg-gray rounded-full h-6 w-6 flex items-center justify-center text-white"
+                >
+                  {{ no }}
+                </div>
               </div>
-              <a-button
-                v-if="readingParts[index].questions.length < 13"
-                class="border rounded-full h-10 w-10 flex items-center justify-center cursor-pointer"
-                @click="handleAddQuestion(index)"
-                >+</a-button
-              >
+              <a-button type="dashed" preIcon="ant-design:plus-outlined" @click="openModal" />
             </div>
           </Col>
         </Row>
@@ -52,26 +45,25 @@
         <a-button type="default" @click="handleAddTab">{{ t('common.add') }} Part</a-button>
       </template>
     </Tabs>
+
+    <GroupCreate @register="registerModal" @ok="handleAddGroup" />
   </div>
 </template>
 <script lang="ts" setup>
-  import { computed, ref, watch } from 'vue';
-  import { Tinymce } from '@/components/Tinymce';
+  import { computed, reactive, ref } from 'vue';
   import { Col, Row, Tabs } from 'ant-design-vue';
   import { useI18n } from '@/hooks/web/useI18n';
-  import { READING_DEFAULT } from '@/views/test/data';
-  import { QuestionItem } from '@/views/test/types/question';
-  import { useMessage } from '@/hooks/web/useMessage';
-  import { useDesign } from '@/hooks/web/useDesign';
-  import { examPartApi } from '@/api/exam/exam';
-  import { ExamPartForm, ExamPartItem, ExtendedQuestionItem } from '@/api/exam/examModel';
-  import QuestionEditor from '@/views/test/form-question/QuestionEditor.vue';
+  import { READING_PART_DEF } from '@/views/test/data';
+  import { GroupQuestionItem, NewPartItem, SelectQuestionType } from '@/views/test/types/question';
   import GroupQuestions from '../form-question/GroupQuestions.vue';
+  import GroupCreate from '../form-question/GroupCreate.vue';
+  import { useModal } from '@/components/Modal';
+  import { useMessage } from '@/hooks/web/useMessage';
 
   const props = defineProps({
     value: {
-      type: Array as PropType<ExamPartItem[]>,
-      default: READING_DEFAULT,
+      type: Array as PropType<NewPartItem[]>,
+      default: () => [],
     },
     isHomework: {
       type: Boolean,
@@ -82,107 +74,64 @@
   const TabPane = Tabs.TabPane;
 
   const activeKey = ref(0);
-  const questionCurrent = ref<ExtendedQuestionItem | null>(props.value[0].questions[0]);
-  const readingParts = ref<ExamPartItem[]>(props.value);
-  const loading = ref(false);
+  const groupActive = ref<GroupQuestionItem | null>(null);
+  const readingParts = reactive<NewPartItem[]>(props.value);
   const tabs = computed(() => {
-    return Array.from({ length: readingParts.value.length }, (_, i) => ({
+    return Array.from({ length: readingParts.length }, (_, i) => ({
       key: i,
       tab: `Part ${i + 1}`,
     }));
   });
 
   const { t } = useI18n();
-  const { createMessage, createErrorModal, createSuccessModal } = useMessage();
-  const { prefixCls } = useDesign('register');
-
-  function handleUpdateQuestion(partIdx: number, value: QuestionItem) {
-    const questionIndex = readingParts.value[partIdx].questions.findIndex(
-      (item) => item.question_no === questionCurrent.value?.question_no,
-    );
-    if (questionIndex !== -1) {
-      readingParts.value[partIdx].questions[questionIndex] = value;
-    }
-
-    createMessage.success(t('common.updateSuccess'));
-  }
-
-  function handleAddQuestion(partIdx: number) {
-    const questions = readingParts.value[partIdx].questions;
-    const lastEl = questions.at(-1); // Lấy phần tử cuối cùng mà không xóa
-
-    const questionNo = lastEl ? lastEl.question_no + 1 : 1; // Nếu rỗng, bắt đầu từ 1
-
-    questions.push({
-      question_no: questionNo,
-      content: '',
-      type: 'choice',
-      options: ['A', 'B'].map((id) => ({ id, text: id })),
-      answer: null,
-    });
-  }
-
-  function handleAfterSubmit(result: ExamPartItem) {
-    readingParts.value[activeKey.value] = result;
-  }
+  const [registerModal, { openModal: openModal, closeModal }] = useModal();
+  const { createMessage } = useMessage();
 
   function handleAddTab() {
-    readingParts.value.push({ ...READING_DEFAULT[0] });
+    readingParts.push(READING_PART_DEF);
+  }
+
+  function handleAddGroup({
+    group_type,
+    total,
+  }: {
+    group_type: SelectQuestionType;
+    total: number;
+  }) {
+    console.log(group_type, total);
+    const part = readingParts[activeKey.value];
+    if (!part) {
+      createMessage.warning('Không tìm thấy part!');
+      return;
+    }
+
+    const maxItem = part.question_groups.length
+      ? part.question_groups.reduce(
+          (max, item) => (item.group_no > max.group_no ? item : max),
+          part.question_groups[0],
+        )
+      : null;
+    const lastQuestionNo = maxItem?.question_no.at(-1) || 0;
+    const orders = Array.from({ length: total }, (_, i) => i + lastQuestionNo + 1);
+    const answerDefault = Object.fromEntries(orders.map((num) => [`question_${num}`, '']));
+
+    const newGroup: GroupQuestionItem = {
+      id: null,
+      group_no: maxItem ? maxItem.group_no + 1 : 0,
+      question_type: group_type,
+      question_text: '',
+      question_no: orders,
+      question_options: null,
+      question_answer: answerDefault,
+      question_count: total,
+    };
+    part.question_groups.push(newGroup);
+    closeModal();
   }
 
   function handleChangeTab() {
-    questionCurrent.value = readingParts.value[activeKey.value].questions[0];
+    groupActive.value = readingParts[activeKey.value].question_groups[0];
   }
-
-  async function submitAll(examId: number) {
-    try {
-      loading.value = true;
-      const { subject, questions, id, duration } = readingParts.value[activeKey.value];
-      const submitForm: ExamPartForm = {
-        id: id || null,
-        exam_id: examId,
-        type: 'Reading',
-        subject,
-        questions,
-        duration,
-        media: null,
-        questions_count: questions.length,
-      };
-      const result = await examPartApi(submitForm);
-      if (result) {
-        createSuccessModal({
-          title: t('form.exam.editSkill', { skill: 'Reading' }),
-          content: t('common.createSuccessfully'),
-          getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
-        });
-        handleAfterSubmit(result.items);
-      }
-    } catch (error) {
-      if (error.errorFields) return;
-      const apiMessage = error.response?.data.message;
-      createErrorModal({
-        title: t('sys.api.errorTip'),
-        content:
-          apiMessage || (error as unknown as Error).message || t('sys.api.networkExceptionMsg'),
-        getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
-      });
-    } finally {
-      loading.value = false;
-    }
-  }
-
-  watch(
-    () => props.value,
-    (value) => {
-      readingParts.value = value.length === 0 ? READING_DEFAULT : value;
-      questionCurrent.value = readingParts.value[0].questions[0];
-      activeKey.value = 0;
-    },
-  );
-
-  defineExpose({
-    submitAll,
-  });
 </script>
 
 <style lang="less" scoped>

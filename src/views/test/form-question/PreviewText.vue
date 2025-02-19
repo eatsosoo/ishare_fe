@@ -2,7 +2,7 @@
   <BasicModal
     v-bind="$attrs"
     :title="'Chỉnh sửa lựa chọn câu hỏi'"
-    width="600px"
+    width="1000px"
     :can-fullscreen="false"
     :show-ok-btn="false"
   >

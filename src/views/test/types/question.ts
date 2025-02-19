@@ -1,3 +1,5 @@
+import { SkillType } from '@/api/exam/examModel';
+
 export interface QuestionType {
   value: string;
   label: string;
@@ -55,4 +57,24 @@ export interface ListeningPart {
   tab: string;
   subject: string;
   questions: QuestionItem[];
+}
+
+// NEW TYPE
+export interface GroupQuestionItem {
+  id: number | null;
+  question_type: SelectQuestionType;
+  question_text: string;
+  question_answer: { [key: string]: string };
+  group_no: number;
+  question_options: OptionAnswerType[] | null;
+  question_no: number[];
+  question_count: number;
+}
+
+export interface NewPartItem {
+  id: number | null;
+  subject: string;
+  type: SkillType;
+  duration: number;
+  question_groups: GroupQuestionItem[];
 }

@@ -4,7 +4,11 @@
       <Select v-model:value="selected" :options="options" class="w-[20rem]" />
       <InputNumber v-model:value="total" :min="1" />
     </div>
-    <QuestionEditor :type-answer="selected" :questions="questionsNo" />
+    <QuestionEditor
+      :type-answer="selected"
+      :questions="questionsNo"
+      @delete="emit('delete', props.groupNo)"
+    />
   </div>
 </template>
 
@@ -19,7 +23,13 @@
       type: Number,
       default: 1,
     }, // bắt đầu tạo từ question thứ mấy
+    groupNo: {
+      type: Number,
+      default: 1,
+    },
   });
+
+  const emit = defineEmits(['delete']);
 
   const selected = ref<SelectQuestionType>('fill_in');
   const total = ref<number>(1);

@@ -1,5 +1,5 @@
 import { ExamPartItem } from '@/api/exam/examModel';
-import { QuestionType } from './types/question';
+import { NewPartItem, QuestionType } from './types/question';
 import { useI18n } from '@/hooks/web/useI18n';
 
 const { t } = useI18n();
@@ -140,6 +140,14 @@ export const SPEAKING_DEFAULT: ExamPartItem[] = [
     media: null,
   },
 ];
+
+export const READING_PART_DEF: NewPartItem = {
+  id: null,
+  subject: 'Reading Part 1',
+  duration: 20,
+  type: 'Reading',
+  question_groups: [],
+};
 
 export const alphabet = Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i));
 

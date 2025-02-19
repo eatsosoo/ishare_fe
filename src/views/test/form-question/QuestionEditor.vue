@@ -22,14 +22,15 @@
 
     <AnswerInput :model-value="answers" :answer-type="props.typeAnswer" :options="answerOptions" />
 
-    <Options @register="registerOptionsModal" @update:value="answerOptions = $event" />
+    <Options @register="registerOptionsModal" @update:value="updateAnswerOptions" />
 
     <PreviewText :previewText="previewText" @register="registerPreviewModal" />
 
     <div class="flex gap-2 mt-2">
       <!-- <a-button type="default" @click="updateAnswer">Cập nhật đáp án</a-button> -->
       <a-button v-if="props.typeAnswer != 'fill_in'" @click="openOptionsModal">Options</a-button>
-      <a-button @click="activatePrivewPopup">Preview</a-button>
+      <a-button @click="emit('delete')">Delete Group</a-button>
+      <a-button @click="activatePreviewPopup">Preview</a-button>
       <a-button type="primary" @click="saveQuestion">Lưu câu hỏi</a-button>
     </div>
   </div>
@@ -37,32 +38,36 @@
 
 <script setup lang="ts">
   import { Tinymce } from '@/components/Tinymce';
-  import { reactive, ref, watch } from 'vue';
+  import { ref, watch } from 'vue';
   import AnswerInput from '@/views/test/form-question/AnswerInput.vue';
   import PreviewText from '@/views/test/form-question/PreviewText.vue';
   import Options from '@/views/test/form-question/Options.vue';
   import { OptionAnswerType, SelectQuestionType } from '@/views/test/types/question';
   import { useModal } from '@/components/Modal';
-  import { classStyle, plugins, toolbar } from '@/views/test/data';
+  import { plugins, toolbar } from '@/views/test/data';
 
   const props = defineProps({
-    questions: { type: Array as PropType<number[]>, default: () => [25, 26, 27, 28, 29] },
+    questions: { type: Array as PropType<number[]>, default: () => [] },
     typeAnswer: {
       type: String as PropType<SelectQuestionType>,
       default: 'fill_in',
     },
   });
 
-  const [registerOptionsModal, { openModal: openOptionsModal }] = useModal();
+  const emit = defineEmits(['delete']);
+
+  const [registerOptionsModal, { openModal: openOptionsModal, closeModal }] = useModal();
   const [registerPreviewModal, { openModal: openPreviewModal }] = useModal();
 
   const questionText = ref<string>('');
   const previewText = ref<string>('');
   const selectedText = ref<string>('');
-  const answers = ref<{ [key: string]: string }>({});
-  const answerOptions = reactive<OptionAnswerType[]>([]);
+  const answers = ref<{ [key: string]: string }>(handleAnswersInit(props.questions));
+  const answerOptions = ref<OptionAnswerType[]>([]);
 
   const mapping = { fill_in: 'blank', true_false_not_given: 'select', correct_letter: 'select' };
+  const classStyle =
+    'bg-white rounded-full text-center outline-red border-red border-2 p-1 shadow-md h-[32px] w-38';
 
   const addAction = (questionNo: number) => {
     if (props.typeAnswer === 'fill_in' && selectedText.value) {
@@ -90,9 +95,24 @@
     previewText.value = questionText.value.replace(regexMap[props.typeAnswer], replaceFn);
   };
 
-  function activatePrivewPopup() {
+  function activatePreviewPopup() {
     renderPreview();
     openPreviewModal();
+  }
+
+  function updateAnswerOptions(items: OptionAnswerType[]) {
+    answerOptions.value = items;
+    closeModal();
+  }
+
+  function handleAnswersInit(items: number[]) {
+    return items.reduce(
+      (acc, item) => {
+        acc[`question_${item}`] = '';
+        return acc;
+      },
+      {} as Record<string, any>,
+    );
   }
 
   const saveQuestion = () => {
@@ -106,13 +126,7 @@
     () => [props.typeAnswer, props.questions],
     () => {
       questionText.value = '';
-      answers.value = props.questions.reduce(
-        (acc, item) => {
-          acc[`question_${item}`] = '';
-          return acc;
-        },
-        {} as Record<string, any>,
-      );
+      answers.value = handleAnswersInit(props.questions);
     },
   );
 

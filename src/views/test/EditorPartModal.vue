@@ -10,10 +10,10 @@
     <div class="mb-2">
       <Select v-model:value="skill" :options="SKILL_OPTIONS" />
     </div>
-    <Reading v-show="skill === 'reading'" ref="readingRef" :value="detail?.Reading" />
-    <Listening v-show="skill === 'listening'" ref="listeningRef" :value="detail?.Listening" />
+    <Reading ref="readingRef" />
+    <!-- <Listening v-show="skill === 'listening'" ref="listeningRef" :value="detail?.Listening" />
     <Writing v-show="skill === 'writing'" ref="writingRef" :value="detail?.Writing" />
-    <Speaking v-show="skill === 'speaking'" ref="speakingRef" :value="detail?.Speaking" />
+    <Speaking v-show="skill === 'speaking'" ref="speakingRef" :value="detail?.Speaking" /> -->
   </BasicModal>
 </template>
 <script lang="ts" setup>
@@ -73,22 +73,22 @@
     }
   }
 
-  async function getExamDetail(examId: number) {
-    try {
-      loading.value = true;
-      const result = await examDetailApi(examId);
-      detail.value = result;
-    } catch (error) {
-      createMessage.error(t('sys.app.dataNotFound'));
-    } finally {
-      loading.value = false;
-    }
-  }
+  // async function getExamDetail(examId: number) {
+  //   try {
+  //     loading.value = true;
+  //     const result = await examDetailApi(examId);
+  //     detail.value = result;
+  //   } catch (error) {
+  //     createMessage.error(t('sys.app.dataNotFound'));
+  //   } finally {
+  //     loading.value = false;
+  //   }
+  // }
 
-  watch(
-    () => props.examId,
-    (value) => {
-      getExamDetail(value);
-    },
-  );
+  // watch(
+  //   () => props.examId,
+  //   (value) => {
+  //     getExamDetail(value);
+  //   },
+  // );
 </script>

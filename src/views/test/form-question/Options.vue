@@ -135,7 +135,6 @@
         })),
       ];
       emit('update:value', optionsUpdated); // Đảm bảo gửi bản sao (avoid mutation)
-      console.log(optionsUpdated);
     } catch (error) {
       console.log('Validation failed:', error);
     }
