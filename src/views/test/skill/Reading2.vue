@@ -16,7 +16,8 @@
                   :value="questionCurrent"
                   @update:value="handleUpdateQuestion(index, $event)"
                 /> -->
-                <FillInText />
+                <!-- <QuestionEditor /> -->
+                <GroupQuestions />
               </template>
               <template v-else>
                 <h3>{{ `${t('common.pleaseSelectQuestion')} ${item.tab}` }}</h3>
@@ -64,7 +65,8 @@
   import { useDesign } from '@/hooks/web/useDesign';
   import { examPartApi } from '@/api/exam/exam';
   import { ExamPartForm, ExamPartItem, ExtendedQuestionItem } from '@/api/exam/examModel';
-  import FillInText from '../form-question/FillInText.vue';
+  import QuestionEditor from '@/views/test/form-question/QuestionEditor.vue';
+  import GroupQuestions from '../form-question/GroupQuestions.vue';
 
   const props = defineProps({
     value: {

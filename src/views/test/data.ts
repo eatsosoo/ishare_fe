@@ -142,3 +142,10 @@ export const SPEAKING_DEFAULT: ExamPartItem[] = [
 ];
 
 export const alphabet = Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i));
+
+export const toolbar = [
+  'fontsizeselect lineheight bold italic underline undo redo removeformat bullist numlist preview fullscreen',
+];
+export const plugins = ['table'];
+export const classStyle =
+  'bg-white rounded-full text-center outline-red border-red border-1 p-1 shadow-md h-[32px]';

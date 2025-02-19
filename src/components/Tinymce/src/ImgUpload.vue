@@ -9,7 +9,7 @@
       :headers="headers"
       accept=".jpg,.jpeg,.gif,.png,.webp"
     >
-      <a-button type="primary" v-bind="{ ...getButtonProps }">
+      <a-button type="default" preIcon="ant-design:upload-outlined" v-bind="{ ...getButtonProps }">
         {{ t('component.upload.imgUpload') }}
       </a-button>
     </Upload>

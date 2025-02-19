@@ -4,13 +4,21 @@ export interface QuestionType {
 }
 
 export type SelectQuestionType =
-  | 'choice'
-  | 'matching'
+  | 'fill_in'
   | 'true_false_not_given'
-  | 'yes_no_not_given'
-  | 'multiple_choice'
-  | 'writing_task_1_academic'
-  | 'speaking_part_1';
+  | 'correct_letter'
+  | 'choice'
+  | 'multiple_choice';
+
+export interface GroupQuestionType {
+  label: SelectQuestionType;
+  value: string;
+}
+
+export interface OptionAnswerType {
+  label: string;
+  value: string;
+}
 
 export interface QuestionOptionItem {
   id: string;
