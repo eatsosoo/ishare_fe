@@ -24,7 +24,13 @@
       @update:value="updateAnswerOptions"
     />
 
-    <PreviewText :previewText="previewText" @register="registerPreviewModal" />
+    <PreviewText
+      v-model:answers="answers"
+      :content="questionText"
+      :answer-options="answerOptions"
+      :type-answer="props.typeAnswer"
+      @register="registerPreviewModal"
+    />
 
     <div class="flex gap-2 mt-2">
       <!-- <a-button type="default" @click="updateAnswer">Cập nhật đáp án</a-button> -->
@@ -67,7 +73,7 @@
   const answerOptions = ref<OptionAnswerType[]>(handleAnswerOptions(props.typeAnswer));
   const insertTextFunction = ref<Function | null>(null);
 
-  const mapping = { fill_in: 'blank', true_false_not_given: 'select', correct_letter: 'select' };
+  // const mapping = { fill_in: 'blank', true_false_not_given: 'select', correct_letter: 'select' };
   const classStyle =
     'bg-white rounded-full text-center outline-red-400 outline-1 border-gray-300 border-1 p-1 shadow-md h-[32px]';
 
@@ -88,13 +94,13 @@
       choice: /\[question_(\d+)]/g,
     };
 
-    const generateFn = (match, index) =>
+    const generateFn = (match) =>
       `<input type="text" value="${answers.value[match] || ''}" name="${match}" class="${classStyle} w-38" />`;
-    const generateFn2 = (match, index) =>
+    const generateFn2 = (match) =>
       `<select value="${answers.value[match] || ''}" name="${match}" class="${classStyle} w-22 pb-[5px]" >
           ${answerOptions.value.map((option) => `<option value="${option.value}" ${answers.value[match] === option.value ? 'selected' : ''}>${option.label}</option>`)}
       </select>`;
-    const generateFn3 = (match, index) => {
+    const generateFn3 = (match) => {
       const html = answerOptions.value.map(
         (option) =>
           `<div class="flex items-center mb-2">
@@ -126,7 +132,7 @@
   };
 
   function activatePreviewPopup() {
-    renderPreview();
+    // renderPreview();
     openPreviewModal();
   }
 
