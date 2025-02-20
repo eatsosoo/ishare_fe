@@ -22,6 +22,10 @@ export interface OptionAnswerType {
   value: string;
 }
 
+export interface ExtendOptionAnswerType {
+  [key: string]: OptionAnswerType[];
+}
+
 export interface QuestionOptionItem {
   id: string;
   text: string;
@@ -66,7 +70,7 @@ export interface GroupQuestionItem {
   question_text: string;
   question_answer: { [key: string]: string };
   group_no: number;
-  question_options: OptionAnswerType[] | null;
+  question_options: OptionAnswerType[] | ExtendOptionAnswerType | null;
   question_no: number[];
   question_count: number;
 }

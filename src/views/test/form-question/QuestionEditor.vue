@@ -15,9 +15,15 @@
       </a-button>
     </div>
 
-    <AnswerInput :model-value="answers" :answer-type="props.typeAnswer" :options="answerOptions" />
+    <AnswerInput
+      :model-value="answers"
+      :answer-type="props.typeAnswer"
+      :options="answerOptions"
+      @change-options="answerOptions = $event"
+    />
 
     <Options
+      v-if="isArray(answerOptions)"
       @register="registerOptionsModal"
       :value="answerOptions"
       :type-answer="props.typeAnswer"
@@ -28,7 +34,11 @@
 
     <div class="flex gap-2 mt-2">
       <!-- <a-button type="default" @click="updateAnswer">Cập nhật đáp án</a-button> -->
-      <a-button v-if="props.typeAnswer != 'fill_in'" @click="openOptionsModal">Options</a-button>
+      <a-button
+        v-if="props.typeAnswer !== 'fill_in' && props.typeAnswer !== 'choice'"
+        @click="openOptionsModal"
+        >Options</a-button
+      >
       <a-button @click="emit('delete')">Delete Group</a-button>
       <a-button @click="activatePreviewPopup">Preview</a-button>
       <a-button type="primary" @click="saveQuestion">Lưu câu hỏi</a-button>
@@ -42,10 +52,15 @@
   import AnswerInput from '@/views/test/form-question/AnswerInput.vue';
   import PreviewText from '@/views/test/form-question/PreviewText.vue';
   import Options from '@/views/test/form-question/Options.vue';
-  import { OptionAnswerType, SelectQuestionType } from '@/views/test/types/question';
+  import {
+    ExtendOptionAnswerType,
+    OptionAnswerType,
+    SelectQuestionType,
+  } from '@/views/test/types/question';
   import { useModal } from '@/components/Modal';
   import { plugins, toolbar } from '@/views/test/data';
   import { useMessage } from '@/hooks/web/useMessage';
+  import { isArray } from 'lodash-es';
 
   const props = defineProps({
     questions: { type: Array as PropType<number[]>, default: () => [] },
@@ -64,10 +79,11 @@
   const questionText = ref<string>('');
   const previewText = ref<string>('');
   const answers = ref<{ [key: string]: string }>(handleAnswersInit(props.questions));
-  const answerOptions = ref<OptionAnswerType[]>(handleAnswerOptions(props.typeAnswer));
+  const answerOptions = ref<OptionAnswerType[] | ExtendOptionAnswerType>(
+    handleAnswerOptions(props.typeAnswer),
+  );
   const insertTextFunction = ref<Function | null>(null);
 
-  const mapping = { fill_in: 'blank', true_false_not_given: 'select', correct_letter: 'select' };
   const classStyle =
     'bg-white rounded-full text-center outline-red-400 outline-1 border-gray-300 border-1 p-1 shadow-md h-[32px]';
 
@@ -88,14 +104,20 @@
       choice: /\[question_(\d+)]/g,
     };
 
-    const generateFn = (match, index) =>
+    const generateFn = (match) =>
       `<input type="text" value="${answers.value[match] || ''}" name="${match}" class="${classStyle} w-38" />`;
-    const generateFn2 = (match, index) =>
+
+    const generateFn2 = (match) => {
+      if (!isArray(answerOptions.value)) return '';
       `<select value="${answers.value[match] || ''}" name="${match}" class="${classStyle} w-22 pb-[5px]" >
           ${answerOptions.value.map((option) => `<option value="${option.value}" ${answers.value[match] === option.value ? 'selected' : ''}>${option.label}</option>`)}
       </select>`;
-    const generateFn3 = (match, index) => {
-      const html = answerOptions.value.map(
+    };
+
+    const generateFn3 = (match) => {
+      if (isArray(answerOptions.value)) return '';
+      console.log(match.slice(1, -1), answerOptions.value);
+      const html = answerOptions.value[match.slice(1, -1)].map(
         (option) =>
           `<div class="flex items-center mb-2">
             <span class="bg-gray-400 font-bold mr-[10px] w-[24px] rounded-full text-center">
@@ -146,13 +168,32 @@
   }
 
   function handleAnswerOptions(type: SelectQuestionType) {
-    return type === 'true_false_not_given'
-      ? [
+    let genOps: OptionAnswerType[] | ExtendOptionAnswerType = [];
+    switch (type) {
+      case 'true_false_not_given':
+        genOps = [
           { label: 'True', value: 'true' },
           { label: 'False', value: 'false' },
           { label: 'Not Given', value: 'not_given' },
-        ]
-      : [];
+        ];
+        break;
+      case 'choice':
+        genOps = props.questions.reduce((acc, item) => {
+          acc[`question_${item}`] = [
+            { value: 'A', label: '' },
+            { value: 'B', label: '' },
+            { value: 'C', label: '' },
+            { value: 'D', label: '' },
+          ];
+          return acc;
+        }, {});
+        console.log(genOps);
+        break;
+      default:
+        genOps = [];
+    }
+
+    return genOps;
   }
 
   function handleInsertText(fn) {
@@ -162,7 +203,8 @@
   const saveQuestion = () => {
     console.log('Dữ liệu gửi lên DB:', {
       question_text: questionText.value,
-      answers: answers.value,
+      question_answers: answers.value,
+      question_options: answerOptions.value,
     });
   };
 

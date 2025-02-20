@@ -8,16 +8,6 @@
   >
     <Form :model="formModel" :rules="rules" ref="formRef" disable>
       <div v-for="(_, index) in formData" :key="index" class="flex justify-between">
-        <!-- Nhãn -->
-        <Form.Item
-          :label="'Nhãn'"
-          :name="`label_${index}`"
-          :label-col="{ xl: 6, xxl: 6 }"
-          label-align="left"
-        >
-          <Input v-model:value="formModel[`label_${index}`]" allow-clear :disabled="!allowAction" />
-        </Form.Item>
-
         <!-- Giá trị -->
         <Form.Item
           :label="'Giá trị'"
@@ -26,6 +16,16 @@
           label-align="left"
         >
           <Input v-model:value="formModel[`value_${index}`]" allow-clear :disabled="!allowAction" />
+        </Form.Item>
+
+        <!-- Nhãn -->
+        <Form.Item
+          :label="'Nhãn'"
+          :name="`label_${index}`"
+          :label-col="{ xl: 6, xxl: 6 }"
+          label-align="left"
+        >
+          <Input v-model:value="formModel[`label_${index}`]" allow-clear :disabled="!allowAction" />
         </Form.Item>
 
         <!-- Xóa lựa chọn -->
