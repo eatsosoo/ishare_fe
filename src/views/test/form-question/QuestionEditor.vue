@@ -104,20 +104,23 @@
       choice: /\[question_(\d+)]/g,
     };
 
-    const generateFn = (match) =>
-      `<input type="text" value="${answers.value[match] || ''}" name="${match}" class="${classStyle} w-38" />`;
+    const generateFn = (match) => {
+      const matchFormat = match.slice(1, -1);
+      return `<input type="text" value="${answers.value[matchFormat] || ''}" name="${matchFormat}" class="${classStyle} w-38" />`;
+    };
 
     const generateFn2 = (match) => {
       if (!isArray(answerOptions.value)) return '';
-      `<select value="${answers.value[match] || ''}" name="${match}" class="${classStyle} w-22 pb-[5px]" >
-          ${answerOptions.value.map((option) => `<option value="${option.value}" ${answers.value[match] === option.value ? 'selected' : ''}>${option.label}</option>`)}
+      const matchFormat = match.slice(1, -1);
+      return `<select value="${answers.value[matchFormat] || ''}" name="${matchFormat}" class="${classStyle} w-22 pb-[5px]" >
+          ${answerOptions.value.map((option) => `<option value="${option.value}" ${answers.value[matchFormat] === option.value ? 'selected' : ''}>${option.label}</option>`)}
       </select>`;
     };
 
     const generateFn3 = (match) => {
       if (isArray(answerOptions.value)) return '';
-      console.log(match.slice(1, -1), answerOptions.value);
-      const html = answerOptions.value[match.slice(1, -1)].map(
+      const matchFormat = match.slice(1, -1);
+      const html = answerOptions.value[matchFormat].map(
         (option) =>
           `<div class="flex items-center mb-2">
             <span class="bg-gray-400 font-bold mr-[10px] w-[24px] rounded-full text-center">
@@ -187,7 +190,6 @@
           ];
           return acc;
         }, {});
-        console.log(genOps);
         break;
       default:
         genOps = [];
@@ -211,7 +213,6 @@
   watch(
     () => [props.typeAnswer, props.questions],
     () => {
-      questionText.value = '';
       answers.value = handleAnswersInit(props.questions);
       answerOptions.value = handleAnswerOptions(props.typeAnswer);
     },
