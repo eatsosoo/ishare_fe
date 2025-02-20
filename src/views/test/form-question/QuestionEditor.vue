@@ -72,7 +72,7 @@
     'bg-white rounded-full text-center outline-red-400 outline-1 border-gray-300 border-1 p-1 shadow-md h-[32px]';
 
   const addAction = (questionNo: number) => {
-    const text = `[${mapping[props.typeAnswer]}_${questionNo}]`;
+    const text = `[question_${questionNo}]`;
     if (insertTextFunction.value) {
       insertTextFunction.value(text);
     } else {
@@ -82,22 +82,41 @@
 
   const renderPreview = () => {
     const regexMap = {
-      fill_in: /\[blank_(\d+)]/g,
-      true_false_not_given: /\[select_(\d+)]/g,
-      correct_letter: /\[select_(\d+)]/g,
+      fill_in: /\[question_(\d+)]/g,
+      true_false_not_given: /\[question_(\d+)]/g,
+      correct_letter: /\[question_(\d+)]/g,
+      choice: /\[question_(\d+)]/g,
     };
 
-    const generateFn = (_, index) =>
-      `<input value="${answers.value[`question_${index}`] || ''}" class="${classStyle} w-38" />`;
-    const generateFn2 = (_, index) =>
-      `<select value="${answers.value[`question_${index}`] || ''}" class="${classStyle} w-22 pb-[5px]" >
-          ${answerOptions.value.map((option) => `<option value="${option.value}" ${answers.value[`question_${index}`] === option.value ? 'selected' : ''}>${option.label}</option>`)}
+    const generateFn = (match, index) =>
+      `<input type="text" value="${answers.value[match] || ''}" name="${match}" class="${classStyle} w-38" />`;
+    const generateFn2 = (match, index) =>
+      `<select value="${answers.value[match] || ''}" name="${match}" class="${classStyle} w-22 pb-[5px]" >
+          ${answerOptions.value.map((option) => `<option value="${option.value}" ${answers.value[match] === option.value ? 'selected' : ''}>${option.label}</option>`)}
       </select>`;
+    const generateFn3 = (match, index) => {
+      const html = answerOptions.value.map(
+        (option) =>
+          `<div class="flex items-center mb-2">
+            <span class="bg-gray-400 font-bold mr-[10px] w-[24px] rounded-full text-center">
+              ${option.value}
+            </span>
+            <label class="custom-radio">
+              <input type="radio" name="${match}" value="${option.value}" />
+              <span class="checkmark"></span>
+              ${option.label}
+            </label>
+          </div>`,
+      );
+
+      return html.join('\n');
+    };
 
     const fnMap = {
       fill_in: generateFn,
       true_false_not_given: generateFn2,
       correct_letter: generateFn2,
+      choice: generateFn3,
     };
 
     previewText.value = questionText.value.replace(

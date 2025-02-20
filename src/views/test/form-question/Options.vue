@@ -112,7 +112,6 @@
   );
 
   function handleFormModel(root, model) {
-    console.log(root, model);
     return root.reduce(
       (acc, item, index) => {
         acc[`label_${index}`] = item.label || model[`label_${index}`] || '';
