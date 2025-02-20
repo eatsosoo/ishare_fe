@@ -6,23 +6,23 @@
       v-model="questionText"
       :toolbar="toolbar"
       :plugins="plugins"
-      @select-text="selectedText = $event"
+      @insert-text="handleInsertText"
     />
 
     <div class="flex gap-2 mt-2">
-      <a-button
-        v-for="no in props.questions"
-        :key="no"
-        @click="addAction(no)"
-        :disabled="!selectedText && props.typeAnswer === 'fill_in'"
-      >
+      <a-button v-for="no in props.questions" :key="no" @click="addAction(no)">
         {{ no }}
       </a-button>
     </div>
 
     <AnswerInput :model-value="answers" :answer-type="props.typeAnswer" :options="answerOptions" />
 
-    <Options @register="registerOptionsModal" @update:value="updateAnswerOptions" />
+    <Options
+      @register="registerOptionsModal"
+      :value="answerOptions"
+      :type-answer="props.typeAnswer"
+      @update:value="updateAnswerOptions"
+    />
 
     <PreviewText :previewText="previewText" @register="registerPreviewModal" />
 
@@ -45,6 +45,7 @@
   import { OptionAnswerType, SelectQuestionType } from '@/views/test/types/question';
   import { useModal } from '@/components/Modal';
   import { plugins, toolbar } from '@/views/test/data';
+  import { useMessage } from '@/hooks/web/useMessage';
 
   const props = defineProps({
     questions: { type: Array as PropType<number[]>, default: () => [] },
@@ -58,27 +59,24 @@
 
   const [registerOptionsModal, { openModal: openOptionsModal, closeModal }] = useModal();
   const [registerPreviewModal, { openModal: openPreviewModal }] = useModal();
+  const { createMessage } = useMessage();
 
   const questionText = ref<string>('');
   const previewText = ref<string>('');
-  const selectedText = ref<string>('');
   const answers = ref<{ [key: string]: string }>(handleAnswersInit(props.questions));
-  const answerOptions = ref<OptionAnswerType[]>([]);
+  const answerOptions = ref<OptionAnswerType[]>(handleAnswerOptions(props.typeAnswer));
+  const insertTextFunction = ref<Function | null>(null);
 
   const mapping = { fill_in: 'blank', true_false_not_given: 'select', correct_letter: 'select' };
   const classStyle =
-    'bg-white rounded-full text-center outline-red border-red border-2 p-1 shadow-md h-[32px] w-38';
+    'bg-white rounded-full text-center outline-red-400 outline-1 border-gray-300 border-1 p-1 shadow-md h-[32px]';
 
   const addAction = (questionNo: number) => {
-    if (props.typeAnswer === 'fill_in' && selectedText.value) {
-      answers.value[`${mapping[props.typeAnswer]}_${questionNo}`] = selectedText.value;
-      questionText.value = questionText.value.replace(
-        selectedText.value,
-        `[${mapping[props.typeAnswer]}_${questionNo}]`,
-      );
-      selectedText.value = '';
-    } else if (props.typeAnswer !== 'fill_in') {
-      questionText.value += `[${mapping[props.typeAnswer]}_${questionNo}]`;
+    const text = `[${mapping[props.typeAnswer]}_${questionNo}]`;
+    if (insertTextFunction.value) {
+      insertTextFunction.value(text);
+    } else {
+      createMessage.warning('Chưa có function để chèn text!');
     }
   };
 
@@ -89,10 +87,23 @@
       correct_letter: /\[select_(\d+)]/g,
     };
 
-    const replaceFn = (_, index) =>
-      `<input value="${answers.value[`blank_${index}`] || ''}" class="${classStyle}" />`;
+    const generateFn = (_, index) =>
+      `<input value="${answers.value[`question_${index}`] || ''}" class="${classStyle} w-38" />`;
+    const generateFn2 = (_, index) =>
+      `<select value="${answers.value[`question_${index}`] || ''}" class="${classStyle} w-22 pb-[5px]" >
+          ${answerOptions.value.map((option) => `<option value="${option.value}" ${answers.value[`question_${index}`] === option.value ? 'selected' : ''}>${option.label}</option>`)}
+      </select>`;
 
-    previewText.value = questionText.value.replace(regexMap[props.typeAnswer], replaceFn);
+    const fnMap = {
+      fill_in: generateFn,
+      true_false_not_given: generateFn2,
+      correct_letter: generateFn2,
+    };
+
+    previewText.value = questionText.value.replace(
+      regexMap[props.typeAnswer],
+      fnMap[props.typeAnswer],
+    );
   };
 
   function activatePreviewPopup() {
@@ -115,6 +126,20 @@
     );
   }
 
+  function handleAnswerOptions(type: SelectQuestionType) {
+    return type === 'true_false_not_given'
+      ? [
+          { label: 'True', value: 'true' },
+          { label: 'False', value: 'false' },
+          { label: 'Not Given', value: 'not_given' },
+        ]
+      : [];
+  }
+
+  function handleInsertText(fn) {
+    insertTextFunction.value = fn;
+  }
+
   const saveQuestion = () => {
     console.log('Dữ liệu gửi lên DB:', {
       question_text: questionText.value,
@@ -127,6 +152,7 @@
     () => {
       questionText.value = '';
       answers.value = handleAnswersInit(props.questions);
+      answerOptions.value = handleAnswerOptions(props.typeAnswer);
     },
   );
 

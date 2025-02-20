@@ -16,10 +16,23 @@
   defineProps({ previewText: String });
 </script>
 
-<style scoped>
+<style lang="scss">
   .custom-html {
-    margin-top: 10px;
-    padding: 10px;
-    background: #f8f8f8;
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    table,
+    th,
+    td {
+      border: 1px solid black;
+    }
+
+    th,
+    td {
+      padding: 8px;
+      text-align: left;
+    }
   }
 </style>

@@ -6,7 +6,7 @@
     :can-fullscreen="false"
     @ok="submitForm"
   >
-    <Form :model="formModel" :rules="rules" ref="formRef">
+    <Form :model="formModel" :rules="rules" ref="formRef" disable>
       <div v-for="(_, index) in formData" :key="index" class="flex justify-between">
         <!-- Nhãn -->
         <Form.Item
@@ -15,7 +15,7 @@
           :label-col="{ xl: 6, xxl: 6 }"
           label-align="left"
         >
-          <Input v-model:value="formModel[`label_${index}`]" allow-clear />
+          <Input v-model:value="formModel[`label_${index}`]" allow-clear :disabled="!allowAction" />
         </Form.Item>
 
         <!-- Giá trị -->
@@ -25,12 +25,12 @@
           :label-col="{ xl: 6, xxl: 6 }"
           label-align="left"
         >
-          <Input v-model:value="formModel[`value_${index}`]" allow-clear />
+          <Input v-model:value="formModel[`value_${index}`]" allow-clear :disabled="!allowAction" />
         </Form.Item>
 
         <!-- Xóa lựa chọn -->
         <a-button
-          v-if="formData.length > 2"
+          v-if="formData.length > 2 && allowAction"
           type="default"
           preIcon="ant-design:minus-outlined"
           @click="removeOption(index)"
@@ -40,6 +40,7 @@
       <!-- Thêm lựa chọn -->
       <div class="flex gap-2 mt-2">
         <a-button
+          v-if="allowAction"
           type="dashed"
           preIcon="ant-design:plus-outlined"
           block
@@ -56,12 +57,16 @@
   import { Form, Input } from 'ant-design-vue';
   import { ref, watch, computed } from 'vue';
   import BasicModal from '@/components/Modal/src/BasicModal.vue';
-  import { OptionAnswerType } from '@/views/test/types/question';
+  import { OptionAnswerType, SelectQuestionType } from '@/views/test/types/question';
 
   const props = defineProps({
     value: {
       type: Array as PropType<{ label: string; value: string }[]>,
       default: () => [],
+    },
+    typeAnswer: {
+      type: String as PropType<SelectQuestionType>,
+      default: 'fill_in',
     },
   });
 
@@ -69,33 +74,27 @@
   const { t } = useI18n();
 
   const formRef = ref();
-  const formData = ref<{ label: string; value: string }[]>([
-    { label: '', value: '' },
-    { label: '', value: '' },
-  ]);
+  const formData = ref<{ label: string; value: string }[]>(props.value);
+  const formModel = ref<{ [key: string]: string }>(handleFormModel(props.value, {}));
+
+  const allowAction = computed(() => {
+    return props.typeAnswer !== 'true_false_not_given';
+  });
 
   // ✅ Đồng bộ `formData` với `props.value`
   watch(
     () => props.value,
     (newVal) => {
-      formData.value = newVal.length ? [...newVal] : [{ label: '', value: '' }];
+      formData.value = newVal.length ? [...newVal] : [];
     },
     { immediate: true, deep: true },
   );
 
   // ✅ Dùng `watch` thay vì `watchEffect()` để tránh vòng lặp vô hạn
-  const formModel = ref<{ [key: string]: string }>({});
   watch(
     formData,
     (newVal) => {
-      formModel.value = newVal.reduce(
-        (acc, item, index) => {
-          acc[`label_${index}`] = item.label || formModel.value[`label_${index}`];
-          acc[`value_${index}`] = item.value || formModel.value[`value_${index}`];
-          return acc;
-        },
-        {} as Record<string, any>,
-      );
+      formModel.value = handleFormModel(newVal, formModel.value);
     },
     { deep: true },
   );
@@ -111,6 +110,18 @@
       {} as Record<string, any>,
     ),
   );
+
+  function handleFormModel(root, model) {
+    console.log(root, model);
+    return root.reduce(
+      (acc, item, index) => {
+        acc[`label_${index}`] = item.label || model[`label_${index}`] || '';
+        acc[`value_${index}`] = item.value || model[`value_${index}`] || '';
+        return acc;
+      },
+      {} as Record<string, any>,
+    );
+  }
 
   // ✅ Thêm một lựa chọn mới
   const addOption = () => {

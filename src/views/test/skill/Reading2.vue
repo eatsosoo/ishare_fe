@@ -6,7 +6,11 @@
           <Col :span="24" class="flex">
             <div class="re-box-shadow rounded-lg pa-4 w-full">
               <template v-if="groupActive">
-                <GroupQuestions />
+                <GroupQuestions
+                  :group-no="groupActive.group_no"
+                  :questions-no="groupActive.question_no"
+                  :group-type="groupActive.question_type"
+                />
               </template>
               <template v-else>
                 <div class="flex flex-col items-center justify-center h-full min-h-30">

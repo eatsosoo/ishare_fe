@@ -73,6 +73,7 @@
   import { isNumber } from '@/utils/is';
   import { useLocale } from '@/locales/useLocale';
   import { useAppStore } from '@/store/modules/app';
+  import { useMessage } from '@/hooks/web/useMessage';
 
   defineOptions({ name: 'Tinymce', inheritAttrs: false });
 
@@ -112,7 +113,7 @@
     },
   });
 
-  const emit = defineEmits(['change', 'update:modelValue', 'inited', 'init-error', 'select-text']);
+  const emit = defineEmits(['change', 'update:modelValue', 'inited', 'init-error', 'insert-text']);
 
   const attrs = useAttrs();
   const editorRef = ref<Editor | null>(null);
@@ -121,7 +122,7 @@
   const elRef = ref<HTMLElement | null>(null);
 
   const { prefixCls } = useDesign('tinymce-container');
-
+  const { createMessage } = useMessage();
   const appStore = useAppStore();
 
   const containerWidth = computed(() => {
@@ -167,28 +168,27 @@
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
         body { 
           font-family: Roboto, sans-serif; 
-          table {
-            border-collapse: collapse;
-            width: 100%;
-          }
-          table, th, td {
-            border: 1px solid black;
-          }
-          th, td {
-            padding: 8px;
-            text-align: left;
-          } }
+        }
       `,
       ...options,
       setup: (editor: Editor) => {
         editorRef.value = editor;
+        let savedRange: Range | null = null;
+
         editor.on('init', (e) => initSetup(e));
-        editor.on('mouseup', () => {
-          const selectedText = editor.selection.getContent({ format: 'text' });
-          if (selectedText) {
-            emit('select-text', selectedText);
-          }
+        editor.on('mouseup keyup', () => {
+          savedRange = editor.selection.getRng();
         });
+        const insertTextAtCursor = (text: string) => {
+          if (!savedRange) {
+            createMessage.warning('Chọn vị trí trong văn bản trước khi thêm!');
+            return;
+          }
+
+          editor.selection.setRng(savedRange); // Đặt lại vị trí con trỏ
+          editor.insertContent(text); // Chèn nội dung mới vào vị trí đó
+        };
+        emit('insert-text', insertTextAtCursor);
       },
     };
   });
