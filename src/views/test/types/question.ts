@@ -81,3 +81,10 @@ export interface NewPartItem {
   type: SkillType;
   question_groups: GroupQuestionItem[];
 }
+
+export interface SkillItem {
+  id: number;
+  media: string | null;
+  duration: number;
+  parts: NewPartItem[];
+}

@@ -26,7 +26,7 @@
     </BasicTable>
 
     <AddExamModal type="exam" @register="registerAddModal" @success="handleSuccessModal" />
-    <EditorPartModal @register="registerEditorModal" :exam-id="examId" :title="titleEditor" />
+    <EditorExamModal @register="registerEditorModal" :exam-id="examId" :title="titleEditor" />
   </div>
 </template>
 <script lang="ts" setup>
@@ -36,7 +36,7 @@
   import { examDeleteApi, examListApi } from '@/api/exam/exam';
   import { useModal } from '@/components/Modal';
   import AddExamModal from './AddExamModal.vue';
-  import EditorPartModal from './EditorPartModal.vue';
+  import EditorExamModal from '@/views/test/EditorExamModal.vue';
   import { ref } from 'vue';
   import { ExamListItem } from '@/api/exam/examModel';
   import Icon from '@/components/Icon/Icon.vue';

@@ -10,7 +10,7 @@
     <div class="mb-2">
       <Select v-model:value="skill" :options="SKILL_OPTIONS" />
     </div>
-    <Reading ref="readingRef" />
+    <Reading ref="editorRef" :value="detail ? detail[skill].parts : []" />
   </BasicModal>
 </template>
 <script lang="ts" setup>
@@ -34,8 +34,7 @@
       default: '',
     },
   });
-  const readingRef = ref<InstanceType<typeof Reading> | null>(null);
-
+  const editorRef = ref<InstanceType<typeof Reading> | null>(null);
   const detail = ref<ExamDetailItem | null>(null);
   const loading = ref(false);
   const skill = ref('reading');
@@ -49,8 +48,8 @@
       return;
     }
 
-    if (readingRef.value) {
-      readingRef.value.submitAll();
+    if (editorRef.value) {
+      editorRef.value.submitAll();
     }
   }
 

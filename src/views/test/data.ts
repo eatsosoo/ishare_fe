@@ -43,10 +43,10 @@ export const questionTypes: QuestionType[] = [
 ];
 
 export const SKILL_OPTIONS = [
-  { label: 'Reading', value: 'reading' },
-  { label: 'Listening', value: 'listening' },
-  { label: 'Writing', value: 'writing' },
-  { label: 'Speaking', value: 'speaking' },
+  { label: 'Reading', value: 'Reading' },
+  { label: 'Listening', value: 'Listening' },
+  { label: 'Writing', value: 'Writing' },
+  { label: 'Speaking', value: 'Speaking' },
 ];
 
 export const trueFalseNotGivenOptions = [

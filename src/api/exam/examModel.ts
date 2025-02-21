@@ -1,4 +1,4 @@
-import { QuestionItem, QuizItem } from '@/views/test/types/question';
+import { QuestionItem, QuizItem, SkillItem } from '@/views/test/types/question';
 import { BasicApiResult, BasicFetchResult } from '../model/baseModel';
 
 export interface ExamListItem {
@@ -59,10 +59,10 @@ export interface ExamDetailItem {
   id: number;
   title: string;
   deadline: string;
-  Listening: ExamPartItem[];
-  Reading: ExamPartItem[];
-  Writing: ExamPartItem[];
-  Speaking: ExamPartItem[];
+  Listening: SkillItem[];
+  Reading: SkillItem[];
+  Writing: SkillItem[];
+  Speaking: SkillItem[];
 }
 
 export interface SubmitExam {

@@ -63,7 +63,7 @@ export const examPartApi = (params: ExamPartForm, mode: ErrorMessageMode = 'moda
 
 export const examDetailApi = (examId: number) =>
   defHttp.get<ExamDetailItem>({
-    url: `${Api.EXAM_ACTION}/${examId}/tests`,
+    url: `${Api.EXAM_ACTION}/${examId}`,
     headers: {
       // @ts-ignore
       ignoreCancelToken: true,
