@@ -13,8 +13,8 @@ export type SelectQuestionType =
   | 'multiple_choice';
 
 export interface GroupQuestionType {
-  label: SelectQuestionType;
-  value: string;
+  label: string;
+  value: SelectQuestionType;
 }
 
 export interface OptionAnswerType {

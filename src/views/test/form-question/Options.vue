@@ -30,9 +30,11 @@
 
         <!-- Xóa lựa chọn -->
         <a-button
-          v-if="formData.length > 2 && allowAction"
-          type="default"
-          preIcon="ant-design:minus-outlined"
+          v-if="!hiddenRemoveBtn"
+          type="dashed"
+          size="small"
+          preIcon="ant-design:close-outlined"
+          class="mt-1"
           @click="removeOption(index)"
         />
       </div>
@@ -76,9 +78,17 @@
   const formRef = ref();
   const formData = ref<{ label: string; value: string }[]>(props.value);
   const formModel = ref<{ [key: string]: string }>(handleFormModel(props.value, {}));
+  const defLength = ref<number>(props.value.length);
 
   const allowAction = computed(() => {
     return props.typeAnswer !== 'true_false_not_given';
+  });
+  const hiddenRemoveBtn = computed(() => {
+    if (props.typeAnswer === 'true_false_not_given') return true;
+    else if (props.typeAnswer === 'multiple_choice' && formData.value.length === defLength.value)
+      return true;
+    else if (props.typeAnswer === 'choice' && formData.value.length < 3) return true;
+    else return false;
   });
 
   // ✅ Đồng bộ `formData` với `props.value`
@@ -86,6 +96,7 @@
     () => props.value,
     (newVal) => {
       formData.value = newVal.length ? [...newVal] : [];
+      defLength.value = newVal.length;
     },
     { immediate: true, deep: true },
   );

@@ -7,9 +7,11 @@
             <div class="re-box-shadow rounded-lg pa-4 w-full">
               <template v-if="groupActive">
                 <GroupQuestions
-                  :group-no="groupActive.group_no"
+                  :text="groupActive.question_text"
                   :questions-no="groupActive.question_no"
                   :group-type="groupActive.question_type"
+                  :options="groupActive.question_options"
+                  @update-group="handleUpdateGroup"
                 />
               </template>
               <template v-else>
@@ -58,7 +60,13 @@
   import { Col, Row, Tabs } from 'ant-design-vue';
   import { useI18n } from '@/hooks/web/useI18n';
   import { READING_PART_DEF } from '@/views/test/data';
-  import { GroupQuestionItem, NewPartItem, SelectQuestionType } from '@/views/test/types/question';
+  import {
+    ExtendOptionAnswerType,
+    GroupQuestionItem,
+    NewPartItem,
+    OptionAnswerType,
+    SelectQuestionType,
+  } from '@/views/test/types/question';
   import GroupQuestions from '../form-question/GroupQuestions.vue';
   import GroupCreate from '../form-question/GroupCreate.vue';
   import { useModal } from '@/components/Modal';
@@ -102,7 +110,7 @@
     group_type: SelectQuestionType;
     total: number;
   }) {
-    console.log(group_type, total);
+    // console.log(group_type, total);
     const part = readingParts[activeKey.value];
     if (!part) {
       createMessage.warning('Không tìm thấy part!');
@@ -121,20 +129,48 @@
 
     const newGroup: GroupQuestionItem = {
       id: null,
-      group_no: maxItem ? maxItem.group_no + 1 : 0,
+      group_no: maxItem ? maxItem.group_no + 1 : 1,
       question_type: group_type,
       question_text: '',
       question_no: orders,
-      question_options: null,
+      question_options: [],
       question_answer: answerDefault,
       question_count: total,
     };
-    part.question_groups.push(newGroup);
+    // console.log('new', newGroup);
+    part.question_groups.push({ ...newGroup });
+    groupActive.value = { ...newGroup };
     closeModal();
   }
 
   function handleChangeTab() {
     groupActive.value = readingParts[activeKey.value].question_groups[0];
+  }
+
+  function handleUpdateGroup(updated: {
+    question_type: SelectQuestionType;
+    question_text: string;
+    question_answer: { [key: string]: string };
+    question_options: OptionAnswerType[] | ExtendOptionAnswerType | null;
+  }) {
+    if (!groupActive.value) return;
+    const { question_type, question_text, question_answer, question_options } = updated;
+    const clone = {
+      ...groupActive.value,
+      question_type,
+      question_text,
+      question_answer,
+      question_options,
+    };
+
+    const part = readingParts[activeKey.value];
+    const index = part?.question_groups?.findIndex((item) => item.group_no === clone.group_no);
+
+    if (index !== -1 && index !== undefined) {
+      part.question_groups[index] = clone;
+    }
+
+    console.log('parts', part.question_groups);
   }
 </script>
 

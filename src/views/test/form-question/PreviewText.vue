@@ -35,7 +35,8 @@
       text-align: left;
     }
 
-    .custom-radio {
+    /* ======= 📌 Custom Radio & Checkbox ======= */
+    .custom-input {
       display: flex;
       align-items: center;
       font-size: 16px;
@@ -43,12 +44,12 @@
       gap: 10px;
     }
 
-    /* Ẩn radio mặc định */
-    .custom-radio input {
+    /* Ẩn input mặc định */
+    .custom-input input {
       display: none;
     }
 
-    /* Tạo vòng tròn ngoài */
+    /* 🎯 Radio Style */
     .custom-radio .checkmark {
       display: flex;
       position: relative;
@@ -57,16 +58,42 @@
       width: 20px;
       height: 20px;
       transition: all 0.3s ease;
-      border: 2px solid #c14b54;
+      border: 1px solid gray;
       border-radius: 50%;
     }
 
-    /* Khi radio được chọn -> tạo dấu check */
+    /* Khi radio được chọn */
     .custom-radio input:checked + .checkmark::before {
       content: '';
-      width: 10px;
-      height: 10px;
+      width: 14px;
+      height: 14px;
       border-radius: 50%;
+      background: #c14b54;
+    }
+
+    /* 🔲 Checkbox Style */
+    .custom-checkbox .checkmark {
+      display: flex;
+      position: relative;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      transition: all 0.3s ease;
+      border: 1px solid gray;
+      border-radius: 4px; /* 🛑 Vuông thay vì tròn */
+    }
+
+    /* Khi checkbox được chọn -> Thêm dấu tick */
+    .custom-checkbox input:checked + .checkmark::before {
+      content: '✔';
+      color: white;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .custom-checkbox input:checked + .checkmark {
+      border-color: #c14b54;
       background: #c14b54;
     }
   }

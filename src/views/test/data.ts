@@ -1,5 +1,5 @@
 import { ExamPartItem } from '@/api/exam/examModel';
-import { NewPartItem, QuestionType } from './types/question';
+import { GroupQuestionType, NewPartItem, QuestionType } from './types/question';
 import { useI18n } from '@/hooks/web/useI18n';
 
 const { t } = useI18n();
@@ -157,3 +157,26 @@ export const toolbar = [
 export const plugins = ['table'];
 export const classStyle =
   'bg-white rounded-full text-center outline-red border-red border-1 p-1 shadow-md h-[32px]';
+
+export const questionTypeOps: GroupQuestionType[] = [
+  {
+    label: 'Fill In',
+    value: 'fill_in',
+  },
+  {
+    label: 'True/False/Not given',
+    value: 'true_false_not_given',
+  },
+  {
+    label: 'Correct letter',
+    value: 'correct_letter',
+  },
+  {
+    label: 'Choice',
+    value: 'choice',
+  },
+  {
+    label: 'Multiple Choice',
+    value: 'multiple_choice',
+  },
+];
