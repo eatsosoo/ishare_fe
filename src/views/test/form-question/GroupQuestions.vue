@@ -3,9 +3,9 @@
     <h2 class="text-primary"
       >Questions
       {{
-        props.questionsNo.length > 1
-          ? `${props.questionsNo[0]} - ${props.questionsNo[1]}`
-          : props.questionsNo[0]
+        props.group.question_no.length > 1
+          ? `${props.group.question_no[0]} - ${props.group.question_no[1]}`
+          : props.group.question_no[0]
       }}</h2
     >
 
@@ -18,7 +18,7 @@
         @change="handleChangeType"
       />
       <label for="" class="w-30">Số lượng câu</label>
-      <InputNumber :value="props.questionsNo.length" :min="1" disabled />
+      <InputNumber :value="props.group.question_no.length" :min="1" disabled />
     </div>
 
     <Tinymce
@@ -30,13 +30,13 @@
 
     <div class="flex gap-2 mt-2">
       <template v-if="changeData.type !== 'multiple_choice'">
-        <a-button v-for="no in props.questionsNo" :key="no" @click="addAction(no.toString())">
+        <a-button v-for="no in props.group.question_no" :key="no" @click="addAction(no.toString())">
           {{ no }}
         </a-button>
       </template>
       <template v-else>
-        <a-button @click="addAction(props.questionsNo.join('_'))">{{
-          props.questionsNo.join(' - ')
+        <a-button @click="addAction(props.group.question_no.join('_'))">{{
+          props.group.question_no.join(' - ')
         }}</a-button>
       </template>
     </div>
@@ -79,12 +79,12 @@
   import PreviewText from '@/views/test/form-question/PreviewText.vue';
   import Options from '@/views/test/form-question/Options.vue';
   import {
-    ExtendOptionAnswerType,
+    GroupQuestionItem,
     OptionAnswerType,
     SelectQuestionType,
   } from '@/views/test/types/question';
   import { useModal } from '@/components/Modal';
-  import { plugins, questionTypeOps, toolbar } from '@/views/test/data';
+  import { handleAnswerOptions, plugins, questionTypeOps, toolbar } from '@/views/test/data';
   import { useMessage } from '@/hooks/web/useMessage';
   import { isArray } from 'lodash-es';
   import { InputNumber, Select } from 'ant-design-vue';
@@ -97,22 +97,26 @@
   }
 
   const props = defineProps({
-    questionsNo: { type: Array as PropType<number[]>, default: () => [] },
-    groupType: {
-      type: String as PropType<SelectQuestionType>,
-      default: 'fill_in',
-    },
-    text: {
-      type: String,
-      default: '',
-    },
-    answerList: {
-      type: Object as PropType<{ [key: string]: string }>,
-      default: () => {},
-    },
-    options: {
-      type: [Array, Object],
-      default: () => [],
+    // questionsNo: { type: Array as PropType<number[]>, default: () => [] },
+    // groupType: {
+    //   type: String as PropType<SelectQuestionType>,
+    //   default: 'fill_in',
+    // },
+    // text: {
+    //   type: String,
+    //   default: '',
+    // },
+    // answerList: {
+    //   type: Object as PropType<{ [key: string]: string }>,
+    //   default: () => {},
+    // },
+    // options: {
+    //   type: [Array, Object],
+    //   default: () => [],
+    // },
+    group: {
+      type: Object as PropType<GroupQuestionItem>,
+      required: true,
     },
   });
 
@@ -124,10 +128,10 @@
 
   const previewText = ref<string>('');
   const changeData: FormData = reactive({
-    type: props.groupType,
-    questionText: props.text,
-    answers: props.answerList,
-    answerOptions: props.options,
+    type: props.group.question_type,
+    questionText: props.group.question_text,
+    answers: props.group.question_answer,
+    answerOptions: props.group.question_options,
   });
   const insertTextFunction = ref<Function | null>(null);
 
@@ -161,7 +165,7 @@
     const generateFn2 = (match: string) => {
       if (!isArray(answerOptions)) return '';
       const matchFormat = match.slice(1, -1);
-      return `<select value="${answers.value[matchFormat] || ''}" name="${matchFormat}" class="${classStyle} w-22 pb-[5px]" >
+      return `<select value="${answers[matchFormat] || ''}" name="${matchFormat}" class="${classStyle} w-22 pb-[5px]" >
           ${answerOptions.map((option) => `<option value="${option.value}" ${answers[matchFormat] === option.value ? 'selected' : ''}>${option.label}</option>`)}
       </select>`;
     };
@@ -238,51 +242,17 @@
     );
   }
 
-  function handleAnswerOptions(type: SelectQuestionType) {
-    let genOps: OptionAnswerType[] | ExtendOptionAnswerType = [];
-    switch (type) {
-      case 'true_false_not_given':
-        genOps = [
-          { label: 'True', value: 'true' },
-          { label: 'False', value: 'false' },
-          { label: 'Not Given', value: 'not_given' },
-        ];
-        break;
-      case 'choice':
-        genOps = props.questionsNo.reduce((acc, item) => {
-          acc[`question_${item}`] = [
-            { value: 'A', label: '' },
-            { value: 'B', label: '' },
-            { value: 'C', label: '' },
-            { value: 'D', label: '' },
-          ];
-          return acc;
-        }, {});
-        break;
-      case 'multiple_choice':
-        genOps = Array.from({ length: props.questionsNo.length + 1 }, (_, i) => ({
-          value: String.fromCharCode(65 + i),
-          label: '',
-        }));
-        break;
-      default:
-        genOps = [];
-    }
-
-    return genOps;
-  }
-
   function handleInsertText(fn) {
     insertTextFunction.value = fn;
   }
 
   function handleChangeType(type: any) {
-    changeData.answerOptions = handleAnswerOptions(type);
-    changeData.answers = handleAnswersInit(props.questionsNo);
+    changeData.answerOptions = handleAnswerOptions(type, props.group.question_no);
+    changeData.answers = handleAnswersInit(props.group.question_no);
   }
 
   const saveQuestion = () => {
-    console.log('Dữ liệu gửi lên DB:', changeData);
+    // console.log('Dữ liệu gửi lên DB:', changeData);
     const { questionText, type, answers, answerOptions } = changeData;
     emit('update-group', {
       question_type: type,
@@ -290,16 +260,18 @@
       question_answer: answers,
       question_options: answerOptions,
     });
+    createMessage.success('Đã lưu');
   };
 
-  // watch(
-  //   () => [props.groupType, props.questionsNo],
-  //   () => {
-  //     changeData.questionText = '';
-  //     changeData.type = props.groupType;
-  //     changeData.answerOptions = handleAnswerOptions(props.groupType);
-  //   },
-  // );
+  watch(
+    () => props.group,
+    (newVal) => {
+      changeData.type = newVal.question_type;
+      changeData.questionText = newVal.question_text;
+      changeData.answers = newVal.question_answer;
+      changeData.answerOptions = newVal.question_options;
+    },
+  );
 
   // watch(
   //   () => changeData,

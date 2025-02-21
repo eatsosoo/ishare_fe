@@ -14,32 +14,8 @@
   import { ref } from 'vue';
   import { BasicModal } from '@/components/Modal';
   import { BasicForm, useForm, FormSchema } from '@/components/Form';
-  import { useI18n } from '@/hooks/web/useI18n';
-  import { GroupQuestionType } from '@/views/test/types/question';
+  import { questionTypeOps } from '../data';
 
-  const { t } = useI18n();
-  const options: GroupQuestionType[] = [
-    {
-      label: 'fill_in',
-      value: 'fill_in',
-    },
-    {
-      label: 'true_false_not_given',
-      value: 'true_false_not_given',
-    },
-    {
-      label: 'correct_letter',
-      value: 'correct_letter',
-    },
-    {
-      label: 'choice',
-      value: 'choice',
-    },
-    {
-      label: 'multiple_choice',
-      value: 'multiple_choice',
-    },
-  ];
   const groupQuestionSchemas: FormSchema[] = [
     {
       field: 'group_type',
@@ -47,7 +23,7 @@
       label: 'Dạng câu hỏi',
       required: true,
       componentProps: {
-        options: options,
+        options: questionTypeOps,
       },
       colProps: {
         offset: 1,

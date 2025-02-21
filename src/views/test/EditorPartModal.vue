@@ -11,9 +11,6 @@
       <Select v-model:value="skill" :options="SKILL_OPTIONS" />
     </div>
     <Reading ref="readingRef" />
-    <!-- <Listening v-show="skill === 'listening'" ref="listeningRef" :value="detail?.Listening" />
-    <Writing v-show="skill === 'writing'" ref="writingRef" :value="detail?.Writing" />
-    <Speaking v-show="skill === 'speaking'" ref="speakingRef" :value="detail?.Speaking" /> -->
   </BasicModal>
 </template>
 <script lang="ts" setup>
@@ -25,9 +22,6 @@
   import { ExamDetailItem } from '@/api/exam/examModel';
   import { Select } from 'ant-design-vue';
   import Reading from '@/views/test/skill/Reading2.vue';
-  import Listening from '@/views/test/skill/Listening2.vue';
-  import Writing from '@/views/test/skill/Writing2.vue';
-  import Speaking from '@/views/test/skill/Speaking2.vue';
   import { SKILL_OPTIONS } from '@/views/test/data';
 
   const props = defineProps({
@@ -41,9 +35,6 @@
     },
   });
   const readingRef = ref<InstanceType<typeof Reading> | null>(null);
-  const listeningRef = ref<InstanceType<typeof Listening> | null>(null);
-  const writingRef = ref<InstanceType<typeof Writing> | null>(null);
-  const speakingRef = ref<InstanceType<typeof Speaking> | null>(null);
 
   const detail = ref<ExamDetailItem | null>(null);
   const loading = ref(false);
@@ -58,37 +49,27 @@
       return;
     }
 
-    const refMap = {
-      reading: readingRef,
-      listening: listeningRef,
-      writing: writingRef,
-      speaking: speakingRef,
-    };
+    if (readingRef.value) {
+      readingRef.value.submitAll();
+    }
+  }
 
-    const currentRef = refMap[skill.value];
-    if (currentRef.value) {
+  async function getExamDetail(examId: number) {
+    try {
       loading.value = true;
-      currentRef.value.submitAll(props.examId);
+      const result = await examDetailApi(examId);
+      detail.value = result;
+    } catch (error) {
+      createMessage.error(t('sys.app.dataNotFound'));
+    } finally {
       loading.value = false;
     }
   }
 
-  // async function getExamDetail(examId: number) {
-  //   try {
-  //     loading.value = true;
-  //     const result = await examDetailApi(examId);
-  //     detail.value = result;
-  //   } catch (error) {
-  //     createMessage.error(t('sys.app.dataNotFound'));
-  //   } finally {
-  //     loading.value = false;
-  //   }
-  // }
-
-  // watch(
-  //   () => props.examId,
-  //   (value) => {
-  //     getExamDetail(value);
-  //   },
-  // );
+  watch(
+    () => props.examId,
+    (value) => {
+      getExamDetail(value);
+    },
+  );
 </script>

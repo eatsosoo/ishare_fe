@@ -1,10 +1,17 @@
 import { ExamPartItem } from '@/api/exam/examModel';
-import { GroupQuestionType, NewPartItem, QuestionType } from './types/question';
+import {
+  ExtendOptionAnswerType,
+  GroupQuestionType,
+  NewPartItem,
+  OptionAnswerType,
+  QuestionType,
+  SelectQuestionType,
+} from './types/question';
 import { useI18n } from '@/hooks/web/useI18n';
 
 const { t } = useI18n();
 
-export enum SelectQuestionType {
+export enum SelectQuestionTypeX {
   SingleChoice = 'choice',
   MultipleChoice = 'multiple_choice',
   FillIn = 'matching',
@@ -14,23 +21,23 @@ export enum SelectQuestionType {
 
 export const questionTypes: QuestionType[] = [
   {
-    value: SelectQuestionType.SingleChoice,
+    value: SelectQuestionTypeX.SingleChoice,
     label: 'Chọn đáp án đúng',
   },
   {
-    value: SelectQuestionType.MultipleChoice,
+    value: SelectQuestionTypeX.MultipleChoice,
     label: 'Chọn các đáp án đúng',
   },
   {
-    value: SelectQuestionType.FillIn,
+    value: SelectQuestionTypeX.FillIn,
     label: 'Điền đáp án đúng',
   },
   {
-    value: SelectQuestionType.TrueFalseNotGiven,
+    value: SelectQuestionTypeX.TrueFalseNotGiven,
     label: 'Đúng/Sai/Không được đề cập',
   },
   {
-    value: SelectQuestionType.YesNoNotGiven,
+    value: SelectQuestionTypeX.YesNoNotGiven,
     label: 'Có/Không/Không được đề cập',
   },
 ];
@@ -144,7 +151,6 @@ export const SPEAKING_DEFAULT: ExamPartItem[] = [
 export const READING_PART_DEF: NewPartItem = {
   id: null,
   subject: 'Reading Part 1',
-  duration: 20,
   type: 'Reading',
   question_groups: [],
 };
@@ -180,3 +186,37 @@ export const questionTypeOps: GroupQuestionType[] = [
     value: 'multiple_choice',
   },
 ];
+
+export function handleAnswerOptions(type: SelectQuestionType, orders: number[]) {
+  let genOps: OptionAnswerType[] | ExtendOptionAnswerType = [];
+  switch (type) {
+    case 'true_false_not_given':
+      genOps = [
+        { label: 'True', value: 'true' },
+        { label: 'False', value: 'false' },
+        { label: 'Not Given', value: 'not_given' },
+      ];
+      break;
+    case 'choice':
+      genOps = orders.reduce((acc, item) => {
+        acc[`question_${item}`] = [
+          { value: 'A', label: '' },
+          { value: 'B', label: '' },
+          { value: 'C', label: '' },
+          { value: 'D', label: '' },
+        ];
+        return acc;
+      }, {});
+      break;
+    case 'multiple_choice':
+      genOps = Array.from({ length: orders.length + 1 }, (_, i) => ({
+        value: String.fromCharCode(65 + i),
+        label: '',
+      }));
+      break;
+    default:
+      genOps = [];
+  }
+
+  return genOps;
+}

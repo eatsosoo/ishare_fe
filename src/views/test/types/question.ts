@@ -70,7 +70,7 @@ export interface GroupQuestionItem {
   question_text: string;
   question_answer: { [key: string]: string };
   group_no: number;
-  question_options: OptionAnswerType[] | ExtendOptionAnswerType | null;
+  question_options: OptionAnswerType[] | ExtendOptionAnswerType;
   question_no: number[];
   question_count: number;
 }
@@ -79,6 +79,5 @@ export interface NewPartItem {
   id: number | null;
   subject: string;
   type: SkillType;
-  duration: number;
   question_groups: GroupQuestionItem[];
 }

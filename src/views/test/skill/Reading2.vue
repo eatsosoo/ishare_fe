@@ -6,13 +6,7 @@
           <Col :span="24" class="flex">
             <div class="re-box-shadow rounded-lg pa-4 w-full">
               <template v-if="groupActive">
-                <GroupQuestions
-                  :text="groupActive.question_text"
-                  :questions-no="groupActive.question_no"
-                  :group-type="groupActive.question_type"
-                  :options="groupActive.question_options"
-                  @update-group="handleUpdateGroup"
-                />
+                <GroupQuestions :group="groupActive" @update-group="handleUpdateGroup" />
               </template>
               <template v-else>
                 <div class="flex flex-col items-center justify-center h-full min-h-30">
@@ -31,7 +25,7 @@
                     : 'border-gray'
                 "
                 class="border rounded-lg p-2 flex flex-col items-center gap-2 mb-4 cursor-pointer"
-                @click="groupActive = { ...question_group }"
+                @click="groupActive = question_group"
               >
                 <div
                   v-for="no in question_group.question_no"
@@ -47,7 +41,7 @@
         </Row>
       </TabPane>
 
-      <template v-if="readingParts.length < 3 && !isHomework" #rightExtra>
+      <template v-if="readingParts.length <= max && allowAddPart" #rightExtra>
         <a-button type="default" @click="handleAddTab">{{ t('common.add') }} Part</a-button>
       </template>
     </Tabs>
@@ -59,7 +53,7 @@
   import { computed, reactive, ref } from 'vue';
   import { Col, Row, Tabs } from 'ant-design-vue';
   import { useI18n } from '@/hooks/web/useI18n';
-  import { READING_PART_DEF } from '@/views/test/data';
+  import { handleAnswerOptions, READING_PART_DEF } from '@/views/test/data';
   import {
     ExtendOptionAnswerType,
     GroupQuestionItem,
@@ -67,19 +61,24 @@
     OptionAnswerType,
     SelectQuestionType,
   } from '@/views/test/types/question';
-  import GroupQuestions from '../form-question/GroupQuestions.vue';
-  import GroupCreate from '../form-question/GroupCreate.vue';
+  import GroupQuestions from '@/views/test/form-question/GroupQuestions.vue';
+  import GroupCreate from '@/views/test/form-question/GroupCreate.vue';
   import { useModal } from '@/components/Modal';
   import { useMessage } from '@/hooks/web/useMessage';
+  import { cloneDeep } from 'lodash-es';
 
   const props = defineProps({
     value: {
       type: Array as PropType<NewPartItem[]>,
       default: () => [],
     },
-    isHomework: {
+    max: {
+      type: Number,
+      default: 3,
+    },
+    allowAddPart: {
       type: Boolean,
-      default: false,
+      default: true,
     },
   });
 
@@ -100,7 +99,7 @@
   const { createMessage } = useMessage();
 
   function handleAddTab() {
-    readingParts.push(READING_PART_DEF);
+    readingParts.push(cloneDeep(READING_PART_DEF));
   }
 
   function handleAddGroup({
@@ -133,17 +132,18 @@
       question_type: group_type,
       question_text: '',
       question_no: orders,
-      question_options: [],
+      question_options: handleAnswerOptions(group_type, orders),
       question_answer: answerDefault,
       question_count: total,
     };
-    // console.log('new', newGroup);
+    console.log('new', newGroup);
     part.question_groups.push({ ...newGroup });
     groupActive.value = { ...newGroup };
     closeModal();
   }
 
   function handleChangeTab() {
+    console.log(activeKey.value, readingParts);
     groupActive.value = readingParts[activeKey.value].question_groups[0];
   }
 
@@ -151,7 +151,7 @@
     question_type: SelectQuestionType;
     question_text: string;
     question_answer: { [key: string]: string };
-    question_options: OptionAnswerType[] | ExtendOptionAnswerType | null;
+    question_options: OptionAnswerType[] | ExtendOptionAnswerType;
   }) {
     if (!groupActive.value) return;
     const { question_type, question_text, question_answer, question_options } = updated;
@@ -172,6 +172,14 @@
 
     console.log('parts', part.question_groups);
   }
+
+  function submitAll() {
+    console.log('fianl', readingParts);
+  }
+
+  defineExpose({
+    submitAll,
+  });
 </script>
 
 <style lang="less" scoped>

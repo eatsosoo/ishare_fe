@@ -73,6 +73,7 @@
 
   function activateModal(key: string) {
     modifyOps.value = props.options[key];
+    console.log(props.options[key]);
     keyPresent.value = key;
     openOptionsModal();
   }
