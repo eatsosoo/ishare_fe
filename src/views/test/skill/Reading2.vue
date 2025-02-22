@@ -50,7 +50,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { computed, reactive, ref } from 'vue';
+  import { computed, reactive, ref, watch } from 'vue';
   import { Col, Row, Tabs } from 'ant-design-vue';
   import { useI18n } from '@/hooks/web/useI18n';
   import { handleAnswerOptions, READING_PART_DEF } from '@/views/test/data';
@@ -66,6 +66,9 @@
   import { useModal } from '@/components/Modal';
   import { useMessage } from '@/hooks/web/useMessage';
   import { cloneDeep } from 'lodash-es';
+  import { ExamSkillForm, SkillType } from '@/api/exam/examModel';
+  import { examSkillApi } from '@/api/exam/exam';
+  import { useDesign } from '@/hooks/web/useDesign';
 
   const props = defineProps({
     value: {
@@ -80,6 +83,10 @@
       type: Boolean,
       default: true,
     },
+    skillType: {
+      type: String as PropType<SkillType>,
+      required: true,
+    },
   });
 
   const TabPane = Tabs.TabPane;
@@ -87,6 +94,7 @@
   const activeKey = ref(0);
   const groupActive = ref<GroupQuestionItem | null>(null);
   const readingParts = reactive<NewPartItem[]>(props.value);
+  const loading = ref(false);
   const tabs = computed(() => {
     return Array.from({ length: readingParts.length }, (_, i) => ({
       key: i,
@@ -94,9 +102,10 @@
     }));
   });
 
+  const { prefixCls } = useDesign('editor-skill-exam');
   const { t } = useI18n();
   const [registerModal, { openModal: openModal, closeModal }] = useModal();
-  const { createMessage } = useMessage();
+  const { createMessage, createSuccessModal, createErrorModal } = useMessage();
 
   function handleAddTab() {
     readingParts.push(cloneDeep(READING_PART_DEF));
@@ -173,9 +182,46 @@
     console.log('parts', part.question_groups);
   }
 
-  function submitAll() {
-    console.log('fianl', readingParts);
+  async function submitAll(examId: number) {
+    try {
+      loading.value = true;
+      const submitForm: ExamSkillForm = {
+        id: null,
+        type: props.skillType,
+        media: null,
+        duration: 40,
+        parts: readingParts,
+      };
+
+      const result = await examSkillApi(examId, submitForm);
+      if (result) {
+        createSuccessModal({
+          title: t('form.exam.editSkill', { skill: 'Reading' }),
+          content: t('common.createSuccessfully'),
+          getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
+        });
+      }
+    } catch (error) {
+      const apiMessage = error.response?.data.message;
+      createErrorModal({
+        title: t('sys.api.errorTip'),
+        content:
+          apiMessage || (error as unknown as Error).message || t('sys.api.networkExceptionMsg'),
+        getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
+      });
+    } finally {
+      loading.value = false;
+    }
   }
+
+  watch(
+    () => props.value,
+    (newVal) => {
+      console.log(newVal);
+      console.log(readingParts);
+      Object.assign(readingParts, newVal);
+    },
+  );
 
   defineExpose({
     submitAll,

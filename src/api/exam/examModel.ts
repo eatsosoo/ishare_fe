@@ -1,4 +1,4 @@
-import { QuestionItem, QuizItem, SkillItem } from '@/views/test/types/question';
+import { NewPartItem, QuestionItem, QuizItem, SkillItem } from '@/views/test/types/question';
 import { BasicApiResult, BasicFetchResult } from '../model/baseModel';
 
 export interface ExamListItem {
@@ -20,15 +20,12 @@ export interface ExamAddForm {
   type: 'exam' | 'homework';
 }
 
-export interface ExamPartForm {
+export interface ExamSkillForm {
   id: number | null;
-  exam_id: number;
   type: SkillType;
   duration: number;
   media: string | null;
-  subject: string;
-  questions: QuestionItem[];
-  questions_count?: number;
+  parts: NewPartItem[];
 }
 
 export interface ExamPartItem {
@@ -59,10 +56,10 @@ export interface ExamDetailItem {
   id: number;
   title: string;
   deadline: string;
-  Listening: SkillItem[];
-  Reading: SkillItem[];
-  Writing: SkillItem[];
-  Speaking: SkillItem[];
+  Listening: SkillItem;
+  Reading: SkillItem;
+  Writing: SkillItem;
+  Speaking: SkillItem;
 }
 
 export interface SubmitExam {

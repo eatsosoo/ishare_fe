@@ -86,5 +86,6 @@ export interface SkillItem {
   id: number;
   media: string | null;
   duration: number;
+  type: SkillType;
   parts: NewPartItem[];
 }

@@ -8,18 +8,18 @@
     @ok="handleOk"
   >
     <div class="mb-2">
-      <Select v-model:value="skill" :options="SKILL_OPTIONS" />
+      <Select v-model:value="skillSelected" :options="SKILL_OPTIONS" />
     </div>
-    <Reading ref="editorRef" :value="detail ? detail[skill].parts : []" />
+    <Reading ref="editorRef" :value="computedT" :skill-type="skillSelected" />
   </BasicModal>
 </template>
 <script lang="ts" setup>
   import { BasicModal } from '@/components/Modal';
-  import { ref, watch } from 'vue';
+  import { computed, ref, watch } from 'vue';
   import { examDetailApi } from '@/api/exam/exam';
   import { useMessage } from '@/hooks/web/useMessage';
   import { useI18n } from '@/hooks/web/useI18n';
-  import { ExamDetailItem } from '@/api/exam/examModel';
+  import { ExamDetailItem, SkillType } from '@/api/exam/examModel';
   import { Select } from 'ant-design-vue';
   import Reading from '@/views/test/skill/Reading2.vue';
   import { SKILL_OPTIONS } from '@/views/test/data';
@@ -37,7 +37,14 @@
   const editorRef = ref<InstanceType<typeof Reading> | null>(null);
   const detail = ref<ExamDetailItem | null>(null);
   const loading = ref(false);
-  const skill = ref('reading');
+  const skillSelected = ref<SkillType>('Reading');
+
+  const computedT = computed(() => {
+    if (detail.value && detail.value[skillSelected.value]) {
+      return detail.value[skillSelected.value].parts;
+    }
+    return [];
+  });
 
   const { t } = useI18n();
   const { createMessage } = useMessage();
@@ -49,7 +56,9 @@
     }
 
     if (editorRef.value) {
-      editorRef.value.submitAll();
+      loading.value = true;
+      editorRef.value.submitAll(props.examId);
+      loading.value = false;
     }
   }
 
@@ -58,6 +67,7 @@
       loading.value = true;
       const result = await examDetailApi(examId);
       detail.value = result;
+      console.log(detail.value[skillSelected.value].parts);
     } catch (error) {
       createMessage.error(t('sys.app.dataNotFound'));
     } finally {

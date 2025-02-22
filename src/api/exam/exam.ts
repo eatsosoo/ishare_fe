@@ -5,17 +5,19 @@ import {
   ExamDetailItem,
   ExamGradingGetResultModel,
   ExamListGetResultModel,
-  ExamPartForm,
   ExamPartItem,
+  ExamSkillForm,
   SubmitExam,
 } from './examModel';
 import { BasicApiResult, BasicPageParams, Result } from '../model/baseModel';
 import { ErrorMessageMode } from '#/axios';
 import { useUserStore } from '@/store/modules/user';
+import { SkillItem } from '@/views/test/types/question';
 
 enum Api {
   EXAM_LIST = '/exams',
   EXAM_ACTION = '/exam',
+  EXAM_SKILL = '/exam-skill',
 }
 
 export const examListApi = () => (params: BasicPageParams) =>
@@ -50,10 +52,14 @@ export const examCreateApi = (params: ExamAddForm, mode: ErrorMessageMode = 'mod
     },
   );
 
-export const examPartApi = (params: ExamPartForm, mode: ErrorMessageMode = 'modal') =>
-  defHttp.post<Result<ExamPartItem>>(
+export const examSkillApi = (
+  examId: number,
+  params: ExamSkillForm,
+  mode: ErrorMessageMode = 'none',
+) =>
+  defHttp.post<Result<SkillItem>>(
     {
-      url: `${Api.EXAM_ACTION}/${params.exam_id}/tests`,
+      url: `${Api.EXAM_SKILL}/${examId}`,
       params,
     },
     {
