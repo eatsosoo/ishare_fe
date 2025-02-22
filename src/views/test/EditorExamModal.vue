@@ -5,7 +5,6 @@
     default-fullscreen
     :can-fullscreen="false"
     :loading="loading"
-    @ok="submitAll"
   >
     <Card class="mx-2">
       <div class="flex gap-4">
@@ -39,6 +38,12 @@
       </div>
     </Card>
     <Reading :value="computedT" :skill-type="skillSelected" @update-parts="handleUpdateParts" />
+
+    <template #footer>
+      <a-button type="primary" @click="submitAll"
+        >{{ t('common.saveText') }} {{ skillSelected }}</a-button
+      >
+    </template>
   </BasicModal>
 </template>
 <script lang="ts" setup>
@@ -93,9 +98,18 @@
   const { uploadUrl } = useGlobSetting();
 
   function handleUpdateParts(partsUpdated: NewPartItem[]) {
-    if (detail.value) {
-      detail.value[skillSelected.value].parts = partsUpdated;
-    }
+    console.log(partsUpdated);
+    if (!detail.value) return;
+
+    detail.value[skillSelected.value] ??= {
+      id: null,
+      duration: duration.value,
+      media: audioUrl.value,
+      type: skillSelected.value,
+      parts: [],
+    };
+
+    detail.value[skillSelected.value].parts = partsUpdated;
   }
 
   function beforeUpload(file: File) {

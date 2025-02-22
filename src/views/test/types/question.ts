@@ -10,7 +10,9 @@ export type SelectQuestionType =
   | 'true_false_not_given'
   | 'correct_letter'
   | 'choice'
-  | 'multiple_choice';
+  | 'multiple_choice'
+  | 'writing_task'
+  | 'speaking_task';
 
 export interface GroupQuestionType {
   label: string;
@@ -78,12 +80,11 @@ export interface GroupQuestionItem {
 export interface NewPartItem {
   id: number | null;
   subject: string;
-  type: SkillType;
   question_groups: GroupQuestionItem[];
 }
 
 export interface SkillItem {
-  id: number;
+  id: number | null;
   media: string | null;
   duration: number;
   type: SkillType;

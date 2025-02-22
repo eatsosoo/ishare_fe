@@ -150,9 +150,42 @@ export const SPEAKING_DEFAULT: ExamPartItem[] = [
 
 export const READING_PART_DEF: NewPartItem = {
   id: null,
-  subject: 'Reading Part 1',
-  type: 'Reading',
+  subject: 'Context of part',
   question_groups: [],
+};
+
+export const WRITING_DEF: NewPartItem = {
+  id: null,
+  subject: 'subject_writing_task_def',
+  question_groups: [
+    {
+      id: null,
+      question_type: 'writing_task',
+      question_text: '',
+      question_no: [1],
+      group_no: 1,
+      question_options: [],
+      question_answer: {},
+      question_count: 1,
+    },
+  ],
+};
+
+export const SPEAKING_DEF: NewPartItem = {
+  id: null,
+  subject: 'subject_speaking_task_default',
+  question_groups: [
+    {
+      id: null,
+      question_type: 'speaking_task',
+      question_text: '',
+      question_no: [1],
+      group_no: 1,
+      question_options: [],
+      question_answer: {},
+      question_count: 1,
+    },
+  ],
 };
 
 export const alphabet = Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i));

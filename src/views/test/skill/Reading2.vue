@@ -1,12 +1,14 @@
 <template>
   <div class="bg-white px-2 mb-8">
-    <Tabs v-model:activeKey="activeKey" @change="handleChangeTab">
-      <TabPane v-for="(item, index) in tabs" :key="item.key" :tab="item.tab">
-        <Row :gutter="[16, 16]">
-          <Col :span="24" class="flex">
-            <div class="re-box-shadow rounded-lg pa-4 w-full">
-              <template v-if="groupActive">
-                <GroupQuestions :group="groupActive" @update-group="handleUpdateGroup" />
+    <template v-if="skillType === 'Reading' || skillType === 'Listening'">
+      <Tabs v-model:activeKey="activeKey" @change="handleChangeTab">
+        <TabPane v-for="(item, index) in tabs" :key="item.key" :tab="item.tab">
+          <Row :gutter="[16, 16]" class="mb-1 min-h-[30rem]">
+            <Col :span="12" class="flex">
+              <template v-if="sections[activeKey]">
+                <div id="x-editor-container" class="re-box-shadow rounded-lg pa-4 w-full">
+                  <Tinymce v-model="sections[activeKey].subject" width="100%" />
+                </div>
               </template>
               <template v-else>
                 <div class="flex flex-col items-center justify-center h-full min-h-30">
@@ -14,39 +16,110 @@
                   <p class="text-gray">{{ t('common.empty') }}</p>
                 </div>
               </template>
-            </div>
-            <div class="ml-4">
-              <div
-                v-for="(question_group, idx) in sections[index].question_groups"
-                :key="`${item.key}_${idx}`"
-                :class="
-                  groupActive?.question_no === question_group.question_no
-                    ? 'border-red'
-                    : 'border-gray'
-                "
-                class="border rounded-lg p-2 flex flex-col items-center gap-2 mb-4 cursor-pointer"
-                @click="groupActive = question_group"
-              >
-                <div
-                  v-for="no in question_group.question_no"
-                  :key="no"
-                  class="bg-gray rounded-full h-6 w-6 flex items-center justify-center text-white"
-                >
-                  {{ no }}
-                </div>
+            </Col>
+            <Col :span="12" class="flex">
+              <div class="re-box-shadow rounded-lg pa-4 w-full">
+                <template v-if="groupActive">
+                  <GroupQuestions :group="groupActive" @update-group="handleUpdateGroup" />
+                </template>
+                <template v-else>
+                  <div class="flex flex-col items-center justify-center h-full min-h-30">
+                    <img src="@/assets/svg/empty.svg" />
+                    <p class="text-gray">{{ t('common.empty') }}</p>
+                  </div>
+                </template>
               </div>
-              <a-button type="dashed" preIcon="ant-design:plus-outlined" @click="openModal" />
-            </div>
-          </Col>
-        </Row>
-      </TabPane>
+              <div class="ml-4">
+                <div
+                  v-for="(question_group, idx) in sections[index].question_groups"
+                  :key="`${item.key}_${idx}`"
+                  :class="
+                    groupActive?.question_no === question_group.question_no
+                      ? 'border-red'
+                      : 'border-gray'
+                  "
+                  class="border rounded-lg p-2 flex flex-col items-center gap-2 mb-4 cursor-pointer"
+                  @click="groupActive = question_group"
+                >
+                  <div
+                    v-for="no in question_group.question_no"
+                    :key="no"
+                    class="bg-gray rounded-full h-6 w-6 flex items-center justify-center text-white"
+                  >
+                    {{ no }}
+                  </div>
+                </div>
+                <a-button type="dashed" preIcon="ant-design:plus-outlined" @click="openModal" />
+              </div>
+            </Col>
+          </Row>
+        </TabPane>
 
-      <template v-if="sections.length < max && allowAddPart" #rightExtra>
-        <a-button type="dashed" preIcon="ant-design:file-add-outlined" @click="handleAddTab"
-          >Part</a-button
-        >
-      </template>
-    </Tabs>
+        <template v-if="sections.length < max && allowAddPart" #rightExtra>
+          <a-button type="dashed" preIcon="ant-design:file-add-outlined" @click="handleAddTab"
+            >Part</a-button
+          >
+        </template>
+      </Tabs>
+    </template>
+
+    <!-- Editor Writing and Speaking -->
+    <template v-else>
+      <a-button v-if="sections.length === 0" type="dashed" @click="handleAddTab" class="w-full mt-4"
+        >Tạo {{ skillType }}</a-button
+      >
+      <Row v-if="sections.length > 0" :gutter="[16, 16]" class="mb-1 min-h-[30rem] mt-4">
+        <Col :span="24" class="flex">
+          <div class="re-box-shadow rounded-lg pa-4 w-full">
+            <template v-if="groupActive">
+              <h2 class="text-primary">Question {{ groupActive.question_no[0] }}</h2>
+              <Tinymce
+                v-model="groupActive.question_text"
+                width="100%"
+                @change="emit('update-parts', sections)"
+              />
+            </template>
+            <template v-else>
+              <div class="flex flex-col items-center justify-center h-full min-h-30">
+                <img src="@/assets/svg/empty.svg" />
+                <p class="text-gray">{{ t('common.empty') }}</p>
+              </div>
+            </template>
+          </div>
+          <div class="ml-4">
+            <div
+              v-for="(question_group, idx) in sections[0].question_groups"
+              :key="`writing_q_${idx}`"
+              :class="
+                groupActive?.question_no === question_group.question_no
+                  ? 'border-red'
+                  : 'border-gray'
+              "
+              class="border rounded-lg p-2 flex flex-col items-center gap-2 mb-4 cursor-pointer"
+              @click="groupActive = question_group"
+            >
+              <div
+                v-for="no in question_group.question_no"
+                :key="no"
+                class="bg-gray rounded-full h-6 w-6 flex items-center justify-center text-white"
+              >
+                {{ no }}
+              </div>
+            </div>
+            <a-button
+              type="dashed"
+              preIcon="ant-design:plus-outlined"
+              @click="
+                handleAddGroup({
+                  group_type: 'writing_task',
+                  total: 1,
+                })
+              "
+            />
+          </div>
+        </Col>
+      </Row>
+    </template>
 
     <GroupCreate @register="registerModal" @ok="handleAddGroup" />
   </div>
@@ -55,7 +128,12 @@
   import { computed, ref, watch } from 'vue';
   import { Col, Row, Tabs } from 'ant-design-vue';
   import { useI18n } from '@/hooks/web/useI18n';
-  import { handleAnswerOptions, READING_PART_DEF } from '@/views/test/data';
+  import {
+    handleAnswerOptions,
+    READING_PART_DEF,
+    SPEAKING_DEF,
+    WRITING_DEF,
+  } from '@/views/test/data';
   import {
     ExtendOptionAnswerType,
     GroupQuestionItem,
@@ -68,6 +146,8 @@
   import { useModal } from '@/components/Modal';
   import { useMessage } from '@/hooks/web/useMessage';
   import { cloneDeep } from 'lodash-es';
+  import { Tinymce } from '@/components/Tinymce';
+  import { SkillType } from '@/api/exam/examModel';
 
   const props = defineProps({
     value: {
@@ -81,6 +161,10 @@
     allowAddPart: {
       type: Boolean,
       default: true,
+    },
+    skillType: {
+      type: String as PropType<SkillType>,
+      default: 'Reading',
     },
   });
 
@@ -103,7 +187,13 @@
   const { createMessage } = useMessage();
 
   function handleAddTab() {
-    sections.value.push(cloneDeep(READING_PART_DEF));
+    const mapDef = {
+      Reading: READING_PART_DEF,
+      Listening: READING_PART_DEF,
+      Writing: WRITING_DEF,
+      Speaking: SPEAKING_DEF,
+    };
+    sections.value.push(cloneDeep(mapDef[props.skillType]));
   }
 
   function modifyQuestionsNo(parts: NewPartItem[]) {
@@ -187,8 +277,9 @@
   watch(
     () => props.value,
     (newVal) => {
-      console.log(newVal);
+      console.log(newVal, props.skillType);
       sections.value = newVal;
+      activeKey.value = 0;
       groupActive.value = null;
     },
   );

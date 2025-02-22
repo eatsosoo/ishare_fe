@@ -100,7 +100,7 @@
     height: {
       type: [Number, String] as PropType<string | number>,
       required: false,
-      default: 400,
+      default: 480,
     },
     width: {
       type: [Number, String] as PropType<string | number>,
@@ -188,10 +188,19 @@
           editor.selection.setRng(savedRange); // Đặt lại vị trí con trỏ
           editor.insertContent(text); // Chèn nội dung mới vào vị trí đó
         };
+
         emit('insert-text', insertTextAtCursor);
       },
     };
   });
+
+  function resizeToParent() {
+    const container = document.getElementById('x-editor-container');
+    const editor = document.querySelector('.tox-tinymce'); // Wrapper của TinyMCE
+    if (container && editor) {
+      editor.style.height = (container.clientHeight || props.height) + 'px';
+    }
+  }
 
   const disabled = computed(() => {
     const { options } = props;
@@ -264,6 +273,8 @@
     editor.setContent(value);
     bindModelHandlers(editor);
     bindHandlers(e, attrs, unref(editorRef));
+    resizeToParent();
+    window.addEventListener('resize', resizeToParent);
   }
 
   function setValue(editor: Record<string, any>, val?: string, prevVal?: string) {
