@@ -9,16 +9,22 @@
       }}</h2
     >
 
-    <div class="flex gap-2 items-center mb-4">
-      <label for="" class="w-30">Dạng câu hỏi</label>
-      <Select
-        v-model:value="changeData.type"
-        :options="questionTypeOps"
-        class="w-[20rem]"
-        @change="handleChangeType"
-      />
-      <label for="" class="w-30">Số lượng câu</label>
-      <InputNumber :value="props.group.question_no.length" :min="1" disabled />
+    <div class="flex gap-6 items-center mb-4">
+      <div>
+        <label for="">Dạng câu hỏi</label>
+        <Select
+          v-model:value="changeData.type"
+          :options="questionTypeOps"
+          class="w-50 ml-2"
+          @change="handleChangeType"
+        />
+      </div>
+      <div class="flex items-center">
+        <label for="">Số lượng câu</label>
+        <div class="ml-2">
+          <InputNumber :value="props.group.question_no.length" :min="1" disabled />
+        </div>
+      </div>
     </div>
 
     <Tinymce

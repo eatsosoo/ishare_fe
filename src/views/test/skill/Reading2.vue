@@ -17,7 +17,7 @@
             </div>
             <div class="ml-4">
               <div
-                v-for="(question_group, idx) in readingParts[index].question_groups"
+                v-for="(question_group, idx) in sections[index].question_groups"
                 :key="`${item.key}_${idx}`"
                 :class="
                   groupActive?.question_no === question_group.question_no
@@ -41,8 +41,10 @@
         </Row>
       </TabPane>
 
-      <template v-if="readingParts.length <= max && allowAddPart" #rightExtra>
-        <a-button type="default" @click="handleAddTab">{{ t('common.add') }} Part</a-button>
+      <template v-if="sections.length < max && allowAddPart" #rightExtra>
+        <a-button type="dashed" preIcon="ant-design:file-add-outlined" @click="handleAddTab"
+          >Part</a-button
+        >
       </template>
     </Tabs>
 
@@ -50,7 +52,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { computed, reactive, ref, watch } from 'vue';
+  import { computed, ref, watch } from 'vue';
   import { Col, Row, Tabs } from 'ant-design-vue';
   import { useI18n } from '@/hooks/web/useI18n';
   import { handleAnswerOptions, READING_PART_DEF } from '@/views/test/data';
@@ -66,9 +68,6 @@
   import { useModal } from '@/components/Modal';
   import { useMessage } from '@/hooks/web/useMessage';
   import { cloneDeep } from 'lodash-es';
-  import { ExamSkillForm, SkillType } from '@/api/exam/examModel';
-  import { examSkillApi } from '@/api/exam/exam';
-  import { useDesign } from '@/hooks/web/useDesign';
 
   const props = defineProps({
     value: {
@@ -83,32 +82,36 @@
       type: Boolean,
       default: true,
     },
-    skillType: {
-      type: String as PropType<SkillType>,
-      required: true,
-    },
   });
 
   const TabPane = Tabs.TabPane;
 
+  const emit = defineEmits(['update-parts']);
+
   const activeKey = ref(0);
   const groupActive = ref<GroupQuestionItem | null>(null);
-  const readingParts = reactive<NewPartItem[]>(props.value);
-  const loading = ref(false);
+  const sections = ref<NewPartItem[]>(props.value);
   const tabs = computed(() => {
-    return Array.from({ length: readingParts.length }, (_, i) => ({
+    return Array.from({ length: sections.value.length }, (_, i) => ({
       key: i,
       tab: `Part ${i + 1}`,
     }));
   });
 
-  const { prefixCls } = useDesign('editor-skill-exam');
   const { t } = useI18n();
   const [registerModal, { openModal: openModal, closeModal }] = useModal();
-  const { createMessage, createSuccessModal, createErrorModal } = useMessage();
+  const { createMessage } = useMessage();
 
   function handleAddTab() {
-    readingParts.push(cloneDeep(READING_PART_DEF));
+    sections.value.push(cloneDeep(READING_PART_DEF));
+  }
+
+  function modifyQuestionsNo(parts: NewPartItem[]) {
+    const dataModified = parts.map((part) => {
+      const groupUpdated = part.question_groups.map((group) => {
+        const { question_no } = group;
+      });
+    });
   }
 
   function handleAddGroup({
@@ -119,7 +122,7 @@
     total: number;
   }) {
     // console.log(group_type, total);
-    const part = readingParts[activeKey.value];
+    const part = sections.value[activeKey.value];
     if (!part) {
       createMessage.warning('Không tìm thấy part!');
       return;
@@ -145,15 +148,14 @@
       question_answer: answerDefault,
       question_count: total,
     };
-    console.log('new', newGroup);
+
     part.question_groups.push({ ...newGroup });
     groupActive.value = { ...newGroup };
     closeModal();
   }
 
   function handleChangeTab() {
-    console.log(activeKey.value, readingParts);
-    groupActive.value = readingParts[activeKey.value].question_groups[0];
+    groupActive.value = null;
   }
 
   function handleUpdateGroup(updated: {
@@ -172,60 +174,24 @@
       question_options,
     };
 
-    const part = readingParts[activeKey.value];
+    const part = sections.value[activeKey.value];
     const index = part?.question_groups?.findIndex((item) => item.group_no === clone.group_no);
 
     if (index !== -1 && index !== undefined) {
       part.question_groups[index] = clone;
     }
 
-    console.log('parts', part.question_groups);
-  }
-
-  async function submitAll(examId: number) {
-    try {
-      loading.value = true;
-      const submitForm: ExamSkillForm = {
-        id: null,
-        type: props.skillType,
-        media: null,
-        duration: 40,
-        parts: readingParts,
-      };
-
-      const result = await examSkillApi(examId, submitForm);
-      if (result) {
-        createSuccessModal({
-          title: t('form.exam.editSkill', { skill: 'Reading' }),
-          content: t('common.createSuccessfully'),
-          getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
-        });
-      }
-    } catch (error) {
-      const apiMessage = error.response?.data.message;
-      createErrorModal({
-        title: t('sys.api.errorTip'),
-        content:
-          apiMessage || (error as unknown as Error).message || t('sys.api.networkExceptionMsg'),
-        getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
-      });
-    } finally {
-      loading.value = false;
-    }
+    emit('update-parts', sections.value);
   }
 
   watch(
     () => props.value,
     (newVal) => {
       console.log(newVal);
-      console.log(readingParts);
-      Object.assign(readingParts, newVal);
+      sections.value = newVal;
+      groupActive.value = null;
     },
   );
-
-  defineExpose({
-    submitAll,
-  });
 </script>
 
 <style lang="less" scoped>
