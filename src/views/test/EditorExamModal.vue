@@ -37,7 +37,7 @@
         </div>
       </div>
     </Card>
-    <Reading :value="computedT" :skill-type="skillSelected" @update-parts="handleUpdateParts" />
+    <EditorSkill :value="computedT" :skill-type="skillSelected" @update-parts="handleUpdateParts" />
 
     <template #footer>
       <a-button type="primary" @click="submitAll"
@@ -54,7 +54,7 @@
   import { useI18n } from '@/hooks/web/useI18n';
   import { ExamDetailItem, ExamSkillForm, SkillType } from '@/api/exam/examModel';
   import { Card, InputNumber, Select, Upload } from 'ant-design-vue';
-  import Reading from '@/views/test/skill/Reading2.vue';
+  import EditorSkill from '@/views/test/skill/EditorSkill.vue';
   import { SKILL_OPTIONS } from '@/views/test/data';
   import { useDesign } from '@/hooks/web/useDesign';
   import { useGlobSetting } from '@/hooks/setting';

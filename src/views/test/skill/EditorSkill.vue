@@ -195,13 +195,13 @@
     sections.value.push(cloneDeep(mapDef[props.skillType]));
   }
 
-  function modifyQuestionsNo(parts: NewPartItem[]) {
-    const dataModified = parts.map((part) => {
-      const groupUpdated = part.question_groups.map((group) => {
-        const { question_no } = group;
-      });
-    });
-  }
+  // function modifyQuestionsNo(parts: NewPartItem[]) {
+  //   const dataModified = parts.map((part) => {
+  //     const groupUpdated = part.question_groups.map((group) => {
+  //       const { question_no } = group;
+  //     });
+  //   });
+  // }
 
   function handleAddGroup({
     group_type,

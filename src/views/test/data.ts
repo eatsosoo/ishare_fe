@@ -199,7 +199,7 @@ export const toolbar = [
 ];
 export const plugins = ['table'];
 export const classStyle =
-  'bg-white rounded-full text-center outline-red border-red border-1 p-1 shadow-md h-[32px]';
+  'bg-white rounded-full text-center outline-red-400 outline-1 border-gray-300 border-1 p-1 shadow-md h-[32px]';
 
 export const questionTypeOps: GroupQuestionType[] = [
   {

@@ -4,7 +4,7 @@
       >Questions
       {{
         props.group.question_no.length > 1
-          ? `${props.group.question_no[0]} - ${props.group.question_no[1]}`
+          ? `${props.group.question_no[0]} - ${props.group.question_no.at(-1)}`
           : props.group.question_no[0]
       }}</h2
     >
@@ -103,23 +103,6 @@
   }
 
   const props = defineProps({
-    // questionsNo: { type: Array as PropType<number[]>, default: () => [] },
-    // groupType: {
-    //   type: String as PropType<SelectQuestionType>,
-    //   default: 'fill_in',
-    // },
-    // text: {
-    //   type: String,
-    //   default: '',
-    // },
-    // answerList: {
-    //   type: Object as PropType<{ [key: string]: string }>,
-    //   default: () => {},
-    // },
-    // options: {
-    //   type: [Array, Object],
-    //   default: () => [],
-    // },
     group: {
       type: Object as PropType<GroupQuestionItem>,
       required: true,
