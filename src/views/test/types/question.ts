@@ -90,3 +90,9 @@ export interface SkillItem {
   type: SkillType;
   parts: NewPartItem[];
 }
+
+export interface StudentAnswer {
+  id: number;
+  question_count: number;
+  question_answer: { [key: string]: string };
+}

@@ -1,6 +1,7 @@
 import { ExamPartItem } from '@/api/exam/examModel';
 import {
   ExtendOptionAnswerType,
+  GroupQuestionItem,
   GroupQuestionType,
   NewPartItem,
   OptionAnswerType,
@@ -8,6 +9,7 @@ import {
   SelectQuestionType,
 } from './types/question';
 import { useI18n } from '@/hooks/web/useI18n';
+import { isArray } from '@/utils/is';
 
 const { t } = useI18n();
 
@@ -198,8 +200,6 @@ export const toolbar = [
   'fontsizeselect lineheight bold italic underline undo redo removeformat bullist numlist preview fullscreen',
 ];
 export const plugins = ['table'];
-export const classStyle =
-  'bg-white rounded-full text-center outline-red-400 outline-1 border-gray-300 border-1 p-1 shadow-md h-[32px]';
 
 export const questionTypeOps: GroupQuestionType[] = [
   {

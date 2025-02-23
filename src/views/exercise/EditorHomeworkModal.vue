@@ -43,7 +43,7 @@
   import { ref, watch } from 'vue';
   import { useI18n } from '@/hooks/web/useI18n';
   import { Select } from 'ant-design-vue';
-  import Reading from '@/views/test/skill/Reading2.vue';
+  import Reading from '@/views/test/skill/Reading1.vue';
   import Listening from '@/views/test/skill/Listening2.vue';
   import Writing from '@/views/test/skill/Writing2.vue';
   import Speaking from '@/views/test/skill/Speaking2.vue';
