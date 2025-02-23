@@ -165,7 +165,9 @@ export const WRITING_DEF: NewPartItem = {
       question_no: [1],
       group_no: 1,
       question_options: [],
-      question_answer: {},
+      question_answer: {
+        question_1: 'no_answer',
+      },
       question_count: 1,
     },
   ],
@@ -182,7 +184,9 @@ export const SPEAKING_DEF: NewPartItem = {
       question_no: [1],
       group_no: 1,
       question_options: [],
-      question_answer: {},
+      question_answer: {
+        question_1: 'no_answer',
+      },
       question_count: 1,
     },
   ],

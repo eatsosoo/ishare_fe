@@ -266,7 +266,7 @@
       question_answer: answers,
       question_options: answerOptions,
     });
-    createMessage.success('Đã lưu');
+    createMessage.success('Lưu tạm thời');
   };
 
   watch(

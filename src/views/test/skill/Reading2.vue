@@ -73,11 +73,10 @@
           <div class="re-box-shadow rounded-lg pa-4 w-full">
             <template v-if="groupActive">
               <h2 class="text-primary">Question {{ groupActive.question_no[0] }}</h2>
-              <Tinymce
-                v-model="groupActive.question_text"
-                width="100%"
-                @change="emit('update-parts', sections)"
-              />
+              <Tinymce v-model="groupActive.question_text" width="100%" />
+              <a-button preIcon="ant-design:save-twotone" class="mt-4" @click="handleUpdateGroup2"
+                >Save</a-button
+              >
             </template>
             <template v-else>
               <div class="flex flex-col items-center justify-center h-full min-h-30">
@@ -86,7 +85,7 @@
               </div>
             </template>
           </div>
-          <div class="ml-4">
+          <div v-if="sections.length > 0" class="ml-4">
             <div
               v-for="(question_group, idx) in sections[0].question_groups"
               :key="`writing_q_${idx}`"
@@ -274,13 +273,29 @@
     emit('update-parts', sections.value);
   }
 
+  function handleUpdateGroup2() {
+    if (!groupActive.value) return;
+    const clone = { ...groupActive.value };
+    const part = sections.value[activeKey.value];
+    const index = part?.question_groups?.findIndex((item) => item.group_no === clone.group_no);
+
+    if (index !== -1 && index !== undefined) {
+      part.question_groups[index] = clone;
+    }
+
+    emit('update-parts', sections.value);
+    createMessage.success('Lưu tạm thời');
+  }
+
   watch(
-    () => props.value,
-    (newVal) => {
-      console.log(newVal, props.skillType);
-      sections.value = newVal;
+    [() => props.value, () => props.skillType],
+    ([newValue, newSkillType], [_, oldSkillType]) => {
+      sections.value = newValue;
       activeKey.value = 0;
-      groupActive.value = null;
+      if (newSkillType !== oldSkillType) {
+        groupActive.value = null;
+        // console.log(sections.value[activeKey.value].subject);
+      }
     },
   );
 </script>
