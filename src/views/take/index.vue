@@ -16,7 +16,7 @@
         <TakeWriting v-if="skillExam" :value="skillExam" />
       </template>
       <template v-else-if="state.type === 'Speaking'">
-        <TakeWriting v-if="skillExam" :value="skillExam" />
+        <TakeSpeaking v-if="skillExam" :value="skillExam" />
       </template>
     </div>
   </div>
@@ -35,6 +35,7 @@
   import TakeReading from './TakeReading.vue';
   import TakeListening from './TakeListening.vue';
   import TakeWriting from './TakeWriting.vue';
+  import TakeSpeaking from './TakeSpeaking.vue';
 
   const route = useRoute();
   const router = useRouter();
