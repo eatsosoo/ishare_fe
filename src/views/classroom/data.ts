@@ -40,44 +40,13 @@ export const schemas: FormSchema[] = [
       offset: 2,
     },
   },
-  // {
-  //   field: 'teacher',
-  //   component: 'ApiSelect',
-  //   label: t('form.newClassForm.teacher'),
-  //   componentProps: {
-  //     // more details see /src/components/Form/src/components/ApiSelect.vue
-  //     api: teacherListApi(),
-  //     params: {
-  //       id: 1,
-  //     },
-
-  //     resultField: 'list',
-  //     // use name as label
-  //     labelField: 'name',
-  //     // use id as value
-  //     valueField: 'id',
-  //     // not request untill to select
-  //     immediate: true,
-  //     onChange: (e, v) => {
-  //       console.log('ApiSelect====>:', e, v);
-  //     },
-  //     // atfer request callback
-  //     onOptionsChange: (options) => {
-  //       console.log('get options', options.length, options);
-  //     },
-  //   },
-  //   required: true,
-  //   colProps: {
-  //     offset: 2,
-  //   },
-  // },
   {
-    field: '[start_date, end_date]',
+    field: 'start_date',
     label: t('form.newClassForm.courseDuration'),
-    component: 'RangePicker',
+    component: 'DatePicker',
     componentProps: {
       format: 'YYYY-MM-DD',
-      placeholder: [t('form.newClassForm.openingDay'), t('form.newClassForm.endDay')],
+      placeholder: t('form.newClassForm.openingDay'),
     },
     required: true,
     colProps: {
@@ -85,11 +54,32 @@ export const schemas: FormSchema[] = [
     },
   },
   {
-    field: 'hour',
-    label: t('form.newClassForm.hour'),
-    component: 'TimePicker',
+    field: 'key',
+    label: t('form.newClassForm.classType'),
+    component: 'Select',
     componentProps: {
-      format: 'HH:mm',
+      options: [
+        {
+          label: 'HS',
+          value: 'HS',
+        },
+        {
+          label: 'CT',
+          value: 'CT',
+        },
+        {
+          label: 'LHP',
+          value: 'LHP',
+        },
+        {
+          label: 'TL',
+          value: 'TL',
+        },
+        {
+          label: 'JU',
+          value: 'JU',
+        },
+      ],
     },
     required: true,
     colProps: {

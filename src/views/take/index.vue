@@ -21,20 +21,22 @@
         </div>
       </Col>
       <Col :span="12" class="border-gray border-l-2 h-full overflow-auto p-4">
-        <div
-          v-for="group in skillExam?.parts[state.tabActive].question_groups"
-          :key="group.id"
-          class="px-4"
-        >
-          <h2 class="text-primary"
-            >Questions
-            {{
-              group.question_no.length > 1
-                ? `${group.question_no[0]} - ${group.question_no.at(-1)}`
-                : group.question_no[0]
-            }}</h2
+        <div ref="htmlContainer">
+          <div
+            v-for="(group, gIdx) in skillExam?.parts[state.tabActive].question_groups"
+            :key="group.id || gIdx"
+            class="px-4"
           >
-          <div v-html="renderGroupQuestions(group)"></div>
+            <h2 class="text-primary"
+              >Questions
+              {{
+                group.question_no.length > 1
+                  ? `${group.question_no[0]} - ${group.question_no.at(-1)}`
+                  : group.question_no[0]
+              }}</h2
+            >
+            <div v-html="renderGroupQuestions(group)"></div>
+          </div>
         </div>
       </Col>
     </Row>
@@ -107,6 +109,7 @@
   });
   const skillExam = ref<SkillItem | null>(null);
   const loading = ref(false);
+  const htmlContainer = ref(null);
 
   // time left
   const timeLeft = ref('');
@@ -130,6 +133,7 @@
 
   function clickTab(index: number) {
     state.tabActive = index;
+    getInputValues();
   }
 
   function countQuestions(groups: GroupQuestionItem[]) {
@@ -225,6 +229,36 @@
 
     return finalHtml;
   }
+
+  const getInputValues = () => {
+    if (!htmlContainer.value) return;
+
+    const inputs = htmlContainer.value.querySelectorAll(
+      'input[name^="question_"], select[name^="question_"]',
+    );
+
+    const values: Record<string, string | string[]> = {};
+
+    inputs.forEach((input) => {
+      const name = input.getAttribute('name') || '';
+
+      if (input.type === 'radio') {
+        if ((input as HTMLInputElement).checked) {
+          values[name] = (input as HTMLInputElement).value;
+        }
+      } else if (input.type === 'checkbox') {
+        if ((input as HTMLInputElement).checked) {
+          values[name] = values[name]
+            ? [...(values[name] as string[]), input.value]
+            : [input.value];
+        }
+      } else {
+        values[name] = (input as HTMLInputElement | HTMLSelectElement).value;
+      }
+    });
+
+    console.log(values);
+  };
 
   getExamDetail(state.examId);
 </script>

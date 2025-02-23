@@ -4,7 +4,7 @@
       <Tabs v-model:activeKey="activeKey" @change="handleChangeTab">
         <TabPane v-for="(item, index) in tabs" :key="item.key" :tab="item.tab">
           <Row :gutter="[16, 16]" class="mb-1 min-h-[30rem]">
-            <Col :span="12" class="flex">
+            <Col v-if="skillType === 'Reading'" :span="12" class="flex">
               <template v-if="sections[activeKey]">
                 <div id="x-editor-container" class="re-box-shadow rounded-lg pa-4 w-full">
                   <Tinymce v-model="sections[activeKey].subject" width="100%" />

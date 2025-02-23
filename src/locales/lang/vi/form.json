@@ -24,7 +24,8 @@
     "student": "Học sinh",
     "studentRegister": "Học sinh đăng ký",
     "courseDuration": "Thời gian khóa học",
-    "hour": "Giờ học"
+    "hour": "Giờ học",
+    "classType": "Loại lớp học"
   },
   "addStudentToClass": "Thêm học sinh vào lớp",
   "gradingSearch": {

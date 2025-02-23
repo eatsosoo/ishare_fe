@@ -53,13 +53,13 @@
   async function submitAll() {
     try {
       const [values] = await Promise.all([validate()]);
+      const { title, description, start_date, key } = values;
       const submitForm: CreateClassParams = {
-        ...values,
-        title: values.title,
-        description: values.description,
-        start_date: values.start_date,
-        end_date: values.end_date,
-        hour: values.hour.split(' ')[1],
+        title,
+        description,
+        start_date,
+        key,
+        shifts: [{ title: 'Ca 1', description: 'desc' }],
         students: studentsRegistered.value.map((student) => ({ id: student.id })),
       };
 

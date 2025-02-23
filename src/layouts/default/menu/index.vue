@@ -140,10 +140,10 @@
 
       function renderMenu() {
         const { menus, ...menuProps } = unref(getCommonProps);
-        // console.log(menus);
         if (!menus || !menus.length) return null;
+        const newMenus = menus.filter((menu) => menu.name !== 'Take');
         return !props.isHorizontal ? (
-          <SimpleMenu {...menuProps} isSplitMenu={unref(getSplit)} items={menus} />
+          <SimpleMenu {...menuProps} isSplitMenu={unref(getSplit)} items={newMenus} />
         ) : (
           <BasicMenu
             {...(menuProps as any)}
@@ -151,7 +151,7 @@
             type={unref(getMenuType)}
             showLogo={unref(getIsShowLogo)}
             mode={unref(getComputedMenuMode as any)}
-            items={menus}
+            items={newMenus}
           />
         );
       }
