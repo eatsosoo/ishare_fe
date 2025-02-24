@@ -8,7 +8,7 @@ import {
   CreateClassParams,
 } from './classModel';
 import { BasicPageParams, BasicApiResult } from '../model/baseModel';
-import { ErrorMessageMode } from '#/axios';
+import { ErrorMessageMode, Result } from '#/axios';
 import { useUserStore } from '@/store/modules/user';
 
 enum Api {
@@ -54,6 +54,15 @@ export const classListApi = () => (params: BasicPageParams) =>
   defHttp.get<ClassListGetResultModel>({
     url: Api.CLASS_ROUTE,
     params,
+    headers: {
+      // @ts-ignore
+      ignoreCancelToken: true,
+    },
+  });
+
+export const classOptionsApi = () =>
+  defHttp.get<Result<ClassListItem>>({
+    url: Api.CLASS_ROUTE,
     headers: {
       // @ts-ignore
       ignoreCancelToken: true,

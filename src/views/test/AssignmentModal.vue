@@ -15,25 +15,18 @@
   import { ref } from 'vue';
   import { BasicModal } from '@/components/Modal';
   import { BasicForm, useForm } from '@/components/Form';
-  import { assignHomeworkFormSchemas, assignTestFormSchemas } from '@/views/classroom/data';
+  import { assignTestFormSchemas } from '@/views/classroom/data';
   import { useI18n } from '@/hooks/web/useI18n';
   import { useMessage } from '@/hooks/web/useMessage';
   import { useDesign } from '@/hooks/web/useDesign';
   import { AssignmentForm } from '@/api/teacher/teacherModel';
   import { assignmentApi } from '@/api/teacher/teacher';
 
-  const props = defineProps({
-    type: {
-      type: String,
-      default: 'exam',
-    },
-  });
-
   const { t } = useI18n();
   const { createErrorModal, createSuccessModal } = useMessage();
   const [registerForm, { validate, resetFields }] = useForm({
     labelWidth: 120,
-    schemas: props.type === 'exam' ? assignTestFormSchemas : assignHomeworkFormSchemas,
+    schemas: assignTestFormSchemas,
     showActionButtonGroup: false,
     actionColOptions: {
       span: 24,

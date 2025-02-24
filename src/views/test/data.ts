@@ -1,7 +1,5 @@
-import { ExamPartItem } from '@/api/exam/examModel';
 import {
   ExtendOptionAnswerType,
-  GroupQuestionItem,
   GroupQuestionType,
   NewPartItem,
   OptionAnswerType,
@@ -9,7 +7,6 @@ import {
   SelectQuestionType,
 } from './types/question';
 import { useI18n } from '@/hooks/web/useI18n';
-import { isArray } from '@/utils/is';
 
 const { t } = useI18n();
 
@@ -78,75 +75,6 @@ export const yesNoNotGivenOptions = [
   {
     value: 'not_given',
     label: t('common.notGiven'),
-  },
-];
-
-const defaultOptions = Array.from({ length: 2 }, (_, i) => ({
-  id: String.fromCharCode(65 + i),
-  text: String.fromCharCode(65 + i),
-}));
-
-export const READING_DEFAULT: ExamPartItem[] = [
-  {
-    subject: 'Reading Part 1',
-    questions_count: 1,
-    duration: 20,
-    questions: Array.from({ length: 1 }, (_, i) => ({
-      question_no: i + 1,
-      content: '',
-      type: 'choice',
-      options: defaultOptions,
-      answer: null,
-    })),
-    media: null,
-  },
-];
-
-export const LISTENING_DEFAULT: ExamPartItem[] = [
-  {
-    subject: 'Listening Section 1',
-    questions_count: 1,
-    duration: 10,
-    questions: Array.from({ length: 1 }, (_, i) => ({
-      question_no: i + 1,
-      content: '',
-      type: 'choice',
-      options: defaultOptions,
-      answer: null,
-    })),
-    media: null,
-  },
-];
-
-export const WRITING_DEFAULT: ExamPartItem[] = [
-  {
-    subject: '',
-    questions_count: 1,
-    duration: 60,
-    questions: Array.from({ length: 1 }, (_, i) => ({
-      question_no: i + 1,
-      content: 'Writing ... about this subject',
-      type: 'writing_task_1_academic',
-      options: defaultOptions,
-      answer: 'custom_answer',
-    })),
-    media: null,
-  },
-];
-
-export const SPEAKING_DEFAULT: ExamPartItem[] = [
-  {
-    subject: '',
-    questions_count: 1,
-    duration: 15,
-    questions: Array.from({ length: 1 }, (_, i) => ({
-      question_no: i + 1,
-      content: 'Speaking ... about this subject',
-      type: 'speaking_part_1',
-      options: defaultOptions,
-      answer: 'custom_answer',
-    })),
-    media: null,
   },
 ];
 

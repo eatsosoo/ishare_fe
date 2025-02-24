@@ -9,6 +9,12 @@ export interface CreateClassParams {
   students: { id: string }[];
 }
 
+export interface ShiftItem {
+  id: number;
+  title: string;
+  description: string;
+}
+
 export interface ClassListItem {
   id: number;
   title: string;
@@ -16,8 +22,9 @@ export interface ClassListItem {
   teacher: string;
   students_count: number;
   start_date: string;
-  end_date: string;
-  status: number;
+  level: string;
+  key: string;
+  shifts: ShiftItem[];
 }
 
 export interface ClassStudentItem {

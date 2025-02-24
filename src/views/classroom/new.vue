@@ -7,7 +7,7 @@
     <Card :title="t('form.newClassForm.information')" :bordered="false">
       <BasicForm @register="register" />
     </Card>
-    <Card :title="t('form.newClassForm.shift')">
+    <Card :title="t('form.shift')">
       <ShiftTable />
     </Card>
     <Card :title="titlePreviewTable" :bordered="false" class="!mt-5">

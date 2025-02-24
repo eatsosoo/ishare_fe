@@ -5,22 +5,25 @@
   >
     <BasicTable @register="registerTable">
       <template #toolbar>
-        <a-button type="primary" @click="openModal">{{
+        <a-button type="dashed" @click="activateModal">{{
           t('table.assignmentTable.assign')
         }}</a-button>
       </template>
     </BasicTable>
-    <AssignmentModal type="homework" @register="registerAssignModal" @success="handleOk" />
+    <AssignHomeworkModal @register="registerAssignModal" :class-list="classOptions" />
   </PageWrapper>
 </template>
 <script lang="ts" setup>
   import { PageWrapper } from '@/components/Page';
   import { useI18n } from '@/hooks/web/useI18n';
   import { BasicTable, useTable } from '@/components/Table';
-  import AssignmentModal from '@/views/test/AssignmentModal.vue';
   import { assignmentListApi } from '@/api/teacher/teacher';
   import { getAssignmentColumns, getAssignmentListConfig } from '@/views/classroom/tableData';
   import { useModal } from '@/components/Modal';
+  import AssignHomeworkModal from './AssignHomeworkModal.vue';
+  import { classOptionsApi } from '@/api/class/class';
+  import { ref } from 'vue';
+  import { ClassListItem } from '@/api/class/classModel';
 
   const { t } = useI18n();
   const [registerTable, { reload }] = useTable({
@@ -41,8 +44,20 @@
   });
   const [registerAssignModal, { openModal: openModal, closeModal }] = useModal();
 
+  const classOptions = ref<ClassListItem[]>([]);
+
   function handleOk() {
     closeModal();
     reload();
+  }
+
+  function activateModal() {
+    fetchClasses();
+    openModal();
+  }
+
+  async function fetchClasses() {
+    const res = await classOptionsApi();
+    classOptions.value = res.items;
   }
 </script>

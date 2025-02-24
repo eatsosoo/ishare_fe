@@ -48,6 +48,9 @@
   "noScoreYet": "Chưa có điểm",
   "enterAnswer": "Nhập đáp án",
   "empty": "Trống",
+  "pleaseCreateQuestions": "Vui lòng tạo câu hỏi",
+  "question": "Câu hỏi",
+  "basicInformation": "Thông tin cơ bản",
   "test": {
     "reading": "Đề thi phần READING",
     "listening": "Đề thi phần LISTENING",

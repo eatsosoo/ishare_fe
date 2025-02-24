@@ -5,6 +5,18 @@
   "getFormValues": "Xem giá trị biểu mẫu",
   "setFormValues": "Điền giá trị biểu mẫu",
   "resetFields": "Đặt lại giá trị biểu mẫu",
+  "bookName": "Tên sách",
+  "skill": "Kỹ năng",
+  "classType": "Loại lớp học",
+  "level": "Cấp độ",
+  "shift": "Ca học",
+  "shiftName": "Tên ca học",
+  "shiftDescription": "Mô tả",
+  "addShift": "Thêm ca học",
+  "assignHomework": "Giao bài tập",
+  "assignAtClass": "Trên lớp",
+  "assignAtHome": "Về nhà",
+  "exeType": "Kiểu bài tập",
   "newClassForm": {
     "title": "Biểu mẫu tạo nhóm lớp",
     "formDesc": "",
@@ -24,13 +36,7 @@
     "student": "Học sinh",
     "studentRegister": "Học sinh đăng ký",
     "courseDuration": "Thời gian khóa học",
-    "hour": "Giờ học",
-    "classType": "Loại lớp học",
-    "level": "Cấp độ",
-    "shift": "Ca học",
-    "shiftName": "Tên ca học",
-    "shiftDescription": "Mô tả",
-    "addShift": "Thêm ca học"
+    "hour": "Giờ học"
   },
   "addStudentToClass": "Thêm học sinh vào lớp",
   "gradingSearch": {

@@ -8,7 +8,7 @@
       </template>
     </BasicTable>
     <a-button block class="mt-5" type="dashed" @click="handleAdd">
-      {{ t('form.newClassForm.addShift') }}
+      {{ t('form.addShift') }}
     </a-button>
   </div>
 </template>
@@ -27,12 +27,12 @@
   const { t } = useI18n();
   const columns: BasicColumn[] = [
     {
-      title: t('form.newClassForm.shiftName'),
+      title: t('form.shiftName'),
       dataIndex: 'title',
       editRow: true,
     },
     {
-      title: t('form.newClassForm.shiftDescription'),
+      title: t('form.shiftDescription'),
       dataIndex: 'no',
       editRow: true,
     },

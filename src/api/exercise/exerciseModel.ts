@@ -1,3 +1,5 @@
+import { GroupQuestionItem } from '@/views/test/types/question';
+import { SkillType } from '../exam/examModel';
 import { BasicFetchResult } from '../model/baseModel';
 
 export interface ExerciseListItem {
@@ -20,6 +22,27 @@ export interface HomeworkListItem {
   student_count: number;
 }
 
+export interface BookListItem {
+  id: number;
+  title: string;
+  type: string;
+  level: number;
+  description: null;
+}
+
+export interface AssignExerciseParams {
+  book_name: string;
+  skill: SkillType;
+  homework_name: string;
+  assign_at: 'class' | 'home';
+  assignment: {
+    class_id: number;
+    shift_id: number;
+    date: string;
+  };
+  question_groups: GroupQuestionItem[];
+}
+
 /**
  * @description: Request list return value
  */
@@ -29,3 +52,8 @@ export type ExerciseListGetResultModel = BasicFetchResult<ExerciseListItem>;
  * @description: Request list return value
  */
 export type HomeworkListGetResultModel = BasicFetchResult<HomeworkListItem>;
+
+/**
+ * @description: Request list return value
+ */
+export type BookListGetResultModel = BasicFetchResult<BookListItem>;
