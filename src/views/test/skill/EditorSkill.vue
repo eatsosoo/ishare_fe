@@ -195,13 +195,46 @@
     sections.value.push(cloneDeep(mapDef[props.skillType]));
   }
 
-  // function modifyQuestionsNo(parts: NewPartItem[]) {
-  //   const dataModified = parts.map((part) => {
-  //     const groupUpdated = part.question_groups.map((group) => {
-  //       const { question_no } = group;
-  //     });
-  //   });
-  // }
+  function updateQuestionNumbers(data) {
+    let questionCounter = 1; // Bắt đầu đánh số từ 1
+
+    data.parts.forEach((part) => {
+      part.question_groups.forEach((group) => {
+        const newQuestionAnswer = {};
+        const newQuestionOptions = {};
+        let updatedText = group.question_text;
+
+        group.question_no = group.question_no.map((_, index) => {
+          const newQuestionKey = `question_${questionCounter}`;
+          const oldQuestionKey = `question_${group.question_no[index]}`;
+
+          // Cập nhật question_answer
+          if (group.question_answer[oldQuestionKey] !== undefined) {
+            newQuestionAnswer[newQuestionKey] = group.question_answer[oldQuestionKey];
+          }
+
+          // Cập nhật question_options nếu có
+          if (group.question_options[oldQuestionKey] !== undefined) {
+            newQuestionOptions[newQuestionKey] = group.question_options[oldQuestionKey];
+          }
+
+          // Cập nhật question_text
+          const questionRegex = new RegExp(`\\[${oldQuestionKey}\\]`, 'g');
+          updatedText = updatedText.replace(questionRegex, `[${newQuestionKey}]`);
+
+          questionCounter++; // Tăng số thứ tự
+          return questionCounter - 1;
+        });
+
+        // Gán lại dữ liệu đã cập nhật
+        group.question_answer = newQuestionAnswer;
+        group.question_options = newQuestionOptions;
+        group.question_text = updatedText;
+      });
+    });
+
+    return data;
+  }
 
   function handleAddGroup({
     group_type,
@@ -240,6 +273,9 @@
 
     part.question_groups.push({ ...newGroup });
     groupActive.value = { ...newGroup };
+    sections.value = updateQuestionNumbers(sections.value);
+    emit('update-parts', sections.value);
+
     closeModal();
   }
 

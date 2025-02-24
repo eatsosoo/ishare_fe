@@ -1,9 +1,8 @@
 <template>
   <div>
     <BasicTable @register="registerTable">
-      <template #form-custom> custom-slot </template>
       <template #toolbar>
-        <a-button type="primary" @click="openAddModal">{{
+        <a-button type="dashed" @click="openAddModal">{{
           t('table.examTable.createAction')
         }}</a-button>
       </template>
@@ -11,16 +10,16 @@
         <template v-if="column.key === 'action'">
           <Icon
             icon="ant-design:edit-outlined"
-            :size="20"
-            class="mr-2 cursor-pointer"
+            :size="18"
+            class="cursor-pointer hover:border-red border-1 border-gray-200 p-1 rounded-md"
             @click="activateEditorModal(record as ExamListItem)"
           />
-          <Icon
+          <!-- <Icon
             icon="ant-design:delete-outlined"
             :size="20"
             class="cursor-pointer"
             @click="examDeleteApi(record.id)"
-          />
+          /> -->
         </template>
       </template>
     </BasicTable>
@@ -33,7 +32,7 @@
   import { BasicTable, useTable } from '@/components/Table';
   import { getExamListConfig, getTestColumns } from '@/views/classroom/tableData';
   import { useI18n } from '@/hooks/web/useI18n';
-  import { examDeleteApi, examListApi } from '@/api/exam/exam';
+  import { examListApi } from '@/api/exam/exam';
   import { useModal } from '@/components/Modal';
   import CreateExamModal from '@/views/test/CreateExamModal.vue';
   import EditorExamModal from '@/views/test/EditorExamModal.vue';

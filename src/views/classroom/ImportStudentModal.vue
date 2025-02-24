@@ -9,8 +9,10 @@
     @ok="uploadFile"
   >
     <div class="custom-file-upload">
-      <p class="font-italic">Chú ý: Vui lòng import theo đúng file mẫu đã được cung cấp trước</p>
-      <label for="fileInput" class="upload-label" accept=".xls,.xlsx"> Chọn file </label>
+      <p class="font-italic">{{ t('common.importNote') }}</p>
+      <label for="fileInput" class="upload-label" accept=".xls,.xlsx">
+        {{ t('common.selectFile') }}
+      </label>
       <input type="file" id="fileInput" @change="handleFileChange" />
       <span v-if="fileName">{{ fileName }}</span>
     </div>

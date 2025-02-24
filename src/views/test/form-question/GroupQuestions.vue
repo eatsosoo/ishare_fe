@@ -71,7 +71,7 @@
         @click="openOptionsModal"
         >Options</a-button
       >
-      <a-button @click="emit('delete')">Delete Group</a-button>
+      <!-- <a-button @click="emit('delete')">Delete Group</a-button> -->
       <a-button @click="activatePreviewPopup">Preview</a-button>
       <a-button type="primary" @click="saveQuestion">Lưu câu hỏi</a-button>
     </div>

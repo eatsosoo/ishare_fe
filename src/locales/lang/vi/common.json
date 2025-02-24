@@ -51,6 +51,8 @@
   "pleaseCreateQuestions": "Vui lòng tạo câu hỏi",
   "question": "Câu hỏi",
   "basicInformation": "Thông tin cơ bản",
+  "selectFile": "Chọn file",
+  "importNote": "Chú ý: Vui lòng import theo đúng file mẫu đã được cung cấp trước",
   "test": {
     "reading": "Đề thi phần READING",
     "listening": "Đề thi phần LISTENING",
