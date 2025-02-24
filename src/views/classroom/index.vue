@@ -6,18 +6,16 @@
           {{ record.start_date.split(' ')[0] }}
         </template>
         <template v-if="column.key === 'action'">
-          <Icon
-            :size="20"
-            icon="ant-design:ordered-list-outlined"
-            class="mr-2 cursor-pointer"
-            @click="activateModal(record, 'VIEW')"
-          />
-          <Icon
-            :size="20"
-            icon="ant-design:user-add-outlined"
-            class="cursor-pointer"
-            @click="activateModal(record, 'ADD')"
-          />
+          <div class="flex gap-2 justify-center">
+            <Icon
+              v-for="(action, index) in actions"
+              :key="index"
+              :size="18"
+              :icon="action.icon"
+              class="cursor-pointer hover:border-red border-1 border-gray-200 p-1 rounded-md"
+              @click="activateModal(record, action.action)"
+            />
+          </div>
         </template>
       </template>
     </BasicTable>
@@ -32,6 +30,13 @@
       :loading="addLoading"
       @register="registerAddModal"
       @select-students="handleAddMoreStudents"
+    />
+    <ImportStudentModal
+      :title="titleModal"
+      :class-id="targetClass?.id ?? 0"
+      :class-key="targetClass?.key ?? ''"
+      @register="registerImportModal"
+      @success="closeImportModal"
     />
   </div>
 </template>
@@ -48,12 +53,15 @@
   import { ClassAddStudentsParams, ClassListItem } from '@/api/class/classModel';
   import { useUserStore } from '@/store/modules/user';
   import Icon from '@/components/Icon/Icon.vue';
+  import ImportStudentModal from './ImportStudentModal.vue';
 
   const { t } = useI18n();
   const useStore = useUserStore();
   const [registerViewModal, { openModal: openViewModal }] = useModal();
-  const [registerAddModal, { openModal: openAddModal }] = useModal();
-  const [registerTable, { getForm }] = useTable({
+  const [registerAddModal, { openModal: openAddModal, closeModal }] = useModal();
+  const [registerImportModal, { openModal: openImportModal, closeModal: closeImportModal }] =
+    useModal();
+  const [registerTable, { reload }] = useTable({
     title: t('routes.page.classroomList'),
     api: classListApi(),
     columns: getClassColumns(),
@@ -77,15 +85,32 @@
     return targetClass.value ? `${targetClass.value.title} - ${targetClass.value.teacher}` : '';
   });
 
+  const actions = [
+    {
+      icon: 'ant-design:ordered-list-outlined',
+      action: 'VIEW',
+    },
+    {
+      icon: 'ant-design:user-add-outlined',
+      action: 'ADD',
+    },
+    {
+      icon: 'ant-design:import-outlined',
+      action: 'IMPORT',
+    },
+  ];
+
   const { createSuccessModal, createErrorModal } = useMessage();
 
-  function activateModal(record: ClassListItem | any, type: 'ADD' | 'VIEW') {
+  function activateModal(record: ClassListItem | any, type: string) {
     useStore.setClassId(record.id);
+    targetClass.value = record;
     if (type === 'VIEW') {
-      targetClass.value = record;
       openViewModal();
-    } else {
+    } else if (type === 'ADD') {
       openAddModal();
+    } else if (type === 'IMPORT') {
+      openImportModal();
     }
   }
 
@@ -110,6 +135,8 @@
           title: t('layout.setting.operatingTitle'),
           content: t('table.addStudentToClassSuccess'),
         });
+        closeModal();
+        reload();
       }
     } catch (error) {
       const apiMessage = error.response.data.message;
@@ -120,20 +147,6 @@
       });
     } finally {
       addLoading.value = false;
-    }
-  }
-
-  function setClassStatus(startDate: string, endDate: string) {
-    const currentDate = new Date();
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-
-    if (currentDate < start) {
-      return t('form.newClassForm.pending');
-    } else if (currentDate >= start && currentDate <= end) {
-      return t('form.newClassForm.enable');
-    } else {
-      return t('form.newClassForm.finished');
     }
   }
 </script>

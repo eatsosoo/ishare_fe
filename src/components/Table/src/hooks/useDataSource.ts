@@ -308,7 +308,6 @@ export function useDataSource(
       if (afterFetch && isFunction(afterFetch)) {
         resultItems = (await afterFetch(resultItems)) || resultItems;
       }
-      console.log(resultItems);
       dataSourceRef.value = resultItems;
       setPagination({
         total: resultTotal || 0,

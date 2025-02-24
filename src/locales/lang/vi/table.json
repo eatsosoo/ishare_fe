@@ -43,6 +43,8 @@
   "roleName": "Tên vai trò",
   "key": "Loại lớp",
   "level": "Cấp độ",
+  "parentName": "Tên phụ huynh",
+  "parentTel": "SĐT phụ huynh",
   "exerciseTable": {
     "name": "Tên bài tập",
     "score": "Điểm",

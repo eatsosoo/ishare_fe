@@ -21,7 +21,7 @@
   import {
     getExamColumns,
     getExerciseColumns,
-    getStudentColumns,
+    getStudentOfClassColumns,
   } from '@/views/classroom/tableData';
   import { useI18n } from '@/hooks/web/useI18n';
   import { omit } from 'lodash-es';
@@ -63,7 +63,7 @@
   const [registerTable1, { reload: reload1 }] = useTable({
     canResize: true,
     api: getStudentsOfClassApi(),
-    columns: getStudentColumns(),
+    columns: getStudentOfClassColumns(),
     defSort: {
       field: 'name',
       order: 'ascend',

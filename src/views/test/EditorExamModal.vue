@@ -173,8 +173,9 @@
       loading.value = true;
       const result = await examDetailApi(examId);
       detail.value = result;
-      audioUrl.value = result.Listening.media;
+      audioUrl.value = result.Listening?.media;
     } catch (error) {
+      console.log(error);
       createMessage.error(t('sys.app.dataNotFound'));
     } finally {
       loading.value = false;

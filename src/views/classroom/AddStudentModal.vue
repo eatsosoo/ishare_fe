@@ -5,8 +5,10 @@
     width="1100px"
     :can-fullscreen="false"
     :loading="props.loading"
-    @ok="getSelectStudents"
   >
+    <template #footer>
+      <a-button type="primary" @click="getSelectStudents">{{ t('common.saveText') }}</a-button>
+    </template>
     <BasicTable @register="registerTable" ref="selectTable" />
   </BasicModal>
 </template>

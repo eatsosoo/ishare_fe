@@ -39,41 +39,6 @@ export function getClassColumns(): BasicColumn[] {
   ];
 }
 
-export function getStudentOfClassColumns(): BasicColumn[] {
-  return [
-    {
-      title: 'ID',
-      dataIndex: 'id',
-      fixed: 'left',
-      width: 80,
-    },
-    {
-      title: t('table.studentName'),
-      dataIndex: 'name',
-    },
-    {
-      title: 'Reading',
-      dataIndex: 'reading',
-    },
-    {
-      title: 'Listening',
-      dataIndex: 'listening',
-    },
-    {
-      title: 'Speaking',
-      dataIndex: 'speaking',
-    },
-    {
-      title: 'Writing',
-      dataIndex: 'writing',
-    },
-    {
-      title: 'Total',
-      dataIndex: 'total',
-    },
-  ];
-}
-
 export function getStudentColumns(): BasicColumn[] {
   return [
     {
@@ -90,6 +55,7 @@ export function getStudentColumns(): BasicColumn[] {
     {
       title: t('table.phone'),
       dataIndex: 'phone_number',
+      align: 'left',
     },
     {
       title: t('table.email'),
@@ -99,6 +65,48 @@ export function getStudentColumns(): BasicColumn[] {
     {
       title: t('table.birthday'),
       dataIndex: 'date_of_birth',
+      align: 'left',
+    },
+  ];
+}
+
+export function getStudentOfClassColumns(): BasicColumn[] {
+  return [
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      fixed: 'left',
+      width: 80,
+    },
+    {
+      title: t('table.studentName'),
+      dataIndex: 'name',
+      align: 'left',
+    },
+    {
+      title: t('table.phone'),
+      dataIndex: 'phone_number',
+      align: 'left',
+    },
+    {
+      title: t('table.email'),
+      dataIndex: 'email',
+      align: 'left',
+    },
+    {
+      title: t('table.birthday'),
+      dataIndex: 'dob',
+      align: 'left',
+    },
+    {
+      title: t('table.parentName'),
+      dataIndex: 'parent_name',
+      align: 'left',
+    },
+    {
+      title: t('table.parentTel'),
+      dataIndex: 'parent_tel',
+      align: 'left',
     },
   ];
 }
