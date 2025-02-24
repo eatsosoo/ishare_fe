@@ -10,7 +10,11 @@
         }}</a-button>
       </template>
     </BasicTable>
-    <AssignHomeworkModal @register="registerAssignModal" :class-list="classOptions" />
+    <AssignHomeworkModal
+      @register="registerAssignModal"
+      :class-list="classOptions"
+      @success="handleOk"
+    />
   </PageWrapper>
 </template>
 <script lang="ts" setup>
@@ -37,10 +41,10 @@
     showIndexColumn: false,
     rowKey: 'id',
     showSelectionBar: false,
-    actionColumn: {
-      title: t('table.action'),
-      dataIndex: 'action',
-    },
+    // actionColumn: {
+    //   title: t('table.action'),
+    //   dataIndex: 'action',
+    // },
   });
   const [registerAssignModal, { openModal: openModal, closeModal }] = useModal();
 

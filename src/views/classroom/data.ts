@@ -1,6 +1,6 @@
 import { classListApi } from '@/api/class/class';
 import { examListApi } from '@/api/exam/exam';
-import { bookListApi, homeworkListApi } from '@/api/exercise/exercise';
+import { bookListApi } from '@/api/exercise/exercise';
 import { FormSchema } from '@/components/Form';
 import { useI18n } from '@/hooks/web/useI18n';
 
@@ -180,11 +180,24 @@ export const createExamSchemas: FormSchema[] = [
     },
   },
   {
-    field: 'deadline',
-    label: t('form.exam.deadline'),
-    component: 'DatePicker',
+    field: 'level',
+    label: t('form.level'),
+    component: 'Select',
     componentProps: {
-      format: 'YYYY-MM-DD',
+      options: [
+        {
+          label: '1',
+          value: '1',
+        },
+        {
+          label: '2',
+          value: '2',
+        },
+        {
+          label: '3',
+          value: '3',
+        },
+      ],
     },
     required: true,
     colProps: {
@@ -277,7 +290,7 @@ export const assignHomeworkFormSchemas: FormSchema[] = [
       api: bookListApi(),
       resultField: 'items',
       labelField: 'title',
-      valueField: 'id',
+      valueField: 'title',
       immediate: true,
     },
     required: true,

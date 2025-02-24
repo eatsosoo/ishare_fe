@@ -7,8 +7,8 @@ import {
   ClassStudentGetResultModel,
   CreateClassParams,
 } from './classModel';
-import { BasicPageParams, BasicApiResult } from '../model/baseModel';
-import { ErrorMessageMode, Result } from '#/axios';
+import { ErrorMessageMode } from '#/axios';
+import { BasicApiResult, BasicPageParams, Result } from '../model/baseModel';
 import { useUserStore } from '@/store/modules/user';
 
 enum Api {
@@ -61,7 +61,7 @@ export const classListApi = () => (params: BasicPageParams) =>
   });
 
 export const classOptionsApi = () =>
-  defHttp.get<Result<ClassListItem>>({
+  defHttp.get<Result<ClassListItem[]>>({
     url: Api.CLASS_ROUTE,
     headers: {
       // @ts-ignore

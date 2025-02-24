@@ -29,25 +29,20 @@
 </template>
 <script lang="ts" setup>
   import { BasicModal } from '@/components/Modal';
-  import { computed, onMounted, reactive, ref, watch } from 'vue';
-  import { examDetailApi, examSkillApi, uploadAudioApi } from '@/api/exam/exam';
+  import { ref, watch } from 'vue';
   import { useMessage } from '@/hooks/web/useMessage';
   import { useI18n } from '@/hooks/web/useI18n';
-  import { ExamDetailItem, ExamSkillForm, SkillType } from '@/api/exam/examModel';
-  import { Card, InputNumber, Select, Upload } from 'ant-design-vue';
+  import { SkillType } from '@/api/exam/examModel';
   import EditorSkill from '@/views/test/skill/EditorSkill.vue';
-  import { READING_PART_DEF, SKILL_OPTIONS } from '@/views/test/data';
+  import { READING_PART_DEF } from '@/views/test/data';
   import { useDesign } from '@/hooks/web/useDesign';
-  import { useGlobSetting } from '@/hooks/setting';
-  import { getToken } from '@/utils/auth';
   import { NewPartItem } from '@/views/test/types/question';
-  import { FieldTimeOutlined } from '@ant-design/icons-vue';
   import { assignHomeworkFormSchemas } from '../classroom/data';
   import { useForm, BasicForm } from '@/components/Form';
   import { assignExercise } from '@/api/exercise/exercise';
   import { ClassListItem } from '@/api/class/classModel';
-  import { classListApi } from '@/api/class/class';
   import { CollapseContainer } from '@/components/Container';
+  import { getLeftValue } from '@/utils/stringUtils';
 
   const props = defineProps({
     classList: {
@@ -55,6 +50,8 @@
       default: () => [],
     },
   });
+
+  const emit = defineEmits(['success']);
 
   const { t } = useI18n();
   const [registerForm, { validate, resetFields, updateSchema }] = useForm({
@@ -73,16 +70,18 @@
   const parts = ref<NewPartItem[]>([READING_PART_DEF]);
 
   function handleFormChange(key, value) {
-    console.log(key, value);
     if (key === 'skill') {
       skill.value = value;
     } else if (key === 'class_id') {
       const shifts = value
-        ? props.classList.find((cls: ClassListItem) => cls.id == value)?.shifts || []
+        ? props.classList.find((cls: ClassListItem) => cls.id === value)?.shifts || []
         : [];
+
       updateSchema({
         field: 'shift_id',
-        componentProps: { options: shifts },
+        componentProps: {
+          options: shifts.map((shift) => ({ label: shift.title, value: shift.id })),
+        },
       });
     }
   }
@@ -107,19 +106,20 @@
         assignment: {
           class_id,
           shift_id,
-          date,
+          date: getLeftValue(date),
         },
         question_groups: parts.value[0].question_groups,
       };
 
-      const newClass = await assignExercise(submitForm);
-      if (newClass) {
+      const result = await assignExercise(submitForm);
+      if (result) {
         createSuccessModal({
           title: t('form.assignHomework'),
           content: t('common.createSuccessfully'),
           getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
         });
         resetFields();
+        emit('success');
       }
     } catch (error) {
       if (error.errorFields) {

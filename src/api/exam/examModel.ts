@@ -16,8 +16,8 @@ export type SkillType = 'Reading' | 'Listening' | 'Writing' | 'Speaking';
 
 export interface ExamAddForm {
   title: string;
-  deadline: string;
-  type: 'exam' | 'homework';
+  level: string;
+  type: string;
 }
 
 export interface ExamSkillForm {

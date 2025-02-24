@@ -25,7 +25,7 @@
       </template>
     </BasicTable>
 
-    <AddExamModal type="exam" @register="registerAddModal" @success="handleSuccessModal" />
+    <CreateExamModal @register="registerAddModal" @success="handleSuccessModal" />
     <EditorExamModal @register="registerEditorModal" :exam-id="examId" :title="titleEditor" />
   </div>
 </template>
@@ -35,7 +35,7 @@
   import { useI18n } from '@/hooks/web/useI18n';
   import { examDeleteApi, examListApi } from '@/api/exam/exam';
   import { useModal } from '@/components/Modal';
-  import AddExamModal from '@/views/test/AddExamModal.vue';
+  import CreateExamModal from '@/views/test/CreateExamModal.vue';
   import EditorExamModal from '@/views/test/EditorExamModal.vue';
   import { ref } from 'vue';
   import { ExamListItem } from '@/api/exam/examModel';

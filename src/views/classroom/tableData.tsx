@@ -304,12 +304,12 @@ export function getTestColumns(): BasicColumn[] {
       dataIndex: 'teacher',
     },
     {
-      title: t('table.examTable.createdAt'),
-      dataIndex: 'created_at',
+      title: t('table.level'),
+      dataIndex: 'level',
     },
     {
-      title: t('table.examTable.deadline'),
-      dataIndex: 'deadline',
+      title: t('table.examTable.createdAt'),
+      dataIndex: 'created_at',
     },
   ];
 }
@@ -356,10 +356,6 @@ export function getAssignmentColumns(): BasicColumn[] {
     {
       title: t('table.assignmentTable.className'),
       dataIndex: 'class_name',
-    },
-    {
-      title: t('table.assignmentTable.examTitle'),
-      dataIndex: 'exam_title',
     },
     {
       title: t('table.assignmentTable.teacher'),
