@@ -17,14 +17,6 @@ const exercise: AppRouteModule = {
   },
   children: [
     {
-      path: '/exercise/index',
-      name: 'HomeworkList',
-      component: () => import('@/views/exercise/index.vue'),
-      meta: {
-        title: t('routes.page.homeworkList'),
-      },
-    },
-    {
       path: '/exercise/assignment',
       name: 'AssignHomework',
       component: () => import('@/views/exercise/assignment.vue'),
@@ -32,38 +24,6 @@ const exercise: AppRouteModule = {
         title: t('routes.page.assignHomework'),
       },
     },
-    // {
-    //   path: '/exercise/reading',
-    //   name: 'ReadingExercise',
-    //   component: () => import('@/views/exercise/reading.vue'),
-    //   meta: {
-    //     title: t('routes.page.reading'),
-    //   },
-    // },
-    // {
-    //   path: '/exercise/listening',
-    //   name: 'ListeningExercise',
-    //   component: () => import('@/views/exercise/listening.vue'),
-    //   meta: {
-    //     title: t('routes.page.listening'),
-    //   },
-    // },
-    // {
-    //   path: '/exercise/writing',
-    //   name: 'WritingExercise',
-    //   component: () => import('@/views/exercise/writing.vue'),
-    //   meta: {
-    //     title: t('routes.page.writing'),
-    //   },
-    // },
-    // {
-    //   path: '/exercise/speaking',
-    //   name: 'SpeakingExercise',
-    //   component: () => import('@/views/exercise/speaking.vue'),
-    //   meta: {
-    //     title: t('routes.page.speaking'),
-    //   },
-    // },
   ],
 };
 

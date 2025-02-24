@@ -16,6 +16,14 @@ export function getClassColumns(): BasicColumn[] {
       dataIndex: 'title',
     },
     {
+      title: t('table.key'),
+      dataIndex: 'key',
+    },
+    {
+      title: t('table.level'),
+      dataIndex: 'level',
+    },
+    {
       title: t('table.teacher'),
       dataIndex: 'teacher',
     },
@@ -24,22 +32,9 @@ export function getClassColumns(): BasicColumn[] {
       dataIndex: 'students_count',
     },
     {
-      title: t('table.status'),
-      dataIndex: 'status',
-    },
-    {
-      title: t('table.hour'),
-      dataIndex: 'hour',
-    },
-    {
       title: t('table.openingDay'),
       sorter: true,
       dataIndex: 'start_date',
-    },
-    {
-      title: t('table.endDay'),
-      sorter: true,
-      dataIndex: 'end_date',
     },
   ];
 }

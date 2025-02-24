@@ -21,6 +21,7 @@
   "add": "Thêm",
   "save": "Lưu",
   "cancel": "Hủy",
+  "cancelEditing": "Hủy chỉnh sửa",
   "addStudent": "Thêm học sinh",
   "editStudent": "Sửa học sinh",
   "deleteStudent": "Xóa học sinh",
@@ -40,6 +41,8 @@
   "unblockAccount": "Mở khóa tài khoản",
   "completedAt": "Ngày nộp",
   "roleName": "Tên vai trò",
+  "key": "Loại lớp",
+  "level": "Cấp độ",
   "exerciseTable": {
     "name": "Tên bài tập",
     "score": "Điểm",

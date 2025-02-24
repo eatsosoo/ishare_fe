@@ -7,6 +7,9 @@
     <Card :title="t('form.newClassForm.information')" :bordered="false">
       <BasicForm @register="register" />
     </Card>
+    <Card :title="t('form.newClassForm.shift')">
+      <ShiftTable />
+    </Card>
     <Card :title="titlePreviewTable" :bordered="false" class="!mt-5">
       <StudentTable ref="tableRef" @select-students="handleRegisterStudentToClass" />
     </Card>
@@ -29,6 +32,7 @@
   import { createClassApi } from '@/api/class/class';
   import { CreateClassParams } from '@/api/class/classModel';
   import { StudentListItem } from '@/api/student/studentModel';
+  import ShiftTable from './ShiftTable.vue';
 
   defineOptions({ name: 'FormHightPage' });
 

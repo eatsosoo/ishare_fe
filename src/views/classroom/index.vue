@@ -5,12 +5,6 @@
         <template v-if="column.key === 'start_date'">
           {{ record.start_date.split(' ')[0] }}
         </template>
-        <template v-if="column.key === 'end_date'">
-          {{ record.end_date.split(' ')[0] }}
-        </template>
-        <template v-if="column.key === 'status'">
-          {{ setClassStatus(record.start_date, record.end_date) }}
-        </template>
         <template v-if="column.key === 'action'">
           <Icon
             :size="20"

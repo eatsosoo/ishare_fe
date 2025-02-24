@@ -25,7 +25,12 @@
     "studentRegister": "Học sinh đăng ký",
     "courseDuration": "Thời gian khóa học",
     "hour": "Giờ học",
-    "classType": "Loại lớp học"
+    "classType": "Loại lớp học",
+    "level": "Cấp độ",
+    "shift": "Ca học",
+    "shiftName": "Tên ca học",
+    "shiftDescription": "Mô tả",
+    "addShift": "Thêm ca học"
   },
   "addStudentToClass": "Thêm học sinh vào lớp",
   "gradingSearch": {

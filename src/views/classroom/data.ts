@@ -86,6 +86,31 @@ export const schemas: FormSchema[] = [
       offset: 2,
     },
   },
+  {
+    field: 'level',
+    label: t('form.newClassForm.level'),
+    component: 'Select',
+    componentProps: {
+      options: [
+        {
+          label: '1',
+          value: '1',
+        },
+        {
+          label: '2',
+          value: '2',
+        },
+        {
+          label: '3',
+          value: '3',
+        },
+      ],
+    },
+    required: true,
+    colProps: {
+      offset: 2,
+    },
+  },
 ];
 
 export const searchGradingSchemas: FormSchema[] = [
