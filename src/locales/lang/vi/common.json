@@ -61,6 +61,9 @@
   "warning": {
     "addActionEdtior": "Chưa có vị trí để chèn text!"
   },
+  "error": {
+    "finishAllQuestions": "Hãy hoàn thành hết các câu hỏi trước khi nộp bài"
+  },
   "test": {
     "reading": "Đề thi phần READING",
     "listening": "Đề thi phần LISTENING",

@@ -31,7 +31,7 @@
   import { reactive, ref } from 'vue';
   import { NewPartItem, SkillItem } from '@/views/test/types/question';
   import { useRoute, useRouter } from 'vue-router';
-  import { SkillType } from '@/api/exam/examModel';
+  import { SkillType, SubmitAnswer, SubmitExam } from '@/api/exam/examModel';
   import { toNumber } from 'lodash-es';
   import { useMessage } from '@/hooks/web/useMessage';
   import { useI18n } from '@/hooks/web/useI18n';
@@ -160,7 +160,7 @@
   const mapAnswersToParts = (
     parts: NewPartItem[],
     answers: { [key: string]: string | string[] },
-  ) => {
+  ): SubmitAnswer[] => {
     console.log(answers);
     return parts
       .map((part) => {
@@ -190,12 +190,23 @@
 
   async function submitExam() {
     getInputValues();
-    const formatData = {
+
+    if (!skillExam.value) return;
+
+    const hasEmptyValue = (obj: Record<string, any>): boolean =>
+      Object.values(obj).some((value) => value === '');
+
+    if (hasEmptyValue(studentAnswer.value)) {
+      createMessage.error(t('common.error.finishAllQuestions'));
+      return;
+    }
+
+    const formatData: SubmitExam = {
+      exam_skill_id: skillExam.value.id,
       type: state.type,
-      answers: mapAnswersToParts(skillExam.value?.parts, studentAnswer.value),
+      answers: mapAnswersToParts(skillExam.value.parts, studentAnswer.value),
     };
     console.log(formatData);
-
     try {
       openFullLoading();
       const result = await examSubmitApi(state.examId, formatData);
@@ -204,8 +215,6 @@
       }
     } catch (error) {
       console.log(error);
-      createMessage.warning('Bạn cần hoàn thành hết câu hỏi!');
-
       // createMessage.error(t('sys.app.dataNotFound'));
     } finally {
       closeFullLoading();

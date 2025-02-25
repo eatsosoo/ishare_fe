@@ -62,15 +62,16 @@ export interface ExamDetailItem {
   Speaking: SkillItem;
 }
 
+export interface SubmitAnswer {
+  id: number;
+  question_count: number;
+  question_answer: { [key: string]: string };
+}
+
 export interface SubmitExam {
+  exam_skill_id: number;
   type: SkillType;
-  answers: [
-    {
-      id: number;
-      question_count: number;
-      question_answer: { [key: string]: string };
-    },
-  ];
+  answers: SubmitAnswer[];
 }
 
 export interface ExamGradingListItem {
