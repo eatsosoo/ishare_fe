@@ -195,18 +195,20 @@
     sections.value.push(cloneDeep(mapDef[props.skillType]));
   }
 
-  function updateQuestionNumbers(data) {
+  function updateQuestionNumbers(data: NewPartItem[]) {
+    console.log('data', data);
     let questionCounter = 1; // Bắt đầu đánh số từ 1
 
     data.forEach((part) => {
-      part.question_groups.forEach((group) => {
+      part.question_groups.forEach((group: GroupQuestionItem) => {
         const newQuestionAnswer = {};
-        const newQuestionOptions = {};
-        let updatedText = group.question_text;
+        const newQuestionOptions = group.question_type === 'choice' ? {} : group.question_options;
+        const mapMatch = {};
 
-        group.question_no = group.question_no.map((_, index) => {
+        group.question_no = group.question_no.map((no) => {
           const newQuestionKey = `question_${questionCounter}`;
-          const oldQuestionKey = `question_${group.question_no[index]}`;
+          const oldQuestionKey = `question_${no}`;
+          mapMatch[oldQuestionKey] = newQuestionKey;
 
           // Cập nhật question_answer
           if (group.question_answer[oldQuestionKey] !== undefined) {
@@ -214,13 +216,9 @@
           }
 
           // Cập nhật question_options nếu có
-          if (group.question_options[oldQuestionKey] !== undefined) {
+          if (group.question_type === 'choice') {
             newQuestionOptions[newQuestionKey] = group.question_options[oldQuestionKey];
           }
-
-          // Cập nhật question_text
-          const questionRegex = new RegExp(`\\[${oldQuestionKey}\\]`, 'g');
-          updatedText = updatedText.replace(questionRegex, `[${newQuestionKey}]`);
 
           questionCounter++; // Tăng số thứ tự
           return questionCounter - 1;
@@ -229,11 +227,25 @@
         // Gán lại dữ liệu đã cập nhật
         group.question_answer = newQuestionAnswer;
         group.question_options = newQuestionOptions;
-        group.question_text = updatedText;
+        group.question_text = group.question_text.replace(/\[question_\d+\]/g, (match) => {
+          // Lấy key trong mapping (bỏ dấu `[` và `]`)
+          const key = match.slice(1, -1);
+          return mapMatch[key] ? `[${mapMatch[key]}]` : match; // Thay thế nếu có, nếu không giữ nguyên
+        });
       });
     });
 
     return data;
+  }
+
+  function setAnswerDefault(orders: number[], type: SelectQuestionType): { [key: string]: string } {
+    console.log(orders, type);
+    if (type !== 'multiple_choice') {
+      return Object.fromEntries(orders.map((num) => [`question_${num}`, '']));
+    } else {
+      const key = `question_${orders.join('_')}`;
+      return { [key]: '' };
+    }
   }
 
   function handleAddGroup({
@@ -243,7 +255,6 @@
     group_type: SelectQuestionType;
     total: number;
   }) {
-    // console.log(group_type, total);
     const part = sections.value[activeKey.value];
     if (!part) {
       createMessage.warning('Không tìm thấy part!');
@@ -258,7 +269,6 @@
       : null;
     const lastQuestionNo = maxItem?.question_no.at(-1) || 0;
     const orders = Array.from({ length: total }, (_, i) => i + lastQuestionNo + 1);
-    const answerDefault = Object.fromEntries(orders.map((num) => [`question_${num}`, '']));
 
     const newGroup: GroupQuestionItem = {
       id: null,
@@ -267,15 +277,17 @@
       question_text: '',
       question_no: orders,
       question_options: handleAnswerOptions(group_type, orders),
-      question_answer: answerDefault,
+      question_answer: setAnswerDefault(orders, group_type),
       question_count: total,
     };
 
+    console.log(newGroup);
+
     part.question_groups.push({ ...newGroup });
-    groupActive.value = { ...newGroup };
     sections.value = updateQuestionNumbers(sections.value);
     emit('update-parts', sections.value);
-
+    groupActive.value = sections.value[activeKey.value].question_groups.at(-1) ?? { ...newGroup };
+    console.log(groupActive);
     closeModal();
   }
 

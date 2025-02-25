@@ -1,6 +1,6 @@
 <template>
   <div class="wrap-question-form">
-    <h2 class="text-primary"
+    <h2 class="text-primary font-bold"
       >Questions
       {{
         props.group.question_no.length > 1
@@ -11,7 +11,7 @@
 
     <div class="flex gap-6 items-center mb-4">
       <div>
-        <label for="">Dạng câu hỏi</label>
+        <label for="">{{ t('common.questionType') }}</label>
         <Select
           v-model:value="changeData.type"
           :options="questionTypeOps"
@@ -20,7 +20,7 @@
         />
       </div>
       <div class="flex items-center">
-        <label for="">Số lượng câu</label>
+        <label for="">{{ t('common.numOfQuestions') }}</label>
         <div class="ml-2">
           <InputNumber :value="props.group.question_no.length" :min="1" disabled />
         </div>
@@ -54,26 +54,33 @@
       @change-options="changeData.answerOptions = $event"
     />
 
-    <Options
-      v-if="isArray(changeData.answerOptions)"
-      @register="registerOptionsModal"
-      :value="changeData.answerOptions"
-      :type-answer="changeData.type"
-      @update:value="updateAnswerOptions"
-    />
+    <template v-if="isArray(changeData.answerOptions)">
+      <Options
+        @register="registerOptionsModal"
+        :value="changeData.answerOptions"
+        :type-answer="changeData.type"
+        @update:value="updateAnswerOptions"
+      />
+    </template>
+    <!-- <template v-else
+      ><MultipleChoice
+        @register="registerOptionsModal"
+        :value="changeData.answerOptions"
+        :type-answer="changeData.type"
+        @update:value="updateAnswerOptions"
+    /></template> -->
 
     <PreviewText :previewText="previewText" @register="registerPreviewModal" />
 
     <div class="flex gap-2 mt-2">
-      <!-- <a-button type="default" @click="updateAnswer">Cập nhật đáp án</a-button> -->
       <a-button
         v-if="changeData.type !== 'fill_in' && changeData.type !== 'choice'"
-        @click="openOptionsModal"
-        >Options</a-button
+        @click="activateOptionPopup"
+        >{{ t('common.option') }}</a-button
       >
       <!-- <a-button @click="emit('delete')">Delete Group</a-button> -->
-      <a-button @click="activatePreviewPopup">Preview</a-button>
-      <a-button type="primary" @click="saveQuestion">Lưu câu hỏi</a-button>
+      <a-button @click="activatePreviewPopup">{{ t('common.preview') }}</a-button>
+      <a-button type="primary" @click="saveQuestion">{{ t('common.saveQuestion') }}</a-button>
     </div>
   </div>
 </template>
@@ -96,6 +103,7 @@
   import { InputNumber, Select } from 'ant-design-vue';
   import { renderGroupQuestions } from '@/views/take/helpers';
   import { useI18n } from '@/hooks/web/useI18n';
+  // import MultipleChoice from '@/views/test/form-question/MultipleChoice.vue';
 
   interface FormData {
     type: SelectQuestionType;
@@ -148,6 +156,11 @@
     };
     previewText.value = renderGroupQuestions(data, classStyle);
     openPreviewModal();
+  }
+
+  function activateOptionPopup() {
+    console.log(changeData);
+    openOptionsModal();
   }
 
   function updateAnswerOptions(items: OptionAnswerType[]) {

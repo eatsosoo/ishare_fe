@@ -1,7 +1,9 @@
 <template>
   <div>
     <div v-for="(_, key) in localModel" :key="key" class="my-2">
-      <label v-if="typeof key === 'string'">Đáp án Question {{ key.split('_')[1] }}:</label>
+      <label v-if="typeof key === 'string'" class="w-[116px] inline-block">
+        {{ t('common.questionAnswer') }} {{ key.split('_')[1] }}:
+      </label>
       <Input
         v-if="props.answerType === 'fill_in'"
         v-model:value="localModel[key]"
@@ -28,6 +30,13 @@
           @click="activateModal(key)"
         />
       </div>
+      <div v-else-if="props.answerType === 'multiple_choice'" class="flex items-center gap-4">
+        <CheckboxGroup v-model:value="localModel[key]">
+          <Checkbox v-for="(value, key) in props.options" :key="key" :value="key">{{
+            key
+          }}</Checkbox>
+        </CheckboxGroup>
+      </div>
     </div>
 
     <Options
@@ -41,10 +50,11 @@
 
 <script setup lang="ts">
   import { computed, ref } from 'vue';
-  import { Input, Select, RadioGroup, Radio } from 'ant-design-vue';
+  import { Input, Select, RadioGroup, Radio, CheckboxGroup, Checkbox } from 'ant-design-vue';
   import { OptionAnswerType, SelectQuestionType } from '@/views/test/types/question';
   import { useModal } from '@/components/Modal';
   import Options from './Options.vue';
+  import { useI18n } from '@/hooks/web/useI18n';
 
   const props = defineProps({
     modelValue: {
@@ -63,6 +73,8 @@
   const emit = defineEmits(['update:modelValue', 'change-options']);
   const modifyOps = ref<OptionAnswerType[]>([]);
   const keyPresent = ref<string>('');
+
+  const { t } = useI18n();
   const [registerOptionsModal, { openModal: openOptionsModal, closeModal }] = useModal();
 
   // ✅ Tạo `computed` để phản chiếu `modelValue` và cập nhật qua `emit`

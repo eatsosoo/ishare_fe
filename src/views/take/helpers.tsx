@@ -47,19 +47,20 @@ export function renderGroupQuestions(group: GroupQuestionItem, style: string) {
 
   const generateFn4 = (match: string) => {
     if (!isArray(question_options)) return '';
+
     const matchFormat = match.slice(1, -1);
-    const html = question_options.map(
-      (option) => `<div class="flex items-center mb-2">
-          <span class="bg-gray-200 font-bold mr-[10px] w-[24px] h-[24px] rounded-full text-center">
-            ${option.value}
-          </span>
-          <label class="custom-input custom-checkbox">
-            <input type="checkbox" name="${matchFormat}" value="${option.value}" />
-            <span class="checkmark"></span>
-            ${option.label}
-          </label>
-        </div>`,
-    );
+    const html = question_options.map((option) => {
+      return `<div class="flex items-center mb-2">
+      <span class="bg-gray-200 font-bold mr-[10px] w-[24px] h-[24px] rounded-full text-center">
+        ${option.value}
+      </span>
+      <label class="custom-input custom-checkbox">
+        <input type="checkbox" name="${matchFormat}" value="${option.value}" />
+        <span class="checkmark"></span>
+        ${option.label}
+      </label>
+    </div>`;
+    });
     return html.join('\n');
   };
 

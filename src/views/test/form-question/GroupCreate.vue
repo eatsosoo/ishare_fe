@@ -15,12 +15,14 @@
   import { BasicModal } from '@/components/Modal';
   import { BasicForm, useForm, FormSchema } from '@/components/Form';
   import { questionTypeOps } from '../data';
+  import { useI18n } from '@/hooks/web/useI18n';
 
+  const { t } = useI18n();
   const groupQuestionSchemas: FormSchema[] = [
     {
       field: 'group_type',
       component: 'Select',
-      label: 'Dạng câu hỏi',
+      label: t('common.questionType'),
       required: true,
       componentProps: {
         options: questionTypeOps,
@@ -32,7 +34,7 @@
     },
     {
       field: 'total',
-      label: 'Số lượng câu',
+      label: t('common.numOfQuestions'),
       component: 'InputNumber',
       componentProps: {
         defaultValue: 1,

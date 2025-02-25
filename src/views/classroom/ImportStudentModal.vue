@@ -69,6 +69,7 @@
     formData.append('class_key', props.classKey);
 
     try {
+      loading.value = true;
       const result = await uploadAudioApi(formData);
       if (result) {
         createMessage.success(t('common.uploadFileSuccess'));
@@ -76,6 +77,8 @@
       }
     } catch (error) {
       console.error('Upload failed:', error);
+    } finally {
+      loading.value = false;
     }
   };
 </script>

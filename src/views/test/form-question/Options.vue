@@ -2,29 +2,23 @@
   <BasicModal
     v-bind="$attrs"
     title="Chỉnh sửa lựa chọn câu hỏi"
-    width="600px"
+    width="1000px"
     :can-fullscreen="false"
     @ok="submitForm"
   >
     <Form :model="formModel" :rules="rules" ref="formRef" disable>
-      <div v-for="(_, index) in formData" :key="index" class="flex justify-between">
+      <div v-for="(_, index) in formData" :key="index" class="flex gap-2">
         <!-- Giá trị -->
-        <Form.Item
-          :label="'Giá trị'"
-          :name="`value_${index}`"
-          :label-col="{ xl: 6, xxl: 6 }"
-          label-align="left"
-        >
-          <Input v-model:value="formModel[`value_${index}`]" allow-clear :disabled="!allowAction" />
+        <Form.Item :label="'Giá trị'" :name="`value_${index}`" label-align="left">
+          <Input
+            v-model:value="formModel[`value_${index}`]"
+            allow-clear
+            :disabled="!allowActionLabel"
+          />
         </Form.Item>
 
         <!-- Nhãn -->
-        <Form.Item
-          :label="'Nhãn'"
-          :name="`label_${index}`"
-          :label-col="{ xl: 6, xxl: 6 }"
-          label-align="left"
-        >
+        <Form.Item :label="'Nhãn'" :name="`label_${index}`" label-align="left" class="w-full">
           <Input v-model:value="formModel[`label_${index}`]" allow-clear :disabled="!allowAction" />
         </Form.Item>
 
@@ -82,6 +76,10 @@
 
   const allowAction = computed(() => {
     return props.typeAnswer !== 'true_false_not_given';
+  });
+  const allowActionLabel = computed(() => {
+    if (props.typeAnswer === 'correct_letter') return true;
+    else return false;
   });
   const hiddenRemoveBtn = computed(() => {
     if (props.typeAnswer === 'true_false_not_given') return true;

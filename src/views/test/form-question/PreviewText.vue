@@ -1,7 +1,7 @@
 <template>
   <BasicModal
     v-bind="$attrs"
-    :title="'Chỉnh sửa lựa chọn câu hỏi'"
+    :title="t('common.preview')"
     width="1000px"
     :can-fullscreen="false"
     :show-ok-btn="false"
@@ -12,12 +12,18 @@
 
 <script setup>
   import BasicModal from '@/components/Modal/src/BasicModal.vue';
+  import { useI18n } from '@/hooks/web/useI18n';
 
   defineProps({ previewText: String });
+
+  const { t } = useI18n();
 </script>
 
 <style lang="scss">
   .custom-html {
+    max-height: 65vh;
+    overflow: scroll;
+
     table {
       width: 100%;
       border-collapse: collapse;

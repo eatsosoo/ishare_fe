@@ -26,8 +26,10 @@
   "pleaseSelectQuestion": "Vui lòng chọn câu hỏi",
   "questionInformation": "Thông tin câu hỏi",
   "questionContent": "Nội dung câu hỏi",
-  "questionType": "Loại câu hỏi",
+  "questionType": "Kiểu câu hỏi",
+  "numOfQuestions": "Số lượng câu",
   "answer": "Đáp án",
+  "questionAnswer": "Đáp án câu hỏi",
   "answerOptions": "Các phương án trả lời",
   "correctAnswer": "Đáp án đúng",
   "true": "Đúng",
@@ -53,6 +55,9 @@
   "basicInformation": "Thông tin cơ bản",
   "selectFile": "Chọn file",
   "importNote": "Chú ý: Vui lòng import theo đúng file mẫu đã được cung cấp trước",
+  "preview": "Xem trước",
+  "option": "Lựa chọn",
+  "saveQuestion": "Lưu câu hỏi",
   "warning": {
     "addActionEdtior": "Chưa có vị trí để chèn text!"
   },
