@@ -38,8 +38,8 @@
         :rules="rulesOption"
         ref="optionFormRef"
         v-if="
-          questionFormData.type === SelectQuestionType.SingleChoice ||
-          questionFormData.type === SelectQuestionType.MultipleChoice
+          questionFormData.type === SelectQuestionTypeX.SingleChoice ||
+          questionFormData.type === SelectQuestionTypeX.MultipleChoice
         "
         class="mb-4"
       >
@@ -79,7 +79,7 @@
       <div class="mb-4">
         <h3>{{ t('common.correctAnswer') }}</h3>
         <Form.Item
-          v-if="questionFormData.type === SelectQuestionType.SingleChoice"
+          v-if="questionFormData.type === SelectQuestionTypeX.SingleChoice"
           name="answer"
           required
         >
@@ -95,7 +95,7 @@
         </Form.Item>
 
         <Form.Item
-          v-else-if="questionFormData.type === SelectQuestionType.MultipleChoice"
+          v-else-if="questionFormData.type === SelectQuestionTypeX.MultipleChoice"
           name="answer"
           required
         >
@@ -119,7 +119,7 @@
         </Form.Item>
 
         <Form.Item
-          v-else-if="questionFormData.type === SelectQuestionType.TrueFalseNotGiven"
+          v-else-if="questionFormData.type === SelectQuestionTypeX.TrueFalseNotGiven"
           name="answer"
           required
         >
@@ -134,7 +134,7 @@
         </Form.Item>
 
         <Form.Item
-          v-else-if="questionFormData.type === SelectQuestionType.YesNoNotGiven"
+          v-else-if="questionFormData.type === SelectQuestionTypeX.YesNoNotGiven"
           name="answer"
           required
         >
@@ -160,7 +160,7 @@
     alphabet,
     questionTypes,
     trueFalseNotGivenOptions,
-    SelectQuestionType,
+    SelectQuestionTypeX,
     yesNoNotGivenOptions,
   } from '@/views/test/data';
   import { useI18n } from '@/hooks/web/useI18n';
@@ -240,13 +240,13 @@
   };
 
   const handleChangeQuestionType = (type: any) => {
-    if (type === SelectQuestionType.TrueFalseNotGiven) {
+    if (type === SelectQuestionTypeX.TrueFalseNotGiven) {
       optionFormData.value = {
         true: 'True',
         false: 'False',
         not_given: 'Not given',
       };
-    } else if (type === SelectQuestionType.YesNoNotGiven) {
+    } else if (type === SelectQuestionTypeX.YesNoNotGiven) {
       optionFormData.value = {
         yes: 'Yes',
         no: 'No',

@@ -30,7 +30,7 @@
         <a-button type="primary" @click="submitExam"> Nộp bài </a-button>
       </div>
       <div class="h-full">
-        <ExamineType1
+        <!-- <ExamineType1
           v-if="currentType === 'Reading' || currentType === 'Listening'"
           :value="examPart"
           @update-answer="answer = $event"
@@ -40,7 +40,7 @@
           :value="examPart"
           @update-answer="answer = $event"
         />
-        <ExamineType3 v-else :value="examPart" @update-answer="answer = $event" />
+        <ExamineType3 v-else :value="examPart" @update-answer="answer = $event" /> -->
       </div>
     </div>
 
@@ -62,14 +62,11 @@
     getSearchExamOfStudentConfig,
   } from '@/views/classroom/tableData';
   import { Tag } from 'ant-design-vue';
-  import ExamineType1 from './ExamineType1.vue';
   import { getExamListOfStudentApi } from '@/api/student/student';
   import { examDetailApi, examSubmitApi } from '@/api/exam/exam';
   import { ResponseExamPartItem, SkillType } from '@/api/exam/examModel';
   import { BasicModal, useModal } from '@/components/Modal';
   import { useMessage } from '@/hooks/web/useMessage';
-  import ExamineType3 from './ExamineType3.vue';
-  import ExamineType2 from './ExamineType2.vue';
 
   const domRef = ref<Nullable<HTMLElement>>(null);
   const { toggle: toggleDom, isFullscreen: isDomFullscreen } = useFullscreen(domRef);

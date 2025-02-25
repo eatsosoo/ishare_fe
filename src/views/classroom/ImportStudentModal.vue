@@ -23,7 +23,7 @@
   import { BasicModal } from '@/components/Modal';
   import { useI18n } from '@/hooks/web/useI18n';
   import { useMessage } from '@/hooks/web/useMessage';
-  import { uploadAudioApi } from '@/api/exam/exam';
+  import { importExcelApi } from '@/api/student/student';
 
   const props = defineProps({
     title: {
@@ -70,7 +70,7 @@
 
     try {
       loading.value = true;
-      const result = await uploadAudioApi(formData);
+      const result = await importExcelApi(formData);
       if (result) {
         createMessage.success(t('common.uploadFileSuccess'));
         emit('success');

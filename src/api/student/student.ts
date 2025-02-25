@@ -2,6 +2,7 @@ import { defHttp } from '@/utils/http/axios';
 import { StudentListGetResultModel } from './studentModel';
 import { BasicPageParams, Result } from '../model/baseModel';
 import { ExamPartItem, ResponseExamPartItem, SkillType } from '../exam/examModel';
+import { ErrorMessageMode } from '#/axios';
 
 enum Api {
   STUDENT_LIST = '/students',
@@ -67,3 +68,17 @@ export const getDetailExamOfStudent = (studentId: number, examId: number, type: 
       ignoreCancelToken: true,
     },
   });
+
+export const importExcelApi = (formData: FormData, mode: ErrorMessageMode = 'modal') =>
+  defHttp.post<Result<string>>(
+    {
+      url: '/users/import',
+      data: formData,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );

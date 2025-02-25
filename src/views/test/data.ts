@@ -156,11 +156,7 @@ export function handleAnswerOptions(type: SelectQuestionType, orders: number[]) 
   let genOps: OptionAnswerType[] | ExtendOptionAnswerType = [];
   switch (type) {
     case 'true_false_not_given':
-      genOps = [
-        { label: 'True', value: 'true' },
-        { label: 'False', value: 'false' },
-        { label: 'Not Given', value: 'not_given' },
-      ];
+      genOps = trueFalseNotGivenOptions;
       break;
     case 'choice':
       genOps = orders.reduce((acc, item) => {

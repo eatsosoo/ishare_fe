@@ -25,6 +25,15 @@ export function renderGroupQuestions(group: GroupQuestionItem, style: string) {
     </select>`;
   };
 
+  const generateFn5 = (match: string) => {
+    if (!isArray(question_options)) return '';
+    const matchFormat = match.slice(1, -1);
+    return `<select value="" name="${matchFormat}" class="${style} w-22 pb-[5px] custom-select-input" >
+      <option value=""></option>
+        ${question_options.map((option) => `<option value="${option.value}" }>${option.value}</option>`)}
+    </select>`;
+  };
+
   const generateFn3 = (match: string) => {
     if (isArray(question_options) || !question_options) return '';
     const matchFormat = match.slice(1, -1);
@@ -51,7 +60,7 @@ export function renderGroupQuestions(group: GroupQuestionItem, style: string) {
     const matchFormat = match.slice(1, -1);
     const html = question_options.map((option) => {
       return `<div class="flex items-center mb-2">
-      <span class="bg-gray-200 font-bold mr-[10px] w-[24px] h-[24px] rounded-full text-center">
+      <span class="bg-gray-200 font-bold mr-[10px] w-[24px] h-[24px] rounded-full text-center line-height-[24px]">
         ${option.value}
       </span>
       <label class="custom-input custom-checkbox">
@@ -67,7 +76,7 @@ export function renderGroupQuestions(group: GroupQuestionItem, style: string) {
   const fnMap = {
     fill_in: generateFn,
     true_false_not_given: generateFn2,
-    correct_letter: generateFn2,
+    correct_letter: generateFn5,
     choice: generateFn3,
     multiple_choice: generateFn4,
   };

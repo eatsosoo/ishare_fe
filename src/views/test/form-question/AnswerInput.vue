@@ -1,8 +1,8 @@
 <template>
   <div>
     <div v-for="(_, key) in localModel" :key="key" class="my-2">
-      <label v-if="typeof key === 'string'" class="w-[116px] inline-block">
-        {{ t('common.questionAnswer') }} {{ key.split('_')[1] }}:
+      <label v-if="typeof key === 'string'" class="min-w-[116px] inline-block">
+        {{ t('common.questionAnswer') }} {{ key.replace(/^question_/, '') }}:
       </label>
       <Input
         v-if="props.answerType === 'fill_in'"
@@ -10,11 +10,16 @@
         class="w-[10rem] ml-2"
       />
       <Select
-        v-else-if="
-          props.answerType === 'true_false_not_given' || props.answerType === 'correct_letter'
-        "
+        v-else-if="props.answerType === 'true_false_not_given'"
         v-model:value="localModel[key]"
         :options="options as OptionAnswerType[]"
+        class="w-[10rem] ml-2"
+      />
+      <Select
+        v-else-if="props.answerType === 'correct_letter'"
+        v-model:value="localModel[key]"
+        :options="options as OptionAnswerType[]"
+        :fieldNames="{ label: 'value', value: 'value' }"
         class="w-[10rem] ml-2"
       />
       <div v-else-if="props.answerType === 'choice'" class="flex items-center gap-4">
@@ -32,8 +37,8 @@
       </div>
       <div v-else-if="props.answerType === 'multiple_choice'" class="flex items-center gap-4">
         <CheckboxGroup v-model:value="localModel[key]">
-          <Checkbox v-for="(value, key) in props.options" :key="key" :value="key">{{
-            key
+          <Checkbox v-for="(op, key) in props.options" :key="key" :value="op.value">{{
+            op.value
           }}</Checkbox>
         </CheckboxGroup>
       </div>

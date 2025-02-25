@@ -131,6 +131,7 @@
     handleAnswerOptions,
     READING_PART_DEF,
     SPEAKING_DEF,
+    trueFalseNotGivenOptions,
     WRITING_DEF,
   } from '@/views/test/data';
   import {
@@ -196,55 +197,81 @@
   }
 
   function updateQuestionNumbers(data: NewPartItem[]) {
-    console.log('data', data);
     let questionCounter = 1; // Bắt đầu đánh số từ 1
 
     data.forEach((part) => {
       part.question_groups.forEach((group: GroupQuestionItem) => {
         const newQuestionAnswer = {};
         const newQuestionOptions = group.question_type === 'choice' ? {} : group.question_options;
-        const mapMatch = {};
+        const mapMatch = {}; // Lưu mapping từ số cũ sang số mới
 
+        // Cập nhật question_no và tạo mapping
         group.question_no = group.question_no.map((no) => {
           const newQuestionKey = `question_${questionCounter}`;
           const oldQuestionKey = `question_${no}`;
           mapMatch[oldQuestionKey] = newQuestionKey;
 
-          // Cập nhật question_answer
-          if (group.question_answer[oldQuestionKey] !== undefined) {
-            newQuestionAnswer[newQuestionKey] = group.question_answer[oldQuestionKey];
-          }
-
-          // Cập nhật question_options nếu có
-          if (group.question_type === 'choice') {
-            newQuestionOptions[newQuestionKey] = group.question_options[oldQuestionKey];
-          }
-
           questionCounter++; // Tăng số thứ tự
           return questionCounter - 1;
+        });
+
+        // Cập nhật question_answer
+        if (group.question_type === 'multiple_choice') {
+          Object.keys(group.question_answer).forEach((key) => {
+            // Tìm tất cả số câu trong key (ví dụ: question_12_13_14 → [12, 13, 14])
+            const numbers = key.match(/\d+/g) || [];
+            const newKey = `question_${numbers.map((num) => mapMatch[`question_${num}`].replace('question_', '')).join('_')}`;
+
+            newQuestionAnswer[newKey] = group.question_answer[key];
+          });
+        } else {
+          Object.keys(group.question_answer).forEach((oldKey) => {
+            const newKey = mapMatch[oldKey] || oldKey;
+            newQuestionAnswer[newKey] = group.question_answer[oldKey];
+          });
+        }
+
+        // Cập nhật question_options nếu có
+        if (group.question_type === 'choice') {
+          Object.keys(group.question_options).forEach((oldKey) => {
+            const newKey = mapMatch[oldKey] || oldKey;
+            newQuestionOptions[newKey] = group.question_options[oldKey];
+          });
+        }
+
+        // Cập nhật question_text
+        group.question_text = group.question_text.replace(/\[question_\d+\]/g, (match) => {
+          const key = match.slice(1, -1);
+          return mapMatch[key] ? `[${mapMatch[key]}]` : match;
         });
 
         // Gán lại dữ liệu đã cập nhật
         group.question_answer = newQuestionAnswer;
         group.question_options = newQuestionOptions;
-        group.question_text = group.question_text.replace(/\[question_\d+\]/g, (match) => {
-          // Lấy key trong mapping (bỏ dấu `[` và `]`)
-          const key = match.slice(1, -1);
-          return mapMatch[key] ? `[${mapMatch[key]}]` : match; // Thay thế nếu có, nếu không giữ nguyên
-        });
+
+        // Lỗi true/false bị mất option, fix tạm thời
+        if (
+          group.question_type === 'true_false_not_given' &&
+          Object.keys(newQuestionOptions).length === 0
+        ) {
+          group.question_options = trueFalseNotGivenOptions;
+        }
       });
     });
 
     return data;
   }
 
-  function setAnswerDefault(orders: number[], type: SelectQuestionType): { [key: string]: string } {
+  function setAnswerDefault(
+    orders: number[],
+    type: SelectQuestionType,
+  ): { [key: string]: string | string[] } {
     console.log(orders, type);
     if (type !== 'multiple_choice') {
       return Object.fromEntries(orders.map((num) => [`question_${num}`, '']));
     } else {
       const key = `question_${orders.join('_')}`;
-      return { [key]: '' };
+      return { [key]: [] };
     }
   }
 
@@ -281,13 +308,12 @@
       question_count: total,
     };
 
-    console.log(newGroup);
-
     part.question_groups.push({ ...newGroup });
-    sections.value = updateQuestionNumbers(sections.value);
+    if (props.skillType === 'Reading' || props.skillType === 'Listening') {
+      sections.value = updateQuestionNumbers(sections.value);
+    }
     emit('update-parts', sections.value);
     groupActive.value = sections.value[activeKey.value].question_groups.at(-1) ?? { ...newGroup };
-    console.log(groupActive);
     closeModal();
   }
 
@@ -321,6 +347,7 @@
     emit('update-parts', sections.value);
   }
 
+  // update for Writing and Speaking
   function handleUpdateGroup2() {
     if (!groupActive.value) return;
     const clone = { ...groupActive.value };

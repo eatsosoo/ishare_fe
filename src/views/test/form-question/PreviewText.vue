@@ -21,7 +21,7 @@
 
 <style lang="scss">
   .custom-html {
-    max-height: 65vh;
+    height: 65vh;
     overflow: scroll;
 
     table {

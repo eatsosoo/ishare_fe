@@ -70,7 +70,7 @@ export interface GroupQuestionItem {
   id: number | null;
   question_type: SelectQuestionType;
   question_text: string;
-  question_answer: { [key: string]: string };
+  question_answer: { [key: string]: string | string[] };
   group_no: number;
   question_options: OptionAnswerType[] | ExtendOptionAnswerType;
   question_no: number[];
