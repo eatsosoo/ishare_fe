@@ -64,7 +64,13 @@ export interface ExamDetailItem {
 
 export interface SubmitExam {
   type: SkillType;
-  answers: { question_id: number; answer: string | string[] }[];
+  answers: [
+    {
+      id: number;
+      question_count: number;
+      question_answer: { [key: string]: string };
+    },
+  ];
 }
 
 export interface ExamGradingListItem {

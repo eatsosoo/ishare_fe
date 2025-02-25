@@ -28,7 +28,7 @@ export const assignmentApi = (params: AssignmentForm, mode: ErrorMessageMode = '
   defHttp.post<Boolean>(
     {
       url: `${Api.ASSIGNMENT}/${params.exam_id}/classes/${params.class_id}`,
-      params,
+      params: { title: params.title, type: 'exam', date: params.date },
     },
     {
       errorMessageMode: mode,

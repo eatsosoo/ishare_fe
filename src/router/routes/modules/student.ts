@@ -21,7 +21,7 @@ const student: AppRouteModule = {
       name: 'Homework',
       component: () => import('@/views/student/homework.vue'),
       meta: {
-        title: t('routes.page.homework'),
+        title: t('routes.page.takeExercise'),
       },
     },
     {

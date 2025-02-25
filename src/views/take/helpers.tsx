@@ -1,7 +1,6 @@
-import { isArray } from '@/utils/is';
 import { GroupQuestionItem } from '../test/types/question';
 
-export function renderGroupQuestions(group: GroupQuestionItem, style: string) {
+export function renderGroupQuestions(group: GroupQuestionItem, style: string, answers = {}) {
   const { question_text, question_options, question_type } = group;
   const regexMap = {
     fill_in: /\[question_(\d+)]/g,
@@ -13,64 +12,84 @@ export function renderGroupQuestions(group: GroupQuestionItem, style: string) {
 
   const generateFn = (match: string, index) => {
     const matchFormat = match.slice(1, -1);
-    return `<input type="text" value="" name="${matchFormat}" class="${style} w-38 custom-text-input" placeholder="${index}"/>`;
+    return `<input type="text" value="${answers[matchFormat] || ''}" name="${matchFormat}" class="${style} w-38 custom-text-input" placeholder="${index}"/>`;
   };
 
   const generateFn2 = (match: string) => {
-    if (!isArray(question_options)) return '';
+    if (!question_options || !Array.isArray(question_options)) return '';
     const matchFormat = match.slice(1, -1);
-    return `<select value="" name="${matchFormat}" class="${style} w-22 pb-[5px] custom-select-input" >
-      <option value=""></option>
-        ${question_options.map((option) => `<option value="${option.value}" }>${option.label}</option>`)}
-    </select>`;
+    const selectedValue = answers[matchFormat] || ''; // Lấy đáp án nếu có
+    return `
+      <select name="${matchFormat}" class="${style} w-22 pb-[5px] custom-select-input">
+        <option value=""></option>
+        ${question_options
+          .map(
+            ({ value, label }) =>
+              `<option value="${value}" ${value === selectedValue ? 'selected' : ''}>${label}</option>`,
+          )
+          .join('')}
+      </select>`;
   };
 
   const generateFn5 = (match: string) => {
-    if (!isArray(question_options)) return '';
+    if (!question_options || !Array.isArray(question_options)) return '';
     const matchFormat = match.slice(1, -1);
-    return `<select value="" name="${matchFormat}" class="${style} w-22 pb-[5px] custom-select-input" >
-      <option value=""></option>
-        ${question_options.map((option) => `<option value="${option.value}" }>${option.value}</option>`)}
-    </select>`;
+    const selectedValue = answers[matchFormat] || ''; // Lấy đáp án nếu có
+    return `
+      <select name="${matchFormat}" class="${style} w-22 pb-[5px] custom-select-input">
+        <option value=""></option>
+        ${question_options
+          .map(
+            ({ value }) =>
+              `<option value="${value}" ${value === selectedValue ? 'selected' : ''}>${value}</option>`,
+          )
+          .join('')}
+      </select>`;
   };
 
   const generateFn3 = (match: string) => {
-    if (isArray(question_options) || !question_options) return '';
+    if (!question_options || Array.isArray(question_options)) return '';
     const matchFormat = match.slice(1, -1);
-    const html = question_options[matchFormat].map(
-      (option) =>
-        `<div class="flex items-center mb-2">
-          <span class="bg-gray-200 font-bold mr-[10px] w-[24px] h-[24px] rounded-full text-center line-height-[24px]">
-            ${option.value}
-          </span>
-          <label class="custom-input custom-radio">
-            <input type="radio" name="${matchFormat}" value="${option.value}" />
-            <span class="checkmark"></span>
-            ${option.label}
-          </label>
-        </div>`,
-    );
-
-    return html.join('\n');
+    const options = question_options[matchFormat] || [];
+    return options
+      .map(({ value, label }) => {
+        const isChecked = answers[matchFormat] === value ? 'checked' : '';
+        return `
+          <div class="flex items-center mb-2">
+            <span class="bg-gray-200 font-bold mr-[10px] w-[24px] h-[24px] rounded-full text-center line-height-[24px]">
+              ${value}
+            </span>
+            <label class="custom-input custom-radio">
+              <input type="radio" name="${matchFormat}" value="${value}" ${isChecked} />
+              <span class="checkmark"></span>
+              ${label}
+            </label>
+          </div>`;
+      })
+      .join('');
   };
 
   const generateFn4 = (match: string) => {
-    if (!isArray(question_options)) return '';
-
+    if (!question_options || !Array.isArray(question_options)) return '';
     const matchFormat = match.slice(1, -1);
-    const html = question_options.map((option) => {
-      return `<div class="flex items-center mb-2">
-      <span class="bg-gray-200 font-bold mr-[10px] w-[24px] h-[24px] rounded-full text-center line-height-[24px]">
-        ${option.value}
-      </span>
-      <label class="custom-input custom-checkbox">
-        <input type="checkbox" name="${matchFormat}" value="${option.value}" />
-        <span class="checkmark"></span>
-        ${option.label}
-      </label>
-    </div>`;
-    });
-    return html.join('\n');
+    const selectedAnswers = answers[matchFormat] || [];
+    return question_options
+      .map(({ value, label }) => {
+        const isChecked =
+          Array.isArray(selectedAnswers) && selectedAnswers.includes(value) ? 'checked' : '';
+        return `
+          <div class="flex items-center mb-2">
+            <span class="bg-gray-200 font-bold mr-[10px] w-[24px] h-[24px] rounded-full text-center line-height-[24px]">
+              ${value}
+            </span>
+            <label class="custom-input custom-checkbox">
+              <input type="checkbox" name="${matchFormat}" value="${value}" ${isChecked} />
+              <span class="checkmark"></span>
+              ${label}
+            </label>
+          </div>`;
+      })
+      .join('');
   };
 
   const fnMap = {

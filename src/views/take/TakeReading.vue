@@ -25,7 +25,7 @@
                   : group.question_no[0]
               }}</h2
             >
-            <div v-html="renderGroupQuestions(group, classStyle)"></div>
+            <div v-html="renderGroupQuestions(group, classStyle, props.answers)"></div>
           </div>
         </div>
       </Col>
@@ -81,7 +81,13 @@
       type: Object as PropType<SkillItem>,
       default: () => {},
     },
+    answers: {
+      type: Object as PropType<{ [key: string]: string | string[] }>,
+      default: () => {},
+    },
   });
+
+  const emit = defineEmits(['sync']);
 
   const state = reactive({
     tabActive: 0,
@@ -92,7 +98,7 @@
 
   function clickTab(index: number) {
     state.tabActive = index;
-    // getInputValues();
+    emit('sync');
   }
 
   function countQuestions(groups: GroupQuestionItem[]) {

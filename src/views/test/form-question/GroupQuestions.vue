@@ -108,7 +108,7 @@
   interface FormData {
     type: SelectQuestionType;
     questionText: string;
-    answers: { [key: string]: string };
+    answers: { [key: string]: string | string[] };
     answerOptions: any; // OptionAnswerType[] | ExtendOptionAnswerType | null;
   }
 

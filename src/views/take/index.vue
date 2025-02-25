@@ -7,7 +7,12 @@
 
     <div ref="htmlContainer" class="custom-html">
       <template v-if="state.type === 'Reading'">
-        <TakeReading v-if="skillExam" :value="skillExam" />
+        <TakeReading
+          v-if="skillExam"
+          :value="skillExam"
+          :answers="studentAnswer"
+          @sync="getInputValues"
+        />
       </template>
       <template v-else-if="state.type === 'Listening'">
         <TakeListening v-if="skillExam" :value="skillExam" />
@@ -24,8 +29,7 @@
 
 <script setup lang="ts">
   import { reactive, ref } from 'vue';
-  import { SkillItem } from '@/views/test/types/question';
-  import { examDetailApi } from '@/api/exam/exam';
+  import { NewPartItem, SkillItem } from '@/views/test/types/question';
   import { useRoute, useRouter } from 'vue-router';
   import { SkillType } from '@/api/exam/examModel';
   import { toNumber } from 'lodash-es';
@@ -36,6 +40,9 @@
   import TakeListening from './TakeListening.vue';
   import TakeWriting from './TakeWriting.vue';
   import TakeSpeaking from './TakeSpeaking.vue';
+  import { takeExamStudentApi } from '@/api/student/student';
+  import { examSubmitApi } from '@/api/exam/exam';
+  import { isArray } from '@/utils/is';
 
   const route = useRoute();
   const router = useRouter();
@@ -49,24 +56,15 @@
     type: route.query.type as SkillType,
     tabActive: 0,
     loading: false,
-    duration: 0,
   });
   const skillExam = ref<SkillItem | null>(null);
   const htmlContainer = ref<any>(null);
+  const studentAnswer = ref<{ [key: string]: string | string[] }>({});
 
   // time left
   const timeLeft = ref('');
-  const interval = setInterval(() => {
-    const minutes = Math.floor(state.duration / 60);
-    const seconds = state.duration % 60;
-    timeLeft.value = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-    if (state.duration <= 0) {
-      clearInterval(interval);
-      // Handle exam end logic here
-    }
-    state.duration--;
-  }, 1000);
-  // end time left
+  const duration = ref(0);
+  let interval: number | null = null;
 
   const { t } = useI18n();
   const { createMessage } = useMessage();
@@ -74,12 +72,53 @@
     tip: 'Loading...',
   });
 
-  async function getExamDetail(examId: number) {
+  function startCountdown() {
+    if (interval) clearInterval(interval); // Xóa interval cũ nếu có
+
+    interval = setInterval(() => {
+      if (duration.value <= 0) {
+        clearInterval(interval!);
+        return;
+      }
+
+      const minutes = Math.floor(duration.value / 60);
+      const seconds = duration.value % 60;
+      timeLeft.value = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+      duration.value--;
+    }, 1000);
+  }
+
+  function generateAnswerObject(parts: NewPartItem[]) {
+    const answerObject = {};
+
+    parts.forEach((part) => {
+      part.question_groups.forEach((group) => {
+        if (group.question_type === 'multiple_choice') {
+          // Gộp các số thành key duy nhất
+          const key = `question_${group.question_no.join('_')}`;
+          answerObject[key] = '';
+        } else {
+          // Tạo key bình thường
+          group.question_no.forEach((no) => {
+            const key = `question_${no}`;
+            answerObject[key] = '';
+          });
+        }
+      });
+    });
+
+    return answerObject;
+  }
+
+  async function getExamDetail(examId: number, type: SkillType) {
     try {
       openFullLoading();
-      const result = await examDetailApi(examId);
-      skillExam.value = result[state.type];
-      state.duration = result[state.type].duration * 60;
+      const result = await takeExamStudentApi(examId, type);
+      skillExam.value = result.items;
+      duration.value = skillExam.value.duration * 60;
+      studentAnswer.value = generateAnswerObject(skillExam.value.parts);
+      startCountdown();
     } catch (error) {
       createMessage.error(t('sys.app.dataNotFound'));
     } finally {
@@ -94,7 +133,7 @@
       'input[name^="question_"], select[name^="question_"]',
     );
 
-    const values: Record<string, string | string[]> = {};
+    const values: { [key: string]: string | string[] } = {};
 
     inputs.forEach((input) => {
       const name = input.getAttribute('name') || '';
@@ -114,14 +153,66 @@
       }
     });
 
-    console.log(values);
+    studentAnswer.value = { ...studentAnswer.value, ...values };
+    console.log(studentAnswer.value);
   };
 
-  function submitExam() {
+  const mapAnswersToParts = (
+    parts: NewPartItem[],
+    answers: { [key: string]: string | string[] },
+  ) => {
+    console.log(answers);
+    return parts
+      .map((part) => {
+        return part.question_groups.map((group) => {
+          const question_answer = {};
+
+          group.question_no.forEach((no) => {
+            const key =
+              group.question_type === 'multiple_choice'
+                ? `question_${group.question_no.join('_')}`
+                : `question_${no}`;
+            question_answer[key] =
+              group.question_type === 'multiple_choice' && isArray(answers[key])
+                ? answers[key].join(',')
+                : answers[key];
+          });
+
+          return {
+            id: group.id,
+            question_count: group.question_no.length,
+            question_answer,
+          };
+        });
+      })
+      .flat();
+  };
+
+  async function submitExam() {
     getInputValues();
+    const formatData = {
+      type: state.type,
+      answers: mapAnswersToParts(skillExam.value?.parts, studentAnswer.value),
+    };
+    console.log(formatData);
+
+    try {
+      openFullLoading();
+      const result = await examSubmitApi(state.examId, formatData);
+      if (result) {
+        createMessage.success('Nộp bài thành công');
+      }
+    } catch (error) {
+      console.log(error);
+      createMessage.warning('Bạn cần hoàn thành hết câu hỏi!');
+
+      // createMessage.error(t('sys.app.dataNotFound'));
+    } finally {
+      closeFullLoading();
+    }
   }
 
-  getExamDetail(state.examId);
+  getExamDetail(state.examId, state.type);
 </script>
 
 <style lang="scss">

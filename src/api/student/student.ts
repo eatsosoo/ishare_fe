@@ -1,8 +1,9 @@
 import { defHttp } from '@/utils/http/axios';
-import { StudentListGetResultModel } from './studentModel';
+import { StudentListGetResultModel, TakeExamStudentItem } from './studentModel';
 import { BasicPageParams, Result } from '../model/baseModel';
 import { ExamPartItem, ResponseExamPartItem, SkillType } from '../exam/examModel';
 import { ErrorMessageMode } from '#/axios';
+import { useUserStore } from '@/store/modules/user';
 
 enum Api {
   STUDENT_LIST = '/students',
@@ -82,3 +83,15 @@ export const importExcelApi = (formData: FormData, mode: ErrorMessageMode = 'mod
       errorMessageMode: mode,
     },
   );
+
+export const takeExamStudentApi = (examId: number, skillType: SkillType) => {
+  const useStore = useUserStore();
+  const userId = useStore.getUserInfo.id;
+  return defHttp.get<Result<TakeExamStudentItem>>({
+    url: `${Api.STUDENT_LIST}/${userId}/skill/${examId}?type=${skillType}`,
+    headers: {
+      // @ts-ignore
+      ignoreCancelToken: true,
+    },
+  });
+};
