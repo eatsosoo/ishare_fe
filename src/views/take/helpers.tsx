@@ -11,15 +11,15 @@ export function renderGroupQuestions(group: GroupQuestionItem, style: string) {
     multiple_choice: /\[question_(\d+(?:_\d+)*)]/g,
   };
 
-  const generateFn = (match: string) => {
+  const generateFn = (match: string, index) => {
     const matchFormat = match.slice(1, -1);
-    return `<input type="text" value="" name="${matchFormat}" class="${style} w-38" />`;
+    return `<input type="text" value="" name="${matchFormat}" class="${style} w-38 custom-text-input" placeholder="${index}"/>`;
   };
 
   const generateFn2 = (match: string) => {
     if (!isArray(question_options)) return '';
     const matchFormat = match.slice(1, -1);
-    return `<select value="" name="${matchFormat}" class="${style} w-22 pb-[5px]" >
+    return `<select value="" name="${matchFormat}" class="${style} w-22 pb-[5px] custom-select-input" >
       <option value=""></option>
         ${question_options.map((option) => `<option value="${option.value}" }>${option.label}</option>`)}
     </select>`;

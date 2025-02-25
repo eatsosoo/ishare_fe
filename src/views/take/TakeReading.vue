@@ -4,6 +4,8 @@
       <Col :span="12" class="bg-[aliceblue] border-r-2 border-gray h-full overflow-auto">
         <div class="p-4">
           <div>
+            <h1 class="text-2xl font-bold">Part {{ state.tabActive + 1 }}</h1>
+            <h1 class="text-4xl font-bold">READING PASSAGE {{ state.tabActive + 1 }}</h1>
             <div v-html="props.value?.parts[state.tabActive].subject"></div>
           </div>
         </div>
@@ -13,9 +15,9 @@
           <div
             v-for="(group, gIdx) in props.value?.parts[state.tabActive].question_groups"
             :key="group.id || gIdx"
-            class="px-4"
+            class="px-4 mb-12"
           >
-            <h2 class="text-primary"
+            <h2 class="text-primary font-bold"
               >Questions
               {{
                 group.question_no.length > 1

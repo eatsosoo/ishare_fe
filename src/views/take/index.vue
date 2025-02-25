@@ -152,6 +152,19 @@
       gap: 10px;
     }
 
+    .custom-text-input::placeholder {
+      opacity: 1; /* Đảm bảo không bị mờ */
+      color: #e8202a;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .custom-select-input {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
     /* Ẩn input mặc định */
     .custom-input input {
       display: none;
@@ -176,7 +189,7 @@
       width: 14px;
       height: 14px;
       border-radius: 50%;
-      background: #c14b54;
+      background: #e8202a;
     }
 
     /* 🔲 Checkbox Style */
@@ -201,8 +214,8 @@
     }
 
     .custom-checkbox input:checked + .checkmark {
-      border-color: #c14b54;
-      background: #c14b54;
+      border-color: #e8202a;
+      background: #e8202a;
     }
   }
 </style>

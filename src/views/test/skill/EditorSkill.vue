@@ -198,7 +198,7 @@
   function updateQuestionNumbers(data) {
     let questionCounter = 1; // Bắt đầu đánh số từ 1
 
-    data.parts.forEach((part) => {
+    data.forEach((part) => {
       part.question_groups.forEach((group) => {
         const newQuestionAnswer = {};
         const newQuestionOptions = {};

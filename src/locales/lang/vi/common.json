@@ -53,6 +53,9 @@
   "basicInformation": "Thông tin cơ bản",
   "selectFile": "Chọn file",
   "importNote": "Chú ý: Vui lòng import theo đúng file mẫu đã được cung cấp trước",
+  "warning": {
+    "addActionEdtior": "Chưa có vị trí để chèn text!"
+  },
   "test": {
     "reading": "Đề thi phần READING",
     "listening": "Đề thi phần LISTENING",
