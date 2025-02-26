@@ -3,12 +3,8 @@ import {
   GroupQuestionType,
   NewPartItem,
   OptionAnswerType,
-  QuestionType,
   SelectQuestionType,
 } from './types/question';
-import { useI18n } from '@/hooks/web/useI18n';
-
-const { t } = useI18n();
 
 export enum SelectQuestionTypeX {
   SingleChoice = 'choice',
@@ -17,29 +13,6 @@ export enum SelectQuestionTypeX {
   TrueFalseNotGiven = 'true_false_not_given',
   YesNoNotGiven = 'yes_no_not_given',
 }
-
-export const questionTypes: QuestionType[] = [
-  {
-    value: SelectQuestionTypeX.SingleChoice,
-    label: 'Chọn đáp án đúng',
-  },
-  {
-    value: SelectQuestionTypeX.MultipleChoice,
-    label: 'Chọn các đáp án đúng',
-  },
-  {
-    value: SelectQuestionTypeX.FillIn,
-    label: 'Điền đáp án đúng',
-  },
-  {
-    value: SelectQuestionTypeX.TrueFalseNotGiven,
-    label: 'Đúng/Sai/Không được đề cập',
-  },
-  {
-    value: SelectQuestionTypeX.YesNoNotGiven,
-    label: 'Có/Không/Không được đề cập',
-  },
-];
 
 export const SKILL_OPTIONS = [
   { label: 'Reading', value: 'Reading' },
@@ -65,16 +38,16 @@ export const trueFalseNotGivenOptions = [
 
 export const yesNoNotGivenOptions = [
   {
-    value: 'true',
-    label: t('common.true'),
+    value: 'yes',
+    label: 'YES',
   },
   {
-    value: 'false',
-    label: t('common.false'),
+    value: 'no',
+    label: 'NO',
   },
   {
     value: 'not_given',
-    label: t('common.notGiven'),
+    label: 'NOT GIVEN',
   },
 ];
 

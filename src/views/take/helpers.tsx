@@ -5,6 +5,7 @@ export function renderGroupQuestions(group: GroupQuestionItem, style: string, an
   const regexMap = {
     fill_in: /\[question_(\d+)]/g,
     true_false_not_given: /\[question_(\d+)]/g,
+    yes_no_not_given: /\[question_(\d+)]/g,
     correct_letter: /\[question_(\d+)]/g,
     choice: /\[question_(\d+)]/g,
     multiple_choice: /\[question_(\d+(?:_\d+)*)]/g,
@@ -12,7 +13,7 @@ export function renderGroupQuestions(group: GroupQuestionItem, style: string, an
 
   const generateFn = (match: string, index) => {
     const matchFormat = match.slice(1, -1);
-    return `<input type="text" value="${answers[matchFormat] || ''}" name="${matchFormat}" class="${style} w-38 custom-text-input" placeholder="${index}"/>`;
+    return `<input type="text" value="${answers[matchFormat] || ''}" name="${matchFormat}" onpaste="return false;" class="${style} w-38 custom-text-input" placeholder="${index}"/>`;
   };
 
   const generateFn2 = (match: string) => {
@@ -95,6 +96,7 @@ export function renderGroupQuestions(group: GroupQuestionItem, style: string, an
   const fnMap = {
     fill_in: generateFn,
     true_false_not_given: generateFn2,
+    yes_no_not_given: generateFn2,
     correct_letter: generateFn5,
     choice: generateFn3,
     multiple_choice: generateFn4,

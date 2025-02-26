@@ -16,6 +16,7 @@
               ]
             "
             :rows="25"
+            @paste.prevent="handlePaste"
             placeholder="Type your essay here..."
           />
           <div class="mt-4">Word counts: {{ wordCount }}</div>
@@ -47,6 +48,8 @@
   import { computed, reactive, ref, watch } from 'vue';
   import { GroupQuestionItem, SkillItem, StudentAnswer } from '../test/types/question';
   import { Col, Input, Row } from 'ant-design-vue';
+  import { useMessage } from '@/hooks/web/useMessage';
+  import { useI18n } from '@/hooks/web/useI18n';
 
   const InputTextArea = Input.TextArea;
 
@@ -79,6 +82,9 @@
       .filter((word) => word).length;
   });
 
+  const { t } = useI18n();
+  const { createMessage } = useMessage();
+
   function clickTab(index: number) {
     state.tabActive = index;
     // getInputValues();
@@ -94,6 +100,11 @@
       }, {}),
     };
   });
+
+  const handlePaste = (event) => {
+    event.preventDefault();
+    createMessage.error(t('common.blockPaste'));
+  };
 
   watch(
     () => studentAnswer,

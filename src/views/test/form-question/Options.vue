@@ -9,7 +9,7 @@
     <Form :model="formModel" :rules="rules" ref="formRef" disable>
       <div v-for="(_, index) in formData" :key="index" class="flex gap-2">
         <!-- Giá trị -->
-        <Form.Item :label="'Giá trị'" :name="`value_${index}`" label-align="left">
+        <Form.Item :label="t('common.optionValue')" :name="`value_${index}`" label-align="left">
           <Input
             v-model:value="formModel[`value_${index}`]"
             allow-clear
@@ -18,7 +18,12 @@
         </Form.Item>
 
         <!-- Nhãn -->
-        <Form.Item :label="'Nhãn'" :name="`label_${index}`" label-align="left" class="w-full">
+        <Form.Item
+          :label="t('common.optionLabel')"
+          :name="`label_${index}`"
+          label-align="left"
+          class="w-full"
+        >
           <Input v-model:value="formModel[`label_${index}`]" allow-clear :disabled="!allowAction" />
         </Form.Item>
 

@@ -63,6 +63,9 @@
   "assignAtClass": "Bài trên lớp",
   "assignAtHome": "Bài về nhà",
   "assignAtExam": "Bài thi",
+  "optionLabel": "Câu trả lời",
+  "optionValue": "Phương án",
+  "blockPaste": "Không thể dán nội dung vào đây!",
   "warning": {
     "addActionEdtior": "Chưa có vị trí để chèn text!"
   },
