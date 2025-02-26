@@ -198,7 +198,11 @@ export function getExerciseColumns(): BasicColumn[] {
 export function getExamGradingColumns(): BasicColumn[] {
   return [
     {
-      title: t('table.exerciseTable.name'),
+      title: t('table.title'),
+      dataIndex: 'assignment_title',
+    },
+    {
+      title: t('table.exeName'),
       dataIndex: 'exam_title',
     },
     {

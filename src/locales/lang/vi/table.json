@@ -45,6 +45,8 @@
   "level": "Cấp độ",
   "parentName": "Tên phụ huynh",
   "parentTel": "SĐT phụ huynh",
+  "title": "Tiêu đề",
+  "exeName": "Tên bài",
   "exerciseTable": {
     "name": "Tên bài tập",
     "score": "Điểm",

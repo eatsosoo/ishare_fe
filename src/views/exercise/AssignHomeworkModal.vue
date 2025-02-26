@@ -116,7 +116,7 @@
         createSuccessModal({
           title: t('form.assignHomework'),
           content: t('common.createSuccessfully'),
-          getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
+          // getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
         });
         resetFields();
         emit('success');
@@ -125,6 +125,7 @@
       if (error.errorFields) {
         return;
       }
+      console.log(error);
       const apiMessage = error.response.data.message;
       createErrorModal({
         title: t('sys.api.errorTip'),

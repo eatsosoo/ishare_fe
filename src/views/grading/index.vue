@@ -104,8 +104,10 @@
   async function findExerciseOfClass() {
     try {
       const [values] = await Promise.all([validate()]);
-      console.log(values);
-      useStore.setClassId(values.classId);
+      const { classId, skill, type } = values;
+      useStore.setClassId(classId);
+      useStore.setGradingType(type);
+      useStore.setGradingSkill(skill);
       reload();
       showExerciseTable.value = true;
     } catch (error) {

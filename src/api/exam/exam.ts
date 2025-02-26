@@ -108,9 +108,16 @@ export const uploadAudioApi = (formData: FormData, mode: ErrorMessageMode = 'mod
 export const examGradingListApi = () => (params: BasicPageParams) => {
   const useStore = useUserStore();
   const classId = useStore.getClassId;
-  const skill = useStore.gradingType;
+  const type = useStore.gradingType;
+  const skill = useStore.gradingSkill;
+  let url = '';
+  if (type === 'exam') {
+    url = `${Api.EXAM_LIST}/${classId}/students?type=${type}&skill=${skill}`;
+  } else {
+    url = `${Api.EXAM_LIST}/${classId}/students?type=homework&skill=${skill}&assign_at=${type}`;
+  }
   return defHttp.get<ExamGradingGetResultModel>({
-    url: `${Api.EXAM_LIST}/${classId}/students?type=${skill}`,
+    url,
     params,
     headers: {
       // @ts-ignore
