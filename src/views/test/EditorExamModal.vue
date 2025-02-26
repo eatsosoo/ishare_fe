@@ -37,12 +37,17 @@
         </div>
       </div>
     </Card>
-    <EditorSkill :value="computedT" :skill-type="skillSelected" @update-parts="handleUpdateParts" />
+    <EditorSkill
+      :value="computedT"
+      :skill-type="skillSelected"
+      :max="maxPart"
+      @update-parts="handleUpdateParts"
+    />
 
     <template #footer>
-      <a-button type="primary" @click="submitAll"
-        >{{ t('common.saveText') }} {{ skillSelected }}</a-button
-      >
+      <a-button type="primary" @click="submitAll">
+        {{ t('common.saveText') }} {{ skillSelected }}
+      </a-button>
     </template>
   </BasicModal>
 </template>
@@ -76,6 +81,14 @@
   const loading = ref(false);
   const skillSelected = ref<SkillType>('Reading');
   const duration = ref<number>(60);
+  const maxPart = ref<number>(3);
+
+  const CONFIG_MAX = {
+    Reading: 3,
+    Listening: 4,
+    Writing: 1,
+    Speaking: 1,
+  };
 
   // audio
   const uploading = ref(false);
@@ -222,6 +235,7 @@
       if (detail.value) {
         duration.value = detail.value[newVal] ? detail.value[newVal].duration : 10;
       }
+      maxPart.value = CONFIG_MAX[newVal];
       // console.log(detail.value?.Listening, newVal);
     },
   );

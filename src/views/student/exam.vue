@@ -4,9 +4,9 @@
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'score'">
           {{
-            record.score
-              ? `${record.score}/${['Writing', 'Speaking'].includes(record.skill) ? 100 : record.total_questions} ${['Writing', 'Speaking'].includes(record.skill) ? 'điểm' : 'câu'}`
-              : t('common.noScoreYet')
+            record.score === -1 || record.score === null
+              ? t('common.noScoreYet')
+              : `${['Writing', 'Speaking'].includes(record.skill) ? record.score : `${record.score}/${record.question_count}`}`
           }}
         </template>
         <template v-if="column.key === 'status'">

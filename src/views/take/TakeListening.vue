@@ -2,7 +2,14 @@
   <div>
     <Row :gutter="[16, 16]" class="w-[100vw] p-4">
       <Col :span="24">
-        <audio v-if="props.value?.media" :src="props.value?.media" controls class="h-8"></audio>
+        <audio
+          v-if="props.value?.media"
+          :src="props.value?.media"
+          controls
+          autoplay
+          class="h-8"
+          :key="props.value?.media"
+        ></audio>
       </Col>
     </Row>
     <Row :gutter="[16, 16]" class="h-[84vh] w-[100vw] border-t-1 border-gray-200">
@@ -21,7 +28,7 @@
                   : group.question_no[0]
               }}</h2
             >
-            <div v-html="renderGroupQuestions(group, classStyle)"></div>
+            <div v-html="renderGroupQuestions(group, classStyle, props.answers)"></div>
           </div>
         </div>
       </Col>
@@ -57,8 +64,8 @@
           <div v-else class="text-lg text-center">
             <span class="font-semibold mr-4">Part {{ index + 1 }}</span>
             <span class="font-light font-italic"
-              >of {{ countQuestions(p.question_groups) }} questions</span
-            >
+              >{{ answeredCountByPart[index] }} of {{ countQuestions(p.question_groups) }} questions
+            </span>
           </div>
         </div>
       </div>
@@ -67,7 +74,7 @@
 </template>
 
 <script setup lang="ts">
-  import { reactive } from 'vue';
+  import { computed, reactive } from 'vue';
   import { GroupQuestionItem, SkillItem } from '../test/types/question';
   import { Col, Row } from 'ant-design-vue';
   import { renderGroupQuestions } from './helpers';
@@ -77,7 +84,13 @@
       type: Object as PropType<SkillItem>,
       default: () => {},
     },
+    answers: {
+      type: Object as PropType<{ [key: string]: string | string[] }>,
+      default: () => {},
+    },
   });
+
+  const emit = defineEmits(['sync']);
 
   const state = reactive({
     tabActive: 0,
@@ -88,7 +101,7 @@
 
   function clickTab(index: number) {
     state.tabActive = index;
-    // getInputValues();
+    emit('sync');
   }
 
   function countQuestions(groups: GroupQuestionItem[]) {
@@ -96,4 +109,31 @@
       return (total += group.question_count);
     }, 0);
   }
+
+  const answeredCountByPart = computed(() => {
+    return props.value.parts.map((part) => {
+      let answeredCount = 0;
+
+      part.question_groups.forEach((group) => {
+        Object.keys(group.question_answer).forEach((questionKey) => {
+          const answer = props.answers[questionKey];
+
+          // Nếu key có dạng `question_1_2_3_4`, tách thành từng câu riêng lẻ
+          const questionNumbers = questionKey.match(/\d+/g); // Lấy tất cả số trong key
+          const questionCount = questionNumbers ? questionNumbers.length : 1;
+
+          // Nếu answer là mảng (multi-choice), kiểm tra length
+          if (Array.isArray(answer) && answer.length > 0) {
+            answeredCount += questionCount;
+          }
+          // Nếu là string hoặc số, kiểm tra có giá trị không
+          else if (answer !== null && answer !== undefined && answer !== '') {
+            answeredCount += questionCount;
+          }
+        });
+      });
+
+      return answeredCount;
+    });
+  });
 </script>

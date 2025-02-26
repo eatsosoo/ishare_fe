@@ -58,6 +58,8 @@
   "preview": "Xem trước",
   "option": "Lựa chọn",
   "saveQuestion": "Lưu câu hỏi",
+  "saveTemp": "Lưu tạm thời",
+  "submitTestSuccess": "Nộp bài thành công",
   "warning": {
     "addActionEdtior": "Chưa có vị trí để chèn text!"
   },
