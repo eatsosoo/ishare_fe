@@ -133,7 +133,15 @@
 
   // ✅ Thêm một lựa chọn mới
   const addOption = () => {
-    formData.value.push({ label: '', value: '' });
+    const genOps = {
+      value: String.fromCharCode(65 + formData.value.length),
+      label: '',
+    };
+    if (props.typeAnswer === 'multiple_choice') {
+      formData.value.push(genOps);
+    } else {
+      formData.value.push({ label: '', value: '' });
+    }
   };
 
   // ✅ Xóa lựa chọn theo `index`

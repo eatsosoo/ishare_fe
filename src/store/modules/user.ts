@@ -24,7 +24,8 @@ interface UserState {
   sessionTimeout?: boolean;
   lastUpdateTime: number;
   classId: number | null;
-  gradingType: SkillType;
+  gradingSkill: SkillType;
+  gradingType: string;
 }
 
 export const useUserStore = defineStore({
@@ -42,8 +43,8 @@ export const useUserStore = defineStore({
     lastUpdateTime: 0,
     //
     classId: null,
-    //
-    gradingType: 'Reading',
+    gradingSkill: 'Reading',
+    gradingType: 'exam',
   }),
   getters: {
     getUserInfo(state): UserInfo {
@@ -64,7 +65,10 @@ export const useUserStore = defineStore({
     getClassId(state): number | null {
       return state.classId;
     },
-    getGradingType(state): SkillType {
+    getGradingSkill(state): SkillType {
+      return state.gradingSkill;
+    },
+    getGradingType(state): string {
       return state.gradingType;
     },
   },
@@ -87,6 +91,9 @@ export const useUserStore = defineStore({
     },
     setClassId(id: number | null) {
       this.classId = id;
+    },
+    setGradingSkill(type: SkillType) {
+      this.gradingSkill = type;
     },
     setGradingType(type: SkillType) {
       this.gradingType = type;

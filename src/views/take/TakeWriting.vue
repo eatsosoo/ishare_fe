@@ -44,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, reactive, ref } from 'vue';
+  import { computed, reactive, ref, watch } from 'vue';
   import { GroupQuestionItem, SkillItem, StudentAnswer } from '../test/types/question';
   import { Col, Input, Row } from 'ant-design-vue';
 
@@ -56,6 +56,8 @@
       default: () => {},
     },
   });
+
+  const emit = defineEmits(['change']);
 
   const state = reactive({
     tabActive: 0,
@@ -92,4 +94,13 @@
       }, {}),
     };
   });
+
+  watch(
+    () => studentAnswer,
+    (newVal) => {
+      console.log(newVal);
+      emit('change', newVal);
+    },
+    { deep: true },
+  );
 </script>

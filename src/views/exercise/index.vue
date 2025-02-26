@@ -9,6 +9,11 @@
           t('table.assignmentTable.assign')
         }}</a-button>
       </template>
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'type'">
+          {{ t(`table.exe${record.type}`) }}
+        </template>
+      </template>
     </BasicTable>
     <AssignHomeworkModal
       @register="registerAssignModal"

@@ -196,7 +196,7 @@
       question_answer: answers,
       question_options: answerOptions,
     });
-    createMessage.success('Lưu tạm thời');
+    createMessage.success(t('common.saveTemp'));
   };
 
   watch(

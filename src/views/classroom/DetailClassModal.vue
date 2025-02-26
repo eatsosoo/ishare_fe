@@ -9,7 +9,20 @@
   >
     <Tabs v-model:activeTab="activeTab" @change="activeKey = $event">
       <TabPane v-for="tab in tabs" :key="tab.key" v-bind="omit(tab, ['content', 'key'])">
-        <BasicTable @register="tab.register" ref="tableRefs" class="max-h-[770px]" />
+        <BasicTable @register="tab.register" ref="tableRefs" class="max-h-[770px]">
+          <template #bodyCell="{ column, record }">
+            <template v-if="column.key === 'action'">
+              <div class="flex gap-2 justify-center">
+                <Icon
+                  :size="18"
+                  icon="ant-design:export"
+                  class="cursor-pointer hover:border-red border-1 border-gray-200 p-1 rounded-md"
+                  @click="exportExcelStudent('2025-02-01', '2025-02-28', record.id)"
+                />
+              </div>
+            </template>
+          </template>
+        </BasicTable>
       </TabPane>
     </Tabs>
   </BasicModal>
@@ -29,6 +42,8 @@
   import { examListApi } from '@/api/exam/exam';
   import { getHomeworksOfClassApi, getStudentsOfClassApi } from '@/api/class/class';
   import { Key } from 'ant-design-vue/es/_util/type';
+  import { getToken } from '@/utils/auth';
+  import Icon from '@/components/Icon/Icon.vue';
 
   const props = defineProps({
     classId: {
@@ -73,6 +88,10 @@
     rowKey: 'id',
     showTableSetting: false,
     showIndexColumn: false,
+    actionColumn: {
+      title: t('table.action'),
+      dataIndex: 'action',
+    },
   });
 
   const [registerTable2, { reload: reload2 }] = useTable({
@@ -136,6 +155,38 @@
       reloadFunctions[2]();
     }
   };
+
+  async function exportExcelStudent(from, to, user_id) {
+    try {
+      const response = await fetch(`https://api-gateway.danda.vn/api/users/export-study-result`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          Authorization: `Bearer ${getToken()}`,
+        },
+        body: JSON.stringify({ user_id, from, to }),
+      });
+
+      if (!response.ok) throw new Error('Failed to fetch file');
+
+      // Nhận dữ liệu dưới dạng Blob
+      const blob = await response.blob();
+
+      // 🛠️ Tạo link để tải file
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `study-result-${from}-${to}.xlsx`);
+      document.body.appendChild(link);
+      link.click();
+
+      // 🧹 Xóa link sau khi tải xong
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Download failed:', error);
+    }
+  }
 
   watch(
     () => props.classId,

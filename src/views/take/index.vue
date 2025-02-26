@@ -15,10 +15,15 @@
         />
       </template>
       <template v-else-if="state.type === 'Listening'">
-        <TakeListening v-if="skillExam" :value="skillExam" />
+        <TakeListening
+          v-if="skillExam"
+          :value="skillExam"
+          :answers="studentAnswer"
+          @sync="getInputValues"
+        />
       </template>
       <template v-else-if="state.type === 'Writing'">
-        <TakeWriting v-if="skillExam" :value="skillExam" />
+        <TakeWriting v-if="skillExam" :value="skillExam" @change="submitForm = $event" />
       </template>
       <template v-else-if="state.type === 'Speaking'">
         <TakeSpeaking v-if="skillExam" :value="skillExam" />
@@ -60,6 +65,10 @@
   const skillExam = ref<SkillItem | null>(null);
   const htmlContainer = ref<any>(null);
   const studentAnswer = ref<{ [key: string]: string | string[] }>({});
+  const submitForm = ref({
+    type: '',
+    answers: [],
+  });
 
   // time left
   const timeLeft = ref('');
@@ -154,14 +163,12 @@
     });
 
     studentAnswer.value = { ...studentAnswer.value, ...values };
-    console.log(studentAnswer.value);
   };
 
   const mapAnswersToParts = (
     parts: NewPartItem[],
     answers: { [key: string]: string | string[] },
   ): SubmitAnswer[] => {
-    console.log(answers);
     return parts
       .map((part) => {
         return part.question_groups.map((group) => {
@@ -178,11 +185,12 @@
                 : answers[key];
           });
 
-          return {
-            id: group.id,
+          const val: SubmitAnswer = {
+            id: group.id as number,
             question_count: group.question_no.length,
             question_answer,
           };
+          return val;
         });
       })
       .flat();
@@ -193,25 +201,35 @@
 
     if (!skillExam.value) return;
 
-    const hasEmptyValue = (obj: Record<string, any>): boolean =>
-      Object.values(obj).some((value) => value === '');
+    const hasEmptyValue = (obj: Record<string, any>): boolean => {
+      if (state.type === 'Writing') return false;
+      return Object.values(obj).some((value) => value === '');
+    };
 
     if (hasEmptyValue(studentAnswer.value)) {
       createMessage.error(t('common.error.finishAllQuestions'));
       return;
     }
 
+    let finalAnswers: SubmitAnswer[] = [];
+    if (state.type === 'Writing') {
+      finalAnswers = submitForm.value.answers;
+    } else {
+      finalAnswers = mapAnswersToParts(skillExam.value.parts, studentAnswer.value);
+    }
+
     const formatData: SubmitExam = {
-      exam_skill_id: skillExam.value.id,
+      exam_skill_id: skillExam.value.id as number,
       type: state.type,
-      answers: mapAnswersToParts(skillExam.value.parts, studentAnswer.value),
+      answers: finalAnswers,
     };
     console.log(formatData);
     try {
       openFullLoading();
       const result = await examSubmitApi(state.examId, formatData);
-      if (result) {
-        createMessage.success('Nộp bài thành công');
+      if (result && result.items) {
+        createMessage.success(t('common.submitTestSuccess'));
+        router.push('/student/exam');
       }
     } catch (error) {
       console.log(error);

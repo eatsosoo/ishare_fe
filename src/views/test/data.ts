@@ -51,15 +51,15 @@ export const SKILL_OPTIONS = [
 export const trueFalseNotGivenOptions = [
   {
     value: 'true',
-    label: 'True',
+    label: 'TRUE',
   },
   {
     value: 'false',
-    label: 'False',
+    label: 'FALSE',
   },
   {
     value: 'not_given',
-    label: 'Not given',
+    label: 'NOT GIVEN',
   },
 ];
 

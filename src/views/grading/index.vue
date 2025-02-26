@@ -35,7 +35,9 @@
       :exam-id="examIdRef"
       :student-id="studentIdRef"
       :score-id="scoreIdRef"
+      :times="timeRef"
       @register="registerDetailModal"
+      @submit-grading="handleSuccess"
     />
   </PageWrapper>
 </template>
@@ -71,7 +73,7 @@
       dataIndex: 'action',
     },
   });
-  const [registerDetailModal, { openModal: openDetailModal }] = useModal();
+  const [registerDetailModal, { openModal: openDetailModal, closeModal }] = useModal();
   const [registerForm, { validate }] = useForm({
     baseColProps: {
       span: 6,
@@ -86,9 +88,10 @@
   const examIdRef = ref<number | undefined>(undefined);
   const studentIdRef = ref<number | undefined>(undefined);
   const scoreIdRef = ref<number | undefined>(undefined);
+  const timeRef = ref<number | undefined>(undefined);
 
   function clickOpen(item: ExamGradingListItem) {
-    const { exam_id, skill, name, user_id, score_id } = item;
+    const { exam_id, skill, name, user_id, score_id, times } = item;
     if (!exam_id || !user_id || !score_id) {
       return;
     }
@@ -98,14 +101,22 @@
     examIdRef.value = exam_id;
     studentIdRef.value = user_id;
     scoreIdRef.value = score_id;
+    timeRef.value = times;
     openDetailModal();
+  }
+
+  function handleSuccess() {
+    reload();
+    closeModal();
   }
 
   async function findExerciseOfClass() {
     try {
       const [values] = await Promise.all([validate()]);
-      console.log(values);
-      useStore.setClassId(values.classId);
+      const { classId, skill, type } = values;
+      useStore.setClassId(classId);
+      useStore.setGradingType(type);
+      useStore.setGradingSkill(skill);
       reload();
       showExerciseTable.value = true;
     } catch (error) {

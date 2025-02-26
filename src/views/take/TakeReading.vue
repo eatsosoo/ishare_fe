@@ -60,9 +60,9 @@
           </div>
           <div v-else class="text-lg text-center">
             <span class="font-semibold mr-4">Part {{ index + 1 }}</span>
-            <span class="font-light font-italic"
-              >of {{ countQuestions(p.question_groups) }} questions</span
-            >
+            <span class="font-light font-italic">
+              {{ answeredCountByPart[index] }} of {{ countQuestions(p.question_groups) }} questions
+            </span>
           </div>
         </div>
       </div>
@@ -71,7 +71,7 @@
 </template>
 
 <script setup lang="ts">
-  import { reactive } from 'vue';
+  import { computed, reactive } from 'vue';
   import { GroupQuestionItem, SkillItem } from '../test/types/question';
   import { Col, Row } from 'ant-design-vue';
   import { renderGroupQuestions } from './helpers';
@@ -106,4 +106,31 @@
       return (total += group.question_count);
     }, 0);
   }
+
+  const answeredCountByPart = computed(() => {
+    return props.value.parts.map((part) => {
+      let answeredCount = 0;
+
+      part.question_groups.forEach((group) => {
+        Object.keys(group.question_answer).forEach((questionKey) => {
+          const answer = props.answers[questionKey];
+
+          // Nếu key có dạng `question_1_2_3_4`, tách thành từng câu riêng lẻ
+          const questionNumbers = questionKey.match(/\d+/g); // Lấy tất cả số trong key
+          const questionCount = questionNumbers ? questionNumbers.length : 1;
+
+          // Nếu answer là mảng (multi-choice), kiểm tra length
+          if (Array.isArray(answer) && answer.length > 0) {
+            answeredCount += questionCount;
+          }
+          // Nếu là string hoặc số, kiểm tra có giá trị không
+          else if (answer !== null && answer !== undefined && answer !== '') {
+            answeredCount += questionCount;
+          }
+        });
+      });
+
+      return answeredCount;
+    });
+  });
 </script>

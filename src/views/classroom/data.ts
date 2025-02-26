@@ -135,11 +135,12 @@ export const searchGradingSchemas: FormSchema[] = [
     },
     required: true,
     colProps: {
-      offset: 1,
+      xl: 6,
+      xxl: 6,
     },
   },
   {
-    field: 'typeExercise',
+    field: 'skill',
     label: t('form.gradingSearch.skill'),
     component: 'Select',
     componentProps: {
@@ -164,7 +165,34 @@ export const searchGradingSchemas: FormSchema[] = [
     },
     required: true,
     colProps: {
-      offset: 1,
+      xl: 6,
+      xxl: 4,
+    },
+  },
+  {
+    field: 'type',
+    label: t('form.exeType'),
+    component: 'Select',
+    componentProps: {
+      options: [
+        {
+          label: t('common.assignAtClass'),
+          value: 'class',
+        },
+        {
+          label: t('common.assignAtHome'),
+          value: 'home',
+        },
+        {
+          label: t('common.assignAtExam'),
+          value: 'exam',
+        },
+      ],
+    },
+    required: true,
+    colProps: {
+      xl: 6,
+      xxl: 4,
     },
   },
 ];

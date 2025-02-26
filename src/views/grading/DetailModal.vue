@@ -2,51 +2,101 @@
   <BasicModal
     v-bind="$attrs"
     default-fullscreen
-    :show-cancel-btn="true"
-    :show-ok-btn="false"
     :can-fullscreen="false"
     :loading="loading"
+    :show-ok-btn="false"
   >
-    <Row :gutter="[16, 16]" class="h-full">
-      <Col :span="12" class="bg-[aliceblue] border-r-2 border-gray h-full overflow-auto">
-        <div class="p-4">
-          <h1>Đề bài</h1>
-          <div v-html="subjectRef"></div>
-        </div>
-      </Col>
-      <Col :span="12" class="border-l-2 border-gray h-full overflow-auto">
-        <div class="p-4">
-          <h1>Bài làm của học sinh</h1>
-          <template v-if="props.skillType === 'Reading' || props.skillType === 'Listening'">
-            <div v-for="question in questionsRef" :key="question.question_no" class="mb-4">
-              <h2 class="text-primary mb-0">Question {{ question.question_no }}</h2>
-              <h3 class="mb-0">{{ question.question_no }}. {{ question.content }}</h3>
-              <ul class="mb-0">
-                <li v-for="option in question.options" :key="option.id">
-                  <template
-                    v-if="
-                      option.id === question.answer && question.answer === question.student_answer
-                    "
-                  >
-                    <span class="text-green-500">{{ option.id + '. ' + option.text }}</span>
-                  </template>
-                  <template
-                    v-else-if="
-                      option.id === question.answer && question.answer !== question.student_answer
-                    "
-                  >
-                    <span class="text-red-500">{{ option.id + '. ' + option.text }}</span>
-                  </template>
-                  <template v-else>
-                    <span class="text-danger">{{ option.id + '. ' + option.text }}</span>
-                  </template>
-                </li>
-              </ul>
-              <h4>Đáp án đúng: {{ question.answer }}</h4>
+    <template v-if="props.skillType === 'Reading' || props.skillType === 'Listening'">
+      <Row :gutter="[16, 16]" class="h-full">
+        <Col :span="12" class="bg-[aliceblue] border-r-2 border-gray h-full overflow-auto">
+          <div class="p-4">
+            <div v-if="props.skillType !== 'Listening'" v-html="subjectRef"></div>
+            <div v-else>
+              <audio
+                v-if="completedAssignment"
+                :src="completedAssignment.media"
+                controls
+                class="h-8 w-full"
+              ></audio>
             </div>
-          </template>
-          <template v-else>
-            <div v-html="questionsRef[0].student_answer" class="mb-4"></div>
+          </div>
+        </Col>
+        <Col :span="12" class="border-l-2 border-gray h-full overflow-auto">
+          <div class="p-4">
+            <div
+              v-for="(part, index) in completedAssignment?.parts"
+              :key="'part' + index"
+              class="mb-4"
+            >
+              <h2 class="font-bold">Part {{ index + 1 }}</h2>
+              <div class="grid grid-cols-2 gap-4">
+                <div v-for="(group, gIdx) in part.question_groups" :key="gIdx">
+                  <div
+                    v-for="(value, key) in group.question_answer"
+                    :key="key"
+                    class="flex items-center mb-4"
+                  >
+                    <!-- Xử lý multiple_choice -->
+                    <template v-if="group.question_type === 'multiple_choice'">
+                      <div
+                        class="w-8 h-8 bg-[#c4303a] text-white font-bold flex items-center justify-center rounded-full mr-2 text-[12px]"
+                      >
+                        {{ key.split('_')[1] }}-{{ key.split('_').pop() }}
+                      </div>
+                    </template>
+                    <template v-else>
+                      <div
+                        class="w-8 h-8 bg-[#c4303a] text-white font-bold text-sm flex items-center justify-center rounded-full mr-2"
+                      >
+                        {{ key.split('_')[1] }}
+                      </div>
+                    </template>
+
+                    <span class="text-[#c4303a]">{{
+                      group.question_type === 'multiple_choice' ? value.join(',') : value
+                    }}</span
+                    >:
+                    {{ JSON.parse(group.student_answer)[key] }}
+
+                    <!-- So sánh đúng/sai và hiển thị icon -->
+                    <Icon
+                      :icon="
+                        compareAnswers(value, JSON.parse(group.student_answer)[key])
+                          ? 'ant-design:check-circle-outlined'
+                          : 'ant-design:close-outlined'
+                      "
+                      class="ml-4"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Col>
+      </Row>
+    </template>
+    <template v-else>
+      <Row v-if="completedAssignment" :gutter="[16, 16]" class="h-full">
+        <Col :span="12" class="bg-[aliceblue] border-r-2 border-gray h-full overflow-auto">
+          <div
+            v-for="(group, index) in completedAssignment.parts[0].question_groups"
+            class="p-4"
+            :key="index"
+          >
+            <h1>Task {{ index + 1 }}</h1>
+            <div v-html="group.question_text"></div>
+          </div>
+        </Col>
+        <Col :span="12" class="border-l-2 border-gray h-full overflow-auto">
+          <div
+            v-for="(group, index) in completedAssignment.parts[0].question_groups"
+            class="p-4"
+            :key="'answer' + index"
+          >
+            <h1>Task {{ index + 1 }}</h1>
+            <div v-html="Object.values(JSON.parse(group.student_answer))[0]"></div>
+          </div>
+          <div class="m-4">
             <h3>Chấm điểm và nhận xét</h3>
             <Form :model="gradingFormData">
               <FormItem label="Điểm" name="score" :label-col="{ span: 3 }" label-align="left">
@@ -64,25 +114,9 @@
                 <a-button type="primary" @click="submitAll">{{ t('common.confirm') }}</a-button>
               </div>
             </Form>
-          </template>
-        </div>
-      </Col>
-    </Row>
-    <template #footer>
-      <div class="flex gap-2">
-        <div
-          v-for="(p, index) in completedAssignment"
-          :key="p.id"
-          @click="clickTab(index)"
-          :class="tabActive === index ? ' border-[#e8202a]' : 'cursor-pointer border-gray'"
-          class="border-1 px-4 rounded-lg flex-1"
-        >
-          <div class="text-lg text-center">
-            <span class="font-semibold mr-4">Part {{ index + 1 }}</span>
-            <span class="font-light">{{ p.questions_count }} questions</span>
           </div>
-        </div>
-      </div>
+        </Col>
+      </Row>
     </template>
   </BasicModal>
 </template>
@@ -94,11 +128,12 @@
   import { useI18n } from '@/hooks/web/useI18n';
   import { SkillType, ResponseExamPartItem } from '@/api/exam/examModel';
   import { getDetailExamOfStudent } from '@/api/student/student';
-  import { QuizItem } from '@/views/test/types/question';
   import { useMessage } from '@/hooks/web/useMessage';
   import { useDesign } from '@/hooks/web/useDesign';
   import { GradingForm } from '@/api/teacher/teacherModel';
   import { submitGradingApi } from '@/api/teacher/teacher';
+  import Icon from '@/components/Icon/Icon.vue';
+  import { isArray } from 'lodash-es';
 
   const InputTextArea = Input.TextArea;
   const props = defineProps({
@@ -117,6 +152,9 @@
     scoreId: {
       type: Number,
     },
+    times: {
+      type: Number,
+    },
   });
 
   const emit = defineEmits(['submit-grading']);
@@ -127,38 +165,39 @@
     feedback: '',
   });
   const loading = ref(false);
-  const completedAssignment = ref<ResponseExamPartItem[]>([]);
+  const completedAssignment = ref<ResponseExamPartItem | null>(null);
   const tabActive = ref(0);
   const subjectRef = ref('');
-  const questionsRef = ref<QuizItem[]>([]);
-  const mediaRef = ref<string | null>(null);
 
   const { createSuccessModal, createErrorModal } = useMessage();
   const { prefixCls } = useDesign('register');
 
   function clickTab(index: number) {
-    const { subject, questions, media } = completedAssignment.value[index];
+    if (!completedAssignment.value) return;
+    const { subject } = completedAssignment.value.parts[index];
     subjectRef.value = subject;
-    questionsRef.value = questions;
-    mediaRef.value = media;
     tabActive.value = index;
   }
 
   async function submitAll() {
     try {
       loading.value = true;
+      const answerW = completedAssignment.value?.parts[0].question_groups.map((group) => {
+        return {
+          id: group.id,
+          is_correct: true,
+          explanation: gradingFormData.value.feedback,
+          question_count: 1,
+        };
+      });
       const submitForm: GradingForm = {
+        exam_id: props.examId,
         user_id: props.studentId,
         score_id: props.scoreId,
         times: props.times,
         type: props.skillType,
-        answers: [
-          {
-            question_id: 24,
-            is_correct: true,
-            explanation: null,
-          },
-        ],
+        answers: answerW,
+        score: gradingFormData.value.score,
       };
 
       const result = await submitGradingApi(submitForm);
@@ -188,13 +227,40 @@
       loading.value = true;
       const result = await getDetailExamOfStudent(studentId, examId, type);
       console.log(result);
-      completedAssignment.value = result.items;
+      if (result && result.items) {
+        completedAssignment.value = result.items;
+      }
     } catch (error) {
       console.log(error);
     } finally {
       loading.value = false;
     }
   }
+
+  const compareAnswers = (correctAnswer: string | string[], studentAnswer: string) => {
+    console.log(correctAnswer, studentAnswer);
+    if (!correctAnswer || !studentAnswer) return false;
+    if (!isArray(correctAnswer)) {
+      return correctAnswer.toLowerCase() === studentAnswer.toLowerCase();
+    } else {
+      const value2Array = studentAnswer.split(',');
+
+      // Kiểm tra xem tất cả phần tử của value2Array có trong value1 không
+      const isContained = value2Array.every((val) => correctAnswer.includes(val));
+      return isContained;
+    }
+  };
+
+  // const countCorrectAnswers = (group) => {
+  //   let correctCount = 0;
+  //   const studentAnswers = JSON.parse(group.student_answer);
+  //   for (let key in group.question_answer) {
+  //     if (group.question_answer[key].toLowerCase() === studentAnswers[key]?.toLowerCase()) {
+  //       correctCount++;
+  //     }
+  //   }
+  //   return correctCount;
+  // };
 
   watch(
     () => [props.examId, props.studentId, props.scoreId],

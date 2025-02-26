@@ -58,6 +58,11 @@
   "preview": "Xem trước",
   "option": "Lựa chọn",
   "saveQuestion": "Lưu câu hỏi",
+  "saveTemp": "Lưu tạm thời",
+  "submitTestSuccess": "Nộp bài thành công",
+  "assignAtClass": "Bài trên lớp",
+  "assignAtHome": "Bài về nhà",
+  "assignAtExam": "Bài thi",
   "warning": {
     "addActionEdtior": "Chưa có vị trí để chèn text!"
   },

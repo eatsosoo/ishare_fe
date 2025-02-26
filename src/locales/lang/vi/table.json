@@ -45,6 +45,11 @@
   "level": "Cấp độ",
   "parentName": "Tên phụ huynh",
   "parentTel": "SĐT phụ huynh",
+  "title": "Tiêu đề",
+  "exeName": "Tên bài",
+  "exeType": "Kiểu bài tập",
+  "exehomework": "Bài về nhà",
+  "execlass": "Bài trên lớp",
   "exerciseTable": {
     "name": "Tên bài tập",
     "score": "Điểm",
