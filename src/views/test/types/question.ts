@@ -8,6 +8,7 @@ export interface QuestionType {
 export type SelectQuestionType =
   | 'fill_in'
   | 'true_false_not_given'
+  | 'yes_no_not_given'
   | 'correct_letter'
   | 'choice'
   | 'multiple_choice'

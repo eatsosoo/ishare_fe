@@ -139,7 +139,11 @@ export const questionTypeOps: GroupQuestionType[] = [
     value: 'true_false_not_given',
   },
   {
-    label: 'Correct letter',
+    label: 'Yes/No/Not given',
+    value: 'yes_no_not_given',
+  },
+  {
+    label: 'Matching',
     value: 'correct_letter',
   },
   {
