@@ -40,12 +40,10 @@ export interface ExamPartItem {
 
 export interface ResponseExamPartItem {
   id: number;
-  subject: string;
   type: SkillType;
-  questions_count: number;
   duration: number;
   media: string | null;
-  questions: QuizItem[];
+  parts: NewPartItem[];
 }
 
 export interface ExtendedQuestionItem extends QuestionItem {

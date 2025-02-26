@@ -64,6 +64,7 @@
     }
 
     const formData = new FormData();
+    console.log(file.value);
     formData.append('excel', file.value);
     formData.append('class_id', props.classId.toString());
     formData.append('class_key', props.classKey);

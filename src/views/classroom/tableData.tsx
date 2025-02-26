@@ -370,6 +370,10 @@ export function getAssignmentColumns(): BasicColumn[] {
       dataIndex: 'class_name',
     },
     {
+      title: t('table.exeType'),
+      dataIndex: 'type',
+    },
+    {
       title: t('table.assignmentTable.teacher'),
       dataIndex: 'teacher',
     },

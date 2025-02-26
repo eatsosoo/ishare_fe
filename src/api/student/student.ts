@@ -62,8 +62,8 @@ export const getExamCapacityApi = () => (params: BasicPageParams) =>
   });
 
 export const getDetailExamOfStudent = (studentId: number, examId: number, type: SkillType) =>
-  defHttp.get<Result<ResponseExamPartItem[]>>({
-    url: `${Api.STUDENT_LIST}/${studentId}/tests/${examId}?type=${type}`,
+  defHttp.get<Result<ResponseExamPartItem>>({
+    url: `${Api.STUDENT_LIST}/${studentId}/skill/${examId}?type=${type}`,
     headers: {
       // @ts-ignore
       ignoreCancelToken: true,
