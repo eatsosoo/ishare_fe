@@ -1,8 +1,17 @@
 <template>
   <div class="bg-white">
-    <div class="bg-white p-4 flex justify-between border-gray-200 border-b-1 border-b">
-      <a-button type="primary" ghost>{{ timeLeft }}</a-button>
-      <a-button type="primary" @click="submitExam">Submit</a-button>
+    <div
+      class="flex justify-center items-center border-gray-200 border-b-1 border-b h-14"
+      :class="isWarning ? 'blinking' : ''"
+    >
+      <div class="text-primary text-4xl font-bold"
+        ><Icon size="30" icon="ant-design:field-time-outlined" color="black" /> {{ timeLeft }}</div
+      >
+      <div class="right-0 absolute mr-4">
+        <a-button type="primary" preIcon="ant-design:send-outlined" @click="submitExam"
+          >Submit</a-button
+        >
+      </div>
     </div>
 
     <div ref="htmlContainer" class="custom-html">
@@ -33,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-  import { reactive, ref } from 'vue';
+  import { reactive, ref, watch } from 'vue';
   import { NewPartItem, SkillItem } from '@/views/test/types/question';
   import { useRoute, useRouter } from 'vue-router';
   import { SkillType, SubmitAnswer, SubmitExam } from '@/api/exam/examModel';
@@ -48,6 +57,7 @@
   import { takeExamStudentApi } from '@/api/student/student';
   import { examSubmitApi } from '@/api/exam/exam';
   import { isArray } from '@/utils/is';
+  import Icon from '@/components/Icon/Icon.vue';
 
   const route = useRoute();
   const router = useRouter();
@@ -73,7 +83,8 @@
   // time left
   const timeLeft = ref('');
   const duration = ref(0);
-  let interval: number | null = null;
+  const isWarning = ref(false);
+  let interval: TimeoutHandle | null = null;
 
   const { t } = useI18n();
   const { createMessage } = useMessage();
@@ -88,6 +99,9 @@
       if (duration.value <= 0) {
         clearInterval(interval!);
         return;
+      }
+      if (duration.value <= 60) {
+        isWarning.value = true;
       }
 
       const minutes = Math.floor(duration.value / 60);
@@ -127,7 +141,9 @@
       skillExam.value = result.items;
       duration.value = skillExam.value.duration * 60;
       studentAnswer.value = generateAnswerObject(skillExam.value.parts);
-      startCountdown();
+      if (state.type !== 'Speaking') {
+        startCountdown();
+      }
     } catch (error) {
       createMessage.error(t('sys.app.dataNotFound'));
     } finally {
@@ -239,10 +255,37 @@
     }
   }
 
+  watch(
+    () => duration.value,
+    (val) => {
+      if (val <= 0) {
+        console.log(val);
+      }
+    },
+  );
+
   getExamDetail(state.examId, state.type);
 </script>
 
 <style lang="scss">
+  @keyframes blinking-bg {
+    0% {
+      background-color: rgb(240 169 169);
+    }
+
+    50% {
+      background-color: white;
+    }
+
+    100% {
+      background-color: rgb(240 169 169);
+    }
+  }
+
+  .blinking {
+    animation: blinking-bg 2s infinite;
+  }
+
   .custom-html {
     table {
       width: 100%;
