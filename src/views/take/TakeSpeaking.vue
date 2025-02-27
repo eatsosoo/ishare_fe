@@ -9,7 +9,7 @@
       </Col>
       <Col :span="12" class="border-gray border-l-2 h-full overflow-auto py-6">
         <div class="px-4">
-          <div class="mb-2 flex items-center">
+          <!-- <div class="mb-2 flex items-center">
             <a-button class="mr-2" @click="startRecording" :disabled="isRecording"
               >Start Recording</a-button
             >
@@ -18,7 +18,8 @@
             >
             <p class="pt-3">{{ isRecording ? 'Recording' : '' }}</p>
           </div>
-          <audio v-if="audioUrl" :src="audioUrl" controls class="h-8"></audio>
+          <audio v-if="audioUrl" :src="audioUrl" controls class="h-8"></audio> -->
+          <WaveRecorder />
           <!-- <a-button v-if="audioFile" @click="uploadAudio">Upload Audio</a-button> -->
         </div>
       </Col>
@@ -31,6 +32,7 @@
   import { GroupQuestionItem, SkillItem } from '../test/types/question';
   import { Col, Row } from 'ant-design-vue';
   import { uploadAudioApi } from '@/api/exam/exam';
+  import WaveRecorder from '@/views/test/form-question/WaveRecorder.vue';
 
   const props = defineProps({
     value: {

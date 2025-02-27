@@ -110,6 +110,7 @@
     "vxe-pc-ui": "^4.0.44",
     "vxe-table": "^4.7.40",
     "vxe-table-plugin-export-xlsx": "^4.0.4",
+    "wavesurfer.js": "^7.9.1",
     "xe-utils": "^3.5.28",
     "xlsx": "^0.18.5"
   },
