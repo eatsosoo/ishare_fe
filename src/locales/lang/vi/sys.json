@@ -26,7 +26,8 @@
     "logoutTip": "Nhắc nhở",
     "logoutMessage": "Xác nhận thoát khỏi hệ thống?",
     "menuLoading": "Đang tải menu...",
-    "dataNotFound": "Không tìm thấy dữ liệu"
+    "dataNotFound": "Không tìm thấy dữ liệu",
+    "submitExam": "Thời gian vẫn còn, bạn có muốn nộp bài trước không?"
   },
   "errorLog": {
     "tableTitle": "Danh sách lỗi",

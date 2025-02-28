@@ -19,13 +19,27 @@
                 >
               </div>
             </div>
-            <div class="p-4">
-              <div v-if="questionCurrent">
+
+            <div v-if="props.value[partIndex]?.question_groups.length === questionIndex">
+              {{ partIndex }}
+            </div>
+            <div v-else-if="questionCurrent" class="p-4">
+              <div>
                 <h2 class="text-primary text-3xl font-bold">Question {{ questionIndex + 1 }}</h2>
                 <div
                   v-html="questionCurrent.question_text"
                   class="text-3xl text-dark font-500"
                 ></div>
+              </div>
+              <div></div>
+              <div class="flex justify-center items-center mt-4">
+                <span class="relative flex h-3 w-3">
+                  <span
+                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"
+                  ></span>
+                  <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                </span>
+                <span class="ml-2">Recording...</span>
               </div>
             </div>
           </div>
@@ -47,21 +61,17 @@
         </div>
       </Col> -->
     </Row>
-    <BasicModal v-bind="$attrs" @register="register" :title="'Confirm'" :canFullscreen="false"
-      ><div class="text-dark text-3xl font-bold"
-        >Bạn có muốn hoành thành phần thi trước thời hạn không?</div
-      >
-    </BasicModal>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { computed, ref } from 'vue';
+  import { computed, ref, h } from 'vue';
   import { GroupQuestionItem, SkillItem } from '../test/types/question';
   import { Col, Row } from 'ant-design-vue';
   import { uploadAudioApi } from '@/api/exam/exam';
-  import WaveRecorder from '@/views/test/form-question/WaveRecorder.vue';
-  import { BasicModal, useModal } from '@/components/Modal';
+  import { useMessage } from '@/hooks/web/useMessage';
+  import { useI18n } from '@/hooks/web/useI18n';
+  import create from '@ant-design/icons-vue/lib/components/IconFont';
 
   const props = defineProps({
     value: {
@@ -70,7 +80,7 @@
     },
   });
 
-  const [register, { openModal, closeModal }] = useModal();
+  const emit = defineEmits(['startRecording', 'stopRecording']);
 
   const partIndex = ref<number | null>(null);
   const questionIndex = ref<number | null>(null);
@@ -86,35 +96,57 @@
 
   const textButton = computed(() => {
     if (partIndex.value === null && questionIndex.value === null) {
-      return 'START NOW';
-    } else if (partIndex.value !== null && questionIndex.value !== null) {
-      return 'NEXT QUESTION';
-    } else if (partIndex.value !== null && questionIndex.value === null) {
-      return 'NEXT PART';
+      return 'START_NOW';
+    } else if (
+      partIndex.value !== null &&
+      questionIndex.value === props.value?.parts[partIndex.value]?.question_groups.length
+    ) {
+      return 'NEXT_PART';
+    } else {
+      return 'NEXT_QUESTION';
     }
-    return '';
   });
 
+  const { createConfirm } = useMessage();
+  const { t } = useI18n();
+
   const actionRecord = (actionType: string) => {
-    if (actionType === 'START NOW') {
+    if (actionType === 'START_NOW') {
       // startRecording();
       partIndex.value = 0;
       questionIndex.value = 0;
       questionCurrent.value =
         props.value?.parts[partIndex.value].question_groups[questionIndex.value];
-    } else if (actionType === 'NEXT QUESTION') {
-      if (questionIndex.value === props.value?.parts[partIndex.value].question_groups.length) {
-        openModal();
+      emit('startRecording');
+    } else if (actionType === 'NEXT_PART') {
+      const idx = partIndex.value + 1;
+      const part = props.value?.parts[idx];
+      if (!part) {
+        console.log('Finish');
         return;
       }
-      questionCurrent.value =
-        props.value?.parts[partIndex.value].question_groups[questionIndex.value];
-      questionIndex.value++;
-    } else if (actionType === 'NEXT PART') {
-      partIndex.value++;
+      partIndex.value = idx;
+
       questionIndex.value = 0;
-      questionCurrent.value =
-        props.value?.parts[partIndex.value].question_groups[questionIndex.value];
+      questionCurrent.value = part.question_groups[questionIndex.value];
+    } else {
+      const part = props.value?.parts[partIndex.value];
+      if (questionIndex.value === part.question_groups.length - 1) {
+        createConfirm({
+          iconType: 'warning',
+          title: () => h('span', t('sys.app.logoutTip')),
+          content: () => h('span', t('sys.app.submitExam')),
+          onOk: async () => {
+            questionCurrent.value = null;
+            emit('stopRecording');
+            questionIndex.value++;
+          },
+        });
+      } else {
+        questionIndex.value++;
+
+        questionCurrent.value = part.question_groups[questionIndex.value];
+      }
     }
   };
 

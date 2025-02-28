@@ -35,7 +35,12 @@
         <TakeWriting v-if="skillExam" :value="skillExam" @change="submitForm = $event" />
       </template>
       <template v-else-if="state.type === 'Speaking'">
-        <TakeSpeaking v-if="skillExam" :value="skillExam" />
+        <TakeSpeaking
+          v-if="skillExam"
+          :value="skillExam"
+          @start-recording="startCountdown"
+          @stop-recording="stopTimer"
+        />
       </template>
     </div>
   </div>
@@ -110,6 +115,13 @@
 
       duration.value--;
     }, 1000);
+  }
+
+  function stopTimer() {
+    if (interval !== null) {
+      clearInterval(interval);
+      interval = null;
+    }
   }
 
   function generateAnswerObject(parts: NewPartItem[]) {
