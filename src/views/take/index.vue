@@ -97,7 +97,8 @@
     tip: 'Loading...',
   });
 
-  function startCountdown() {
+  function startCountdown(time: number) {
+    duration.value = time * 60;
     if (interval) clearInterval(interval); // Xóa interval cũ nếu có
 
     interval = setInterval(() => {
@@ -151,10 +152,9 @@
       openFullLoading();
       const result = await takeExamStudentApi(examId, type);
       skillExam.value = result.items;
-      duration.value = skillExam.value.duration * 60;
       studentAnswer.value = generateAnswerObject(skillExam.value.parts);
       if (state.type !== 'Speaking') {
-        startCountdown();
+        startCountdown(skillExam.value.duration);
       }
     } catch (error) {
       createMessage.error(t('sys.app.dataNotFound'));

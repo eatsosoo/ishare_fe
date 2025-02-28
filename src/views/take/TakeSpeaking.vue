@@ -4,7 +4,7 @@
       <Col :span="24">
         <div class="p-6 flex justify-center items-center h-full">
           <div
-            class="min-h-[480px] rounded-md border-1 border-[#d4dae0] bg-[#f3f3f3] w-[1000px] text-center"
+            class="min-h-[480px] rounded-md border-1 border-[#d4dae0] bg-[#f7dcdc] w-[1000px] text-center flex flex-col"
           >
             <div class="rounded-t-md bg-[#ebebeb] border-b-1 border-[#d4dae0] h-14 relative">
               <h1 class="text-2xl line-height-14">{{
@@ -15,32 +15,47 @@
                   type="default"
                   preIcon="ant-design:caret-right-filled"
                   @click="actionRecord(textButton)"
-                  >{{ textButton }}</a-button
+                  >{{ transText[textButton] }}</a-button
                 >
               </div>
             </div>
 
-            <div v-if="props.value[partIndex]?.question_groups.length === questionIndex">
-              {{ partIndex }}
-            </div>
-            <div v-else-if="questionCurrent" class="p-4">
-              <div>
-                <h2 class="text-primary text-3xl font-bold">Question {{ questionIndex + 1 }}</h2>
-                <div
-                  v-html="questionCurrent.question_text"
-                  class="text-3xl text-dark font-500"
-                ></div>
+            <div class="flex-1 grid place-items-center">
+              <div v-if="props.value.parts[partIndex]?.question_groups.length === questionIndex">
+                <h2 class="font-bold text-3xl">IT'S THE END OF PART {{ partIndex + 1 }}</h2>
+                <p class="text-primary"
+                  >You can review your part {{ partIndex + 1 }} recording by clicking the Play
+                  button below</p
+                >
+                <div class="mt-10">
+                  <audio
+                    v-if="partIndex !== null && final[partIndex]"
+                    :src="final[partIndex]"
+                    controls
+                    class="h-8 w-[500px]"
+                    :key="final[partIndex]"
+                  ></audio>
+                </div>
               </div>
-              <div></div>
-              <div class="flex justify-center items-center mt-4">
-                <span class="relative flex h-3 w-3">
-                  <span
-                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"
-                  ></span>
-                  <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
-                </span>
-                <span class="ml-2">Recording...</span>
-              </div>
+              <div v-else-if="questionCurrent" class="p-4">
+                <div>
+                  <h2 class="text-primary text-3xl font-bold">Question {{ questionIndex + 1 }}</h2>
+                  <div
+                    v-html="questionCurrent.question_text"
+                    class="text-3xl text-dark font-500"
+                  ></div>
+                </div>
+                <div></div>
+                <div class="flex justify-center items-center mt-4">
+                  <span class="relative flex h-3 w-3">
+                    <span
+                      class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"
+                    ></span>
+                    <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                  </span>
+                  <span class="ml-2">Recording...</span>
+                </div></div
+              >
             </div>
           </div>
         </div>
@@ -71,7 +86,6 @@
   import { uploadAudioApi } from '@/api/exam/exam';
   import { useMessage } from '@/hooks/web/useMessage';
   import { useI18n } from '@/hooks/web/useI18n';
-  import create from '@ant-design/icons-vue/lib/components/IconFont';
 
   const props = defineProps({
     value: {
@@ -92,7 +106,7 @@
   const audioUrl = ref<string | null>(null);
   const audioFile = ref<File | null>(null);
 
-  const final = ref<string>('');
+  const final = ref<string[]>([]);
 
   const textButton = computed(() => {
     if (partIndex.value === null && questionIndex.value === null) {
@@ -107,6 +121,12 @@
     }
   });
 
+  const transText = {
+    START_NOW: 'Start Now',
+    NEXT_PART: 'Next Part',
+    NEXT_QUESTION: 'Next Question',
+  };
+
   const { createConfirm } = useMessage();
   const { t } = useI18n();
 
@@ -117,7 +137,8 @@
       questionIndex.value = 0;
       questionCurrent.value =
         props.value?.parts[partIndex.value].question_groups[questionIndex.value];
-      emit('startRecording');
+      emit('startRecording', 5);
+      startRecording();
     } else if (actionType === 'NEXT_PART') {
       const idx = partIndex.value + 1;
       const part = props.value?.parts[idx];
@@ -139,6 +160,7 @@
           onOk: async () => {
             questionCurrent.value = null;
             emit('stopRecording');
+            stopRecording();
             questionIndex.value++;
           },
         });
@@ -167,7 +189,7 @@
         console.log(audioFile.value, audioUrl.value);
 
         const speakingUrl = await uploadAudio();
-        final.value = speakingUrl as string;
+        final.value.push(speakingUrl as string);
       };
 
       mediaRecorder.value.start();
