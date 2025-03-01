@@ -50,6 +50,10 @@
   "exeType": "Kiểu bài tập",
   "exehomework": "Bài về nhà",
   "execlass": "Bài trên lớp",
+  "plan": "Dự thi",
+  "target": "Mục tiêu",
+  "studyDate": "Ngày học",
+  "note": "Ghi chú",
   "exerciseTable": {
     "name": "Tên bài tập",
     "score": "Điểm",

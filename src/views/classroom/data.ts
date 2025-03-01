@@ -55,7 +55,7 @@ export const schemas: FormSchema[] = [
   },
   {
     field: 'key',
-    label: t('form.newClassForm.classType'),
+    label: t('form.classType'),
     component: 'Select',
     componentProps: {
       options: [
@@ -88,7 +88,7 @@ export const schemas: FormSchema[] = [
   },
   {
     field: 'level',
-    label: t('form.newClassForm.level'),
+    label: t('form.level'),
     component: 'Select',
     componentProps: {
       options: [
@@ -413,6 +413,46 @@ export const assignHomeworkFormSchemas: FormSchema[] = [
     required: true,
     colProps: {
       span: 12,
+    },
+  },
+];
+
+export const searchAttendaceSchemas: FormSchema[] = [
+  {
+    field: 'classId',
+    component: 'ApiSelect',
+    label: t('form.gradingSearch.className'),
+    componentProps: {
+      // more details see /src/components/Form/src/components/ApiSelect.vue
+      api: classListApi(),
+      params: {
+        id: 1,
+      },
+
+      resultField: 'items',
+      // use name as label
+      labelField: 'title',
+      // use id as value
+      valueField: 'id',
+      // not request untill to select
+      immediate: true,
+    },
+    required: true,
+    colProps: {
+      xl: 6,
+      xxl: 4,
+      offset: 1,
+    },
+  },
+  {
+    field: 'date',
+    label: t('form.date'),
+    component: 'DatePicker',
+    required: true,
+    colProps: {
+      xl: 6,
+      xxl: 6,
+      offset: 1,
     },
   },
 ];

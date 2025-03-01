@@ -1,7 +1,7 @@
 <template>
   <PageWrapper
-    :title="t('form.gradingSearch.titleExam')"
-    :content="t('form.gradingSearch.contentExam')"
+    :title="t('form.gradingSearch.titleHomework')"
+    :content="t('form.gradingSearch.contentHomework')"
   >
     <BasicTable @register="registerTable">
       <template #toolbar>

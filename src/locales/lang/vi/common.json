@@ -66,6 +66,9 @@
   "optionLabel": "Câu trả lời",
   "optionValue": "Phương án",
   "blockPaste": "Không thể dán nội dung vào đây!",
+  "present": "Có mặt",
+  "absent": "Vắng mặt",
+  "attendace": "Điểm danh",
   "warning": {
     "addActionEdtior": "Chưa có vị trí để chèn text!"
   },

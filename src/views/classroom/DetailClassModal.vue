@@ -68,7 +68,7 @@
           label: t('form.exerciseSearch.studentName'),
           colProps: {
             xl: 6,
-            xxl: 4,
+            xxl: 6,
           },
         },
       ],
@@ -130,16 +130,16 @@
       tab: t('table.studentList'),
       register: registerTable1,
     },
-    {
-      key: 1,
-      tab: t('table.homeWorkList'),
-      register: registerTable2,
-    },
-    {
-      key: 2,
-      tab: t('table.monthlyTestScore'),
-      register: registerTable3,
-    },
+    // {
+    //   key: 1,
+    //   tab: t('table.homeWorkList'),
+    //   register: registerTable2,
+    // },
+    // {
+    //   key: 2,
+    //   tab: t('table.monthlyTestScore'),
+    //   register: registerTable3,
+    // },
   ];
 
   const reloadFunctions = [reload1, reload2, reload3];
@@ -148,12 +148,12 @@
     if (tableRefs.value[0]) {
       reloadFunctions[0]();
     }
-    if (tableRefs.value[1]) {
-      reloadFunctions[1]();
-    }
-    if (tableRefs.value[2]) {
-      reloadFunctions[2]();
-    }
+    // if (tableRefs.value[1]) {
+    //   reloadFunctions[1]();
+    // }
+    // if (tableRefs.value[2]) {
+    //   reloadFunctions[2]();
+    // }
   };
 
   async function exportExcelStudent(from, to, user_id) {

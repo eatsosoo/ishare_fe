@@ -32,9 +32,15 @@
       editRow: true,
     },
     {
-      title: t('form.shiftDescription'),
-      dataIndex: 'no',
+      title: t('form.shiftDay'),
+      dataIndex: 'day',
       editRow: true,
+    },
+    {
+      title: t('form.shiftTime'),
+      dataIndex: 'hour',
+      editRow: true,
+      editComponent: 'TimePicker',
     },
   ];
   const [registerTable, { getDataSource }] = useTable({
@@ -59,11 +65,11 @@
 
   function handleCancel(record: EditRecordRow) {
     record.onEdit?.(false);
-    if (record.isNew) {
-      const data = getDataSource();
-      const index = data.findIndex((item) => item.key === record.key);
-      data.splice(index, 1);
-    }
+    // if (record.isNew) {
+    //   const data = getDataSource();
+    //   const index = data.findIndex((item) => item.key === record.key);
+    //   data.splice(index, 1);
+    // }
   }
 
   function handleSave(record: EditRecordRow) {
@@ -78,12 +84,19 @@
     const data = getDataSource();
     const addRow: EditRecordRow = {
       title: '',
-      description: '',
+      day: '',
+      hour: '',
       editable: true,
       isNew: true,
       key: `${Date.now()}`,
     };
     data.push(addRow);
+  }
+
+  function handleDelete(record: EditRecordRow) {
+    const data = getDataSource();
+    const index = data.findIndex((item) => item.key === record.key);
+    data.splice(index, 1);
   }
 
   function createActions(record: EditRecordRow): ActionItem[] {
@@ -95,6 +108,10 @@
         },
         {
           label: t('table.delete'),
+          popConfirm: {
+            title: t('table.delete'),
+            confirm: handleDelete.bind(null, record),
+          },
         },
       ];
     }
@@ -105,10 +122,7 @@
       },
       {
         label: t('table.cancel'),
-        popConfirm: {
-          title: t('table.cancelEditing'),
-          confirm: handleCancel.bind(null, record),
-        },
+        onClick: handleCancel.bind(null, record),
       },
     ];
   }

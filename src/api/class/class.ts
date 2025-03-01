@@ -1,5 +1,6 @@
 import { defHttp } from '@/utils/http/axios';
 import {
+  AttendaceClassGetResultModel,
   ClassAddStudentsParams,
   ClassDeleteStudentsParams,
   ClassListGetResultModel,
@@ -13,6 +14,7 @@ import { useUserStore } from '@/store/modules/user';
 
 enum Api {
   CLASS_ROUTE = '/classes',
+  ATTENDACE = '/attendances',
 }
 
 export const createClassApi = (params: CreateClassParams, mode: ErrorMessageMode = 'modal') =>
@@ -108,3 +110,16 @@ export const addStudentClassApi = (
       errorMessageMode: mode,
     },
   );
+
+export const attendanceListApi = () => (params: BasicPageParams) => {
+  const useStore = useUserStore();
+  const classId = useStore.getClassId;
+  return defHttp.get<AttendaceClassGetResultModel>({
+    url: `${Api.ATTENDACE}/${classId}?month=2&year=2025`,
+    params,
+    headers: {
+      // @ts-ignore
+      ignoreCancelToken: true,
+    },
+  });
+};

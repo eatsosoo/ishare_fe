@@ -12,11 +12,15 @@
   "shift": "Ca học",
   "shiftName": "Tên ca học",
   "shiftDescription": "Mô tả",
+  "shiftTime": "Giờ học",
+  "shiftDay": "Ngày trong tuần",
   "addShift": "Thêm ca học",
   "assignHomework": "Giao bài tập",
   "assignAtClass": "Trên lớp",
   "assignAtHome": "Về nhà",
   "exeType": "Kiểu bài tập",
+  "searchClassAndDate": "Tìm kiếm theo lớp học và ngày",
+  "date": "Ngày",
   "newClassForm": {
     "title": "Biểu mẫu tạo nhóm lớp",
     "formDesc": "",
@@ -48,9 +52,9 @@
     "examName": "Tên bài thi",
     "homeworkName": "Tên bài tập",
     "titleExam": "Giao bài thi",
-    "contentExam": "Chọn lớp học và bài thi để giao cho học viên.",
+    "contentExam": "Chọn lớp học và bài thi có sẵn để giao cho học viên.",
     "titleHomework": "Giao bài tập",
-    "contentHomework": "Chọn lớp học và bài tập để giao cho học viên."
+    "contentHomework": "Để giao bài tập cho lớp học, hãy nhấp vào nút 'Giao bài' với viền nét đứt. Sau đó, điền đầy đủ thông tin yêu cầu và tạo câu hỏi phù hợp."
   },
   "exerciseSearch": {
     "className": "Tên lớp",

@@ -108,6 +108,16 @@ export function getStudentOfClassColumns(): BasicColumn[] {
       dataIndex: 'parent_tel',
       align: 'left',
     },
+    {
+      title: t('table.target'),
+      dataIndex: 'target',
+      align: 'left',
+    },
+    {
+      title: t('table.plan'),
+      dataIndex: 'plan',
+      align: 'left',
+    },
   ];
 }
 
@@ -420,15 +430,15 @@ export function getFormConfig(): Partial<FormProps> {
 
 export function getFormSearchClassConfig(): Partial<FormProps> {
   return {
-    labelWidth: 100,
+    labelWidth: 150,
     schemas: [
       {
         field: 'class_name',
         component: 'Input',
         label: t('form.newClassForm.name'),
         colProps: {
-          xl: 12,
-          xxl: 12,
+          xl: 5,
+          xxl: 5,
         },
       },
       {
@@ -436,8 +446,8 @@ export function getFormSearchClassConfig(): Partial<FormProps> {
         label: t('form.newClassForm.teacher'),
         component: 'Input',
         colProps: {
-          xl: 12,
-          xxl: 12,
+          xl: 5,
+          xxl: 5,
         },
       },
       {
@@ -445,8 +455,9 @@ export function getFormSearchClassConfig(): Partial<FormProps> {
         label: t('form.newClassForm.openingDay'),
         component: 'DatePicker',
         colProps: {
-          xl: 12,
-          xxl: 12,
+          xl: 6,
+          xxl: 6,
+          offset: 1,
         },
       },
       {
@@ -454,8 +465,8 @@ export function getFormSearchClassConfig(): Partial<FormProps> {
         label: t('form.newClassForm.endDay'),
         component: 'DatePicker',
         colProps: {
-          xl: 12,
-          xxl: 12,
+          xl: 6,
+          xxl: 6,
         },
       },
     ],
@@ -871,4 +882,73 @@ export function getAssignmentListConfig(): Partial<FormProps> {
       },
     ],
   };
+}
+
+export function getSearchAttendaceConfig(): Partial<FormProps> {
+  return {
+    labelWidth: 100,
+    schemas: [
+      {
+        field: 'classId',
+        component: 'ApiSelect',
+        label: t('form.exerciseSearch.className'),
+        componentProps: {
+          // more details see /src/components/Form/src/components/ApiSelect.vue
+          api: classListApi(),
+          params: {
+            id: 1,
+          },
+
+          resultField: 'items',
+          // use name as label
+          labelField: 'className',
+          // use id as value
+          valueField: 'id',
+          // not request untill to select
+          immediate: true,
+          onChange: (e, v) => {
+            console.log('ApiSelect====>:', e, v);
+          },
+          // atfer request callback
+          onOptionsChange: (options) => {
+            console.log('get options', options.length, options);
+          },
+        },
+      },
+      {
+        field: 'date',
+        label: t('form.exerciseSearch.createdAt'),
+        component: 'DatePicker',
+        colProps: {
+          xl: 6,
+          xxl: 4,
+        },
+      },
+    ],
+  };
+}
+
+export function getAttendaceColumns(): BasicColumn[] {
+  return [
+    {
+      title: t('table.studentName'),
+      dataIndex: 'user_name',
+    },
+    {
+      title: t('table.className'),
+      dataIndex: 'class_title',
+    },
+    {
+      title: t('table.studyDate'),
+      dataIndex: 'date',
+    },
+    {
+      title: t('table.status'),
+      dataIndex: 'status',
+    },
+    {
+      title: t('table.note'),
+      dataIndex: 'note',
+    },
+  ];
 }

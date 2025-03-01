@@ -33,6 +33,14 @@ const classroom: AppRouteModule = {
         title: t('routes.page.createClassroom'),
       },
     },
+    {
+      path: 'attendance',
+      name: 'TakeAttendance',
+      component: () => import('@/views/classroom/attendance.vue'),
+      meta: {
+        title: t('routes.page.takeAttendance'),
+      },
+    },
   ],
 };
 
