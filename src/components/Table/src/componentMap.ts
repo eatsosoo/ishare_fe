@@ -25,6 +25,7 @@ componentMap.set('Switch', Switch);
 componentMap.set('Checkbox', Checkbox);
 componentMap.set('DatePicker', DatePicker);
 componentMap.set('TimePicker', TimePicker);
+componentMap.set('TimeRangePicker', TimePicker.TimeRangePicker);
 componentMap.set('RadioGroup', Radio.Group);
 componentMap.set('RadioButtonGroup', RadioButtonGroup);
 componentMap.set('ApiRadioGroup', ApiRadioGroup);

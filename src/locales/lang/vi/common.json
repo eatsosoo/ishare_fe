@@ -72,6 +72,8 @@
   "download": "Tải xuống",
   "create": "Tạo",
   "notFindPart": "Không tìm thấy part!",
+  "start": "Bắt đầu",
+  "end": "Kết thúc",
   "warning": {
     "addActionEdtior": "Chưa có vị trí để chèn text!"
   },

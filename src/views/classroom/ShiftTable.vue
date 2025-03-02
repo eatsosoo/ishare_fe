@@ -35,12 +35,24 @@
       title: t('form.shiftDay'),
       dataIndex: 'day',
       editRow: true,
+      editComponent: 'Select',
+      editComponentProps: {
+        options: [
+          { label: t('form.monday'), value: '2' },
+          { label: t('form.tuesday'), value: '3' },
+          { label: t('form.wednesday'), value: '4' },
+          { label: t('form.thursday'), value: '5' },
+          { label: t('form.friday'), value: '6' },
+          { label: t('form.saturday'), value: '7' },
+          { label: t('form.sunday'), value: '8' },
+        ],
+      },
     },
     {
       title: t('form.shiftTime'),
       dataIndex: 'hour',
       editRow: true,
-      editComponent: 'TimePicker',
+      editComponent: 'TimeRangePicker',
     },
   ];
   const [registerTable, { getDataSource }] = useTable({
@@ -80,7 +92,7 @@
     const addRow: EditRecordRow = {
       title: '',
       day: '',
-      hour: '',
+      hour: [],
       editable: true,
       isNew: true,
       key: `${Date.now()}`,

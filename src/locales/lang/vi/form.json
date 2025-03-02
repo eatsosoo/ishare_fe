@@ -21,6 +21,13 @@
   "exeType": "Kiểu bài tập",
   "searchClassAndDate": "Tìm kiếm theo lớp học và ngày",
   "date": "Ngày",
+  "monday": "Thứ hai",
+  "tuesday": "Thứ ba",
+  "wednesday": "Thứ tư",
+  "thursday": "Thứ năm",
+  "friday": "Thứ sáu",
+  "saturday": "Thứ bảy",
+  "sunday": "Chủ nhật",
   "newClassForm": {
     "title": "Biểu mẫu tạo nhóm lớp",
     "formDesc": "",
