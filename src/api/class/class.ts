@@ -1,6 +1,7 @@
 import { defHttp } from '@/utils/http/axios';
 import {
-  AttendaceClassGetResultModel,
+  AttendanceItem,
+  AttendanceStudentsParams,
   ClassAddStudentsParams,
   ClassDeleteStudentsParams,
   ClassListGetResultModel,
@@ -14,7 +15,7 @@ import { useUserStore } from '@/store/modules/user';
 
 enum Api {
   CLASS_ROUTE = '/classes',
-  ATTENDACE = '/attendances',
+  ATTENDANCE = '/attendances',
 }
 
 export const createClassApi = (params: CreateClassParams, mode: ErrorMessageMode = 'modal') =>
@@ -111,15 +112,23 @@ export const addStudentClassApi = (
     },
   );
 
-export const attendanceListApi = () => (params: BasicPageParams) => {
-  const useStore = useUserStore();
-  const classId = useStore.getClassId;
-  return defHttp.get<AttendaceClassGetResultModel>({
-    url: `${Api.ATTENDACE}/${classId}?month=2&year=2025`,
-    params,
+export const attendanceListApi = (classId: number, date: string) => {
+  return defHttp.get<Result<AttendanceItem[][]>>({
+    url: `${Api.ATTENDANCE}/${classId}?date=${date}`,
     headers: {
       // @ts-ignore
       ignoreCancelToken: true,
     },
   });
 };
+
+export const attendanceApi = (params: AttendanceStudentsParams, mode: ErrorMessageMode = 'modal') =>
+  defHttp.post<Result<Boolean>>(
+    {
+      url: `${Api.ATTENDANCE}/${params.class_id}`,
+      params,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );

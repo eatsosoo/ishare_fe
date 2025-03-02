@@ -60,21 +60,6 @@
           </div>
         </div>
       </Col>
-      <!-- <Col :span="12" class="border-gray border-l-2 h-full overflow-auto py-6">
-        <div class="px-4">
-          <div class="mb-2 flex items-center">
-            <a-button class="mr-2" @click="startRecording" :disabled="isRecording"
-              >Start Recording</a-button
-            >
-            <a-button class="mr-2" @click="stopRecording" :disabled="!isRecording"
-              >Stop Recording</a-button
-            >
-            <p class="pt-3">{{ isRecording ? 'Recording' : '' }}</p>
-          </div>
-          <audio v-if="audioUrl" :src="audioUrl" controls class="h-8"></audio>
-          <WaveRecorder />
-        </div>
-      </Col> -->
     </Row>
   </div>
 </template>

@@ -417,7 +417,7 @@ export const assignHomeworkFormSchemas: FormSchema[] = [
   },
 ];
 
-export const searchAttendaceSchemas: FormSchema[] = [
+export const searchAttendanceSchemas: FormSchema[] = [
   {
     field: 'classId',
     component: 'ApiSelect',

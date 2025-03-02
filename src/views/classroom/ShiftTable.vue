@@ -65,11 +65,6 @@
 
   function handleCancel(record: EditRecordRow) {
     record.onEdit?.(false);
-    // if (record.isNew) {
-    //   const data = getDataSource();
-    //   const index = data.findIndex((item) => item.key === record.key);
-    //   data.splice(index, 1);
-    // }
   }
 
   function handleSave(record: EditRecordRow) {

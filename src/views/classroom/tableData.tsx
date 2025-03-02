@@ -884,7 +884,7 @@ export function getAssignmentListConfig(): Partial<FormProps> {
   };
 }
 
-export function getSearchAttendaceConfig(): Partial<FormProps> {
+export function getSearchAttendanceConfig(): Partial<FormProps> {
   return {
     labelWidth: 100,
     schemas: [
@@ -928,7 +928,7 @@ export function getSearchAttendaceConfig(): Partial<FormProps> {
   };
 }
 
-export function getAttendaceColumns(): BasicColumn[] {
+export function getAttendanceColumns(): BasicColumn[] {
   return [
     {
       title: t('table.studentName'),
@@ -945,10 +945,26 @@ export function getAttendaceColumns(): BasicColumn[] {
     {
       title: t('table.status'),
       dataIndex: 'status',
+      edit: true,
+      editComponent: 'Select',
+      editComponentProps: {
+        options: [
+          {
+            label: t('common.present'),
+            value: 1,
+          },
+          {
+            label: t('common.absent'),
+            value: 0,
+          },
+        ],
+      },
     },
     {
       title: t('table.note'),
       dataIndex: 'note',
+      edit: true,
+      editComponent: 'Input',
     },
   ];
 }

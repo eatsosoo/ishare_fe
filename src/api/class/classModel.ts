@@ -34,7 +34,7 @@ export interface ClassStudentItem {
   phone_number: string;
 }
 
-export interface AttendaceItem {
+export interface AttendanceItem {
   user_id: number;
   user_name: string;
   class_id: number;
@@ -47,6 +47,12 @@ export interface AttendaceItem {
 export interface ClassAddStudentsParams {
   class_id: number;
   students: { id: number }[];
+}
+
+export interface AttendanceStudentsParams {
+  class_id: number;
+  date: string;
+  users: { id: number; note: string }[];
 }
 
 export interface ClassDeleteStudentsParams {
@@ -67,4 +73,4 @@ export type ClassStudentGetResultModel = BasicFetchResult<ClassStudentItem>;
 /**
  * @description: Request list retunr value
  */
-export type AttendaceClassGetResultModel = BasicFetchResult<AttendaceItem>;
+export type AttendanceClassGetResultModel = BasicFetchResult<AttendanceItem>;
