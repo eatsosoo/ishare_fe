@@ -17,7 +17,7 @@
                   :size="18"
                   icon="ant-design:export"
                   class="cursor-pointer hover:border-red border-1 border-gray-200 p-1 rounded-md"
-                  @click="exportExcelStudent('2025-02-01', '2025-02-28', record.id)"
+                  @click="exportExcelStudent('2025-02-01', '2025-03-15', record.id)"
                 />
               </div>
             </template>
@@ -158,31 +158,48 @@
 
   async function exportExcelStudent(from, to, user_id) {
     try {
-      const response = await fetch(`https://api-gateway.danda.vn/api/users/export-study-result`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-          Authorization: `Bearer ${getToken()}`,
+      const response = await fetch(
+        `https://api-gateway.danda.vn/api/users/export-study-result/${user_id}/${from}/${to}`,
+        {
+          method: 'GET',
+          headers: {
+            Accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getToken()}`,
+          },
         },
-        body: JSON.stringify({ user_id, from, to }),
-      });
+      );
 
       if (!response.ok) throw new Error('Failed to fetch file');
 
-      // Nhận dữ liệu dưới dạng Blob
+      // 📌 Nhận dữ liệu dưới dạng Blob
       const blob = await response.blob();
 
-      // 🛠️ Tạo link để tải file
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', `study-result-${from}-${to}.xlsx`);
-      document.body.appendChild(link);
-      link.click();
+      // 📌 Lấy tên file từ header `Content-Disposition`
+      const disposition = response.headers.get('Content-Disposition');
+      const fileName = disposition
+        ? disposition.split('filename=')[1]
+        : `study-result-${from}-${to}.xlsx`;
 
-      // 🧹 Xóa link sau khi tải xong
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
+      // 📌 Hỗ trợ Safari & IE
+      if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+        window.navigator.msSaveOrOpenBlob(blob, fileName);
+      } else {
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', fileName);
+
+        if (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome')) {
+          window.open(url);
+        } else {
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+
+        window.URL.revokeObjectURL(url);
+      }
     } catch (error) {
       console.error('Download failed:', error);
     }

@@ -164,6 +164,9 @@
     times: {
       type: Number,
     },
+    title: {
+      type: String,
+    },
   });
 
   const emit = defineEmits(['submit-grading']);
@@ -279,7 +282,7 @@
   `;
 
     const blob = new Blob(['\ufeff', htmlContent], { type: 'application/msword' });
-    saveAs(blob, 'document.doc');
+    saveAs(blob, `${props.title}.doc`);
   };
 
   watch(

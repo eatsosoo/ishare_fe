@@ -107,6 +107,7 @@
           class_id,
           shift_id,
           date: getLeftValue(date),
+          study_date: new Date().toISOString().split('T')[0],
         },
         question_groups: parts.value[0].question_groups,
       };

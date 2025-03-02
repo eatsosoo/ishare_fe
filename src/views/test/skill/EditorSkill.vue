@@ -63,19 +63,26 @@
       </Tabs>
     </template>
 
-    <!-- Editor Writing and Speaking -->
-    <template v-else>
+    <!-- Editor Writing -->
+    <template v-else-if="skillType === 'Writing'">
       <a-button v-if="sections.length === 0" type="dashed" @click="handleAddTab" class="w-full mt-4"
-        >Tạo {{ skillType }}</a-button
+        >{{ t('common.create') }} {{ skillType }}</a-button
       >
       <Row v-if="sections.length > 0" :gutter="[16, 16]" class="mb-1 min-h-[30rem] mt-4">
         <Col :span="24" class="flex">
           <div class="re-box-shadow rounded-lg pa-4 w-full">
             <template v-if="groupActive">
               <h2 class="text-primary">Question {{ groupActive.question_no[0] }}</h2>
-              <Tinymce v-model="groupActive.question_text" width="100%" />
-              <a-button preIcon="ant-design:save-twotone" class="mt-4" @click="handleUpdateGroup2"
-                >Save</a-button
+              <Tinymce
+                v-model="groupActive.question_text"
+                width="100%"
+                :show-image-upload="false"
+              />
+              <a-button
+                preIcon="ant-design:save-twotone"
+                class="mt-4"
+                @click="handleUpdateGroup2"
+                >{{ t('common.saveTemp') }}</a-button
               >
             </template>
             <template v-else>
@@ -120,12 +127,89 @@
       </Row>
     </template>
 
+    <!-- Editor Speaking -->
+    <template v-else>
+      <Tabs v-model:activeKey="activeKey" @change="handleChangeTab">
+        <TabPane v-for="(item, index) in tabs" :key="item.key" :tab="item.tab">
+          <div class="w-25">
+            <InputNumber v-model:value="sections[activeKey].duration" :max="5">
+              <template #addonBefore>
+                <FieldTimeOutlined />
+              </template>
+            </InputNumber>
+          </div>
+          <Row v-if="sections.length > 0" :gutter="[16, 16]" class="mb-1 min-h-[30rem] mt-4">
+            <Col :span="24" class="flex">
+              <div class="re-box-shadow rounded-lg pa-4 w-full">
+                <template v-if="groupActive">
+                  <h2 class="text-primary">Question {{ groupActive.question_no[0] }}</h2>
+                  <Tinymce
+                    v-model="groupActive.question_text"
+                    width="100%"
+                    :show-image-upload="false"
+                  />
+                  <a-button
+                    preIcon="ant-design:save-twotone"
+                    class="mt-4"
+                    @click="handleUpdateGroup2"
+                    >{{ t('common.saveTemp') }}</a-button
+                  >
+                </template>
+                <template v-else>
+                  <div class="flex flex-col items-center justify-center h-full min-h-30">
+                    <img src="@/assets/svg/empty.svg" />
+                    <p class="text-gray">{{ t('common.empty') }}</p>
+                  </div>
+                </template>
+              </div>
+              <div v-if="sections.length > 0" class="ml-4">
+                <div
+                  v-for="(question_group, idx) in sections[activeKey].question_groups"
+                  :key="`speaking_q_${idx}`"
+                  :class="
+                    groupActive?.question_no === question_group.question_no
+                      ? 'border-red'
+                      : 'border-gray'
+                  "
+                  class="border rounded-lg p-2 flex flex-col items-center gap-2 mb-4 cursor-pointer"
+                  @click="groupActive = question_group"
+                >
+                  <div
+                    v-for="no in question_group.question_no"
+                    :key="no"
+                    class="bg-gray rounded-full h-6 w-6 flex items-center justify-center text-white"
+                  >
+                    {{ no }}
+                  </div>
+                </div>
+                <a-button
+                  type="dashed"
+                  preIcon="ant-design:plus-outlined"
+                  @click="
+                    handleAddGroup({
+                      group_type: 'speaking_task',
+                      total: 1,
+                    })
+                  "
+                />
+              </div>
+            </Col>
+          </Row>
+        </TabPane>
+        <template v-if="sections.length < max && allowAddPart" #rightExtra>
+          <a-button type="dashed" preIcon="ant-design:file-add-outlined" @click="handleAddTab"
+            >Part</a-button
+          >
+        </template>
+      </Tabs>
+    </template>
+
     <GroupCreate @register="registerModal" @ok="handleAddGroup" />
   </div>
 </template>
 <script lang="ts" setup>
   import { computed, ref, watch } from 'vue';
-  import { Col, Row, Tabs } from 'ant-design-vue';
+  import { Col, InputNumber, Row, Tabs } from 'ant-design-vue';
   import { useI18n } from '@/hooks/web/useI18n';
   import {
     handleAnswerOptions,
@@ -148,6 +232,7 @@
   import { cloneDeep } from 'lodash-es';
   import { Tinymce } from '@/components/Tinymce';
   import { SkillType } from '@/api/exam/examModel';
+  import { FieldTimeOutlined } from '@ant-design/icons-vue';
 
   const props = defineProps({
     value: {
@@ -284,7 +369,7 @@
   }) {
     const part = sections.value[activeKey.value];
     if (!part) {
-      createMessage.warning('Không tìm thấy part!');
+      createMessage.warning(t('common.notFindPart'));
       return;
     }
 

@@ -70,6 +70,8 @@
   "absent": "Vắng mặt",
   "attendace": "Điểm danh",
   "download": "Tải xuống",
+  "create": "Tạo",
+  "notFindPart": "Không tìm thấy part!",
   "warning": {
     "addActionEdtior": "Chưa có vị trí để chèn text!"
   },

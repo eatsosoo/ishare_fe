@@ -81,6 +81,7 @@ export interface GroupQuestionItem {
 export interface NewPartItem {
   id: number | null;
   subject: string;
+  duration: number;
   question_groups: GroupQuestionItem[];
 }
 

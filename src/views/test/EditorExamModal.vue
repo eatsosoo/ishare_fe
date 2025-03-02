@@ -11,7 +11,7 @@
         <div>
           <Select v-model:value="skillSelected" :options="SKILL_OPTIONS" class="w-30" />
         </div>
-        <div class="w-25">
+        <div v-if="skillSelected !== 'Speaking'" class="w-25">
           <InputNumber v-model:value="duration" :min="10">
             <template #addonBefore>
               <FieldTimeOutlined />
@@ -87,7 +87,7 @@
     Reading: 3,
     Listening: 4,
     Writing: 1,
-    Speaking: 1,
+    Speaking: 3,
   };
 
   // audio

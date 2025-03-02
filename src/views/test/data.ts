@@ -54,12 +54,14 @@ export const yesNoNotGivenOptions = [
 export const READING_PART_DEF: NewPartItem = {
   id: null,
   subject: 'Context of part',
+  duration: 0,
   question_groups: [],
 };
 
 export const WRITING_DEF: NewPartItem = {
   id: null,
   subject: 'subject_writing_task_def',
+  duration: 0,
   question_groups: [
     {
       id: null,
@@ -79,6 +81,7 @@ export const WRITING_DEF: NewPartItem = {
 export const SPEAKING_DEF: NewPartItem = {
   id: null,
   subject: 'subject_speaking_task_default',
+  duration: 0,
   question_groups: [
     {
       id: null,
