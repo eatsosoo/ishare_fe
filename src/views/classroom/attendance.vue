@@ -84,14 +84,13 @@
       const formatData = {
         class_id: classId,
         date: getLeftValue(date),
-        users: dataSource
-          .filter((item) => item.status === 1)
-          .map((item) => {
-            return {
-              id: item.user_id,
-              note: item.note,
-            };
-          }),
+        users: dataSource.map((item) => {
+          return {
+            id: item.user_id,
+            status: item.status,
+            note: item.note,
+          };
+        }),
       };
 
       await attendanceApi(formatData);

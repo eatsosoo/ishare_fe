@@ -13,6 +13,13 @@
           <template v-if="column.key === 'completed_at'">{{
             record.completed_at || record.status
           }}</template>
+          <template v-if="column.key === 'score'">
+            {{
+              record.score === -1 || record.score === null
+                ? t('common.noScoreYet')
+                : `${['Writing', 'Speaking'].includes(record.skill) ? record.score : `${record.score}/${record.question_count}`}`
+            }}
+          </template>
           <template v-if="column.key === 'status'">
             <Tag :color="record.completed_at ? 'green' : 'red'">
               {{ record.completed_at ? 'v' : 'x' }}
@@ -117,8 +124,8 @@
       useStore.setClassId(classId);
       useStore.setGradingType(type);
       useStore.setGradingSkill(skill);
-      reload();
       showExerciseTable.value = true;
+      reload();
     } catch (error) {
       console.log(error);
     }

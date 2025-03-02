@@ -39,7 +39,7 @@
                     <!-- Xử lý multiple_choice -->
                     <template v-if="group.question_type === 'multiple_choice'">
                       <div
-                        class="w-8 h-8 bg-[#c4303a] text-white font-bold flex items-center justify-center rounded-full mr-2 text-[12px]"
+                        class="w-8 h-8 bg-[#c4303a] text-white font-bold flex items-center justify-center rounded-full mr-2 text-[11px]"
                       >
                         {{ key.split('_')[1] }}-{{ key.split('_').pop() }}
                       </div>
@@ -88,13 +88,21 @@
           </div>
         </Col>
         <Col :span="12" class="border-l-2 border-gray h-full overflow-auto">
-          <div
-            v-for="(group, index) in completedAssignment.parts[0].question_groups"
-            class="p-4"
-            :key="'answer' + index"
-          >
-            <h1>Task {{ index + 1 }}</h1>
-            <div v-html="Object.values(JSON.parse(group.student_answer))[0]"></div>
+          <div class="p-4" ref="contentWord">
+            <div
+              v-for="(group, index) in completedAssignment.parts[0].question_groups"
+              :key="'answer' + index"
+            >
+              <h1>Task {{ index + 1 }}</h1>
+              <div v-html="Object.values(JSON.parse(group.student_answer))[0]"></div>
+            </div>
+            <a-button
+              v-if="props.skillType === 'Writing'"
+              preIcon="ant-design:file-word-twotone"
+              @click="exportToWord"
+              class="mt-4"
+              >{{ t('common.download') }}</a-button
+            >
           </div>
           <div class="m-4">
             <h3>Chấm điểm và nhận xét</h3>
@@ -134,6 +142,7 @@
   import { submitGradingApi } from '@/api/teacher/teacher';
   import Icon from '@/components/Icon/Icon.vue';
   import { isArray } from 'lodash-es';
+  import { saveAs } from 'file-saver';
 
   const InputTextArea = Input.TextArea;
   const props = defineProps({
@@ -168,6 +177,7 @@
   const completedAssignment = ref<ResponseExamPartItem | null>(null);
   const tabActive = ref(0);
   const subjectRef = ref('');
+  const contentWord = ref<HTMLDivElement | null>(null);
 
   const { createSuccessModal, createErrorModal } = useMessage();
   const { prefixCls } = useDesign('register');
@@ -226,7 +236,6 @@
     try {
       loading.value = true;
       const result = await getDetailExamOfStudent(studentId, examId, type);
-      console.log(result);
       if (result && result.items) {
         completedAssignment.value = result.items;
       }
@@ -238,7 +247,6 @@
   }
 
   const compareAnswers = (correctAnswer: string | string[], studentAnswer: string) => {
-    console.log(correctAnswer, studentAnswer);
     if (!correctAnswer || !studentAnswer) return false;
     if (!isArray(correctAnswer)) {
       return correctAnswer.toLowerCase() === studentAnswer.toLowerCase();
@@ -261,6 +269,18 @@
   //   }
   //   return correctCount;
   // };
+
+  const exportToWord = async () => {
+    const htmlContent = `
+    <html>
+      <head><meta charset="UTF-8"></head>
+      <body>${contentWord.value.innerHTML}</body>
+    </html>
+  `;
+
+    const blob = new Blob(['\ufeff', htmlContent], { type: 'application/msword' });
+    saveAs(blob, 'document.doc');
+  };
 
   watch(
     () => [props.examId, props.studentId, props.scoreId],
