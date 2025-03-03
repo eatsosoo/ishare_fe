@@ -7,7 +7,7 @@
       <div class="text-primary text-4xl font-bold"
         ><Icon size="30" icon="ant-design:field-time-outlined" color="black" /> {{ timeLeft }}</div
       >
-      <div class="right-0 absolute mr-4">
+      <div v-if="skillExam?.type !== 'Speaking'" class="right-0 absolute mr-4">
         <a-button type="primary" preIcon="ant-design:send-outlined" @click="submitExam"
           >Submit</a-button
         >
@@ -40,6 +40,7 @@
           :value="skillExam"
           @start-recording="startCountdown"
           @stop-recording="stopTimer"
+          @submit="submitExam"
         />
       </template>
     </div>
@@ -224,24 +225,28 @@
       .flat();
   };
 
-  async function submitExam() {
-    getInputValues();
-
+  async function submitExam(submitData?: any) {
     if (!skillExam.value) return;
 
-    const hasEmptyValue = (obj: Record<string, any>): boolean => {
-      if (state.type === 'Writing') return false;
-      return Object.values(obj).some((value) => value === '');
-    };
+    if (!submitData) {
+      getInputValues();
 
-    if (hasEmptyValue(studentAnswer.value)) {
-      createMessage.error(t('common.error.finishAllQuestions'));
-      return;
+      const hasEmptyValue = (obj: Record<string, any>): boolean => {
+        if (state.type === 'Writing' || state.type === 'Speaking') return false;
+        return Object.values(obj).some((value) => value === '');
+      };
+
+      if (hasEmptyValue(studentAnswer.value)) {
+        createMessage.error(t('common.error.finishAllQuestions'));
+        return;
+      }
     }
 
     let finalAnswers: SubmitAnswer[] = [];
     if (state.type === 'Writing') {
       finalAnswers = submitForm.value.answers;
+    } else if (state.type === 'Speaking') {
+      finalAnswers = submitData;
     } else {
       finalAnswers = mapAnswersToParts(skillExam.value.parts, studentAnswer.value);
     }
@@ -272,6 +277,10 @@
     (val) => {
       if (val <= 0) {
         console.log(val);
+        timeLeft.value = '0:00';
+        if (skillExam.value?.type !== 'Speaking') {
+          submitExam();
+        }
       }
     },
   );

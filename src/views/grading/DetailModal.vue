@@ -5,6 +5,7 @@
     :can-fullscreen="false"
     :loading="loading"
     :show-ok-btn="false"
+    :title="props.title"
   >
     <template v-if="props.skillType === 'Reading' || props.skillType === 'Listening'">
       <Row :gutter="[16, 16]" class="h-full">
@@ -77,18 +78,36 @@
     </template>
     <template v-else>
       <Row v-if="completedAssignment" :gutter="[16, 16]" class="h-full">
+        <!-- Questions -->
         <Col :span="12" class="bg-[aliceblue] border-r-2 border-gray h-full overflow-auto">
-          <div
-            v-for="(group, index) in completedAssignment.parts[0].question_groups"
-            class="p-4"
-            :key="index"
-          >
-            <h1>Task {{ index + 1 }}</h1>
-            <div v-html="group.question_text"></div>
-          </div>
+          <template v-if="props.skillType === 'Writing'">
+            <div
+              v-for="(group, index) in completedAssignment.parts[0].question_groups"
+              class="p-4"
+              :key="index"
+            >
+              <h1>Task {{ index + 1 }}</h1>
+              <div v-html="group.question_text"></div>
+            </div>
+          </template>
+          <template v-else>
+            <div
+              v-for="(part, index) in completedAssignment.parts"
+              class="p-4"
+              :key="part.id || index"
+            >
+              <h1>Part {{ index + 1 }}</h1>
+              <div v-for="(group, index) in part.question_groups" class="pl-10" :key="index">
+                <h2 class="text-primary">Question {{ index + 1 }}</h2>
+                <div v-html="group.question_text"></div>
+              </div>
+            </div>
+          </template>
         </Col>
+
+        <!-- Bài làm của học sinh -->
         <Col :span="12" class="border-l-2 border-gray h-full overflow-auto">
-          <div class="p-4" ref="contentWord">
+          <div v-if="props.skillType === 'Writing'" class="p-4" ref="contentWord">
             <div
               v-for="(group, index) in completedAssignment.parts[0].question_groups"
               :key="'answer' + index"
@@ -104,8 +123,25 @@
               >{{ t('common.download') }}</a-button
             >
           </div>
+          <div v-else>
+            <div
+              v-for="(part, index) in completedAssignment.parts"
+              class="p-4"
+              :key="part.id || index"
+            >
+              <h1>Part {{ index + 1 }}</h1>
+              <audio
+                v-if="part.part_answer"
+                :src="part.part_answer"
+                controls
+                class="h-8 w-full"
+              ></audio>
+            </div>
+          </div>
+
+          <!-- Feedback  -->
           <div class="m-4">
-            <h3>Chấm điểm và nhận xét</h3>
+            <h3>{{ t('common.gradingAndFeedback') }}</h3>
             <Form :model="gradingFormData">
               <FormItem label="Điểm" name="score" :label-col="{ span: 3 }" label-align="left">
                 <InputNumber v-model:value="gradingFormData.score" :min="0" :max="10" required />

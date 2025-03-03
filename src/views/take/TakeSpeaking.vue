@@ -14,6 +14,7 @@
                 <a-button
                   type="default"
                   preIcon="ant-design:caret-right-filled"
+                  :disabled="uploading"
                   @click="actionRecord(textButton)"
                   >{{ transText[textButton] }}</a-button
                 >
@@ -23,11 +24,12 @@
             <div class="flex-1 grid place-items-center">
               <div v-if="props.value.parts[partIndex]?.question_groups.length === questionIndex">
                 <h2 class="font-bold text-3xl">IT'S THE END OF PART {{ partIndex + 1 }}</h2>
-                <p class="text-primary"
+                <p>{{ uploading ? 'Uploading...' : 'Uploaded' }}</p>
+                <!-- <p class="text-primary"
                   >You can review your part {{ partIndex + 1 }} recording by clicking the Play
                   button below</p
-                >
-                <div class="mt-10">
+                > -->
+                <!-- <div class="mt-10">
                   <audio
                     v-if="partIndex !== null && final[partIndex]"
                     :src="final[partIndex]"
@@ -35,7 +37,7 @@
                     class="h-8 w-[500px]"
                     :key="final[partIndex]"
                   ></audio>
-                </div>
+                </div> -->
               </div>
               <div v-else-if="questionCurrent" class="p-4">
                 <div>
@@ -79,7 +81,7 @@
     },
   });
 
-  const emit = defineEmits(['startRecording', 'stopRecording']);
+  const emit = defineEmits(['startRecording', 'stopRecording', 'submit']);
 
   const partIndex = ref<number | null>(null);
   const questionIndex = ref<number | null>(null);
@@ -90,12 +92,17 @@
   const audioChunks = ref<Blob[]>([]);
   const audioUrl = ref<string | null>(null);
   const audioFile = ref<File | null>(null);
-
+  const uploading = ref(false);
   const final = ref<string[]>([]);
 
   const textButton = computed(() => {
     if (partIndex.value === null && questionIndex.value === null) {
       return 'START_NOW';
+    } else if (
+      partIndex.value === props.value?.parts.length - 1 &&
+      questionIndex.value === props.value?.parts[partIndex.value]?.question_groups.length
+    ) {
+      return 'FINISHED';
     } else if (
       partIndex.value !== null &&
       questionIndex.value === props.value?.parts[partIndex.value]?.question_groups.length
@@ -110,6 +117,7 @@
     START_NOW: 'Start Now',
     NEXT_PART: 'Next Part',
     NEXT_QUESTION: 'Next Question',
+    FINISHED: 'Finished',
   };
 
   const { createConfirm } = useMessage();
@@ -122,7 +130,7 @@
       questionIndex.value = 0;
       questionCurrent.value =
         props.value?.parts[partIndex.value].question_groups[questionIndex.value];
-      emit('startRecording', 5);
+      emit('startRecording', props.value?.parts[partIndex.value].duration);
       startRecording();
     } else if (actionType === 'NEXT_PART') {
       const idx = partIndex.value + 1;
@@ -135,6 +143,15 @@
 
       questionIndex.value = 0;
       questionCurrent.value = part.question_groups[questionIndex.value];
+      emit('startRecording', props.value?.parts[partIndex.value].duration);
+      startRecording();
+    } else if (actionType === 'FINISHED') {
+      const submitData = props.value.parts.map((part, index) => ({
+        part_id: part.id,
+        part_answer: final.value[index],
+      }));
+      console.log(submitData);
+      emit('submit', submitData);
     } else {
       const part = props.value?.parts[partIndex.value];
       if (questionIndex.value === part.question_groups.length - 1) {
@@ -151,7 +168,6 @@
         });
       } else {
         questionIndex.value++;
-
         questionCurrent.value = part.question_groups[questionIndex.value];
       }
     }
@@ -199,12 +215,15 @@
     formData.append('media', audioFile.value);
 
     try {
+      uploading.value = true;
       const result = await uploadAudioApi(formData);
       if (result) {
         return result.items;
       }
     } catch (error) {
       console.error('Upload failed:', error);
+    } finally {
+      uploading.value = false;
     }
   };
 </script>
