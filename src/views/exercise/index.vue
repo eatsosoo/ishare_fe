@@ -10,8 +10,8 @@
         }}</a-button>
       </template>
       <template #bodyCell="{ column, record }">
-        <template v-if="column.key === 'type'">
-          {{ t(`table.exe${record.type}`) }}
+        <template v-if="column.key === 'assign_at'">
+          {{ t(`table.exe${record.assign_at}`) }}
         </template>
       </template>
     </BasicTable>

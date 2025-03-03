@@ -39,7 +39,7 @@
   import { NewPartItem } from '@/views/test/types/question';
   import { assignHomeworkFormSchemas } from '../classroom/data';
   import { useForm, BasicForm } from '@/components/Form';
-  import { assignExercise } from '@/api/exercise/exercise';
+  import { assignExercise, studyDateListApi } from '@/api/exercise/exercise';
   import { ClassListItem } from '@/api/class/classModel';
   import { CollapseContainer } from '@/components/Container';
   import { getLeftValue } from '@/utils/stringUtils';
@@ -69,7 +69,7 @@
   const skill = ref<SkillType | null>(null);
   const parts = ref<NewPartItem[]>([READING_PART_DEF]);
 
-  function handleFormChange(key, value) {
+  async function handleFormChange(key, value) {
     if (key === 'skill') {
       skill.value = value;
     } else if (key === 'class_id') {
@@ -77,12 +77,23 @@
         ? props.classList.find((cls: ClassListItem) => cls.id === value)?.shifts || []
         : [];
 
-      updateSchema({
-        field: 'shift_id',
-        componentProps: {
-          options: shifts.map((shift) => ({ label: shift.title, value: shift.id })),
+      const res = await studyDateListApi(value);
+      const studyDateList = res.items || [];
+
+      updateSchema([
+        {
+          field: 'shift_id',
+          componentProps: {
+            options: shifts.map((shift) => ({ label: shift.title, value: shift.id })),
+          },
         },
-      });
+        {
+          field: 'study_date',
+          componentProps: {
+            options: studyDateList.map((date) => ({ label: date, value: date })),
+          },
+        },
+      ]);
     }
   }
 
@@ -93,7 +104,8 @@
   async function submit() {
     try {
       const [values] = await Promise.all([validate()]);
-      const { book_name, skill, homework_name, class_id, shift_id, date, assign_at } = values;
+      const { book_name, skill, homework_name, class_id, shift_id, date, assign_at, study_date } =
+        values;
       if (parts.value.length === 0 || parts.value[0].question_groups.length === 0) {
         createMessage.error(t('common.pleaseCreateQuestions'));
         return;
@@ -107,7 +119,7 @@
           class_id,
           shift_id,
           date: getLeftValue(date),
-          study_date: new Date().toISOString().split('T')[0],
+          study_date,
         },
         question_groups: parts.value[0].question_groups,
       };

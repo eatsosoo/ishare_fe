@@ -16,6 +16,7 @@ import { RouteRecordRaw } from 'vue-router';
 import { PAGE_NOT_FOUND_ROUTE } from '@/router/routes/basic';
 import { h } from 'vue';
 import { SkillType } from '@/api/exam/examModel';
+import { Result } from '@/api/model/baseModel';
 
 interface UserState {
   userInfo: Nullable<UserInfo>;
@@ -209,7 +210,7 @@ export const useUserStore = defineStore({
     /**
      * @description: Register account
      */
-    async register(params: RegisterParams): Promise<RegisterResultModel | null> {
+    async register(params: RegisterParams): Promise<Result<RegisterResultModel> | null> {
       try {
         const RegisterParams = params;
         const result = await registerApi(RegisterParams);

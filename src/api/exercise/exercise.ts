@@ -1,5 +1,5 @@
 import { defHttp, otherHttp } from '@/utils/http/axios';
-import { BasicPageParams } from '../model/baseModel';
+import { BasicPageParams, ResultBase } from '../model/baseModel';
 import {
   AssignExerciseParams,
   BookListGetResultModel,
@@ -13,6 +13,7 @@ enum Api {
   HOMEWORK_LIST = '/exams',
   BOOK_LIST = '/books',
   ASSIGN_EXE = '/homeworks',
+  ATTENDANCE = '/attendances',
 }
 
 export const exerciseListApi = () => (params: BasicPageParams) =>
@@ -45,6 +46,19 @@ export const bookListApi = () => (params: BasicPageParams) =>
       ignoreCancelToken: true,
     },
   });
+
+export const studyDateListApi = (classId: number) => {
+  const currentDate = new Date();
+  const currentMonth = currentDate.getMonth() + 1; // Months are zero-based in JavaScript
+  const currentYear = currentDate.getFullYear();
+  return defHttp.get<ResultBase<string[]>>({
+    url: `${Api.ATTENDANCE}/${classId}/dates?month=${currentMonth}&year=${currentYear}`,
+    headers: {
+      // @ts-ignore
+      ignoreCancelToken: true,
+    },
+  });
+};
 
 export const assignExercise = (params: AssignExerciseParams, mode: ErrorMessageMode = 'none') =>
   defHttp.post<Result<AssignExerciseParams>>(

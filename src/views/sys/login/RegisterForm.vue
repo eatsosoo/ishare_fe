@@ -108,8 +108,7 @@
     try {
       loading.value = true;
       const res = await userStore.register(formData);
-      const user = res?.user;
-
+      const user = res?.items.user;
       if (user) {
         createSuccessModal({
           title: t('sys.login.registerSuccessTitle'),

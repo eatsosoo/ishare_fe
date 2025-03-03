@@ -86,7 +86,7 @@ const transform: AxiosTransform = {
           timeoutMsg = message;
         }
     }
-
+    console.log(timeoutMsg);
     // When errorMessageMode='modal', a modal error popup will be displayed instead of a message prompt, used for more important errors
     // errorMessageMode='none' is generally used when it is explicitly stated that no error prompt should be automatically displayed
     if (options.errorMessageMode === 'modal') {

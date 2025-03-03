@@ -306,6 +306,7 @@ export const assignTestFormSchemas: FormSchema[] = [
     required: true,
     colProps: {
       offset: 1,
+      span: 12,
     },
   },
 ];
@@ -356,15 +357,7 @@ export const assignHomeworkFormSchemas: FormSchema[] = [
       span: 12,
     },
   },
-  {
-    field: 'homework_name',
-    component: 'Input',
-    label: t('form.gradingSearch.title'),
-    required: true,
-    colProps: {
-      span: 12,
-    },
-  },
+
   {
     field: 'class_id',
     label: t('form.gradingSearch.className'),
@@ -380,6 +373,27 @@ export const assignHomeworkFormSchemas: FormSchema[] = [
   {
     field: 'shift_id',
     label: t('form.shift'),
+    component: 'Select',
+    componentProps: {
+      options: [],
+    },
+    required: true,
+    colProps: {
+      span: 12,
+    },
+  },
+  {
+    field: 'homework_name',
+    component: 'Input',
+    label: t('form.gradingSearch.title'),
+    required: true,
+    colProps: {
+      span: 12,
+    },
+  },
+  {
+    field: 'study_date',
+    label: t('form.studyDate'),
     component: 'Select',
     componentProps: {
       options: [],

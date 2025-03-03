@@ -30,7 +30,7 @@
   import { useTable } from '@/components/Table';
   import { useI18n } from '@/hooks/web/useI18n';
   import {
-    getExamOfStudentColumns,
+    getExeOfStudentColumns,
     getSearchExamOfStudentConfig,
   } from '@/views/classroom/tableData';
   import { Tag } from 'ant-design-vue';
@@ -43,7 +43,7 @@
   const router = useRouter();
   const [registerTable] = useTable({
     api: getHomeworkListOfStudentApi(),
-    columns: getExamOfStudentColumns(),
+    columns: getExeOfStudentColumns(),
     useSearchForm: true,
     formConfig: getSearchExamOfStudentConfig(),
     showTableSetting: false,

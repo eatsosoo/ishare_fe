@@ -43,7 +43,7 @@ export function loginApi(params: LoginParams, mode: ErrorMessageMode = 'modal') 
  * @description: user login api
  */
 export function registerApi(params: RegisterParams, mode: ErrorMessageMode = 'modal') {
-  return defHttp.post<RegisterResultModel>(
+  return defHttp.post<Result<RegisterResultModel>>(
     {
       url: Api.Register,
       params,

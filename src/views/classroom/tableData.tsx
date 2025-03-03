@@ -1,6 +1,7 @@
 import { classListApi } from '@/api/class/class';
 import { FormProps, FormSchema, BasicColumn } from '@/components/Table';
 import { useI18n } from '@/hooks/web/useI18n';
+import { getLeftValue } from '@/utils/stringUtils';
 
 const { t } = useI18n();
 
@@ -309,6 +310,52 @@ export function getExamOfStudentColumns(): BasicColumn[] {
   ];
 }
 
+export function getExeOfStudentColumns(): BasicColumn[] {
+  return [
+    {
+      title: t('table.exerciseName'),
+      dataIndex: 'homework_name',
+    },
+    {
+      title: t('table.bookName'),
+      dataIndex: 'book_name',
+    },
+    {
+      title: t('table.exeType'),
+      dataIndex: 'assign_at',
+      customRender: ({ text }) => {
+        return text === 'home' ? t('common.assignAtHome') : t('common.assignAtClass');
+      },
+    },
+    {
+      title: t('table.skill'),
+      dataIndex: 'skill',
+    },
+    {
+      title: t('table.examTable.status'),
+      dataIndex: 'status',
+    },
+    {
+      title: t('table.examTable.score'),
+      dataIndex: 'score',
+    },
+    {
+      title: t('table.deadline'),
+      dataIndex: 'deadline',
+      customRender: ({ text }) => {
+        return getLeftValue(text);
+      },
+    },
+    {
+      title: t('table.completedAt'),
+      dataIndex: 'completed_at',
+      customRender: ({ text }) => {
+        return text || 'Chưa nộp';
+      },
+    },
+  ];
+}
+
 export function getTestColumns(): BasicColumn[] {
   return [
     {
@@ -380,8 +427,12 @@ export function getAssignmentColumns(): BasicColumn[] {
       dataIndex: 'class_name',
     },
     {
+      title: t('table.shift'),
+      dataIndex: 'shift_title',
+    },
+    {
       title: t('table.exeType'),
-      dataIndex: 'type',
+      dataIndex: 'assign_at',
     },
     {
       title: t('table.assignmentTable.teacher'),
@@ -451,22 +502,36 @@ export function getFormSearchClassConfig(): Partial<FormProps> {
         },
       },
       {
-        field: 'start_date',
-        label: t('form.newClassForm.openingDay'),
-        component: 'DatePicker',
-        colProps: {
-          xl: 6,
-          xxl: 6,
-          offset: 1,
+        field: 'key',
+        label: t('form.classType'),
+        component: 'Select',
+        componentProps: {
+          options: [
+            {
+              label: 'HS',
+              value: 'HS',
+            },
+            {
+              label: 'CT',
+              value: 'CT',
+            },
+            {
+              label: 'LHP',
+              value: 'LHP',
+            },
+            {
+              label: 'TL',
+              value: 'TL',
+            },
+            {
+              label: 'JU',
+              value: 'JU',
+            },
+          ],
         },
-      },
-      {
-        field: 'end_date',
-        label: t('form.newClassForm.endDay'),
-        component: 'DatePicker',
         colProps: {
-          xl: 6,
-          xxl: 6,
+          xl: 5,
+          xxl: 5,
         },
       },
     ],
@@ -673,19 +738,19 @@ export function getSearchExamOfStudentConfig(): Partial<FormProps> {
           options: [
             {
               label: 'Reading',
-              value: '1',
+              value: 'Reading',
             },
             {
               label: 'Listening',
-              value: '2',
+              value: 'Listening',
             },
             {
               label: 'Speaking',
-              value: '3',
+              value: 'Speaking',
             },
             {
               label: 'Writing',
-              value: '4',
+              value: 'Writing',
             },
           ],
         },
@@ -703,32 +768,14 @@ export function getSearchExamOfStudentConfig(): Partial<FormProps> {
           options: [
             {
               label: t('form.exam.done'),
-              value: 'done',
+              value: '1',
             },
             {
               label: t('form.exam.incomplete'),
-              value: 'incomplete',
+              value: '0',
             },
           ],
         },
-        colProps: {
-          xl: 6,
-          xxl: 4,
-        },
-      },
-      {
-        field: 'createdAt',
-        label: t('form.exam.createdAt'),
-        component: 'DatePicker',
-        colProps: {
-          xl: 6,
-          xxl: 4,
-        },
-      },
-      {
-        field: 'deadline',
-        label: t('form.exam.deadline'),
-        component: 'DatePicker',
         colProps: {
           xl: 6,
           xxl: 4,
@@ -828,9 +875,25 @@ export function getExamListConfig(): Partial<FormProps> {
         },
       },
       {
-        field: 'deadline',
-        label: t('form.exerciseOfStudentSearch.deadline'),
-        component: 'DatePicker',
+        field: 'level',
+        label: t('form.level'),
+        component: 'Select',
+        componentProps: {
+          options: [
+            {
+              label: '1',
+              value: '1',
+            },
+            {
+              label: '2',
+              value: '2',
+            },
+            {
+              label: '3',
+              value: '3',
+            },
+          ],
+        },
         colProps: {
           xl: 6,
           xxl: 4,
@@ -863,18 +926,21 @@ export function getAssignmentListConfig(): Partial<FormProps> {
         },
       },
       {
-        field: 'exam_title',
-        label: t('table.assignmentTable.examTitle'),
-        component: 'Input',
-        colProps: {
-          xl: 6,
-          xxl: 4,
+        field: 'exe_type',
+        label: t('form.exeType'),
+        component: 'Select',
+        componentProps: {
+          options: [
+            {
+              label: t('common.assignAtClass'),
+              value: 'class',
+            },
+            {
+              label: t('common.assignAtHome'),
+              value: 'home',
+            },
+          ],
         },
-      },
-      {
-        field: 'deadline',
-        label: t('table.assignmentTable.deadline'),
-        component: 'DatePicker',
         colProps: {
           xl: 6,
           xxl: 4,

@@ -112,8 +112,8 @@
   const rememberMe = ref(false);
 
   const formData = reactive({
-    account: 'admin@admin.com',
-    password: '12341234',
+    account: '',
+    password: '',
   });
 
   const { validForm } = useFormValid(formRef);
@@ -140,9 +140,12 @@
         });
       }
     } catch (error) {
+      const apiMessage = error.response.data.message;
+      console.log(apiMessage);
       createErrorModal({
         title: t('sys.api.errorTip'),
-        content: (error as unknown as Error).message || t('sys.api.networkExceptionMsg'),
+        content:
+          apiMessage || (error as unknown as Error).message || t('sys.api.networkExceptionMsg'),
         getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
       });
     } finally {

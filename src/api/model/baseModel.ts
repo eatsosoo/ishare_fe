@@ -14,6 +14,6 @@ export interface BasicApiResult<T> {
   message: string;
 }
 
-export interface Result<T> {
+export interface ResultBase<T> {
   items: T;
 }
