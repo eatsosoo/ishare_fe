@@ -1,14 +1,5 @@
 <template>
   <div>
-    <!-- <BasicTable @register="registerTable">
-      <template #bodyCell="{ column, record }">
-        <template v-if="column.key === 'status'">
-          <Tag :color="record.status === 'v' ? 'green' : 'red'">
-            {{ record.status }}
-          </Tag>
-        </template>
-      </template>
-    </BasicTable> -->
     <Card>
       <BasicForm @register="register" />
     </Card>

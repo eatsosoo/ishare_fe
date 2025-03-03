@@ -36,7 +36,7 @@
       :class-id="targetClass?.id ?? 0"
       :class-key="targetClass?.key ?? ''"
       @register="registerImportModal"
-      @success="closeImportModal"
+      @success="handleImportSuccess"
     />
   </div>
 </template>
@@ -149,4 +149,9 @@
       addLoading.value = false;
     }
   }
+
+  const handleImportSuccess = () => {
+    reload();
+    closeImportModal();
+  };
 </script>

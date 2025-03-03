@@ -17,7 +17,7 @@
                   :size="18"
                   icon="ant-design:export"
                   class="cursor-pointer hover:border-red border-1 border-gray-200 p-1 rounded-md"
-                  @click="exportExcelStudent('2025-02-01', '2025-03-15', record.id)"
+                  @click="activateExportModal(record)"
                 />
               </div>
             </template>
@@ -25,25 +25,26 @@
         </BasicTable>
       </TabPane>
     </Tabs>
+
+    <ExportStudyResultModal
+      :title="t('common.exportExcelStudy')"
+      :student="studentTarget"
+      @register="registerExportModal"
+    />
   </BasicModal>
 </template>
 <script lang="ts" setup>
   import { ref, watch } from 'vue';
-  import { BasicModal } from '@/components/Modal';
+  import { BasicModal, useModal } from '@/components/Modal';
   import { BasicTable, FormProps, useTable } from '@/components/Table';
-  import {
-    getExamColumns,
-    getExerciseColumns,
-    getStudentOfClassColumns,
-  } from '@/views/classroom/tableData';
+  import { getStudentOfClassColumns } from '@/views/classroom/tableData';
   import { useI18n } from '@/hooks/web/useI18n';
   import { omit } from 'lodash-es';
   import { Tabs } from 'ant-design-vue';
-  import { examListApi } from '@/api/exam/exam';
-  import { getHomeworksOfClassApi, getStudentsOfClassApi } from '@/api/class/class';
+  import { getStudentsOfClassApi } from '@/api/class/class';
   import { Key } from 'ant-design-vue/es/_util/type';
-  import { getToken } from '@/utils/auth';
   import Icon from '@/components/Icon/Icon.vue';
+  import ExportStudyResultModal from './ExportStudyResultModal.vue';
 
   const props = defineProps({
     classId: {
@@ -58,6 +59,7 @@
   const activeTab = ref('1');
   const activeKey = ref<Key>('1');
   const tableRefs = ref([]);
+  const studentTarget = ref<any>(null);
   function searchConfig(): Partial<FormProps> {
     return {
       labelWidth: 100,
@@ -74,6 +76,8 @@
       ],
     };
   }
+
+  const [registerExportModal, { openModal: openExportModal }] = useModal();
 
   const [registerTable1, { reload: reload1 }] = useTable({
     canResize: true,
@@ -94,35 +98,35 @@
     },
   });
 
-  const [registerTable2, { reload: reload2 }] = useTable({
-    canResize: true,
-    api: getHomeworksOfClassApi(),
-    columns: getExerciseColumns(),
-    defSort: {
-      field: 'name',
-      order: 'ascend',
-    },
-    useSearchForm: true,
-    formConfig: searchConfig(),
-    rowKey: 'id',
-    showTableSetting: false,
-    showIndexColumn: false,
-  });
+  // const [registerTable2, { reload: reload2 }] = useTable({
+  //   canResize: true,
+  //   api: getHomeworksOfClassApi(),
+  //   columns: getExerciseColumns(),
+  //   defSort: {
+  //     field: 'name',
+  //     order: 'ascend',
+  //   },
+  //   useSearchForm: true,
+  //   formConfig: searchConfig(),
+  //   rowKey: 'id',
+  //   showTableSetting: false,
+  //   showIndexColumn: false,
+  // });
 
-  const [registerTable3, { reload: reload3 }] = useTable({
-    canResize: true,
-    api: examListApi(),
-    columns: getExamColumns(),
-    defSort: {
-      field: 'name',
-      order: 'ascend',
-    },
-    useSearchForm: true,
-    formConfig: searchConfig(),
-    rowKey: 'id',
-    showTableSetting: false,
-    showIndexColumn: false,
-  });
+  // const [registerTable3, { reload: reload3 }] = useTable({
+  //   canResize: true,
+  //   api: examListApi(),
+  //   columns: getExamColumns(),
+  //   defSort: {
+  //     field: 'name',
+  //     order: 'ascend',
+  //   },
+  //   useSearchForm: true,
+  //   formConfig: searchConfig(),
+  //   rowKey: 'id',
+  //   showTableSetting: false,
+  //   showIndexColumn: false,
+  // });
 
   const tabs = [
     {
@@ -142,7 +146,11 @@
     // },
   ];
 
-  const reloadFunctions = [reload1, reload2, reload3];
+  const reloadFunctions = [
+    reload1,
+    // reload2,
+    // reload3
+  ];
 
   const reloadTable = () => {
     if (tableRefs.value[0]) {
@@ -156,54 +164,10 @@
     // }
   };
 
-  async function exportExcelStudent(from, to, user_id) {
-    try {
-      const response = await fetch(
-        `https://api-gateway.danda.vn/api/users/export-study-result/${user_id}/${from}/${to}`,
-        {
-          method: 'GET',
-          headers: {
-            Accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${getToken()}`,
-          },
-        },
-      );
-
-      if (!response.ok) throw new Error('Failed to fetch file');
-
-      // 📌 Nhận dữ liệu dưới dạng Blob
-      const blob = await response.blob();
-
-      // 📌 Lấy tên file từ header `Content-Disposition`
-      const disposition = response.headers.get('Content-Disposition');
-      const fileName = disposition
-        ? disposition.split('filename=')[1]
-        : `study-result-${from}-${to}.xlsx`;
-
-      // 📌 Hỗ trợ Safari & IE
-      if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-        window.navigator.msSaveOrOpenBlob(blob, fileName);
-      } else {
-        const url = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', fileName);
-
-        if (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome')) {
-          window.open(url);
-        } else {
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-        }
-
-        window.URL.revokeObjectURL(url);
-      }
-    } catch (error) {
-      console.error('Download failed:', error);
-    }
-  }
+  const activateExportModal = (record: any) => {
+    studentTarget.value = record;
+    openExportModal();
+  };
 
   watch(
     () => props.classId,

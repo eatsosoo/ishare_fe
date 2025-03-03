@@ -8,14 +8,16 @@
       <BasicForm @register="register" />
     </Card>
     <Card :title="t('form.shift')" class="mt-5">
-      <ShiftTable />
+      <ShiftTable @change="shiftData = $event" />
     </Card>
     <Card :title="titlePreviewTable" :bordered="false" class="!mt-5">
       <StudentTable ref="tableRef" @select-students="handleRegisterStudentToClass" />
     </Card>
 
     <template #rightFooter>
-      <a-button type="primary" @click="submitAll"> {{ t('common.confirm') }} </a-button>
+      <a-button type="primary" @click="submitAll" :loading="loading">
+        {{ t('common.confirm') }}
+      </a-button>
     </template>
   </PageWrapper>
 </template>
@@ -39,6 +41,7 @@
   const { t } = useI18n();
   const tableRef = ref<{ getDataSource: () => any } | null>(null);
   const studentsRegistered = ref<StudentListItem[]>([]);
+  const shiftData = ref<any[]>([]);
   const loading = ref(false);
 
   const { prefixCls } = useDesign('register');
@@ -56,6 +59,7 @@
 
   async function submitAll() {
     try {
+      loading.value = true;
       const [values] = await Promise.all([validate()]);
       const { title, description, start_date, key } = values;
       const submitForm: CreateClassParams = {
@@ -63,7 +67,7 @@
         description,
         start_date,
         key,
-        shifts: [{ title: 'Ca 1', description: 'desc' }],
+        shifts: shiftData.value,
         students: studentsRegistered.value.map((student) => ({ id: student.id })),
       };
 

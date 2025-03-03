@@ -74,6 +74,13 @@
   "notFindPart": "Không tìm thấy part!",
   "start": "Bắt đầu",
   "end": "Kết thúc",
+  "exportExcelStudy": "Xuất Excel kết quả học tập",
+  "descExcelStudy": "Chọn khoảng thời gian để xuất Excel kết quả học tập của học sinh.",
+  "time": "Thời gian",
+  "startDate": "Ngày bắt đầu",
+  "endDate": "Ngày kết thúc",
+  "student": "Học sinh",
+  "target": "Mục tiêu",
   "warning": {
     "addActionEdtior": "Chưa có vị trí để chèn text!"
   },

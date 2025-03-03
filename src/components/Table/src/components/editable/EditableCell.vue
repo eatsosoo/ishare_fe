@@ -12,7 +12,7 @@
 
   import { propTypes } from '@/utils/propTypes';
   import { isArray, isBoolean, isFunction, isNumber, isString } from '@/utils/is';
-  import { createPlaceholderMessage, formatTime } from './helper';
+  import { createPlaceholderMessage } from './helper';
   import { pick, set } from 'lodash-es';
   import { treeToList } from '@/utils/helper/treeHelper';
   import { Spin } from 'ant-design-vue';
@@ -205,7 +205,6 @@
         } else if (e?.target && Reflect.has(e.target, 'value')) {
           currentValueRef.value = e.target.value;
         } else if (component === 'TimeRangePicker') {
-          console.log('TimeRangePicker', formatTime(e[0]));
           currentValueRef.value = e;
         } else if (isString(e) || isBoolean(e) || isNumber(e) || isArray(e)) {
           currentValueRef.value = e;

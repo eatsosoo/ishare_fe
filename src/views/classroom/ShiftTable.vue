@@ -23,6 +23,8 @@
   } from '@/components/Table';
   import { useI18n } from '@/hooks/web/useI18n';
 
+  const emit = defineEmits(['change']);
+
   const data: any[] = [];
   const { t } = useI18n();
   const columns: BasicColumn[] = [
@@ -52,7 +54,7 @@
       title: t('form.shiftTime'),
       dataIndex: 'hour',
       editRow: true,
-      editComponent: 'TimeRangePicker',
+      editComponent: 'Input',
     },
   ];
   const [registerTable, { getDataSource }] = useTable({
@@ -68,7 +70,7 @@
     scroll: { y: '100%' },
     pagination: false,
   });
-  // 暴露getDataSource 供父组件使用
+
   defineExpose({ getDataSource });
 
   function handleEdit(record: EditRecordRow) {
@@ -81,6 +83,16 @@
 
   function handleSave(record: EditRecordRow) {
     record.onEdit?.(false, true);
+    const data = getDataSource();
+    const formatData = data.map((item) => {
+      return {
+        title: item.title,
+        day: item.day,
+        hour: item.hour,
+      };
+    });
+
+    emit('change', formatData);
   }
 
   function handleEditChange(data: Recordable) {
@@ -92,7 +104,7 @@
     const addRow: EditRecordRow = {
       title: '',
       day: '',
-      hour: [],
+      hour: '',
       editable: true,
       isNew: true,
       key: `${Date.now()}`,
