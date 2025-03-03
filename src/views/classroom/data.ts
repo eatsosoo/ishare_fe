@@ -1,6 +1,7 @@
 import { classListApi } from '@/api/class/class';
 import { examListApi } from '@/api/exam/exam';
 import { bookListApi } from '@/api/exercise/exercise';
+import { teacherListApi } from '@/api/teacher/teacher';
 import { FormSchema } from '@/components/Form';
 import { useI18n } from '@/hooks/web/useI18n';
 
@@ -453,6 +454,49 @@ export const searchAttendanceSchemas: FormSchema[] = [
       xl: 6,
       xxl: 6,
       offset: 1,
+    },
+  },
+];
+
+export const assignClass: FormSchema[] = [
+  {
+    field: 'user_id',
+    component: 'ApiSelect',
+    label: t('form.teacher'),
+    required: true,
+    componentProps: {
+      api: teacherListApi(),
+      params: {
+        id: 1,
+      },
+      resultField: 'items',
+      labelField: 'name',
+      valueField: 'id',
+      immediate: true,
+    },
+    colProps: {
+      offset: 1,
+      span: 12,
+    },
+  },
+  {
+    field: 'class_id',
+    component: 'ApiSelect',
+    label: t('form.gradingSearch.className'),
+    componentProps: {
+      api: classListApi(),
+      params: {
+        id: 1,
+      },
+      resultField: 'items',
+      labelField: 'title',
+      valueField: 'id',
+      immediate: true,
+    },
+    required: true,
+    colProps: {
+      offset: 1,
+      span: 12,
     },
   },
 ];

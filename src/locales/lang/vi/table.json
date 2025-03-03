@@ -54,6 +54,7 @@
   "target": "Mục tiêu",
   "studyDate": "Ngày học",
   "note": "Ghi chú",
+  "assignClassToTeacher": "Giao lớp cho giáo viên",
   "exerciseTable": {
     "name": "Tên bài tập",
     "score": "Điểm",

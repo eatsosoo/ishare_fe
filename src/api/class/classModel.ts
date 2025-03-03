@@ -66,11 +66,11 @@ export interface ClassDeleteStudentsParams {
 export type ClassListGetResultModel = BasicFetchResult<ClassListItem>;
 
 /**
- * @description: Request list retunr value
+ * @description: Request list return value
  */
 export type ClassStudentGetResultModel = BasicFetchResult<ClassStudentItem>;
 
 /**
- * @description: Request list retunr value
+ * @description: Request list return value
  */
 export type AttendanceClassGetResultModel = BasicFetchResult<AttendanceItem>;

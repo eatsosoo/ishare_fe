@@ -1,6 +1,11 @@
 <template>
   <div>
     <BasicTable @register="registerTable">
+      <!-- <template #toolbar>
+        <a-button type="dashed" @click="openClassTeacherModal">{{
+          t('table.assignClassToTeacher')
+        }}</a-button>
+      </template> -->
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'start_date'">
           {{ record.start_date.split(' ')[0] }}
@@ -38,6 +43,7 @@
       @register="registerImportModal"
       @success="handleImportSuccess"
     />
+    <AssignClassTeacher @register="registerClassTeacherModal" @success="closeClassTeacherModal" />
   </div>
 </template>
 <script lang="ts" setup>
@@ -53,12 +59,17 @@
   import { ClassAddStudentsParams, ClassListItem } from '@/api/class/classModel';
   import { useUserStore } from '@/store/modules/user';
   import Icon from '@/components/Icon/Icon.vue';
-  import ImportStudentModal from './ImportStudentModal.vue';
+  import ImportStudentModal from '@/views/classroom/ImportStudentModal.vue';
+  import AssignClassTeacher from './AssignClassTeacher.vue';
 
   const { t } = useI18n();
   const useStore = useUserStore();
   const [registerViewModal, { openModal: openViewModal }] = useModal();
   const [registerAddModal, { openModal: openAddModal, closeModal }] = useModal();
+  const [
+    registerClassTeacherModal,
+    { openModal: openClassTeacherModal, closeModal: closeClassTeacherModal },
+  ] = useModal();
   const [registerImportModal, { openModal: openImportModal, closeModal: closeImportModal }] =
     useModal();
   const [registerTable, { reload }] = useTable({

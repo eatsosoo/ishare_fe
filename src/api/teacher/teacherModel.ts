@@ -17,6 +17,11 @@ export interface AssignmentForm {
   date: string;
 }
 
+export interface AssignClassToTeacher {
+  user_id: number;
+  classes: { id: number }[];
+}
+
 export interface AssignmentLisItem {
   id: number;
   title: string;

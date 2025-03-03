@@ -35,11 +35,11 @@
     <div :class="`${prefixCls}-action`">
       <!-- <UpgradePrompt class="mr-2" /> -->
 
-      <AppSearch v-if="getShowSearch" :class="`${prefixCls}-action__item `" />
+      <!-- <AppSearch v-if="getShowSearch" :class="`${prefixCls}-action__item `" /> -->
 
       <ErrorAction v-if="getUseErrorHandle" :class="`${prefixCls}-action__item error-action`" />
 
-      <Notify v-if="getShowNotice" :class="`${prefixCls}-action__item notify-item`" />
+      <!-- <Notify v-if="getShowNotice" :class="`${prefixCls}-action__item notify-item`" /> -->
 
       <FullScreen v-if="getShowFullScreen" :class="`${prefixCls}-action__item fullscreen-item`" />
 
