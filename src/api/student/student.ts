@@ -1,6 +1,10 @@
 import { defHttp } from '@/utils/http/axios';
-import { StudentListGetResultModel, TakeExamStudentItem } from './studentModel';
-import { BasicPageParams, Result } from '../model/baseModel';
+import {
+  StudentListGetResultModel,
+  TakeExamStudentItem,
+  TakeExerciseStudentItem,
+} from './studentModel';
+import { BasicPageParams, ResultBase } from '../model/baseModel';
 import { ExamPartItem, ResponseExamPartItem, SkillType } from '../exam/examModel';
 import { ErrorMessageMode } from '#/axios';
 import { useUserStore } from '@/store/modules/user';
@@ -43,7 +47,7 @@ export const getExamListOfStudentApi = () => (params: BasicPageParams) =>
   });
 
 export const getTestOfStudentApi = (studentId: number, testId: number) =>
-  defHttp.get<Result<ExamPartItem>>({
+  defHttp.get<ResultBase<ExamPartItem>>({
     url: `${Api.STUDENT_LIST}/${studentId}${Api.HOMEWORK}/${testId}`,
     headers: {
       // @ts-ignore
@@ -52,7 +56,7 @@ export const getTestOfStudentApi = (studentId: number, testId: number) =>
   });
 
 export const getExamCapacityApi = () => (params: BasicPageParams) =>
-  defHttp.get<Result<ExamPartItem>>({
+  defHttp.get<ResultBase<ExamPartItem>>({
     url: `${Api.STUDENT_LIST}${Api.CAPACITY}`,
     params,
     headers: {
@@ -62,7 +66,7 @@ export const getExamCapacityApi = () => (params: BasicPageParams) =>
   });
 
 export const getDetailExamOfStudent = (studentId: number, examId: number, type: SkillType) =>
-  defHttp.get<Result<ResponseExamPartItem>>({
+  defHttp.get<ResultBase<ResponseExamPartItem>>({
     url: `${Api.STUDENT_LIST}/${studentId}/skill/${examId}?type=${type}`,
     headers: {
       // @ts-ignore
@@ -71,7 +75,7 @@ export const getDetailExamOfStudent = (studentId: number, examId: number, type: 
   });
 
 export const importExcelApi = (formData: FormData, mode: ErrorMessageMode = 'modal') =>
-  defHttp.post<Result<string>>(
+  defHttp.post<ResultBase<string>>(
     {
       url: '/users/import',
       data: formData,
@@ -87,8 +91,20 @@ export const importExcelApi = (formData: FormData, mode: ErrorMessageMode = 'mod
 export const takeExamStudentApi = (examId: number, skillType: SkillType) => {
   const useStore = useUserStore();
   const userId = useStore.getUserInfo.id;
-  return defHttp.get<Result<TakeExamStudentItem>>({
+  return defHttp.get<ResultBase<TakeExamStudentItem>>({
     url: `${Api.STUDENT_LIST}/${userId}/skill/${examId}?type=${skillType}`,
+    headers: {
+      // @ts-ignore
+      ignoreCancelToken: true,
+    },
+  });
+};
+
+export const takeExerciseStudentApi = (exerciseId: number) => {
+  const useStore = useUserStore();
+  const userId = useStore.getUserInfo.id;
+  return defHttp.get<ResultBase<TakeExerciseStudentItem>>({
+    url: `${Api.STUDENT_LIST}/${userId}/homework/${exerciseId}`,
     headers: {
       // @ts-ignore
       ignoreCancelToken: true,

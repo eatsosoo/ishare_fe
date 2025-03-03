@@ -18,7 +18,7 @@
           <a-button
             size="small"
             preIcon="ant-design:edit-filled"
-            @click="clickOpen(record.exam_id, record.skill)"
+            @click="clickOpen(record.homework_id)"
           />
         </template>
       </template>
@@ -36,7 +36,6 @@
   import { Tag } from 'ant-design-vue';
   import { getHomeworkListOfStudentApi } from '@/api/student/student';
 
-  import { SkillType } from '@/api/exam/examModel';
   import { useRouter } from 'vue-router';
 
   const { t } = useI18n();
@@ -57,9 +56,8 @@
     },
   });
 
-  function clickOpen(examId: number, skill: SkillType) {
-    console.log(examId);
-    router.push(`/take/index?id=${examId}&type=${skill}`);
+  function clickOpen(homeworkId: number) {
+    router.push(`/take/exercise?id=${homeworkId}`);
   }
 </script>
 

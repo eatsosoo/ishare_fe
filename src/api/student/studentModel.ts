@@ -1,4 +1,4 @@
-import { NewPartItem } from '@/views/test/types/question';
+import { GroupQuestionItem, NewPartItem } from '@/views/test/types/question';
 import { SkillType } from '../exam/examModel';
 import { BasicFetchResult } from '../model/baseModel';
 
@@ -16,6 +16,17 @@ export interface TakeExamStudentItem {
   duration: number;
   media: string | null;
   parts: NewPartItem[];
+}
+
+export interface TakeExerciseStudentItem {
+  id: number;
+  book_name: string;
+  skill: SkillType;
+  homework_name: string;
+  deadline: string;
+  assign_at: string;
+  media: string | null;
+  question_groups: GroupQuestionItem[];
 }
 
 /**
