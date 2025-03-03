@@ -10,7 +10,7 @@ const commonConfig: (mode: string) => UserConfig = (mode) => ({
   },
   build: {
     reportCompressedSize: false,
-    chunkSizeWarningLimit: 1500,
+    chunkSizeWarningLimit: 2000,
     rollupOptions: {
       // TODO: Prevent memory overflow
       maxParallelFileOps: 3,

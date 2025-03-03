@@ -10,18 +10,68 @@
   import { Card } from 'ant-design-vue';
   import { useForm, BasicForm } from '@/components/Form';
   import { getToken } from '@/utils/auth';
-  import { useUserStore } from '@/store/modules/user';
   import { useI18n } from '@/hooks/web/useI18n';
+  import { classListApi } from '@/api/class/class';
+  import { getLeftValue } from '@/utils/stringUtils';
 
   const { t } = useI18n();
   const resutlStudy: FormSchema[] = [
     {
-      field: '[from, to]',
+      field: 'classId',
+      component: 'ApiSelect',
+      label: t('form.gradingSearch.className'),
+      componentProps: {
+        api: classListApi(),
+        params: {
+          id: 1,
+        },
+        resultField: 'items',
+        labelField: 'title',
+        valueField: 'id',
+        immediate: true,
+      },
+      required: true,
+      colProps: {
+        offset: 1,
+        xl: 12,
+        xxl: 12,
+      },
+    },
+    {
+      field: 'exeType',
+      label: t('form.exeType'),
+      component: 'Select',
+      componentProps: {
+        options: [
+          {
+            label: t('common.assignAtClass'),
+            value: 'class',
+          },
+          {
+            label: t('common.assignAtHome'),
+            value: 'home',
+          },
+        ],
+      },
+      required: true,
+      colProps: {
+        offset: 1,
+        xl: 12,
+        xxl: 12,
+      },
+    },
+    {
+      field: 'date',
       label: t('common.time'),
-      component: 'RangePicker',
+      component: 'DatePicker',
       componentProps: {
         format: 'YYYY-MM-DD',
-        placeholder: [t('common.startDate'), t('common.endDate')],
+      },
+      required: true,
+      colProps: {
+        offset: 1,
+        xl: 12,
+        xxl: 12,
       },
     },
   ];
@@ -38,11 +88,9 @@
   async function handleSubmit() {
     try {
       const data = await validate();
-      const from = data.from.split(' ')[0];
-      const to = data.to.split(' ')[0];
-      const useStore = useUserStore();
+      const { date, classId, exeType } = data;
       const response = await fetch(
-        `https://api-gateway.danda.vn/api/users/export-study-result/${useStore.userInfo?.id}/${from}/${to}`,
+        `https://api-gateway.danda.vn/api/homeworks/export?class_id=${classId}&date=${getLeftValue(date)}&type=${exeType}`,
         {
           method: 'GET',
           headers: {
@@ -61,7 +109,7 @@
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', `study-result-${from}-${to}.xlsx`);
+      link.setAttribute('download', `exercise-${date}.xlsx`);
       document.body.appendChild(link);
       link.click();
 

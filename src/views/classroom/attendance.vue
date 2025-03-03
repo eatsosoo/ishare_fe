@@ -62,7 +62,7 @@
       const [values] = await Promise.all([validate()]);
       const { classId, date } = values;
       setLoading(true);
-      const response = await attendanceListApi(classId, date);
+      const response = await attendanceListApi(classId, getLeftValue(date));
 
       if (response.items[0].length === 0) {
         return;

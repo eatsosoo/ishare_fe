@@ -42,6 +42,14 @@ const classroom: AppRouteModule = {
         title: t('routes.page.takeAttendance'),
       },
     },
+    {
+      path: 'excel',
+      name: 'Excel',
+      component: () => import('@/views/classroom/excel.vue'),
+      meta: {
+        title: 'Excel',
+      },
+    },
   ],
 };
 
