@@ -121,6 +121,7 @@
           date: getLeftValue(date),
           study_date,
         },
+        subject: parts.value[0].subject,
         question_groups: parts.value[0].question_groups,
       };
 

@@ -26,6 +26,8 @@ export interface TakeExerciseStudentItem {
   deadline: string;
   assign_at: string;
   media: string | null;
+  subject: string;
+  duration: number;
   question_groups: GroupQuestionItem[];
 }
 

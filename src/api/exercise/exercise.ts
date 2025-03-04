@@ -7,6 +7,7 @@ import {
   HomeworkListGetResultModel,
 } from './exerciseModel';
 import { ErrorMessageMode, Result } from '#/axios';
+import { ExamPartItem, SubmitExam } from '../exam/examModel';
 
 enum Api {
   EXERCISE_LIST = '/table/getExerciseList',
@@ -64,6 +65,21 @@ export const assignExercise = (params: AssignExerciseParams, mode: ErrorMessageM
   defHttp.post<Result<AssignExerciseParams>>(
     {
       url: `${Api.ASSIGN_EXE}`,
+      params,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+
+export const exerciseSubmitApi = (
+  homeworkId: number,
+  params: SubmitExam,
+  mode: ErrorMessageMode = 'modal',
+) =>
+  defHttp.post<Result<ExamPartItem>>(
+    {
+      url: `/homework/${homeworkId}/submit`,
       params,
     },
     {

@@ -25,19 +25,6 @@
               <div v-if="props.value.parts[partIndex]?.question_groups.length === questionIndex">
                 <h2 class="font-bold text-3xl">IT'S THE END OF PART {{ partIndex + 1 }}</h2>
                 <p>{{ uploading ? 'Uploading...' : 'Uploaded' }}</p>
-                <!-- <p class="text-primary"
-                  >You can review your part {{ partIndex + 1 }} recording by clicking the Play
-                  button below</p
-                > -->
-                <!-- <div class="mt-10">
-                  <audio
-                    v-if="partIndex !== null && final[partIndex]"
-                    :src="final[partIndex]"
-                    controls
-                    class="h-8 w-[500px]"
-                    :key="final[partIndex]"
-                  ></audio>
-                </div> -->
               </div>
               <div v-else-if="questionCurrent" class="p-4">
                 <div>
