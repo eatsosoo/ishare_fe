@@ -1,5 +1,5 @@
 import { GroupQuestionItem } from '@/views/test/types/question';
-import { SkillType } from '../exam/examModel';
+import { SkillType, SubmitAnswer } from '../exam/examModel';
 import { BasicFetchResult } from '../model/baseModel';
 
 export interface ExerciseListItem {
@@ -41,6 +41,17 @@ export interface AssignExerciseParams {
     date: string;
   };
   question_groups: GroupQuestionItem[];
+}
+
+export interface SubmitExerciseParams {
+  type: SkillType;
+  answers: SubmitAnswer[];
+}
+
+export interface ScoreExercise {
+  score: number;
+  result: string;
+  type: SkillType;
 }
 
 /**

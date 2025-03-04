@@ -86,7 +86,8 @@
     "addActionEdtior": "Chưa có vị trí để chèn text!"
   },
   "error": {
-    "finishAllQuestions": "Hãy hoàn thành hết các câu hỏi trước khi nộp bài"
+    "finishAllQuestions": "Hãy hoàn thành hết các câu hỏi trước khi nộp bài",
+    "pleaseUploadAudio": "Bạn chưa tải audio bài tập Listening"
   },
   "test": {
     "reading": "Đề thi phần READING",

@@ -17,7 +17,7 @@
                 </div>
               </template>
             </Col>
-            <Col :span="12" class="flex">
+            <Col :span="skillType === 'Reading' ? 12 : 24" class="flex">
               <div class="re-box-shadow rounded-lg pa-4 w-full">
                 <template v-if="groupActive">
                   <GroupQuestions :group="groupActive" @update-group="handleUpdateGroup" />

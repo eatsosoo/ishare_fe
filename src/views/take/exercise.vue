@@ -13,14 +13,15 @@
 
     <div v-if="exerciseItem" ref="htmlContainer" class="custom-html">
       <template v-if="exerciseItem.skill === 'Reading' || exerciseItem.skill === 'Listening'">
-        <audio
-          v-if="exerciseItem.media"
-          :src="exerciseItem.media"
-          controls
-          autoplay
-          class="h-8 w-full"
-          :key="exerciseItem.media"
-        ></audio>
+        <div class="p-4">
+          <audio
+            v-if="exerciseItem.media"
+            :src="exerciseItem.media"
+            controls
+            class="h-8 w-full"
+            :key="exerciseItem.media"
+          ></audio>
+        </div>
         <Row :gutter="[16, 16]" class="h-[88vh] w-[100vw]">
           <Col
             v-if="exerciseItem.skill === 'Reading'"
@@ -175,7 +176,7 @@
   import { computed, reactive, ref } from 'vue';
   import { GroupQuestionItem } from '@/views/test/types/question';
   import { useRoute, useRouter } from 'vue-router';
-  import { SkillType, SubmitAnswer, SubmitExam } from '@/api/exam/examModel';
+  import { SkillType, SubmitAnswer } from '@/api/exam/examModel';
   import { isString, toNumber } from 'lodash-es';
   import { useMessage } from '@/hooks/web/useMessage';
   import { useI18n } from '@/hooks/web/useI18n';
@@ -186,6 +187,7 @@
   import { Col, Input, Row } from 'ant-design-vue';
   import { renderGroupQuestions } from './helpers';
   import { exerciseSubmitApi } from '@/api/exercise/exercise';
+  import { SubmitExerciseParams } from '@/api/exercise/exerciseModel';
 
   const route = useRoute();
   const router = useRouter();
@@ -209,10 +211,6 @@
   const exerciseItem = ref<TakeExerciseStudentItem | null>(null);
   const htmlContainer = ref<any>(null);
   const studentAnswer = ref<{ [key: string]: string | string[] }>({});
-  const submitForm = ref({
-    type: '',
-    answers: [],
-  });
 
   // time left
   const isWarning = ref(false);
@@ -364,30 +362,21 @@
       }
     }
 
-    console.log(studentAnswer.value);
-
     const finalAnswers: SubmitAnswer[] =
-      skill === 'Writing'
-        ? submitForm.value.answers
-        : skill === 'Speaking'
-          ? []
-          : mapAnswersToParts(question_groups, studentAnswer.value);
+      skill === 'Speaking' ? [] : mapAnswersToParts(question_groups, studentAnswer.value);
 
-    const formatData: SubmitExam = {
-      exam_skill_id: id as number,
-      type: state.type,
+    const formatData: SubmitExerciseParams = {
+      type: skill,
       answers: finalAnswers,
     };
 
-    console.log(formatData);
-
     try {
       openFullLoading();
-      const result = await exerciseSubmitApi(state.exerciseId, formatData);
+      const result = await exerciseSubmitApi(id, formatData);
 
-      if (result?.items) {
+      if (result && result.items) {
         createMessage.success(t('common.submitTestSuccess'));
-        router.push('/student/exam');
+        router.push('/student/homework');
       }
     } catch (error) {
       console.error('Submit error:', error);

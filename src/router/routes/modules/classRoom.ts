@@ -31,7 +31,6 @@ const classroom: AppRouteModule = {
       component: () => import('@/views/classroom/new.vue'),
       meta: {
         title: t('routes.page.createClassroom'),
-        roles: [RoleEnum.SUPER],
       },
     },
     {

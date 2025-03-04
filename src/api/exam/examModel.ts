@@ -1,4 +1,4 @@
-import { NewPartItem, QuestionItem, QuizItem, SkillItem } from '@/views/test/types/question';
+import { NewPartItem, QuestionItem, SkillItem } from '@/views/test/types/question';
 import { BasicApiResult, BasicFetchResult } from '../model/baseModel';
 
 export interface ExamListItem {
