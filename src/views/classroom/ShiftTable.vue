@@ -13,6 +13,7 @@
   </div>
 </template>
 <script lang="ts" setup>
+  import { ShiftItem } from '@/api/class/classModel';
   import {
     BasicTable,
     useTable,
@@ -22,10 +23,17 @@
     EditRecordRow,
   } from '@/components/Table';
   import { useI18n } from '@/hooks/web/useI18n';
+  import { watch } from 'vue';
+
+  const props = defineProps({
+    value: {
+      type: Array as PropType<ShiftItem[]>,
+      default: () => [],
+    },
+  });
 
   const emit = defineEmits(['change']);
 
-  const data: any[] = [];
   const { t } = useI18n();
   const columns: BasicColumn[] = [
     {
@@ -57,10 +65,10 @@
       editComponent: 'Input',
     },
   ];
-  const [registerTable, { getDataSource }] = useTable({
+  const [registerTable, { getDataSource, setTableData }] = useTable({
     columns: columns,
     showIndexColumn: false,
-    dataSource: data,
+    dataSource: props.value,
     actionColumn: {
       width: 160,
       title: t('table.action'),
@@ -145,4 +153,12 @@
       },
     ];
   }
+
+  watch(
+    () => props.value,
+    (newVal) => {
+      console.log(newVal);
+      setTableData(newVal);
+    },
+  );
 </script>

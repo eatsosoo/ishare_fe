@@ -28,6 +28,7 @@
     <DetailClassModal
       :title="titleModal"
       :class-id="targetClass?.id ?? 0"
+      :shifts="targetClass?.shifts"
       @register="registerViewModal"
     />
     <AddStudentModal

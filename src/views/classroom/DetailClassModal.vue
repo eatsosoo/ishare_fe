@@ -9,22 +9,31 @@
   >
     <Tabs v-model:activeTab="activeTab" @change="activeKey = $event">
       <TabPane v-for="tab in tabs" :key="tab.key" v-bind="omit(tab, ['content', 'key'])">
-        <BasicTable @register="tab.register" ref="tableRefs" class="max-h-[770px]">
-          <template #bodyCell="{ column, record }">
-            <template v-if="column.key === 'action'">
-              <div class="flex gap-2 justify-center">
-                <Icon
-                  :size="18"
-                  icon="ant-design:export"
-                  class="cursor-pointer hover:border-red border-1 border-gray-200 p-1 rounded-md"
-                  @click="activateExportModal(record)"
-                />
-              </div>
+        <template v-if="tab.key === 0">
+          <BasicTable @register="tab.register" ref="tableRefs" class="max-h-[770px]">
+            <template #bodyCell="{ column, record }">
+              <template v-if="column.key === 'action'">
+                <div class="flex gap-2 justify-center">
+                  <Icon
+                    :size="18"
+                    icon="ant-design:export"
+                    class="cursor-pointer hover:border-red border-1 border-gray-200 p-1 rounded-md"
+                    @click="activateExportModal(record)"
+                  />
+                </div>
+              </template>
             </template>
-          </template>
-        </BasicTable>
+          </BasicTable>
+        </template>
+        <template v-else>
+          <ShiftTable :value="props.shifts" />
+        </template>
       </TabPane>
     </Tabs>
+
+    <template #footer>
+      <a-button type="dashed" @click="handleDelete">{{ t('common.deleteClass') }}</a-button>
+    </template>
 
     <ExportStudyResultModal
       :title="t('common.exportExcelStudy')"
@@ -34,22 +43,29 @@
   </BasicModal>
 </template>
 <script lang="ts" setup>
-  import { ref, watch } from 'vue';
+  import { h, ref, watch } from 'vue';
   import { BasicModal, useModal } from '@/components/Modal';
   import { BasicTable, FormProps, useTable } from '@/components/Table';
   import { getStudentOfClassColumns } from '@/views/classroom/tableData';
   import { useI18n } from '@/hooks/web/useI18n';
   import { omit } from 'lodash-es';
   import { Tabs } from 'ant-design-vue';
-  import { getStudentsOfClassApi } from '@/api/class/class';
+  import { deleteClassApi, getStudentsOfClassApi } from '@/api/class/class';
   import { Key } from 'ant-design-vue/es/_util/type';
   import Icon from '@/components/Icon/Icon.vue';
   import ExportStudyResultModal from './ExportStudyResultModal.vue';
+  import { useMessage } from '@/hooks/web/useMessage';
+  import ShiftTable from './ShiftTable.vue';
+  import { ShiftItem } from '@/api/class/classModel';
 
   const props = defineProps({
     classId: {
       type: Number,
       required: true,
+    },
+    shifts: {
+      type: Array as PropType<ShiftItem[]>,
+      default: () => [],
     },
   });
 
@@ -59,7 +75,7 @@
   const activeTab = ref('1');
   const activeKey = ref<Key>('1');
   const tableRefs = ref([]);
-  const studentTarget = ref<any>(null);
+  const studentTarget = ref<any>({});
   function searchConfig(): Partial<FormProps> {
     return {
       labelWidth: 100,
@@ -78,6 +94,7 @@
   }
 
   const [registerExportModal, { openModal: openExportModal }] = useModal();
+  const { createConfirm } = useMessage();
 
   const [registerTable1, { reload: reload1 }] = useTable({
     canResize: true,
@@ -134,6 +151,10 @@
       tab: t('table.studentList'),
       register: registerTable1,
     },
+    {
+      key: 1,
+      tab: t('table.shift'),
+    },
     // {
     //   key: 1,
     //   tab: t('table.homeWorkList'),
@@ -167,6 +188,15 @@
   const activateExportModal = (record: any) => {
     studentTarget.value = record;
     openExportModal();
+  };
+
+  const handleDelete = () => {
+    createConfirm({
+      iconType: 'warning',
+      title: () => h('span', t('sys.app.logoutTip')),
+      content: () => h('span', t('common.warning.deleteClass')),
+      onOk: () => deleteClassApi(props.classId),
+    });
   };
 
   watch(

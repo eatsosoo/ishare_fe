@@ -82,8 +82,10 @@
   "student": "Học sinh",
   "target": "Mục tiêu",
   "gradingAndFeedback": "Chấm điểm và phản hồi",
+  "deleteClass": "Xoá lớp học",
   "warning": {
-    "addActionEdtior": "Chưa có vị trí để chèn text!"
+    "addActionEdtior": "Chưa có vị trí để chèn text!",
+    "deleteClass": "Bạn có chắc chắn muốn xoá lớp học này?"
   },
   "error": {
     "finishAllQuestions": "Hãy hoàn thành hết các câu hỏi trước khi nộp bài",

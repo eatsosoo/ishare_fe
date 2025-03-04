@@ -10,7 +10,7 @@ import {
   CreateClassParams,
 } from './classModel';
 import { ErrorMessageMode } from '#/axios';
-import { BasicApiResult, BasicPageParams, Result } from '../model/baseModel';
+import { BasicApiResult, BasicPageParams, ResultBase } from '../model/baseModel';
 import { useUserStore } from '@/store/modules/user';
 
 enum Api {
@@ -29,7 +29,7 @@ export const createClassApi = (params: CreateClassParams, mode: ErrorMessageMode
     },
   );
 
-export const deleteClassApi = (
+export const deleteStudentOfClassApi = (
   params: ClassDeleteStudentsParams,
   mode: ErrorMessageMode = 'modal',
 ) =>
@@ -43,7 +43,7 @@ export const deleteClassApi = (
     },
   );
 
-export const deleteStudentOfClassApi = (classId: number, mode: ErrorMessageMode = 'modal') =>
+export const deleteClassApi = (classId: number, mode: ErrorMessageMode = 'modal') =>
   defHttp.delete<BasicApiResult<string>>(
     {
       url: `${Api.CLASS_ROUTE}/${classId}`,
@@ -64,7 +64,7 @@ export const classListApi = () => (params: BasicPageParams) =>
   });
 
 export const classOptionsApi = () =>
-  defHttp.get<Result<ClassListItem[]>>({
+  defHttp.get<ResultBase<ClassListItem[]>>({
     url: Api.CLASS_ROUTE,
     headers: {
       // @ts-ignore
@@ -113,7 +113,7 @@ export const addStudentClassApi = (
   );
 
 export const attendanceListApi = (classId: number, date: string) => {
-  return defHttp.get<Result<AttendanceItem[][]>>({
+  return defHttp.get<ResultBase<AttendanceItem[][]>>({
     url: `${Api.ATTENDANCE}/${classId}?date=${date}`,
     headers: {
       // @ts-ignore
@@ -123,7 +123,7 @@ export const attendanceListApi = (classId: number, date: string) => {
 };
 
 export const attendanceApi = (params: AttendanceStudentsParams, mode: ErrorMessageMode = 'modal') =>
-  defHttp.post<Result<Boolean>>(
+  defHttp.post<ResultBase<Boolean>>(
     {
       url: `${Api.ATTENDANCE}/${params.class_id}`,
       params,
