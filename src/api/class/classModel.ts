@@ -5,6 +5,7 @@ export interface CreateClassParams {
   description: string;
   start_date: string;
   key: string;
+  level: string;
   shifts: { title: string; description: string }[];
   students: { id: string }[];
 }

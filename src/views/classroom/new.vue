@@ -61,12 +61,13 @@
     try {
       loading.value = true;
       const [values] = await Promise.all([validate()]);
-      const { title, description, start_date, key } = values;
+      const { title, description, start_date, key, level } = values;
       const submitForm: CreateClassParams = {
         title,
         description,
         start_date,
         key,
+        level,
         shifts: shiftData.value,
         students: studentsRegistered.value.map((student) => ({ id: student.id })),
       };
