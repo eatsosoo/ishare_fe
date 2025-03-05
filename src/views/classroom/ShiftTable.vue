@@ -1,6 +1,6 @@
 <template>
   <div>
-    <BasicTable @register="registerTable" @edit-change="handleEditChange">
+    <BasicTable @register="registerTable">
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'action'">
           <TableAction :actions="createActions(record)" />
@@ -92,19 +92,7 @@
   function handleSave(record: EditRecordRow) {
     record.onEdit?.(false, true);
     const data = getDataSource();
-    const formatData = data.map((item) => {
-      return {
-        title: item.title,
-        day: item.day,
-        hour: item.hour,
-      };
-    });
-
-    emit('change', formatData);
-  }
-
-  function handleEditChange(data: Recordable) {
-    console.log(data);
+    updatedShifts(data);
   }
 
   function handleAdd() {
@@ -124,6 +112,19 @@
     const data = getDataSource();
     const index = data.findIndex((item) => item.key === record.key);
     data.splice(index, 1);
+    updatedShifts(data);
+  }
+
+  function updatedShifts(data: Recordable<any>[]) {
+    const formatData = data.map((item) => {
+      return {
+        title: item.title,
+        day: item.day,
+        hour: item.hour,
+      };
+    });
+
+    emit('change', formatData);
   }
 
   function createActions(record: EditRecordRow): ActionItem[] {
@@ -157,7 +158,6 @@
   watch(
     () => props.value,
     (newVal) => {
-      console.log(newVal);
       setTableData(newVal);
     },
   );

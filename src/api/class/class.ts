@@ -8,6 +8,7 @@ import {
   ClassListItem,
   ClassStudentGetResultModel,
   CreateClassParams,
+  UpdateClassParams,
 } from './classModel';
 import { ErrorMessageMode } from '#/axios';
 import { BasicApiResult, BasicPageParams, ResultBase } from '../model/baseModel';
@@ -29,11 +30,26 @@ export const createClassApi = (params: CreateClassParams, mode: ErrorMessageMode
     },
   );
 
+export const updateClassApi = (
+  classId: number,
+  params: UpdateClassParams,
+  mode: ErrorMessageMode = 'modal',
+) =>
+  defHttp.put<ResultBase<UpdateClassParams>>(
+    {
+      url: `${Api.CLASS_ROUTE}/${classId}`,
+      params,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+
 export const deleteStudentOfClassApi = (
   params: ClassDeleteStudentsParams,
   mode: ErrorMessageMode = 'modal',
 ) =>
-  defHttp.delete<BasicApiResult<string>>(
+  defHttp.delete<ResultBase<Boolean>>(
     {
       url: `${Api.CLASS_ROUTE}/${params.class_id}/students`,
       params,
@@ -44,7 +60,17 @@ export const deleteStudentOfClassApi = (
   );
 
 export const deleteClassApi = (classId: number, mode: ErrorMessageMode = 'modal') =>
-  defHttp.delete<BasicApiResult<string>>(
+  defHttp.delete<ResultBase<Boolean>>(
+    {
+      url: `${Api.CLASS_ROUTE}/${classId}`,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+
+export const getClassApi = (classId: number, mode: ErrorMessageMode = 'modal') =>
+  defHttp.get<ResultBase<UpdateClassParams>>(
     {
       url: `${Api.CLASS_ROUTE}/${classId}`,
     },

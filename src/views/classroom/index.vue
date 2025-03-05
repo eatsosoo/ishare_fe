@@ -28,8 +28,8 @@
     <DetailClassModal
       :title="titleModal"
       :class-id="targetClass?.id ?? 0"
-      :shifts="targetClass?.shifts"
       @register="registerViewModal"
+      @reload="handleReload"
     />
     <AddStudentModal
       :title="titleModal"
@@ -42,7 +42,7 @@
       :class-id="targetClass?.id ?? 0"
       :class-key="targetClass?.key ?? ''"
       @register="registerImportModal"
-      @success="handleImportSuccess"
+      @success="handleReload"
     />
     <AssignClassTeacher @register="registerClassTeacherModal" @success="closeClassTeacherModal" />
   </div>
@@ -65,11 +65,14 @@
 
   const { t } = useI18n();
   const useStore = useUserStore();
-  const [registerViewModal, { openModal: openViewModal }] = useModal();
+  const [registerViewModal, { openModal: openViewModal, closeModal: closeDetail }] = useModal();
   const [registerAddModal, { openModal: openAddModal, closeModal }] = useModal();
   const [
     registerClassTeacherModal,
-    { openModal: openClassTeacherModal, closeModal: closeClassTeacherModal },
+    {
+      // openModal: openClassTeacherModal,
+      closeModal: closeClassTeacherModal,
+    },
   ] = useModal();
   const [registerImportModal, { openModal: openImportModal, closeModal: closeImportModal }] =
     useModal();
@@ -162,8 +165,10 @@
     }
   }
 
-  const handleImportSuccess = () => {
+  const handleReload = () => {
     reload();
     closeImportModal();
+    closeDetail();
+    targetClass.value = null;
   };
 </script>

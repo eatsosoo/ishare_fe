@@ -6,8 +6,18 @@ export interface CreateClassParams {
   start_date: string;
   key: string;
   level: string;
-  shifts: { title: string; description: string }[];
+  shifts: ShiftItem[];
   students: { id: string }[];
+}
+
+export interface UpdateClassParams {
+  id: number;
+  title: string;
+  description: string;
+  start_date: string;
+  key: string;
+  level: string;
+  shifts: ShiftItem[];
 }
 
 export interface ShiftItem {

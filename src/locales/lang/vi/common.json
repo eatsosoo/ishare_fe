@@ -7,6 +7,7 @@
   "delText": "Xóa",
   "resetText": "Đặt lại",
   "searchText": "Tìm kiếm",
+  "updatedText": "Cập nhật",
   "queryText": "Tìm kiếm",
   "inputText": "Vui lòng nhập ",
   "chooseText": "Vui lòng chọn ",
@@ -83,13 +84,16 @@
   "target": "Mục tiêu",
   "gradingAndFeedback": "Chấm điểm và phản hồi",
   "deleteClass": "Xoá lớp học",
+  "editClass": "Chỉnh sửa lớp học",
+  "infoClass": "Thông tin lớp",
   "warning": {
     "addActionEdtior": "Chưa có vị trí để chèn text!",
     "deleteClass": "Bạn có chắc chắn muốn xoá lớp học này?"
   },
   "error": {
     "finishAllQuestions": "Hãy hoàn thành hết các câu hỏi trước khi nộp bài",
-    "pleaseUploadAudio": "Bạn chưa tải audio bài tập Listening"
+    "pleaseUploadAudio": "Bạn chưa tải audio bài tập Listening",
+    "shiftEmpty": "Bạn cần tạo ca học cho lớp!"
   },
   "test": {
     "reading": "Đề thi phần READING",

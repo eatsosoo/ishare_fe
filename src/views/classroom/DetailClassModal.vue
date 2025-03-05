@@ -6,8 +6,9 @@
     :show-ok-btn="false"
     :show-cancel-btn="false"
     :can-fullscreen="false"
+    :loading="loading"
   >
-    <Tabs v-model:activeTab="activeTab" @change="activeKey = $event">
+    <Tabs v-model:activeTab="activeTab" @change="activeKey = $event" class="max-height-[500px]">
       <TabPane v-for="tab in tabs" :key="tab.key" v-bind="omit(tab, ['content', 'key'])">
         <template v-if="tab.key === 0">
           <BasicTable @register="tab.register" ref="tableRefs" class="max-h-[770px]">
@@ -26,13 +27,29 @@
           </BasicTable>
         </template>
         <template v-else>
-          <ShiftTable :value="props.shifts" />
+          <Card>
+            <BasicForm @register="register" />
+          </Card>
+          <ShiftTable :value="detail?.shifts" @change="handleUpdateShifts" />
         </template>
       </TabPane>
     </Tabs>
 
     <template #footer>
-      <a-button type="dashed" @click="handleDelete">{{ t('common.deleteClass') }}</a-button>
+      <a-button
+        type="dashed"
+        preIcon="ant-design:delete-twotone"
+        @click="handleDelete"
+        class="bg-orange"
+        >{{ t('common.deleteClass') }}</a-button
+      >
+      <a-button
+        v-if="activeKey === 1"
+        type="primary"
+        preIcon="ant-design:save-twotone"
+        @click="updateClass"
+        >{{ t('common.updatedText') }}</a-button
+      >
     </template>
 
     <ExportStudyResultModal
@@ -49,33 +66,41 @@
   import { getStudentOfClassColumns } from '@/views/classroom/tableData';
   import { useI18n } from '@/hooks/web/useI18n';
   import { omit } from 'lodash-es';
-  import { Tabs } from 'ant-design-vue';
-  import { deleteClassApi, getStudentsOfClassApi } from '@/api/class/class';
+  import { Card, Tabs } from 'ant-design-vue';
+  import {
+    deleteClassApi,
+    getClassApi,
+    getStudentsOfClassApi,
+    updateClassApi,
+  } from '@/api/class/class';
   import { Key } from 'ant-design-vue/es/_util/type';
   import Icon from '@/components/Icon/Icon.vue';
   import ExportStudyResultModal from './ExportStudyResultModal.vue';
   import { useMessage } from '@/hooks/web/useMessage';
   import ShiftTable from './ShiftTable.vue';
-  import { ShiftItem } from '@/api/class/classModel';
+  import { ShiftItem, UpdateClassParams } from '@/api/class/classModel';
+  import { schemas } from './data';
+  import { BasicForm, useForm } from '@/components/Form';
+  import dayjs from 'dayjs';
 
   const props = defineProps({
     classId: {
       type: Number,
       required: true,
     },
-    shifts: {
-      type: Array as PropType<ShiftItem[]>,
-      default: () => [],
-    },
   });
+
+  const emit = defineEmits(['reload']);
 
   const TabPane = Tabs.TabPane;
 
   const { t } = useI18n();
   const activeTab = ref('1');
-  const activeKey = ref<Key>('1');
+  const activeKey = ref<Key>(1);
   const tableRefs = ref([]);
   const studentTarget = ref<any>({});
+  const detail = ref<UpdateClassParams | null>(null);
+  const loading = ref(false);
   function searchConfig(): Partial<FormProps> {
     return {
       labelWidth: 100,
@@ -94,7 +119,16 @@
   }
 
   const [registerExportModal, { openModal: openExportModal }] = useModal();
-  const { createConfirm } = useMessage();
+  const { createConfirm, createSuccessModal, createMessage } = useMessage();
+
+  const [register, { validate, setFieldsValue }] = useForm({
+    layout: 'vertical',
+    baseColProps: {
+      span: 6,
+    },
+    schemas: schemas,
+    showActionButtonGroup: false,
+  });
 
   const [registerTable1, { reload: reload1 }] = useTable({
     canResize: true,
@@ -147,13 +181,13 @@
 
   const tabs = [
     {
+      key: 1,
+      tab: t('common.infoClass'),
+    },
+    {
       key: 0,
       tab: t('table.studentList'),
       register: registerTable1,
-    },
-    {
-      key: 1,
-      tab: t('table.shift'),
     },
     // {
     //   key: 1,
@@ -195,15 +229,86 @@
       iconType: 'warning',
       title: () => h('span', t('sys.app.logoutTip')),
       content: () => h('span', t('common.warning.deleteClass')),
-      onOk: () => deleteClassApi(props.classId),
+      onOk: async () => {
+        const res = await deleteClassApi(props.classId);
+        if (res && res.items) {
+          emit('reload');
+        }
+      },
     });
+  };
+
+  const getClassInformation = async (classId: number) => {
+    try {
+      loading.value = true;
+      const res = await getClassApi(classId);
+      if (res && res.items) {
+        detail.value = res.items;
+        const { title, description, start_date, key, level } = detail.value;
+        setFieldsValue({
+          title,
+          description,
+          start_date: dayjs(start_date, 'YYYY-MM-DD'),
+          key,
+          level,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const handleUpdateShifts = (newVal: ShiftItem[]) => {
+    console.log(newVal);
+    if (detail.value) {
+      detail.value.shifts = newVal;
+    }
+  };
+
+  const updateClass = async () => {
+    try {
+      loading.value = true;
+      if (!detail.value) {
+        return;
+      }
+
+      const { shifts } = detail.value;
+      if (shifts.length === 0) {
+        createMessage.error(t('common.shiftEmpty'));
+      }
+      const { title, key, level, description, start_date } = await validate();
+      const submitData: UpdateClassParams = {
+        id: props.classId,
+        title,
+        key,
+        level,
+        description,
+        start_date,
+        shifts,
+      };
+      const res = await updateClassApi(props.classId, submitData);
+      if (res && res.items) {
+        createSuccessModal({
+          title: t('layout.setting.operatingTitle'),
+          content: t('common.updateSuccess'),
+        });
+        emit('reload');
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      loading.value = false;
+    }
   };
 
   watch(
     () => props.classId,
-    () => {
-      if (!props.classId) return;
+    (newVal) => {
+      if (!newVal) return;
       reloadTable();
+      getClassInformation(newVal);
     },
   );
 </script>
