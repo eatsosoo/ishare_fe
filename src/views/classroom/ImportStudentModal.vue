@@ -57,14 +57,12 @@
   };
 
   const uploadFile = async () => {
-    console.log(props.classId, props.classKey);
     if (!file.value) {
       createMessage.warning(t('common.chooseText'));
       return;
     }
 
     const formData = new FormData();
-    console.log(file.value);
     formData.append('excel', file.value);
     formData.append('class_id', props.classId.toString());
     formData.append('class_key', props.classKey);

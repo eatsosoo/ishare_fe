@@ -560,13 +560,6 @@ export function getSearchFormConfig(): Partial<FormProps> {
           valueField: 'id',
           // not request untill to select
           immediate: true,
-          onChange: (e, v) => {
-            console.log('ApiSelect====>:', e, v);
-          },
-          // atfer request callback
-          onOptionsChange: (options) => {
-            console.log('get options', options.length, options);
-          },
         },
       },
       {
@@ -972,13 +965,6 @@ export function getSearchAttendanceConfig(): Partial<FormProps> {
           valueField: 'id',
           // not request untill to select
           immediate: true,
-          onChange: (e, v) => {
-            console.log('ApiSelect====>:', e, v);
-          },
-          // atfer request callback
-          onOptionsChange: (options) => {
-            console.log('get options', options.length, options);
-          },
         },
       },
       {

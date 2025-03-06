@@ -261,7 +261,6 @@
   };
 
   const handleUpdateShifts = (newVal: ShiftItem[]) => {
-    console.log(newVal);
     if (detail.value) {
       detail.value.shifts = newVal;
     }

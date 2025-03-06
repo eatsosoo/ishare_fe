@@ -78,7 +78,6 @@
 
   function handleSelectStudents(students: StudentListItem[]) {
     const data = getDataSource();
-    console.log(students);
     students.forEach((student) => {
       if (data.some((item) => item.id === student.id)) {
         return;

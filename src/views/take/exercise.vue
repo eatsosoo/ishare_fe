@@ -5,7 +5,11 @@
       :class="isWarning ? 'blinking' : ''"
     >
       <div class="right-0 absolute mr-4">
-        <a-button type="primary" preIcon="ant-design:send-outlined" @click="submit"
+        <a-button
+          v-if="exerciseItem?.skill !== 'Speaking'"
+          type="primary"
+          preIcon="ant-design:send-outlined"
+          @click="submit"
           >Submit</a-button
         >
       </div>
@@ -135,7 +139,7 @@
                   <template v-if="state.qIdx !== null">
                     <div v-if="exerciseItem.question_groups.length === state.qIdx">
                       <h2 class="font-bold text-3xl">IT'S THE END OF EXERCISE</h2>
-                      <p>{{ state.loading ? 'Uploading...' : 'Uploaded' }}</p>
+                      <p>{{ uploading ? 'Uploading...' : 'Uploaded' }}</p>
                     </div>
                     <div v-else-if="exerciseItem.question_groups[state.qIdx]" class="p-4">
                       <div>
@@ -188,6 +192,7 @@
   import { renderGroupQuestions } from './helpers';
   import { exerciseSubmitApi } from '@/api/exercise/exercise';
   import { SubmitExerciseParams } from '@/api/exercise/exerciseModel';
+  import { uploadAudioApi } from '@/api/exam/exam';
 
   const route = useRoute();
   const router = useRouter();
@@ -212,6 +217,15 @@
   const htmlContainer = ref<any>(null);
   const studentAnswer = ref<{ [key: string]: string | string[] }>({});
 
+  // recording
+  const isRecording = ref(false);
+  const mediaRecorder = ref<MediaRecorder | null>(null);
+  const audioChunks = ref<Blob[]>([]);
+  const audioUrl = ref<string | null>(null);
+  const audioFile = ref<File | null>(null);
+  const uploading = ref(false);
+  const final = ref<string[]>([]);
+
   // time left
   const isWarning = ref(false);
 
@@ -230,31 +244,11 @@
       .filter((word) => word).length;
   });
 
-  const textButton = computed(() => {
-    if (state.qIdx === null) {
-      return 'START_NOW';
-    } else if (state.qIdx === exerciseItem.value?.question_groups.length) {
-      return 'FINISHED';
-    } else {
-      return 'NEXT_QUESTION';
-    }
-  });
-
   const transText = {
     START_NOW: 'Start Now',
     NEXT_PART: 'Next Part',
     NEXT_QUESTION: 'Next Question',
     FINISHED: 'Finished',
-  };
-
-  const actionRecord = (actionType: string) => {
-    if (actionType === 'START_NOW') {
-      state.qIdx = 0;
-    } else if (actionType === 'FINISHED') {
-      console.log('finish');
-    } else {
-      if (state.qIdx !== null) state.qIdx++;
-    }
   };
 
   function generateAnswerObject(groups: GroupQuestionItem[]) {
@@ -363,7 +357,9 @@
     }
 
     const finalAnswers: SubmitAnswer[] =
-      skill === 'Speaking' ? [] : mapAnswersToParts(question_groups, studentAnswer.value);
+      skill === 'Speaking'
+        ? [{ part_id: null, part_answer: final.value[0] }]
+        : mapAnswersToParts(question_groups, studentAnswer.value);
 
     const formatData: SubmitExerciseParams = {
       type: skill,
@@ -384,6 +380,81 @@
       closeFullLoading();
     }
   }
+
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorder.value = new MediaRecorder(stream);
+      isRecording.value = true;
+
+      mediaRecorder.value.ondataavailable = (event) => {
+        audioChunks.value.push(event.data);
+      };
+
+      mediaRecorder.value.onstop = async () => {
+        const audioBlob = new Blob(audioChunks.value, { type: 'audio/webm' });
+        audioUrl.value = URL.createObjectURL(audioBlob);
+        audioFile.value = new File([audioBlob], 'recording.webm', { type: 'audio/webm' });
+
+        const speakingUrl = await uploadAudio();
+        final.value.push(speakingUrl as string);
+      };
+
+      mediaRecorder.value.start();
+      setTimeout(stopRecording, 15 * 60 * 1000); // Tự động dừng sau 15 phút
+    } catch (error) {
+      console.error('Error accessing microphone:', error);
+    }
+  };
+
+  const stopRecording = async () => {
+    if (mediaRecorder.value) {
+      mediaRecorder.value.stop();
+      isRecording.value = false;
+    }
+  };
+
+  const uploadAudio = async () => {
+    console.log(audioFile.value);
+    if (!audioFile.value) return;
+
+    const formData = new FormData();
+    formData.append('media', audioFile.value);
+
+    try {
+      uploading.value = true;
+      const result = await uploadAudioApi(formData);
+      if (result) {
+        return result.items;
+      }
+    } catch (error) {
+      console.error('Upload failed:', error);
+    } finally {
+      uploading.value = false;
+    }
+  };
+
+  const textButton = computed(() => {
+    if (state.qIdx === null) {
+      return 'START_NOW';
+    } else if (state.qIdx === exerciseItem.value?.question_groups.length) {
+      stopRecording();
+      return 'FINISHED';
+    } else {
+      return 'NEXT_QUESTION';
+    }
+  });
+
+  const actionRecord = async (actionType: string) => {
+    if (actionType === 'START_NOW') {
+      state.qIdx = 0;
+      startRecording();
+    } else if (actionType === 'FINISHED') {
+      submit();
+    } else {
+      if (state.qIdx !== null) state.qIdx++;
+    }
+  };
 
   getExerciseDetail(state.exerciseId);
 </script>

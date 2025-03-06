@@ -117,27 +117,29 @@
       questionIndex.value = 0;
       questionCurrent.value =
         props.value?.parts[partIndex.value].question_groups[questionIndex.value];
-      emit('startRecording', props.value?.parts[partIndex.value].duration);
-      startRecording();
+
+      const time = props.value?.parts[partIndex.value].duration;
+      emit('startRecording', time);
+      startRecording(time);
     } else if (actionType === 'NEXT_PART') {
       const idx = partIndex.value + 1;
       const part = props.value?.parts[idx];
       if (!part) {
-        console.log('Finish');
         return;
       }
       partIndex.value = idx;
 
       questionIndex.value = 0;
       questionCurrent.value = part.question_groups[questionIndex.value];
-      emit('startRecording', props.value?.parts[partIndex.value].duration);
-      startRecording();
+
+      const time = props.value?.parts[partIndex.value].duration;
+      emit('startRecording', time);
+      startRecording(time);
     } else if (actionType === 'FINISHED') {
       const submitData = props.value.parts.map((part, index) => ({
         part_id: part.id,
         part_answer: final.value[index],
       }));
-      console.log(submitData);
       emit('submit', submitData);
     } else {
       const part = props.value?.parts[partIndex.value];
@@ -160,7 +162,7 @@
     }
   };
 
-  const startRecording = async () => {
+  const startRecording = async (time = 15) => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       mediaRecorder.value = new MediaRecorder(stream);
@@ -174,14 +176,13 @@
         const audioBlob = new Blob(audioChunks.value, { type: 'audio/webm' });
         audioUrl.value = URL.createObjectURL(audioBlob);
         audioFile.value = new File([audioBlob], 'recording.webm', { type: 'audio/webm' });
-        console.log(audioFile.value, audioUrl.value);
 
         const speakingUrl = await uploadAudio();
         final.value.push(speakingUrl as string);
       };
 
       mediaRecorder.value.start();
-      setTimeout(stopRecording, 15 * 60 * 1000); // Tự động dừng sau 15 phút
+      setTimeout(stopRecording, time * 60 * 1000); // Tự động dừng sau 15 phút
     } catch (error) {
       console.error('Error accessing microphone:', error);
     }
@@ -195,7 +196,6 @@
   };
 
   const uploadAudio = async () => {
-    console.log(audioFile.value);
     if (!audioFile.value) return;
 
     const formData = new FormData();
