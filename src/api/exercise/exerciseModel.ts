@@ -43,6 +43,20 @@ export interface AssignExerciseParams {
   question_groups: GroupQuestionItem[];
 }
 
+export interface CopyExerciseParams {
+  id: number;
+  book_name: string;
+  homework_name: string;
+  subject: string;
+  deadline: string;
+  assignment: {
+    class_id: number;
+    shift_id: number;
+    study_date: string;
+    title: string;
+  };
+}
+
 export interface SubmitExerciseParams {
   type: SkillType;
   answers: SubmitAnswer[];

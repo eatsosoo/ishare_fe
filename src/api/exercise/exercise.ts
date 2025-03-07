@@ -3,6 +3,7 @@ import { BasicPageParams, ResultBase } from '../model/baseModel';
 import {
   AssignExerciseParams,
   BookListGetResultModel,
+  CopyExerciseParams,
   ExerciseListGetResultModel,
   HomeworkListGetResultModel,
   ScoreExercise,
@@ -66,6 +67,17 @@ export const assignExercise = (params: AssignExerciseParams, mode: ErrorMessageM
   defHttp.post<ResultBase<AssignExerciseParams>>(
     {
       url: `${Api.ASSIGN_EXE}`,
+      params,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+
+export const copyExercise = (params: CopyExerciseParams, mode: ErrorMessageMode = 'none') =>
+  defHttp.post<ResultBase<CopyExerciseParams>>(
+    {
+      url: `${Api.ASSIGN_EXE}/copy`,
       params,
     },
     {

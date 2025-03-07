@@ -432,6 +432,82 @@ export const assignHomeworkFormSchemas: FormSchema[] = [
   },
 ];
 
+export const copyHomeworkFormSchemas: FormSchema[] = [
+  {
+    field: 'book_name',
+    component: 'ApiSelect',
+    label: t('form.bookName'),
+    componentProps: {
+      api: bookListApi(),
+      resultField: 'items',
+      labelField: 'title',
+      valueField: 'title',
+      immediate: true,
+    },
+    required: true,
+    colProps: {
+      span: 24,
+    },
+  },
+  {
+    field: 'class_id',
+    label: t('form.gradingSearch.className'),
+    component: 'Select',
+    componentProps: {
+      options: [],
+    },
+    required: true,
+    colProps: {
+      span: 24,
+    },
+  },
+  {
+    field: 'shift_id',
+    label: t('form.shift'),
+    component: 'Select',
+    componentProps: {
+      options: [],
+    },
+    required: true,
+    colProps: {
+      span: 24,
+    },
+  },
+  {
+    field: 'homework_name',
+    component: 'Input',
+    label: t('form.gradingSearch.title'),
+    required: true,
+    colProps: {
+      span: 24,
+    },
+  },
+  {
+    field: 'study_date',
+    label: t('form.studyDate'),
+    component: 'Select',
+    componentProps: {
+      options: [],
+    },
+    required: true,
+    colProps: {
+      span: 24,
+    },
+  },
+  {
+    field: 'deadline',
+    label: t('form.gradingSearch.deadline'),
+    component: 'DatePicker',
+    componentProps: {
+      format: 'YYYY-MM-DD',
+    },
+    required: true,
+    colProps: {
+      span: 24,
+    },
+  },
+];
+
 export const searchAttendanceSchemas: FormSchema[] = [
   {
     field: 'classId',
