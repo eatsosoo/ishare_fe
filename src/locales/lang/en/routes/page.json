@@ -12,6 +12,13 @@
   "speaking": "Speaking",
   "studentManagement": "Student Management",
   "homework": "Homework",
+  "takeExercise": "Take Exercise",
   "takeTheTest": "Take the Test",
-  "learningOutcomes": "Learning Outcomes"
+  "learningOutcomes": "Learning Outcomes",
+  "examList": "Exam List",
+  "assignHomework": "Assign Homework",
+  "homeworkList": "Homework List",
+  "assignTest": "Assign Test",
+  "assignmentList": "Assignment List",
+  "takeAttendance": "Take Attendance"
 }

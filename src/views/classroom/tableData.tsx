@@ -601,7 +601,7 @@ export function getSearchStudentConfig(): Partial<FormProps> {
         label: t('form.exerciseSearch.studentName'),
         colProps: {
           xl: 6,
-          xxl: 4,
+          xxl: 6,
         },
       },
       {
@@ -610,7 +610,7 @@ export function getSearchStudentConfig(): Partial<FormProps> {
         component: 'Input',
         colProps: {
           xl: 6,
-          xxl: 4,
+          xxl: 6,
         },
       },
     ],
