@@ -14,6 +14,7 @@ enum Api {
   ASSIGNMENT = '/assignments',
   EXAM = '/exams',
   TEACHER = '/teachers',
+  HOMEWORK = '/homework',
 }
 
 export const teacherListApi = () => (params: BasicPageParams) =>
@@ -64,6 +65,17 @@ export const submitGradingApi = (params: GradingForm, mode: ErrorMessageMode = '
   defHttp.post<Boolean>(
     {
       url: `${Api.EXAM}/${params.exam_id}/teacher-submit`,
+      params,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+
+export const submitGradingHomeworkApi = (params: GradingForm, mode: ErrorMessageMode = 'modal') =>
+  defHttp.post<Boolean>(
+    {
+      url: `${Api.HOMEWORK}/${params.exam_id}/teacher-submit`, // exam_id aka homework_id
       params,
     },
     {
