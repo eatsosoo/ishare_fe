@@ -277,6 +277,7 @@
     (val) => {
       if (val <= 0) {
         console.log(val);
+        isWarning.value = false;
         timeLeft.value = '0:00';
         if (skillExam.value?.type !== 'Speaking') {
           submitExam();

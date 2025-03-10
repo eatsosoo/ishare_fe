@@ -104,7 +104,8 @@
     "reading": "Reading Test",
     "listening": "Listening Test",
     "speaking": "Speaking Test",
-    "writing": "Writing Test"
+    "writing": "Writing Test",
+    "readyForTest": "Are you ready for the listening?"
   },
   "grading": {
     "text": "Grading",

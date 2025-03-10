@@ -104,7 +104,8 @@
     "reading": "Đề thi phần READING",
     "listening": "Đề thi phần LISTENING",
     "speaking": "Đề thi phần SPEAKING",
-    "writing": "Đề thi phần WRITING"
+    "writing": "Đề thi phần WRITING",
+    "readyForTest": "Bạn đã sẵn sàng cho bài nghe chưa?"
   },
   "grading": {
     "text": "Chấm điểm",

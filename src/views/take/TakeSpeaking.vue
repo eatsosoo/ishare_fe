@@ -45,6 +45,9 @@
                   <span class="ml-2">Recording...</span>
                 </div></div
               >
+              <div v-else-if="!partIndex && !questionIndex">
+                <h2>{{ t('common.test.readyForTest') }}</h2>
+              </div>
             </div>
           </div>
         </div>
@@ -192,6 +195,8 @@
     if (mediaRecorder.value) {
       mediaRecorder.value.stop();
       isRecording.value = false;
+      const part = props.value?.parts[partIndex.value];
+      questionIndex.value = part.question_groups.length;
     }
   };
 
