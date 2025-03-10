@@ -43,6 +43,7 @@
       :student-id="studentIdRef"
       :score-id="scoreIdRef"
       :times="timeRef"
+      :score="scoreRef"
       @register="registerDetailModal"
       @submit-grading="handleSuccess"
     />
@@ -96,9 +97,10 @@
   const studentIdRef = ref<number | undefined>(undefined);
   const scoreIdRef = ref<number | undefined>(undefined);
   const timeRef = ref<number | undefined>(undefined);
+  const scoreRef = ref<number | undefined>(undefined);
 
   function clickOpen(item: ExamGradingListItem) {
-    const { exam_id, skill, name, user_id, score_id, times } = item;
+    const { exam_id, skill, name, user_id, score_id, times, score } = item;
     if (!exam_id || !user_id || !score_id) {
       return;
     }
@@ -109,6 +111,7 @@
     studentIdRef.value = user_id;
     scoreIdRef.value = score_id;
     timeRef.value = times;
+    scoreRef.value = score;
     openDetailModal();
   }
 

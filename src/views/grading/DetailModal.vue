@@ -116,10 +116,9 @@
               <div v-html="Object.values(JSON.parse(group.student_answer))[0]"></div>
             </div>
             <a-button
-              v-if="props.skillType === 'Writing'"
               preIcon="ant-design:file-word-twotone"
               @click="exportToWord"
-              class="mt-4"
+              class="mt-4 mr-2"
               >{{ t('common.download') }}</a-button
             >
           </div>
@@ -152,7 +151,29 @@
                 :label-col="{ span: 3 }"
                 label-align="left"
               >
-                <InputTextArea v-model:value="gradingFormData.feedback" />
+                <Upload
+                  name="media"
+                  :beforeUpload="beforeUpload"
+                  :fileList="fileList"
+                  :action="gradingFormData.feedback"
+                  :headers="headers"
+                  :showUploadList="false"
+                  :customRequest="handleCustomUpload"
+                  class="mb-4"
+                  @change="handleChangeFile"
+                >
+                  <a-button preIcon="ant-design:upload-outlined" :loading="uploading">{{
+                    t('common.uploadFeedback')
+                  }}</a-button>
+                </Upload>
+                <a-button
+                  v-if="gradingFormData.feedback"
+                  type="link"
+                  @click="openWindow(gradingFormData.feedback)"
+                >
+                  {{ t('common.clickToView') }}
+                </a-button>
+                <span v-else>{{ t('common.noFeedbackYet') }}</span>
               </FormItem>
               <div class="flex justify-end">
                 <a-button type="primary" @click="submitAll">{{ t('common.confirm') }}</a-button>
@@ -167,7 +188,7 @@
 
 <script lang="ts" setup>
   import { BasicModal } from '@/components/Modal';
-  import { Row, Col, InputNumber, Form, FormItem, Input } from 'ant-design-vue';
+  import { Row, Col, InputNumber, Form, FormItem, Upload } from 'ant-design-vue';
   import { ref, type PropType, watch } from 'vue';
   import { useI18n } from '@/hooks/web/useI18n';
   import { SkillType, ResponseExamPartItem } from '@/api/exam/examModel';
@@ -179,8 +200,10 @@
   import Icon from '@/components/Icon/Icon.vue';
   import { isArray } from 'lodash-es';
   import { saveAs } from 'file-saver';
+  import { getToken } from '@/utils/auth';
+  import { uploadAudioApi } from '@/api/exam/exam';
+  import { openWindow } from '@/utils';
 
-  const InputTextArea = Input.TextArea;
   const props = defineProps({
     skillType: {
       type: String as PropType<SkillType>,
@@ -203,6 +226,9 @@
     title: {
       type: String,
     },
+    score: {
+      type: Number,
+    },
   });
 
   const emit = defineEmits(['submit-grading']);
@@ -218,7 +244,15 @@
   const subjectRef = ref('');
   const contentWord = ref<HTMLDivElement | null>(null);
 
-  const { createSuccessModal, createErrorModal } = useMessage();
+  // uploadfile
+  const uploading = ref(false);
+  const fileList = ref([]);
+  const headers = {
+    Authorization: `Bearer ${getToken()}`,
+  };
+  // end upload file
+
+  const { createMessage, createSuccessModal, createErrorModal } = useMessage();
   const { prefixCls } = useDesign('register');
 
   function clickTab(index: number) {
@@ -253,7 +287,7 @@
       if (result) {
         createSuccessModal({
           title: t('form.exam.editSkill', { skill: 'Reading' }),
-          content: t('common.createSuccessfully'),
+          content: t('common.completedGrading'),
           getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
         });
         emit('submit-grading');
@@ -277,6 +311,11 @@
       const result = await getDetailExamOfStudent(studentId, examId, type);
       if (result && result.items) {
         completedAssignment.value = result.items;
+        const explanation = completedAssignment.value.parts[0].question_groups[0].explanation;
+        gradingFormData.value = {
+          score: props.score && props.score > 0 ? props.score : 0,
+          feedback: explanation || '',
+        };
       }
     } catch (error) {
       console.log(error);
@@ -336,4 +375,61 @@
       clickTab(0);
     },
   );
+
+  function beforeUpload(file: File) {
+    const isAudioOrWord =
+      file.type.startsWith('audio/') ||
+      file.type === 'application/msword' ||
+      file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+    if (!isAudioOrWord) {
+      createMessage.error(t('sys.validate.uploadOnlyAudioOrWord'));
+    }
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+      createMessage.error(t('sys.validate.minFileSize', { size: '2MB' }));
+    }
+    return isAudioOrWord && isLt2M;
+  }
+
+  const handleCustomUpload = async ({
+    file,
+    onSuccess,
+    onError,
+  }: {
+    file: any;
+    onSuccess?: any;
+    onError?: any;
+  }) => {
+    const formData = new FormData();
+    formData.append('media', file);
+
+    try {
+      uploading.value = true;
+      const result = await uploadAudioApi(formData);
+      if (result) {
+        gradingFormData.value.feedback = result.items;
+      }
+      onSuccess(result);
+    } catch (error) {
+      console.error('Upload failed:', error);
+      onError(error);
+    } finally {
+      uploading.value = false;
+    }
+  };
+
+  // processing upload file
+  function handleChangeFile(info: Record<string, any>) {
+    const file = info.file;
+    const status = file?.status;
+    const url = file?.response?.result.items;
+    const name = file?.name;
+    console.log(status);
+    if (status === 'done') {
+      createMessage.success(t('common.uploadFileSuccess', { name }));
+      gradingFormData.value.feedback = url;
+    } else if (status === 'error') {
+      createMessage.error(t('common.uploadFileFail', { name }));
+    }
+  }
 </script>
