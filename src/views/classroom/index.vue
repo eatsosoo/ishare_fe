@@ -84,7 +84,7 @@
     formConfig: getFormSearchClassConfig(),
     showTableSetting: true,
     tableSetting: { fullScreen: true },
-    showIndexColumn: false,
+    showIndexColumn: true,
     rowKey: 'id',
     showSelectionBar: false,
     actionColumn: {

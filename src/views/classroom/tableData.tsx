@@ -7,11 +7,11 @@ const { t } = useI18n();
 
 export function getClassColumns(): BasicColumn[] {
   return [
-    {
-      title: 'ID',
-      dataIndex: 'id',
-      fixed: 'left',
-    },
+    // {
+    //   title: 'ID',
+    //   dataIndex: 'id',
+    //   fixed: 'left',
+    // },
     {
       title: t('table.className'),
       dataIndex: 'title',

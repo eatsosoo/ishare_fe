@@ -422,7 +422,7 @@ export const assignHomeworkFormSchemas: FormSchema[] = [
     componentProps: {
       options: [
         { label: t('form.assignAtClass'), value: 'class' },
-        { label: t('form.assignAtHome'), value: 'class' },
+        { label: t('form.assignAtHome'), value: 'home' },
       ],
     },
     required: true,
