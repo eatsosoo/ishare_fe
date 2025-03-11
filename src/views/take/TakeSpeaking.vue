@@ -43,10 +43,13 @@
                     <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
                   </span>
                   <span class="ml-2">Recording...</span>
-                </div></div
-              >
+                </div>
+              </div>
               <div v-else-if="!partIndex && !questionIndex">
                 <h2>{{ t('common.test.readyForTest') }}</h2>
+              </div>
+              <div v-else-if="textButton === 'FINISH'">
+                <h2>{{ t('common.test.plsClickBtnForSubmit') }}</h2>
               </div>
             </div>
           </div>
@@ -92,7 +95,7 @@
       partIndex.value === props.value?.parts.length - 1 &&
       questionIndex.value === props.value?.parts[partIndex.value]?.question_groups.length
     ) {
-      return 'FINISHED';
+      return 'FINISH';
     } else if (
       partIndex.value !== null &&
       questionIndex.value === props.value?.parts[partIndex.value]?.question_groups.length
@@ -107,7 +110,7 @@
     START_NOW: 'Start Now',
     NEXT_PART: 'Next Part',
     NEXT_QUESTION: 'Next Question',
-    FINISHED: 'Finished',
+    FINISH: 'FINISH',
   };
 
   const { createConfirm } = useMessage();
@@ -138,7 +141,7 @@
       const time = props.value?.parts[partIndex.value].duration;
       emit('startRecording', time);
       startRecording(time);
-    } else if (actionType === 'FINISHED') {
+    } else if (actionType === 'FINISH') {
       const submitData = props.value.parts.map((part, index) => ({
         part_id: part.id,
         part_answer: final.value[index],

@@ -105,7 +105,8 @@
     "listening": "Đề thi phần LISTENING",
     "speaking": "Đề thi phần SPEAKING",
     "writing": "Đề thi phần WRITING",
-    "readyForTest": "Bạn đã sẵn sàng cho bài nghe chưa?"
+    "readyForTest": "Bạn đã sẵn sàng cho bài nghe chưa?",
+    "plsClickBtnForSubmit": "Nhấn nút 'FINISH' để nộp bài!"
   },
   "grading": {
     "text": "Chấm điểm",
