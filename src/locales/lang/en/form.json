@@ -30,6 +30,7 @@
   "sunday": "Sunday",
   "teacher": "Teacher",
   "studyDate": "Study Date",
+  "duration": "Time limit",
   "newClassForm": {
     "title": "Create Class Group Form",
     "formDesc": "",

@@ -236,7 +236,7 @@
         return Object.values(obj).some((value) => value === '');
       };
 
-      if (hasEmptyValue(studentAnswer.value)) {
+      if (hasEmptyValue(studentAnswer.value) && duration.value > 0) {
         createMessage.error(t('common.error.finishAllQuestions'));
         return;
       }

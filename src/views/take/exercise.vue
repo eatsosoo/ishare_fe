@@ -142,7 +142,10 @@
                   <template v-if="state.qIdx !== null">
                     <div v-if="exerciseItem.question_groups.length === state.qIdx">
                       <h2 class="font-bold text-3xl">IT'S THE END OF EXERCISE</h2>
-                      <p>{{ uploading ? 'Uploading...' : 'Uploaded' }}</p>
+                      <p class="font-500 text-danger">{{
+                        uploading ? 'Uploading...' : 'Uploaded'
+                      }}</p>
+                      <h3>{{ t('common.test.plsClickBtnForSubmit') }}</h3>
                     </div>
                     <div v-else-if="exerciseItem.question_groups[state.qIdx]" class="p-4">
                       <div>
@@ -180,7 +183,7 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, reactive, ref, watch } from 'vue';
+  import { computed, h, reactive, ref, watch } from 'vue';
   import { GroupQuestionItem } from '@/views/test/types/question';
   import { useRoute, useRouter } from 'vue-router';
   import { SkillType, SubmitAnswer } from '@/api/exam/examModel';
@@ -238,7 +241,7 @@
   let interval: TimeoutHandle | null = null;
 
   const { t } = useI18n();
-  const { createMessage } = useMessage();
+  const { createMessage, createConfirm } = useMessage();
   const [openFullLoading, closeFullLoading] = useLoading({
     tip: 'Loading...',
   });
@@ -286,7 +289,9 @@
       const data = result.items;
       exerciseItem.value = data;
       studentAnswer.value = generateAnswerObject(data.question_groups);
-      startCountdown(data.duration);
+      if (data.skill !== 'Speaking') {
+        startCountdown(data.duration);
+      }
     } catch (error) {
       createMessage.error(t('sys.app.dataNotFound'));
     } finally {
@@ -356,10 +361,14 @@
 
     const { skill, id, question_groups } = exerciseItem.value;
 
-    if (skill !== 'Speaking' && !passValidate) {
+    if (skill !== 'Speaking') {
       getInputValues();
 
-      if (skill !== 'Writing' && Object.values(studentAnswer.value).some((value) => value === '')) {
+      if (
+        skill !== 'Writing' &&
+        Object.values(studentAnswer.value).some((value) => value === '') &&
+        !passValidate
+      ) {
         createMessage.error(t('common.error.finishAllQuestions'));
         return;
       }
@@ -390,7 +399,7 @@
     }
   }
 
-  const startRecording = async () => {
+  const startRecording = async (time) => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       mediaRecorder.value = new MediaRecorder(stream);
@@ -410,7 +419,7 @@
       };
 
       mediaRecorder.value.start();
-      setTimeout(stopRecording, 15 * 60 * 1000); // Tự động dừng sau 15 phút
+      setTimeout(stopRecording, time * 60 * 1000); // Tự động dừng sau 15 phút
     } catch (error) {
       console.error('Error accessing microphone:', error);
     }
@@ -420,6 +429,7 @@
     if (mediaRecorder.value) {
       mediaRecorder.value.stop();
       isRecording.value = false;
+      state.qIdx = exerciseItem.value.question_groups.length;
     }
   };
 
@@ -455,13 +465,30 @@
   });
 
   const actionRecord = async (actionType: string) => {
+    if (!exerciseItem.value) return;
+
     if (actionType === 'START_NOW') {
       state.qIdx = 0;
-      startRecording();
+      const timeLimit = exerciseItem.value.duration;
+      startCountdown(timeLimit);
+      startRecording(timeLimit);
     } else if (actionType === 'FINISHED') {
       submitExercise();
     } else {
-      if (state.qIdx !== null) state.qIdx++;
+      if (state.qIdx === exerciseItem.value.question_groups.length - 1) {
+        createConfirm({
+          iconType: 'warning',
+          title: () => h('span', t('sys.app.logoutTip')),
+          content: () => h('span', t('sys.app.submitExam')),
+          onOk: async () => {
+            stopRecording();
+            stopTimer();
+            state.qIdx++;
+          },
+        });
+      } else {
+        state.qIdx++;
+      }
     }
   };
 
