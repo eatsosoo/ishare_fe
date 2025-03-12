@@ -130,7 +130,7 @@
     <!-- Editor Speaking -->
     <template v-else>
       <Tabs v-model:activeKey="activeKey" @change="handleChangeTab">
-        <TabPane v-for="(item, index) in tabs" :key="item.key" :tab="item.tab">
+        <TabPane v-for="item in tabs" :key="item.key" :tab="item.tab">
           <div class="w-25">
             <InputNumber v-model:value="sections[activeKey].duration" :max="5">
               <template #addonBefore>

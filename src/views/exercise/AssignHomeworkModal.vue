@@ -64,6 +64,7 @@
   import { getToken } from '@/utils/auth';
   import { useGlobSetting } from '@/hooks/setting';
   import { Upload } from 'ant-design-vue';
+  import { cloneDeep } from 'lodash-es';
 
   const props = defineProps({
     classList: {
@@ -89,7 +90,7 @@
 
   const loading = ref(false);
   const skill = ref<SkillType | null>(null);
-  const parts = ref<NewPartItem[]>([READING_PART_DEF]);
+  const parts = ref<NewPartItem[]>([cloneDeep(READING_PART_DEF)]);
   // audio
   const uploading = ref(false);
   const audioUrl = ref<string | null>(null);
