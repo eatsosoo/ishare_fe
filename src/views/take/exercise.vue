@@ -4,12 +4,15 @@
       class="flex justify-center items-center border-gray-200 border-b-1 border-b h-14"
       :class="isWarning ? 'blinking' : ''"
     >
+      <div class="text-primary text-4xl font-bold">
+        <Icon size="30" icon="ant-design:field-time-outlined" color="black" /> {{ timeLeft }}
+      </div>
       <div class="right-0 absolute mr-4">
         <a-button
           v-if="exerciseItem?.skill !== 'Speaking'"
           type="primary"
           preIcon="ant-design:send-outlined"
-          @click="submit"
+          @click="submitExercise"
           >Submit</a-button
         >
       </div>
@@ -177,7 +180,7 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, reactive, ref } from 'vue';
+  import { computed, reactive, ref, watch } from 'vue';
   import { GroupQuestionItem } from '@/views/test/types/question';
   import { useRoute, useRouter } from 'vue-router';
   import { SkillType, SubmitAnswer } from '@/api/exam/examModel';
@@ -193,6 +196,7 @@
   import { exerciseSubmitApi } from '@/api/exercise/exercise';
   import { SubmitExerciseParams } from '@/api/exercise/exerciseModel';
   import { uploadAudioApi } from '@/api/exam/exam';
+  import Icon from '@/components/Icon/Icon.vue';
 
   const route = useRoute();
   const router = useRouter();
@@ -227,7 +231,11 @@
   const final = ref<string[]>([]);
 
   // time left
+  // time left
+  const timeLeft = ref('');
+  const duration = ref(0);
   const isWarning = ref(false);
+  let interval: TimeoutHandle | null = null;
 
   const { t } = useI18n();
   const { createMessage } = useMessage();
@@ -276,8 +284,9 @@
       openFullLoading();
       const result = await takeExerciseStudentApi(homeworkId);
       const data = result.items;
-      exerciseItem.value = result.items;
+      exerciseItem.value = data;
       studentAnswer.value = generateAnswerObject(data.question_groups);
+      startCountdown(data.duration);
     } catch (error) {
       createMessage.error(t('sys.app.dataNotFound'));
     } finally {
@@ -342,12 +351,12 @@
     });
   };
 
-  async function submit() {
+  async function submitExercise(passValidate = false) {
     if (!exerciseItem.value) return;
 
     const { skill, id, question_groups } = exerciseItem.value;
 
-    if (skill !== 'Speaking') {
+    if (skill !== 'Speaking' && !passValidate) {
       getInputValues();
 
       if (skill !== 'Writing' && Object.values(studentAnswer.value).some((value) => value === '')) {
@@ -450,13 +459,65 @@
       state.qIdx = 0;
       startRecording();
     } else if (actionType === 'FINISHED') {
-      submit();
+      submitExercise();
     } else {
       if (state.qIdx !== null) state.qIdx++;
     }
   };
 
+  // COUNT DOWN
+  function startCountdown(time: number) {
+    duration.value = time * 60;
+    if (interval) clearInterval(interval); // Xóa interval cũ nếu có
+
+    interval = setInterval(() => {
+      if (duration.value <= 0) {
+        clearInterval(interval!);
+        return;
+      }
+      if (duration.value <= 60) {
+        isWarning.value = true;
+      }
+
+      const minutes = Math.floor(duration.value / 60);
+      const seconds = duration.value % 60;
+      timeLeft.value = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+      duration.value--;
+    }, 1000);
+  }
+
+  function stopTimer() {
+    if (interval !== null) {
+      clearInterval(interval);
+      interval = null;
+    }
+  }
+
   getExerciseDetail(state.exerciseId);
+
+  watch(
+    () => duration.value,
+    (val) => {
+      if (val <= 0) {
+        console.log(val);
+        isWarning.value = false;
+        timeLeft.value = '0:00';
+        if (exerciseItem.value?.skill !== 'Speaking') {
+          let countdown = 3;
+          const countdownInterval = setInterval(() => {
+            if (countdown > 0) {
+              createMessage.loading(`Nộp bài sau ${countdown}s`);
+              countdown--;
+            } else {
+              clearInterval(countdownInterval);
+              submitExercise(true);
+            }
+          }, 1000);
+        }
+      }
+    },
+  );
 </script>
 
 <style lang="scss">

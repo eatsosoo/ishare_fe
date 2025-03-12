@@ -280,7 +280,16 @@
         isWarning.value = false;
         timeLeft.value = '0:00';
         if (skillExam.value?.type !== 'Speaking') {
-          submitExam();
+          let countdown = 3;
+          const countdownInterval = setInterval(() => {
+            if (countdown > 0) {
+              createMessage.loading(`Nộp bài sau ${countdown}s`);
+              countdown--;
+            } else {
+              clearInterval(countdownInterval);
+              submitExam();
+            }
+          }, 1000);
         }
       }
     },

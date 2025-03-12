@@ -31,6 +31,7 @@
   "sunday": "Chủ nhật",
   "teacher": "Giáo viên",
   "studyDate": "Ngày học",
+  "duration": "Thời gian làm bài",
   "newClassForm": {
     "title": "Biểu mẫu tạo nhóm lớp",
     "formDesc": "",

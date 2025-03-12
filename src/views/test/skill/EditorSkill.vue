@@ -132,7 +132,7 @@
       <Tabs v-model:activeKey="activeKey" @change="handleChangeTab">
         <TabPane v-for="item in tabs" :key="item.key" :tab="item.tab">
           <div class="w-25">
-            <InputNumber v-model:value="sections[activeKey].duration" :max="5">
+            <InputNumber v-model:value="sections[activeKey].duration" :max="15" :min="1">
               <template #addonBefore>
                 <FieldTimeOutlined />
               </template>

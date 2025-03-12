@@ -134,8 +134,17 @@
   async function submit() {
     try {
       const [values] = await Promise.all([validate()]);
-      const { book_name, skill, homework_name, class_id, shift_id, date, assign_at, study_date } =
-        values;
+      const {
+        book_name,
+        skill,
+        homework_name,
+        class_id,
+        shift_id,
+        date,
+        assign_at,
+        study_date,
+        duration,
+      } = values;
       if (parts.value.length === 0 || parts.value[0].question_groups.length === 0) {
         createMessage.error(t('common.pleaseCreateQuestions'));
         return;
@@ -150,6 +159,7 @@
         skill,
         homework_name,
         assign_at,
+        duration,
         assignment: {
           class_id,
           shift_id,

@@ -430,6 +430,20 @@ export const assignHomeworkFormSchemas: FormSchema[] = [
       span: 12,
     },
   },
+  {
+    field: 'duration',
+    label: t('form.duration'),
+    component: 'InputNumber',
+    componentProps: {
+      max: 15,
+      min: 1,
+      defaultValue: 5,
+    },
+    required: true,
+    colProps: {
+      span: 12,
+    },
+  },
 ];
 
 export const copyHomeworkFormSchemas: FormSchema[] = [

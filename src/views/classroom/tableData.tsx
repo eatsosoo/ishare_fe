@@ -215,6 +215,12 @@ export function getExamGradingColumns(): BasicColumn[] {
     {
       title: t('table.exeName'),
       dataIndex: 'exam_title',
+      customRender: ({ record }) => {
+        if (record.assign_at === 'exam') {
+          return record.exam_title;
+        }
+        return record.book_name;
+      },
     },
     {
       title: t('table.exerciseTable.skill'),
