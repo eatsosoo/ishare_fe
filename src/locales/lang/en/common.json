@@ -90,6 +90,9 @@
   "completedGrading": "Grading completed",
   "clickToView": "Click to view",
   "noFeedbackYet": "No feedback yet",
+  "audioOfStudent": "Student's speaking test",
+  "score": "Score",
+  "feedback": "Feedback",
   "warning": {
     "addActionEdtior": "No position to insert text!",
     "deleteClass": "Are you sure you want to delete this class?"

@@ -44,7 +44,20 @@
       :score-id="scoreIdRef"
       :times="timeRef"
       :score="scoreRef"
+      :assign-at="assignAtRef"
       @register="registerDetailModal"
+      @submit-grading="handleSuccess"
+    />
+    <ExeModal
+      :title="modalTitle"
+      :skill-type="skillType"
+      :exam-id="examIdRef"
+      :student-id="studentIdRef"
+      :score-id="scoreIdRef"
+      :times="timeRef"
+      :score="scoreRef"
+      :assign-at="assignAtRef"
+      @register="registerExeModal"
       @submit-grading="handleSuccess"
     />
   </PageWrapper>
@@ -55,6 +68,7 @@
   import { useI18n } from '@/hooks/web/useI18n';
   import { Card, Tag } from 'ant-design-vue';
   import DetailModal from './DetailModal.vue';
+  import ExeModal from './ExeModal.vue';
   import { useModal } from '@/components/Modal';
   import PageWrapper from '@/components/Page/src/PageWrapper.vue';
   import BasicForm from '@/components/Form/src/BasicForm.vue';
@@ -81,7 +95,10 @@
       dataIndex: 'action',
     },
   });
-  const [registerDetailModal, { openModal: openDetailModal, closeModal }] = useModal();
+  const [registerDetailModal, { openModal: openDetailModal, closeModal: closeDetailModal }] =
+    useModal();
+  const [registerExeModal, { openModal: openExeModal, closeModal: closeExeModal }] = useModal();
+
   const [registerForm, { validate }] = useForm({
     baseColProps: {
       span: 6,
@@ -98,12 +115,15 @@
   const scoreIdRef = ref<number | undefined>(undefined);
   const timeRef = ref<number | undefined>(undefined);
   const scoreRef = ref<number | undefined>(undefined);
+  const assignAtRef = ref<string | undefined>(undefined);
 
   function clickOpen(item: ExamGradingListItem) {
-    const { exam_id, skill, name, user_id, score_id, times, score } = item;
+    const { exam_id, skill, name, user_id, score_id, times, score, assign_at } = item;
     if (!exam_id || !user_id || !score_id) {
       return;
     }
+
+    console.log(assign_at);
 
     skillType.value = skill;
     modalTitle.value = `Học sinh: ${name} - Kỹ năng: ${skill}`;
@@ -112,12 +132,19 @@
     scoreIdRef.value = score_id;
     timeRef.value = times;
     scoreRef.value = score;
-    openDetailModal();
+    assignAtRef.value = assign_at;
+
+    if (assign_at === 'exam') {
+      openDetailModal();
+    } else {
+      openExeModal();
+    }
   }
 
   function handleSuccess() {
     reload();
-    closeModal();
+    closeDetailModal();
+    closeExeModal();
   }
 
   async function findExerciseOfClass() {

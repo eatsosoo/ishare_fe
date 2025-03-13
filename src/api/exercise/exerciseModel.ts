@@ -78,6 +78,7 @@ export interface ExerciseResultItem {
   media: string | null;
   part_answer: null | string[];
   skill: SkillType;
+  subject: string;
   question_groups: GroupQuestionWithAnswer[];
 }
 

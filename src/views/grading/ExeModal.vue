@@ -11,10 +11,10 @@
       <Row :gutter="[16, 16]" class="h-full">
         <Col :span="12" class="bg-[aliceblue] border-r-2 border-gray h-full overflow-auto">
           <div class="p-4">
-            <div v-if="props.skillType !== 'Listening'" v-html="subjectRef"></div>
+            <div v-if="props.skillType !== 'Listening'" v-html="completedAssignment?.subject"></div>
             <div v-else>
               <audio
-                v-if="completedAssignment"
+                v-if="completedAssignment && completedAssignment.media"
                 :src="completedAssignment.media"
                 controls
                 class="h-8 w-full"
@@ -24,52 +24,45 @@
         </Col>
         <Col :span="12" class="border-l-2 border-gray h-full overflow-auto">
           <div class="p-4">
-            <div
-              v-for="(part, index) in completedAssignment?.parts"
-              :key="'part' + index"
-              class="mb-4"
-            >
-              <h2 class="font-bold">Part {{ index + 1 }}</h2>
-              <div class="grid grid-cols-2 gap-4">
-                <div v-for="(group, gIdx) in part.question_groups" :key="gIdx">
+            <div v-for="(group, gIdx) in completedAssignment?.question_groups" :key="gIdx">
+              <div
+                v-for="(value, key) in group.question_answer"
+                :key="key"
+                class="flex items-center mb-4"
+              >
+                <!-- Xử lý multiple_choice -->
+                <template v-if="group.question_type === 'multiple_choice'">
                   <div
-                    v-for="(value, key) in group.question_answer"
-                    :key="key"
-                    class="flex items-center mb-4"
+                    class="w-8 h-8 bg-[#c4303a] text-white font-bold flex items-center justify-center rounded-full mr-2 text-[11px]"
                   >
-                    <!-- Xử lý multiple_choice -->
-                    <template v-if="group.question_type === 'multiple_choice'">
-                      <div
-                        class="w-8 h-8 bg-[#c4303a] text-white font-bold flex items-center justify-center rounded-full mr-2 text-[11px]"
-                      >
-                        {{ key.split('_')[1] }}-{{ key.split('_').pop() }}
-                      </div>
-                    </template>
-                    <template v-else>
-                      <div
-                        class="w-8 h-8 bg-[#c4303a] text-white font-bold text-sm flex items-center justify-center rounded-full mr-2"
-                      >
-                        {{ key.split('_')[1] }}
-                      </div>
-                    </template>
-
-                    <span class="text-[#c4303a]">{{
-                      group.question_type === 'multiple_choice' ? value.join(',') : value
-                    }}</span
-                    >:
-                    {{ JSON.parse(group.student_answer)[key] }}
-
-                    <!-- So sánh đúng/sai và hiển thị icon -->
-                    <Icon
-                      :icon="
-                        compareAnswers(value, JSON.parse(group.student_answer)[key])
-                          ? 'ant-design:check-circle-outlined'
-                          : 'ant-design:close-outlined'
-                      "
-                      class="ml-4"
-                    />
+                    {{ typeof key === 'string' ? key.split('_')[1] : '' }}-{{
+                      typeof key === 'string' ? key.split('_').pop() : ''
+                    }}
                   </div>
-                </div>
+                </template>
+                <template v-else>
+                  <div
+                    class="w-8 h-8 bg-[#c4303a] text-white font-bold text-sm flex items-center justify-center rounded-full mr-2"
+                  >
+                    {{ key.split('_')[1] }}
+                  </div>
+                </template>
+
+                <span class="text-[#c4303a]">{{
+                  group.question_type === 'multiple_choice' ? value.join(',') : value
+                }}</span
+                >:
+                {{ JSON.parse(group.student_answer)[key] }}
+
+                <!-- So sánh đúng/sai và hiển thị icon -->
+                <Icon
+                  :icon="
+                    compareAnswers(value, JSON.parse(group.student_answer)[key])
+                      ? 'ant-design:check-circle-outlined'
+                      : 'ant-design:close-outlined'
+                  "
+                  class="ml-4"
+                />
               </div>
             </div>
           </div>
@@ -82,7 +75,7 @@
         <Col :span="12" class="bg-[aliceblue] border-r-2 border-gray h-full overflow-auto">
           <template v-if="props.skillType === 'Writing'">
             <div
-              v-for="(group, index) in completedAssignment.parts[0].question_groups"
+              v-for="(group, index) in completedAssignment.question_groups"
               class="p-4"
               :key="index"
             >
@@ -91,14 +84,9 @@
             </div>
           </template>
           <template v-else>
-            <Card
-              v-for="(part, index) in completedAssignment.parts"
-              class="m-2 mr-0 shadow-sm"
-              :title="`Part ${index + 1}`"
-              :key="part.id || index"
-            >
-              <div v-for="(group, index) in part.question_groups" :key="index">
-                <p class="text-primary text-md">Question {{ index + 1 }}</p>
+            <Card class="m-4">
+              <div v-for="(group, index) in completedAssignment.question_groups" :key="index">
+                <p class="text-primary text-md font-500">Question {{ index + 1 }}</p>
                 <div v-html="group.question_text"></div>
               </div>
             </Card>
@@ -109,7 +97,7 @@
         <Col :span="12" class="border-l-2 border-gray h-full overflow-auto">
           <div v-if="props.skillType === 'Writing'" class="p-4" ref="contentWord">
             <div
-              v-for="(group, index) in completedAssignment.parts[0].question_groups"
+              v-for="(group, index) in completedAssignment.question_groups"
               :key="'answer' + index"
               class="mb-4"
             >
@@ -123,24 +111,17 @@
               >{{ t('common.download') }}</a-button
             >
           </div>
-          <div v-else>
-            <Card
-              v-for="(part, index) in completedAssignment.parts"
-              class="mt-2 mb-4 shadow-sm"
-              :key="part.id || index"
-              :title="`Part ${index + 1}`"
-            >
-              <audio
-                v-if="part.part_answer"
-                :src="part.part_answer"
-                controls
-                class="h-8 w-full"
-              ></audio>
-            </Card>
-          </div>
+          <Card :title="t('common.audioOfStudent')" class="m-4" v-else>
+            <audio
+              v-if="completedAssignment.part_answer"
+              :src="completedAssignment.part_answer"
+              controls
+              class="h-8 w-full"
+            ></audio>
+          </Card>
 
           <!-- Feedback  -->
-          <Card class="shadow-md" :title="t('common.gradingAndFeedback')">
+          <Card class="m-4" :title="t('common.gradingAndFeedback')">
             <Form :model="gradingFormData">
               <FormItem
                 :label="t('common.score')"
@@ -196,18 +177,19 @@
   import { Row, Col, InputNumber, Form, FormItem, Upload, Card } from 'ant-design-vue';
   import { ref, type PropType, watch } from 'vue';
   import { useI18n } from '@/hooks/web/useI18n';
-  import { SkillType, ResponseExamPartItem } from '@/api/exam/examModel';
-  import { getDetailExamOfStudent } from '@/api/student/student';
+  import { SkillType } from '@/api/exam/examModel';
+  import { getResExercise } from '@/api/student/student';
   import { useMessage } from '@/hooks/web/useMessage';
   import { useDesign } from '@/hooks/web/useDesign';
   import { GradingForm } from '@/api/teacher/teacherModel';
-  import { submitGradingApi } from '@/api/teacher/teacher';
+  import { submitGradingHomeworkApi } from '@/api/teacher/teacher';
   import Icon from '@/components/Icon/Icon.vue';
   import { isArray } from 'lodash-es';
   import { saveAs } from 'file-saver';
   import { getToken } from '@/utils/auth';
   import { uploadAudioApi } from '@/api/exam/exam';
   import { openWindow } from '@/utils';
+  import { ExerciseResultItem } from '@/api/exercise/exerciseModel';
 
   const props = defineProps({
     skillType: {
@@ -247,9 +229,7 @@
     feedback: '',
   });
   const loading = ref(false);
-  const completedAssignment = ref<ResponseExamPartItem | null>(null);
-  const tabActive = ref(0);
-  const subjectRef = ref('');
+  const completedAssignment = ref<ExerciseResultItem | null>(null);
   const contentWord = ref<HTMLDivElement | null>(null);
 
   // uploadfile
@@ -263,19 +243,13 @@
   const { createMessage, createSuccessModal, createErrorModal } = useMessage();
   const { prefixCls } = useDesign('register');
 
-  function clickTab(index: number) {
-    if (!completedAssignment.value) return;
-    const { subject } = completedAssignment.value.parts[index];
-    subjectRef.value = subject;
-    tabActive.value = index;
-  }
-
   async function submitAll() {
     try {
       const { examId, studentId, scoreId, times, skillType } = props;
       if (!examId || !studentId || !scoreId) return;
+
       loading.value = true;
-      const answerW = completedAssignment.value?.parts[0].question_groups.map((group) => {
+      const answerW = completedAssignment.value?.question_groups.map((group) => {
         return {
           id: group.id,
           is_correct: true,
@@ -293,7 +267,7 @@
         score: gradingFormData.value.score,
       };
 
-      const result = await submitGradingApi(submitForm);
+      const result = await submitGradingHomeworkApi(submitForm);
       if (result) {
         createSuccessModal({
           title: t('form.exam.editSkill', { skill: 'Reading' }),
@@ -315,13 +289,13 @@
     }
   }
 
-  async function getExamOfStudent(studentId: number, examId: number, type: SkillType) {
+  async function getExamOfStudent(studentId: number, examId: number) {
     try {
       loading.value = true;
-      const result = await getDetailExamOfStudent(studentId, examId, type);
+      const result = await getResExercise(studentId, examId);
       if (result && result.items) {
         completedAssignment.value = result.items;
-        const explanation = completedAssignment.value.parts[0].question_groups[0].explanation;
+        const explanation = completedAssignment.value.question_groups[0].explanation;
         gradingFormData.value = {
           score: props.score && props.score > 0 ? props.score : 0,
           feedback: explanation || '',
@@ -374,17 +348,10 @@
     () => [props.examId, props.studentId, props.scoreId],
     ([newExamId, newStudentId, newScoreId]) => {
       if (newExamId && newStudentId && newScoreId) {
-        if (props.assignAt === 'exam') {
-          getExamOfStudent(newStudentId, newExamId, props.skillType);
+        if (props.assignAt !== 'exam') {
+          getExamOfStudent(newStudentId, newExamId);
         }
       }
-    },
-  );
-
-  watch(
-    () => completedAssignment.value,
-    () => {
-      clickTab(0);
     },
   );
 

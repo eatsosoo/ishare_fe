@@ -90,6 +90,9 @@
   "completedGrading": "Hoàn tất chấm điểm",
   "clickToView": "Nhấn vào để xem",
   "noFeedbackYet": "Chưa có nhận xét",
+  "audioOfStudent": "Bài nói của học sinh",
+  "score": "Điểm",
+  "feedback": "Nhận xét",
   "warning": {
     "addActionEdtior": "Chưa có vị trí để chèn text!",
     "deleteClass": "Bạn có chắc chắn muốn xoá lớp học này?"
