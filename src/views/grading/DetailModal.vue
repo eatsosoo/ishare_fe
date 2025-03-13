@@ -264,6 +264,8 @@
 
   async function submitAll() {
     try {
+      const { examId, studentId, scoreId, times, skillType } = props;
+      if (!examId || !studentId || !scoreId) return;
       loading.value = true;
       const answerW = completedAssignment.value?.parts[0].question_groups.map((group) => {
         return {
@@ -274,11 +276,11 @@
         };
       });
       const submitForm: GradingForm = {
-        exam_id: props.examId,
-        user_id: props.studentId,
-        score_id: props.scoreId,
-        times: props.times,
-        type: props.skillType,
+        exam_id: examId,
+        user_id: studentId,
+        score_id: scoreId,
+        times: times ?? 1,
+        type: skillType,
         answers: answerW,
         score: gradingFormData.value.score,
       };
@@ -352,7 +354,7 @@
     const htmlContent = `
     <html>
       <head><meta charset="UTF-8"></head>
-      <body>${contentWord.value.innerHTML}</body>
+      <body>${contentWord.value?.innerHTML}</body>
     </html>
   `;
 

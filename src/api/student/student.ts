@@ -8,6 +8,7 @@ import { BasicPageParams, ResultBase } from '../model/baseModel';
 import { ExamPartItem, ResponseExamPartItem, SkillType } from '../exam/examModel';
 import { ErrorMessageMode } from '#/axios';
 import { useUserStore } from '@/store/modules/user';
+import { ExerciseResultItem } from '../exercise/exerciseModel';
 
 enum Api {
   STUDENT_LIST = '/students',
@@ -65,14 +66,26 @@ export const getExamCapacityApi = () => (params: BasicPageParams) =>
     },
   });
 
-export const getDetailExamOfStudent = (studentId: number, examId: number, type: SkillType) =>
-  defHttp.get<ResultBase<ResponseExamPartItem>>({
-    url: `${Api.STUDENT_LIST}/${studentId}/skill/${examId}?type=${type}`,
+export const getDetailExamOfStudent = (studentId: number, examId: number, type: SkillType) => {
+  const url = `${Api.STUDENT_LIST}/${studentId}/skill/${examId}?type=${type}`;
+  return defHttp.get<ResultBase<ResponseExamPartItem>>({
+    url,
     headers: {
       // @ts-ignore
       ignoreCancelToken: true,
     },
   });
+};
+
+export const getResExercise = (studentId: number, examId: number) => {
+  return defHttp.get<ResultBase<ExerciseResultItem>>({
+    url: `${Api.STUDENT_LIST}/${studentId}/homework/${examId}`,
+    headers: {
+      // @ts-ignore
+      ignoreCancelToken: true,
+    },
+  });
+};
 
 export const importExcelApi = (formData: FormData, mode: ErrorMessageMode = 'modal') =>
   defHttp.post<ResultBase<string>>(

@@ -1,4 +1,4 @@
-import { NewPartItem, QuestionItem, SkillItem } from '@/views/test/types/question';
+import { NewPartItem, QuestionItem, ResPartItem, SkillItem } from '@/views/test/types/question';
 import { BasicApiResult, BasicFetchResult } from '../model/baseModel';
 
 export interface ExamListItem {
@@ -43,7 +43,7 @@ export interface ResponseExamPartItem {
   type: SkillType;
   duration: number;
   media: string | null;
-  parts: NewPartItem[];
+  parts: ResPartItem[];
 }
 
 export interface ExtendedQuestionItem extends QuestionItem {
@@ -78,12 +78,13 @@ export interface ExamGradingListItem {
   exam_id: number;
   exam_title: string;
   status: string;
-  score: string;
+  score: number;
   skill: SkillType;
   completed_at: string;
   score_id: number;
   times: number;
   deadline: string;
+  assign_at: string;
 }
 
 /**

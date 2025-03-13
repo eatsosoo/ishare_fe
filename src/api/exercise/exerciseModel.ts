@@ -1,4 +1,4 @@
-import { GroupQuestionItem } from '@/views/test/types/question';
+import { GroupQuestionItem, GroupQuestionWithAnswer } from '@/views/test/types/question';
 import { SkillType, SubmitAnswer } from '../exam/examModel';
 import { BasicFetchResult } from '../model/baseModel';
 
@@ -66,6 +66,19 @@ export interface ScoreExercise {
   score: number;
   result: string;
   type: SkillType;
+}
+
+export interface ExerciseResultItem {
+  id: number;
+  assign_at: string;
+  book_name: string;
+  deadline: string;
+  duration: number;
+  homework_name: string;
+  media: string | null;
+  part_answer: null | string[];
+  skill: SkillType;
+  question_groups: GroupQuestionWithAnswer[];
 }
 
 /**

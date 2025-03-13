@@ -78,11 +78,24 @@ export interface GroupQuestionItem {
   question_count: number;
 }
 
+export interface GroupQuestionWithAnswer extends GroupQuestionItem {
+  student_answer: string; // json
+  explanation: string | null;
+}
+
 export interface NewPartItem {
   id: number | null;
   subject: string;
   duration: number;
   question_groups: GroupQuestionItem[];
+}
+
+export interface ResPartItem {
+  id: number | null;
+  subject: string;
+  duration: number;
+  question_groups: GroupQuestionWithAnswer[];
+  part_answer: any;
 }
 
 export interface SkillItem {

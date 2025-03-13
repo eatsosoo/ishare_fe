@@ -39,7 +39,9 @@ export interface GradingForm {
   times: number;
   type: SkillType;
   score: number;
-  answers: [{ question_id: number; is_correct: true; explanation: string | null }];
+  answers: [
+    { question_id: number; is_correct: true; explanation: string | null; question_count: number },
+  ];
 }
 
 /**
