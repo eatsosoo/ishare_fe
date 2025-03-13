@@ -81,13 +81,19 @@
       <!-- <a-button @click="emit('delete')">Delete Group</a-button> -->
       <a-button @click="activatePreviewPopup">{{ t('common.preview') }}</a-button>
       <a-button type="primary" @click="saveQuestion">{{ t('common.saveQuestion') }}</a-button>
+      <a-button
+        type="dashed"
+        preIcon="ant-design:delete-twotone"
+        class="bg-orange"
+        @click="deleteQuestion"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
   import { Tinymce } from '@/components/Tinymce';
-  import { reactive, ref, watch } from 'vue';
+  import { h, reactive, ref, watch } from 'vue';
   import AnswerInput from '@/views/test/form-question/AnswerInput.vue';
   import PreviewText from '@/views/test/form-question/PreviewText.vue';
   import Options from '@/views/test/form-question/Options.vue';
@@ -103,6 +109,7 @@
   import { InputNumber, Select } from 'ant-design-vue';
   import { renderGroupQuestions } from '@/views/take/helpers';
   import { useI18n } from '@/hooks/web/useI18n';
+  import { deleteGroupQuestion } from '@/api/exercise/exercise';
   // import MultipleChoice from '@/views/test/form-question/MultipleChoice.vue';
 
   interface FormData {
@@ -124,7 +131,7 @@
   const { t } = useI18n();
   const [registerOptionsModal, { openModal: openOptionsModal, closeModal }] = useModal();
   const [registerPreviewModal, { openModal: openPreviewModal }] = useModal();
-  const { createMessage } = useMessage();
+  const { createMessage, createConfirm } = useMessage();
 
   const previewText = ref<string>('');
   const changeData: FormData = reactive({
@@ -185,6 +192,32 @@
   function handleChangeType(type: any) {
     changeData.answerOptions = handleAnswerOptions(type, props.group.question_no);
     changeData.answers = handleAnswersInit(props.group.question_no);
+  }
+
+  function deleteQuestion() {
+    if (!props.group.id) {
+      emit('delete');
+      return;
+    }
+
+    const data = {
+      questions: [
+        {
+          id: props.group.id,
+        },
+      ],
+    };
+    createConfirm({
+      iconType: 'warning',
+      title: () => h('span', t('sys.app.logoutTip')),
+      content: () => h('span', t('common.warning.deleteQuestion')),
+      onOk: async () => {
+        const res = await deleteGroupQuestion(data);
+        if (res && res.items) {
+          emit('delete');
+        }
+      },
+    });
   }
 
   const saveQuestion = () => {

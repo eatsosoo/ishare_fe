@@ -20,7 +20,11 @@
             <Col :span="skillType === 'Reading' ? 12 : 24" class="flex">
               <div class="re-box-shadow rounded-lg pa-4 w-full">
                 <template v-if="groupActive">
-                  <GroupQuestions :group="groupActive" @update-group="handleUpdateGroup" />
+                  <GroupQuestions
+                    :group="groupActive"
+                    @update-group="handleUpdateGroup"
+                    @delete="removeGroup"
+                  />
                 </template>
                 <template v-else>
                   <div class="flex flex-col items-center justify-center h-full min-h-30">
@@ -445,6 +449,25 @@
 
     emit('update-parts', sections.value);
     createMessage.success('Lưu tạm thời');
+  }
+
+  function removeGroup() {
+    if (!groupActive.value) return;
+
+    const part = sections.value[activeKey.value];
+    if (!part || !part.question_groups) return;
+
+    part.question_groups = part.question_groups.filter(
+      (item) => item.group_no !== groupActive.value?.group_no,
+    );
+
+    sections.value[activeKey.value] = { ...part };
+
+    groupActive.value = null;
+
+    emit('update-parts', sections.value);
+
+    createMessage.success('Đã xoá');
   }
 
   watch(
