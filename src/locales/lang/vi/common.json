@@ -94,8 +94,9 @@
   "score": "Điểm",
   "feedback": "Nhận xét",
   "warning": {
-    "addActionEdtior": "Chưa có vị trí để chèn text!",
-    "deleteClass": "Bạn có chắc chắn muốn xoá lớp học này?"
+    "addActionEditor": "Chưa có vị trí để chèn text!",
+    "deleteClass": "Bạn có chắc chắn muốn xoá lớp học này không?",
+    "deleteExercise": "Bạn có chắc chắn muốn xoá bài tập này không?"
   },
   "error": {
     "finishAllQuestions": "Hãy hoàn thành hết các câu hỏi trước khi nộp bài",

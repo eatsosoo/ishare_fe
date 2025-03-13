@@ -17,8 +17,14 @@
           <Icon
             icon="ant-design:copy-outlined"
             :size="18"
-            class="cursor-pointer hover:border-red border-1 border-gray-200 p-1 rounded-md"
+            class="cursor-pointer hover:border-red border-1 border-gray-200 p-1 rounded-md mr-1"
             @click="activateModal('copy', record.id)"
+          />
+          <Icon
+            icon="ant-design:delete-outlined"
+            :size="18"
+            class="cursor-pointer hover:border-red border-1 border-gray-200 p-1 rounded-md"
+            @click="deleteItem(record.root_id)"
           />
         </template>
       </template>
@@ -45,10 +51,12 @@
   import { useModal } from '@/components/Modal';
   import AssignHomeworkModal from './AssignHomeworkModal.vue';
   import { classOptionsApi } from '@/api/class/class';
-  import { ref } from 'vue';
+  import { h, ref } from 'vue';
   import { ClassListItem } from '@/api/class/classModel';
   import Icon from '@/components/Icon/Icon.vue';
   import CopyHomeworkModal from './CopyHomeworkModal.vue';
+  import { deleteExercise } from '@/api/exercise/exercise';
+  import { useMessage } from '@/hooks/web/useMessage';
 
   const { t } = useI18n();
   const [registerTable, { reload }] = useTable({
@@ -69,6 +77,7 @@
   });
   const [registerAssignModal, { openModal: openModal, closeModal }] = useModal();
   const [registerCopyModal, { openModal: openCopyModal, closeModal: closeCopyModal }] = useModal();
+  const { createConfirm } = useMessage();
 
   const classOptions = ref<ClassListItem[]>([]);
   const homeworkId = ref<number | null>(null);
@@ -91,6 +100,20 @@
     } else {
       openCopyModal();
     }
+  }
+
+  function deleteItem(id: number) {
+    createConfirm({
+      iconType: 'warning',
+      title: () => h('span', t('sys.app.logoutTip')),
+      content: () => h('span', t('common.warning.deleteExercise')),
+      onOk: async () => {
+        const res = await deleteExercise(id);
+        if (res && res.items) {
+          reload();
+        }
+      },
+    });
   }
 
   async function fetchClasses() {

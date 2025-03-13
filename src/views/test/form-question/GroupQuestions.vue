@@ -143,7 +143,7 @@
     if (insertTextFunction.value) {
       insertTextFunction.value(text);
     } else {
-      createMessage.warning(t('common.warning.addActionEdtior'));
+      createMessage.warning(t('common.warning.addActionEditor'));
     }
   };
 

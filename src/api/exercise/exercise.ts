@@ -85,6 +85,16 @@ export const copyExercise = (params: CopyExerciseParams, mode: ErrorMessageMode 
     },
   );
 
+export const deleteExercise = (id: number, mode: ErrorMessageMode = 'modal') =>
+  defHttp.delete<ResultBase<Boolean>>(
+    {
+      url: `${Api.ASSIGN_EXE}/${id}`,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+
 export const exerciseSubmitApi = (
   homeworkId: number,
   params: SubmitExerciseParams,
