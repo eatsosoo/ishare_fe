@@ -91,17 +91,17 @@
             </div>
           </template>
           <template v-else>
-            <div
+            <Card
               v-for="(part, index) in completedAssignment.parts"
-              class="p-4"
+              class="m-2 mr-0 shadow-sm"
+              :title="`Part ${index + 1}`"
               :key="part.id || index"
             >
-              <h1>Part {{ index + 1 }}</h1>
-              <div v-for="(group, index) in part.question_groups" class="pl-10" :key="index">
-                <h2 class="text-primary">Question {{ index + 1 }}</h2>
+              <div v-for="(group, index) in part.question_groups" :key="index">
+                <p class="text-primary text-md">Question {{ index + 1 }}</p>
                 <div v-html="group.question_text"></div>
               </div>
-            </div>
+            </Card>
           </template>
         </Col>
 
@@ -111,8 +111,9 @@
             <div
               v-for="(group, index) in completedAssignment.parts[0].question_groups"
               :key="'answer' + index"
+              class="mb-4"
             >
-              <h1>Task {{ index + 1 }}</h1>
+              <h2>Task {{ index + 1 }}</h2>
               <div v-html="Object.values(JSON.parse(group.student_answer))[0]"></div>
             </div>
             <a-button
@@ -123,24 +124,23 @@
             >
           </div>
           <div v-else>
-            <div
+            <Card
               v-for="(part, index) in completedAssignment.parts"
-              class="p-4"
+              class="mt-2 mb-4 shadow-sm"
               :key="part.id || index"
+              :title="`Part ${index + 1}`"
             >
-              <h1>Part {{ index + 1 }}</h1>
               <audio
                 v-if="part.part_answer"
                 :src="part.part_answer"
                 controls
                 class="h-8 w-full"
               ></audio>
-            </div>
+            </Card>
           </div>
 
           <!-- Feedback  -->
-          <div class="m-4">
-            <h3>{{ t('common.gradingAndFeedback') }}</h3>
+          <Card class="shadow-md" :title="t('common.gradingAndFeedback')">
             <Form :model="gradingFormData">
               <FormItem label="Điểm" name="score" :label-col="{ span: 3 }" label-align="left">
                 <InputNumber v-model:value="gradingFormData.score" :min="0" :max="10" required />
@@ -173,13 +173,13 @@
                 >
                   {{ t('common.clickToView') }}
                 </a-button>
-                <span v-else>{{ t('common.noFeedbackYet') }}</span>
+                <span v-else class="ml-2">{{ t('common.noFeedbackYet') }}</span>
               </FormItem>
               <div class="flex justify-end">
                 <a-button type="primary" @click="submitAll">{{ t('common.confirm') }}</a-button>
               </div>
             </Form>
-          </div>
+          </Card>
         </Col>
       </Row>
     </template>
@@ -188,7 +188,7 @@
 
 <script lang="ts" setup>
   import { BasicModal } from '@/components/Modal';
-  import { Row, Col, InputNumber, Form, FormItem, Upload } from 'ant-design-vue';
+  import { Row, Col, InputNumber, Form, FormItem, Upload, Card } from 'ant-design-vue';
   import { ref, type PropType, watch } from 'vue';
   import { useI18n } from '@/hooks/web/useI18n';
   import { SkillType, ResponseExamPartItem } from '@/api/exam/examModel';
