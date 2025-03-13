@@ -435,8 +435,8 @@ export const assignHomeworkFormSchemas: FormSchema[] = [
     label: t('form.duration'),
     component: 'InputNumber',
     componentProps: {
-      max: 15,
-      min: 1,
+      max: 60,
+      min: 15,
       defaultValue: 5,
     },
     required: true,
