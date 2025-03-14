@@ -18,7 +18,7 @@
             icon="ant-design:copy-outlined"
             :size="18"
             class="cursor-pointer hover:border-red border-1 border-gray-200 p-1 rounded-md mr-1"
-            @click="activateModal('copy', record.id)"
+            @click="activateModal('copy', record.root_id)"
           />
           <Icon
             icon="ant-design:delete-outlined"

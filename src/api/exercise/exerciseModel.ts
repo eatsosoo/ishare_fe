@@ -49,7 +49,7 @@ export interface CopyExerciseParams {
   homework_name: string;
   subject: string;
   deadline: string;
-  assignment: {
+  assignments: {
     class_id: number;
     shift_id: number;
     study_date: string;
