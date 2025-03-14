@@ -77,7 +77,7 @@ export const assignExercise = (params: AssignExerciseParams, mode: ErrorMessageM
 export const copyExercise = (params: CopyExerciseParams, mode: ErrorMessageMode = 'none') =>
   defHttp.post<ResultBase<CopyExerciseParams>>(
     {
-      url: `${Api.ASSIGN_EXE}/copy`,
+      url: `${Api.ASSIGN_EXE}/clone/new`,
       params,
     },
     {
