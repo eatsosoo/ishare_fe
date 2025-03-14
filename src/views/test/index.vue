@@ -1,5 +1,8 @@
 <template>
-  <div>
+  <PageWrapper
+    :title="t('routes.page.testIndexTitle')"
+    :content="t('routes.page.testIndexContent')"
+  >
     <BasicTable @register="registerTable">
       <template #toolbar>
         <a-button type="dashed" @click="openAddModal">{{
@@ -26,7 +29,7 @@
 
     <CreateExamModal @register="registerAddModal" @success="handleSuccessModal" />
     <EditorExamModal @register="registerEditorModal" :exam-id="examId" :title="titleEditor" />
-  </div>
+  </PageWrapper>
 </template>
 <script lang="ts" setup>
   import { BasicTable, useTable } from '@/components/Table';
@@ -39,6 +42,7 @@
   import { ref } from 'vue';
   import { ExamListItem } from '@/api/exam/examModel';
   import Icon from '@/components/Icon/Icon.vue';
+  import PageWrapper from '@/components/Page/src/PageWrapper.vue';
 
   const { t } = useI18n();
   const [registerTable, { reload }] = useTable({

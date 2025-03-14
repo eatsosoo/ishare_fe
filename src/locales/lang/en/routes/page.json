@@ -20,5 +20,7 @@
   "homeworkList": "Homework List",
   "assignTest": "Assign Test",
   "assignmentList": "Assignment List",
-  "takeAttendance": "Take Attendance"
+  "takeAttendance": "Take Attendance",
+  "testIndexTitle": "Exam creation and editing",
+  "testIndexContent": "Note: When deleting a question from any skill, make sure to save the changes to update the question order."
 }

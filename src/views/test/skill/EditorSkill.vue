@@ -448,7 +448,7 @@
     }
 
     emit('update-parts', sections.value);
-    createMessage.success('Lưu tạm thời');
+    createMessage.success(t('common.saveTemp'));
   }
 
   function removeGroup() {
@@ -464,10 +464,10 @@
     sections.value[activeKey.value] = { ...part };
 
     groupActive.value = null;
-
+    sections.value = updateQuestionNumbers([...sections.value]);
     emit('update-parts', sections.value);
 
-    createMessage.success('Đã xoá');
+    createMessage.success(t('common.deleteSuccessfully'));
   }
 
   watch(
