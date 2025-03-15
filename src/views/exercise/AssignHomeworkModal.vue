@@ -37,6 +37,7 @@
             :value="parts"
             :max="1"
             :allow-add-part="false"
+            :show-duration="false"
             @update-parts="handleUpdateParts"
           />
         </template>
@@ -46,7 +47,7 @@
 </template>
 <script lang="ts" setup>
   import { BasicModal } from '@/components/Modal';
-  import { ref, watch } from 'vue';
+  import { h, ref, watch } from 'vue';
   import { useMessage } from '@/hooks/web/useMessage';
   import { useI18n } from '@/hooks/web/useI18n';
   import { SkillType } from '@/api/exam/examModel';
@@ -76,7 +77,7 @@
   const emit = defineEmits(['success']);
 
   const { t } = useI18n();
-  const [registerForm, { validate, resetFields, updateSchema }] = useForm({
+  const [registerForm, { validate, resetFields, updateSchema, setFieldsValue }] = useForm({
     labelWidth: 120,
     schemas: assignHomeworkFormSchemas,
     showActionButtonGroup: false,
@@ -84,7 +85,7 @@
       span: 24,
     },
   });
-  const { createMessage, createErrorModal, createSuccessModal } = useMessage();
+  const { createMessage, createConfirm, createErrorModal, createSuccessModal } = useMessage();
   const prefixCls = useDesign('assign-homework');
   const { uploadUrl } = useGlobSetting();
 
@@ -101,7 +102,22 @@
 
   async function handleFormChange(key, value) {
     if (key === 'skill') {
-      skill.value = value;
+      if (!skill.value) {
+        skill.value = value;
+        return;
+      }
+      createConfirm({
+        iconType: 'warning',
+        title: () => h('span', t('sys.app.logoutTip')),
+        content: () => h('span', t('common.warning.changeSkill')),
+        onOk: () => {
+          skill.value = value;
+          parts.value = [cloneDeep(READING_PART_DEF)];
+        },
+        onCancel: () => {
+          setFieldsValue({ skill: skill.value });
+        },
+      });
     } else if (key === 'class_id') {
       const shifts = value
         ? props.classList.find((cls: ClassListItem) => cls.id === value)?.shifts || []

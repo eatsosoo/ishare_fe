@@ -135,7 +135,7 @@
     <template v-else>
       <Tabs v-model:activeKey="activeKey" @change="handleChangeTab">
         <TabPane v-for="item in tabs" :key="item.key" :tab="item.tab">
-          <div class="w-25">
+          <div v-if="props.showDuration" class="w-25">
             <InputNumber v-model:value="sections[activeKey].duration" :max="60" :min="1">
               <template #addonBefore>
                 <FieldTimeOutlined />
@@ -254,6 +254,10 @@
     skillType: {
       type: String as PropType<SkillType>,
       default: 'Reading',
+    },
+    showDuration: {
+      type: Boolean,
+      default: true,
     },
   });
 

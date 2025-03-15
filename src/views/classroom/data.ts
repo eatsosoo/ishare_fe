@@ -437,7 +437,7 @@ export const assignHomeworkFormSchemas: FormSchema[] = [
     componentProps: {
       max: 60,
       min: 15,
-      defaultValue: 5,
+      defaultValue: 15,
     },
     required: true,
     colProps: {
