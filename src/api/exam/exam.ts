@@ -9,7 +9,7 @@ import {
   ExamSkillForm,
   SubmitExam,
 } from './examModel';
-import { BasicApiResult, BasicPageParams, Result } from '../model/baseModel';
+import { BasicApiResult, BasicPageParams, ResultBase } from '../model/baseModel';
 import { ErrorMessageMode } from '#/axios';
 import { useUserStore } from '@/store/modules/user';
 import { SkillItem } from '@/views/test/types/question';
@@ -57,7 +57,7 @@ export const examSkillApi = (
   params: ExamSkillForm,
   mode: ErrorMessageMode = 'none',
 ) =>
-  defHttp.post<Result<SkillItem>>(
+  defHttp.post<ResultBase<SkillItem>>(
     {
       url: `${Api.EXAM_SKILL}/${examId}`,
       params,
@@ -81,7 +81,7 @@ export const examSubmitApi = (
   params: SubmitExam,
   mode: ErrorMessageMode = 'modal',
 ) =>
-  defHttp.post<Result<ExamPartItem>>(
+  defHttp.post<ResultBase<ExamPartItem>>(
     {
       url: `${Api.EXAM_LIST}/${examId}/submit`,
       params,
@@ -92,7 +92,7 @@ export const examSubmitApi = (
   );
 
 export const uploadAudioApi = (formData: FormData, mode: ErrorMessageMode = 'modal') =>
-  defHttp.post<Result<string>>(
+  defHttp.post<ResultBase<string>>(
     {
       url: '/files/upload',
       data: formData,

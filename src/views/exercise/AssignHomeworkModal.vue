@@ -38,6 +38,7 @@
             :max="1"
             :allow-add-part="false"
             :show-duration="false"
+            :mode="'exercise'"
             @update-parts="handleUpdateParts"
           />
         </template>
@@ -102,6 +103,15 @@
 
   async function handleFormChange(key, value) {
     if (key === 'skill') {
+      updateSchema([
+        {
+          field: 'duration',
+          componentProps: {
+            disabled: value === 'Speaking',
+          },
+        },
+      ]);
+
       if (!skill.value) {
         skill.value = value;
         return;
@@ -145,6 +155,12 @@
 
   function handleUpdateParts(partsUpdated: NewPartItem[]) {
     parts.value = partsUpdated;
+    const totalDuration = partsUpdated[0].question_groups.reduce((total, item) => {
+      return total + item.question_duration;
+    }, 0);
+    setFieldsValue({
+      duration: totalDuration,
+    });
   }
 
   async function submit() {

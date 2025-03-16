@@ -76,6 +76,7 @@ export interface GroupQuestionItem {
   question_options: OptionAnswerType[] | ExtendOptionAnswerType;
   question_no: number[];
   question_count: number;
+  question_duration: number;
 }
 
 export interface GroupQuestionWithAnswer extends GroupQuestionItem {

@@ -82,14 +82,14 @@
         <Row :gutter="[16, 16]" class="h-[88vh] w-[100vw] border-t-1 border-gray-200">
           <Col :span="12" class="bg-[aliceblue] border-r-2 border-gray h-full overflow-auto">
             <div class="p-6">
-              <h2 class="text-primary">Writing Task {{ state.tabActive + 1 }}</h2>
-              <div v-html="exerciseItem.question_groups[state.tabActive].question_text"></div>
+              <h2 class="text-primary">Writing Task {{ state.tabWriting + 1 }}</h2>
+              <div v-html="exerciseItem.question_groups[state.tabWriting].question_text"></div>
             </div>
           </Col>
           <Col :span="12" class="border-gray border-l-2 h-full overflow-auto py-6">
             <div class="mx-4">
               <InputTextArea
-                v-model:value="studentAnswer[`question_${state.tabActive + 1}`]"
+                v-model:value="studentAnswer[`question_${state.tabWriting + 1}`]"
                 :rows="25"
                 @paste.prevent
                 placeholder="Type your essay here..."
@@ -105,9 +105,9 @@
             <div
               v-for="(_, index) in exerciseItem.question_groups"
               :key="index"
-              @click="state.tabActive = index"
+              @click="state.tabWriting = index"
               :class="
-                state.tabActive === index
+                state.tabWriting === index
                   ? 'flex-1 border-[#e8202a]'
                   : 'flex-1 cursor-pointer border-gray'
               "
@@ -197,7 +197,7 @@
   import { Col, Input, Row } from 'ant-design-vue';
   import { renderGroupQuestions } from './helpers';
   import { exerciseSubmitApi } from '@/api/exercise/exercise';
-  import { SubmitExerciseParams } from '@/api/exercise/exerciseModel';
+  import { SpeakingExeAnswer, SubmitExerciseParams } from '@/api/exercise/exerciseModel';
   import { uploadAudioApi } from '@/api/exam/exam';
   import Icon from '@/components/Icon/Icon.vue';
 
@@ -217,7 +217,7 @@
     exerciseId: toNumber(route.query.id),
     type: route.query.type as SkillType,
     loading: false,
-    tabActive: 0,
+    tabWriting: 0,
     qIdx: null as number | null,
   });
   const exerciseItem = ref<TakeExerciseStudentItem | null>(null);
@@ -234,11 +234,11 @@
   const final = ref<string[]>([]);
 
   // time left
-  // time left
   const timeLeft = ref('');
   const duration = ref(0);
   const isWarning = ref(false);
   let interval: TimeoutHandle | null = null;
+  const questionDuration = ref(0);
 
   const { t } = useI18n();
   const { createMessage, createConfirm } = useMessage();
@@ -247,7 +247,7 @@
   });
 
   const wordCount = computed(() => {
-    const text = studentAnswer.value[`question_${state.tabActive + 1}`];
+    const text = studentAnswer.value[`question_${state.tabWriting + 1}`];
     if (!isString(text)) return 0;
     return text
       .trim()
@@ -278,7 +278,7 @@
         });
       }
     });
-    console.log(answerObject);
+    // console.log(answerObject);
     return answerObject;
   }
 
@@ -374,7 +374,7 @@
       }
     }
 
-    const finalAnswers: SubmitAnswer[] =
+    const finalAnswers: SubmitAnswer[] | SpeakingExeAnswer[] =
       skill === 'Speaking'
         ? [{ part_id: null, part_answer: final.value[0] }]
         : mapAnswersToParts(question_groups, studentAnswer.value);
@@ -419,7 +419,7 @@
       };
 
       mediaRecorder.value.start();
-      setTimeout(stopRecording, time * 60 * 1000); // Tự động dừng sau 15 phút
+      setTimeout(stopRecording, time * 60 * 1000 + 1000); // Tự động dừng sau 15 phút
     } catch (error) {
       console.error('Error accessing microphone:', error);
     }
@@ -470,7 +470,8 @@
     if (actionType === 'START_NOW') {
       state.qIdx = 0;
       const timeLimit = exerciseItem.value.duration;
-      startCountdown(timeLimit);
+      const questionDuration = exerciseItem.value.question_groups[state.qIdx].question_duration;
+      startCountdown(questionDuration);
       startRecording(timeLimit);
     } else if (actionType === 'FINISHED') {
       submitExercise();
@@ -488,6 +489,13 @@
         });
       } else {
         state.qIdx++;
+        if (
+          exerciseItem.value?.skill === 'Speaking' &&
+          exerciseItem.value.question_groups[state.qIdx]
+        ) {
+          const questionDuration = exerciseItem.value.question_groups[state.qIdx].question_duration;
+          startCountdown(questionDuration);
+        }
       }
     }
   };
@@ -500,6 +508,9 @@
     interval = setInterval(() => {
       if (duration.value <= 0) {
         clearInterval(interval!);
+        if (exerciseItem.value?.skill === 'Speaking') {
+          actionRecord('NEXT_QUESTION');
+        }
         return;
       }
       if (duration.value <= 60) {
@@ -526,10 +537,11 @@
   watch(
     () => duration.value,
     (val) => {
+      console.log(val);
       if (val <= 0) {
         console.log(val);
         isWarning.value = false;
-        timeLeft.value = '0:00';
+        // timeLeft.value = '0:00';
         if (exerciseItem.value?.skill !== 'Speaking') {
           let countdown = 3;
           const countdownInterval = setInterval(() => {
