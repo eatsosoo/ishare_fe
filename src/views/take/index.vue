@@ -275,7 +275,7 @@
   watch(
     () => duration.value,
     (val) => {
-      if (val <= 0) {
+      if (val < 0) {
         console.log(val);
         isWarning.value = false;
         timeLeft.value = '0:00';

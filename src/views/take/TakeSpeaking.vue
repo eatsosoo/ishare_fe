@@ -118,7 +118,6 @@
 
   const actionRecord = (actionType: string) => {
     if (actionType === 'START_NOW') {
-      // startRecording();
       partIndex.value = 0;
       questionIndex.value = 0;
       questionCurrent.value =
@@ -188,7 +187,7 @@
       };
 
       mediaRecorder.value.start();
-      setTimeout(stopRecording, time * 60 * 1000); // Tự động dừng sau 15 phút
+      setTimeout(stopRecording, time * 60 * 1000 + 1000); // Tự động dừng sau 15 phút (+ 1000 delay 1s upload)
     } catch (error) {
       console.error('Error accessing microphone:', error);
     }
