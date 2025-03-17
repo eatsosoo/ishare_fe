@@ -142,9 +142,11 @@
                   <template v-if="state.qIdx !== null">
                     <div v-if="exerciseItem.question_groups.length === state.qIdx">
                       <h2 class="font-bold text-3xl">IT'S THE END OF EXERCISE</h2>
-                      <p class="font-500 text-danger">{{
-                        uploading ? 'Uploading...' : 'Uploaded'
-                      }}</p>
+                      <p
+                        class="font-500 shadow-md p-2 rounded-md"
+                        :class="uploading ? 'bg-amber' : 'bg-green'"
+                        >{{ uploading ? 'Uploading record...' : 'Uploaded record' }}</p
+                      >
                       <h3>{{ t('common.test.plsClickBtnForSubmit') }}</h3>
                     </div>
                     <div v-else-if="exerciseItem.question_groups[state.qIdx]" class="p-4">
@@ -170,7 +172,19 @@
                     </div>
                   </template>
                   <template v-else>
-                    <h2>Please check your microphone before starting.</h2>
+                    <div>
+                      <h2>Please check your microphone before starting.</h2>
+                      <a-button type="primary" @click="requestMicrophoneAccess" class="my-4">
+                        Allow Microphone
+                      </a-button>
+                      <p v-if="microphoneAccess !== null" class="font-500">
+                        {{
+                          microphoneAccess
+                            ? 'Microphone has been enabled ✅'
+                            : 'Microphone is blocked ❌'
+                        }}
+                      </p>
+                    </div>
                   </template>
                 </div>
               </div>
@@ -238,7 +252,6 @@
   const duration = ref(0);
   const isWarning = ref(false);
   let interval: TimeoutHandle | null = null;
-  const questionDuration = ref(0);
 
   const { t } = useI18n();
   const { createMessage, createConfirm } = useMessage();
@@ -259,7 +272,7 @@
     START_NOW: 'Start Now',
     NEXT_PART: 'Next Part',
     NEXT_QUESTION: 'Next Question',
-    FINISHED: 'Finished',
+    FINISHED: 'Finish',
   };
 
   function generateAnswerObject(groups: GroupQuestionItem[]) {
@@ -305,6 +318,7 @@
     const inputs = htmlContainer.value.querySelectorAll(
       'input[name^="question_"], select[name^="question_"]',
     );
+    console.log(inputs);
 
     const values: { [key: string]: string | string[] } = {};
 
@@ -325,7 +339,7 @@
         values[name] = (input as HTMLInputElement | HTMLSelectElement).value;
       }
     });
-    console.log(values);
+    console.log('get values: ', values);
     studentAnswer.value = { ...studentAnswer.value, ...values };
   };
 
@@ -383,6 +397,7 @@
       type: skill,
       answers: finalAnswers,
     };
+    console.log(formatData);
 
     try {
       openFullLoading();
@@ -419,7 +434,7 @@
       };
 
       mediaRecorder.value.start();
-      setTimeout(stopRecording, time * 60 * 1000 + 1000); // Tự động dừng sau 15 phút
+      setTimeout(stopRecording, time * 60 * 1000 + 3000); // Tự động dừng sau 15 phút, + 3000 (delay 3000 upload)
     } catch (error) {
       console.error('Error accessing microphone:', error);
     }
@@ -506,9 +521,12 @@
     if (interval) clearInterval(interval); // Xóa interval cũ nếu có
 
     interval = setInterval(() => {
-      if (duration.value <= 0) {
+      if (duration.value < 0) {
         clearInterval(interval!);
-        if (exerciseItem.value?.skill === 'Speaking') {
+        if (
+          exerciseItem.value?.skill === 'Speaking' &&
+          state.qIdx < exerciseItem.value?.question_groups.length
+        ) {
           actionRecord('NEXT_QUESTION');
         }
         return;
@@ -532,13 +550,24 @@
     }
   }
 
+  const microphoneAccess = ref(false);
+
+  const requestMicrophoneAccess = async () => {
+    try {
+      await navigator.mediaDevices.getUserMedia({ audio: true });
+      microphoneAccess.value = true;
+    } catch (error) {
+      microphoneAccess.value = false;
+    }
+  };
+
   getExerciseDetail(state.exerciseId);
 
   watch(
     () => duration.value,
     (val) => {
       console.log(val);
-      if (val <= 0) {
+      if (val < 0) {
         console.log(val);
         isWarning.value = false;
         // timeLeft.value = '0:00';
