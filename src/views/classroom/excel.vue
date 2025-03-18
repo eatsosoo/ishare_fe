@@ -12,10 +12,11 @@
   import { getToken } from '@/utils/auth';
   import { useI18n } from '@/hooks/web/useI18n';
   import { classListApi } from '@/api/class/class';
-  import { getLeftValue } from '@/utils/stringUtils';
+  import { useGlobSetting } from '@/hooks/setting';
 
   const { t } = useI18n();
-  const resutlStudy: FormSchema[] = [
+  const config = useGlobSetting();
+  const academicResults: FormSchema[] = [
     {
       field: 'classId',
       component: 'ApiSelect',
@@ -65,7 +66,8 @@
       label: t('common.time'),
       component: 'DatePicker',
       componentProps: {
-        format: 'YYYY-MM-DD',
+        format: 'YYYY-MM',
+        picker: 'month',
       },
       required: true,
       colProps: {
@@ -78,7 +80,7 @@
 
   const [register, { validate }] = useForm({
     labelWidth: 120,
-    schemas: resutlStudy,
+    schemas: academicResults,
     actionColOptions: {
       span: 24,
     },
@@ -89,8 +91,10 @@
     try {
       const data = await validate();
       const { date, classId, exeType } = data;
+      const formatDate = date.split(' ')[0].slice(0, 7);
+      const baseUrl = config.apiUrl;
       const response = await fetch(
-        `https://api-gateway.danda.vn/api/homeworks/export?class_id=${classId}&date=${getLeftValue(date)}&type=${exeType}`,
+        `${baseUrl}/homeworks/export?class_id=${classId}&date=${formatDate}&type=${exeType}`,
         {
           method: 'GET',
           headers: {

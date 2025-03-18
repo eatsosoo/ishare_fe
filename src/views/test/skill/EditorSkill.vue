@@ -142,6 +142,13 @@
               </template>
             </InputNumber>
           </div>
+          <div v-if="props.mode === 'exercise' && groupActive" class="w-25">
+            <InputNumber v-model:value="groupActive.question_duration" :max="15" :min="1">
+              <template #addonBefore>
+                <FieldTimeOutlined />
+              </template>
+            </InputNumber>
+          </div>
           <Row v-if="sections.length > 0" :gutter="[16, 16]" class="mb-1 min-h-[30rem] mt-4">
             <Col :span="24" class="flex">
               <div class="re-box-shadow rounded-lg pa-4 w-full">
@@ -258,6 +265,10 @@
     showDuration: {
       type: Boolean,
       default: true,
+    },
+    mode: {
+      type: String as PropType<'exercise' | 'test'>,
+      default: 'test',
     },
   });
 
@@ -399,6 +410,7 @@
       question_options: handleAnswerOptions(group_type, orders),
       question_answer: setAnswerDefault(orders, group_type),
       question_count: total,
+      question_duration: 0,
     };
 
     part.question_groups.push({ ...newGroup });

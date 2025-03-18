@@ -57,9 +57,14 @@ export interface CopyExerciseParams {
   };
 }
 
+export interface SpeakingExeAnswer {
+  part_id: number | null;
+  part_answer: string;
+}
+
 export interface SubmitExerciseParams {
   type: SkillType;
-  answers: SubmitAnswer[];
+  answers: SubmitAnswer[] | SpeakingExeAnswer[];
 }
 
 export interface ScoreExercise {

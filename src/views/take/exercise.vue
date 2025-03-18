@@ -82,14 +82,14 @@
         <Row :gutter="[16, 16]" class="h-[88vh] w-[100vw] border-t-1 border-gray-200">
           <Col :span="12" class="bg-[aliceblue] border-r-2 border-gray h-full overflow-auto">
             <div class="p-6">
-              <h2 class="text-primary">Writing Task {{ state.tabActive + 1 }}</h2>
-              <div v-html="exerciseItem.question_groups[state.tabActive].question_text"></div>
+              <h2 class="text-primary">Writing Task {{ state.tabWriting + 1 }}</h2>
+              <div v-html="exerciseItem.question_groups[state.tabWriting].question_text"></div>
             </div>
           </Col>
           <Col :span="12" class="border-gray border-l-2 h-full overflow-auto py-6">
             <div class="mx-4">
               <InputTextArea
-                v-model:value="studentAnswer[`question_${state.tabActive + 1}`]"
+                v-model:value="studentAnswer[`question_${state.tabWriting + 1}`]"
                 :rows="25"
                 @paste.prevent
                 placeholder="Type your essay here..."
@@ -105,9 +105,9 @@
             <div
               v-for="(_, index) in exerciseItem.question_groups"
               :key="index"
-              @click="state.tabActive = index"
+              @click="state.tabWriting = index"
               :class="
-                state.tabActive === index
+                state.tabWriting === index
                   ? 'flex-1 border-[#e8202a]'
                   : 'flex-1 cursor-pointer border-gray'
               "
@@ -142,9 +142,11 @@
                   <template v-if="state.qIdx !== null">
                     <div v-if="exerciseItem.question_groups.length === state.qIdx">
                       <h2 class="font-bold text-3xl">IT'S THE END OF EXERCISE</h2>
-                      <p class="font-500 text-danger">{{
-                        uploading ? 'Uploading...' : 'Uploaded'
-                      }}</p>
+                      <p
+                        class="font-500 shadow-md p-2 rounded-md"
+                        :class="uploading ? 'bg-amber' : 'bg-green'"
+                        >{{ uploading ? 'Uploading record...' : 'Uploaded record' }}</p
+                      >
                       <h3>{{ t('common.test.plsClickBtnForSubmit') }}</h3>
                     </div>
                     <div v-else-if="exerciseItem.question_groups[state.qIdx]" class="p-4">
@@ -170,7 +172,19 @@
                     </div>
                   </template>
                   <template v-else>
-                    <h2>Please check your microphone before starting.</h2>
+                    <div>
+                      <h2>Please check your microphone before starting.</h2>
+                      <a-button type="primary" @click="requestMicrophoneAccess" class="my-4">
+                        Allow Microphone
+                      </a-button>
+                      <p v-if="microphoneAccess !== null" class="font-500">
+                        {{
+                          microphoneAccess
+                            ? 'Microphone has been enabled ✅'
+                            : 'Microphone is blocked ❌'
+                        }}
+                      </p>
+                    </div>
                   </template>
                 </div>
               </div>
@@ -197,7 +211,7 @@
   import { Col, Input, Row } from 'ant-design-vue';
   import { renderGroupQuestions } from './helpers';
   import { exerciseSubmitApi } from '@/api/exercise/exercise';
-  import { SubmitExerciseParams } from '@/api/exercise/exerciseModel';
+  import { SpeakingExeAnswer, SubmitExerciseParams } from '@/api/exercise/exerciseModel';
   import { uploadAudioApi } from '@/api/exam/exam';
   import Icon from '@/components/Icon/Icon.vue';
 
@@ -217,7 +231,7 @@
     exerciseId: toNumber(route.query.id),
     type: route.query.type as SkillType,
     loading: false,
-    tabActive: 0,
+    tabWriting: 0,
     qIdx: null as number | null,
   });
   const exerciseItem = ref<TakeExerciseStudentItem | null>(null);
@@ -234,7 +248,6 @@
   const final = ref<string[]>([]);
 
   // time left
-  // time left
   const timeLeft = ref('');
   const duration = ref(0);
   const isWarning = ref(false);
@@ -247,7 +260,7 @@
   });
 
   const wordCount = computed(() => {
-    const text = studentAnswer.value[`question_${state.tabActive + 1}`];
+    const text = studentAnswer.value[`question_${state.tabWriting + 1}`];
     if (!isString(text)) return 0;
     return text
       .trim()
@@ -259,7 +272,7 @@
     START_NOW: 'Start Now',
     NEXT_PART: 'Next Part',
     NEXT_QUESTION: 'Next Question',
-    FINISHED: 'Finished',
+    FINISHED: 'Finish',
   };
 
   function generateAnswerObject(groups: GroupQuestionItem[]) {
@@ -278,7 +291,7 @@
         });
       }
     });
-    console.log(answerObject);
+    // console.log(answerObject);
     return answerObject;
   }
 
@@ -305,6 +318,7 @@
     const inputs = htmlContainer.value.querySelectorAll(
       'input[name^="question_"], select[name^="question_"]',
     );
+    console.log(inputs);
 
     const values: { [key: string]: string | string[] } = {};
 
@@ -325,7 +339,7 @@
         values[name] = (input as HTMLInputElement | HTMLSelectElement).value;
       }
     });
-    console.log(values);
+    console.log('get values: ', values);
     studentAnswer.value = { ...studentAnswer.value, ...values };
   };
 
@@ -374,7 +388,7 @@
       }
     }
 
-    const finalAnswers: SubmitAnswer[] =
+    const finalAnswers: SubmitAnswer[] | SpeakingExeAnswer[] =
       skill === 'Speaking'
         ? [{ part_id: null, part_answer: final.value[0] }]
         : mapAnswersToParts(question_groups, studentAnswer.value);
@@ -383,6 +397,7 @@
       type: skill,
       answers: finalAnswers,
     };
+    console.log(formatData);
 
     try {
       openFullLoading();
@@ -419,7 +434,7 @@
       };
 
       mediaRecorder.value.start();
-      setTimeout(stopRecording, time * 60 * 1000); // Tự động dừng sau 15 phút
+      setTimeout(stopRecording, time * 60 * 1000 + 3000); // Tự động dừng sau 15 phút, + 3000 (delay 3000 upload)
     } catch (error) {
       console.error('Error accessing microphone:', error);
     }
@@ -470,7 +485,8 @@
     if (actionType === 'START_NOW') {
       state.qIdx = 0;
       const timeLimit = exerciseItem.value.duration;
-      startCountdown(timeLimit);
+      const questionDuration = exerciseItem.value.question_groups[state.qIdx].question_duration;
+      startCountdown(questionDuration);
       startRecording(timeLimit);
     } else if (actionType === 'FINISHED') {
       submitExercise();
@@ -488,6 +504,13 @@
         });
       } else {
         state.qIdx++;
+        if (
+          exerciseItem.value?.skill === 'Speaking' &&
+          exerciseItem.value.question_groups[state.qIdx]
+        ) {
+          const questionDuration = exerciseItem.value.question_groups[state.qIdx].question_duration;
+          startCountdown(questionDuration);
+        }
       }
     }
   };
@@ -498,8 +521,14 @@
     if (interval) clearInterval(interval); // Xóa interval cũ nếu có
 
     interval = setInterval(() => {
-      if (duration.value <= 0) {
+      if (duration.value < 0) {
         clearInterval(interval!);
+        if (
+          exerciseItem.value?.skill === 'Speaking' &&
+          state.qIdx < exerciseItem.value?.question_groups.length
+        ) {
+          actionRecord('NEXT_QUESTION');
+        }
         return;
       }
       if (duration.value <= 60) {
@@ -521,15 +550,27 @@
     }
   }
 
+  const microphoneAccess = ref(false);
+
+  const requestMicrophoneAccess = async () => {
+    try {
+      await navigator.mediaDevices.getUserMedia({ audio: true });
+      microphoneAccess.value = true;
+    } catch (error) {
+      microphoneAccess.value = false;
+    }
+  };
+
   getExerciseDetail(state.exerciseId);
 
   watch(
     () => duration.value,
     (val) => {
-      if (val <= 0) {
+      console.log(val);
+      if (val < 0) {
         console.log(val);
         isWarning.value = false;
-        timeLeft.value = '0:00';
+        // timeLeft.value = '0:00';
         if (exerciseItem.value?.skill !== 'Speaking') {
           let countdown = 3;
           const countdownInterval = setInterval(() => {
