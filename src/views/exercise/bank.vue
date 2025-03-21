@@ -1,8 +1,5 @@
 <template>
-  <PageWrapper
-    :title="t('form.gradingSearch.titleHomework')"
-    :content="t('form.gradingSearch.contentHomework')"
-  >
+  <PageWrapper :title="t('page.bankTitle')" :content="t('page.bankContent')">
     <BasicTable @register="registerTable">
       <template #toolbar>
         <a-button type="dashed" @click="activateModal('assign')">{{
@@ -29,17 +26,6 @@
         </template>
       </template>
     </BasicTable>
-    <AssignHomeworkModal
-      @register="registerAssignModal"
-      :class-list="classOptions"
-      @success="handleOk"
-    />
-    <CopyHomeworkModal
-      @register="registerCopyModal"
-      :homework-id="homeworkId"
-      :class-list="classOptions"
-      @success="handleOk"
-    />
   </PageWrapper>
 </template>
 <script lang="ts" setup>
@@ -88,14 +74,14 @@
     reload();
   }
 
-  function activateModal(type: 'assign' | 'copy', id = null) {
+  function activateModal(type: 'edit' | 'copy', id = null) {
     if (classOptions.value.length === 0) {
       fetchClasses();
     }
 
     homeworkId.value = id;
 
-    if (type === 'assign') {
+    if (type === 'edit') {
       openModal();
     } else {
       openCopyModal();
