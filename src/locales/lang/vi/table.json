@@ -97,6 +97,7 @@
     "teacher": "Giáo viên",
     "className": "Tên lớp",
     "examTitle": "Tên bài",
-    "assign": "Giao bài"
+    "assignNormal": "Giao bài thủ công",
+    "assignFromBank": "Giao bài từ ngân hàng đề"
   }
 }

@@ -6,10 +6,7 @@
     <BasicTable @register="registerTable">
       <template #toolbar>
         <a-button type="dashed" @click="activateModal('assign')">{{
-          t('table.assignmentTable.assignFromBank')
-        }}</a-button>
-        <a-button type="dashed" @click="activateModal('assign')">{{
-          t('table.assignmentTable.assignNormal')
+          t('table.assignmentTable.assign')
         }}</a-button>
       </template>
       <template #bodyCell="{ column, record }">
@@ -37,11 +34,6 @@
       :class-list="classOptions"
       @success="handleOk"
     />
-    <AssignByBankModal
-      @register="registerBankModal"
-      :class-list="classOptions"
-      @success="handleOk"
-    />
     <CopyHomeworkModal
       @register="registerCopyModal"
       :homework-id="homeworkId"
@@ -65,7 +57,6 @@
   import CopyHomeworkModal from './CopyHomeworkModal.vue';
   import { deleteExercise } from '@/api/exercise/exercise';
   import { useMessage } from '@/hooks/web/useMessage';
-  import AssignByBankModal from './AssignByBankModal.vue';
 
   const { t } = useI18n();
   const [registerTable, { reload }] = useTable({
@@ -86,8 +77,6 @@
   });
   const [registerAssignModal, { openModal: openModal, closeModal }] = useModal();
   const [registerCopyModal, { openModal: openCopyModal, closeModal: closeCopyModal }] = useModal();
-  const [registerBankModal, { openModal: openBankModal, closeModal: closeBankModal }] = useModal();
-
   const { createConfirm } = useMessage();
 
   const classOptions = ref<ClassListItem[]>([]);
@@ -96,11 +85,10 @@
   function handleOk() {
     closeModal();
     closeCopyModal();
-    closeBankModal();
     reload();
   }
 
-  function activateModal(type: 'assign' | 'copy' | 'bank', id = null) {
+  function activateModal(type: 'assign' | 'copy', id = null) {
     if (classOptions.value.length === 0) {
       fetchClasses();
     }
@@ -109,8 +97,6 @@
 
     if (type === 'assign') {
       openModal();
-    } else if (type === 'bank') {
-      openBankModal();
     } else {
       openCopyModal();
     }
