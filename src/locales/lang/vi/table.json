@@ -62,6 +62,7 @@
   "deadline": "Hạn nộp",
   "bankTitle": "Tên đề",
   "createBank": "Tạo đề",
+  "createdAt": "Ngày tạo",
   "exerciseTable": {
     "name": "Tên bài tập",
     "score": "Điểm",

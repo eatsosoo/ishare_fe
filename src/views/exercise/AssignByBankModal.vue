@@ -88,7 +88,7 @@
       const submitForm: any = {
         exam_bank_id,
         assign_at,
-        assignment: {
+        assignments: {
           class_id,
           shift_id,
           study_date,

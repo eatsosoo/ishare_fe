@@ -448,6 +448,15 @@ export function getAssignmentColumns(): BasicColumn[] {
       title: t('table.assignmentTable.deadline'),
       dataIndex: 'deadline',
     },
+    {
+      title: t('table.createdAt'),
+      dataIndex: 'created_at',
+      customRender: ({ text }) => {
+        const dateUTC = new Date(text);
+        const localDate = dateUTC.toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' });
+        return localDate;
+      },
+    },
   ];
 }
 
