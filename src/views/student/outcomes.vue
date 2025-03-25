@@ -12,6 +12,7 @@
   import { getToken } from '@/utils/auth';
   import { useUserStore } from '@/store/modules/user';
   import { useI18n } from '@/hooks/web/useI18n';
+  import { useGlobSetting } from '@/hooks/setting';
 
   const { t } = useI18n();
   const resutlStudy: FormSchema[] = [
@@ -41,8 +42,11 @@
       const from = data.from.split(' ')[0];
       const to = data.to.split(' ')[0];
       const useStore = useUserStore();
+      const config = useGlobSetting();
+      const baseUrl = config.apiUrl;
+
       const response = await fetch(
-        `https://api-gateway.danda.vn/api/users/export-study-result/${useStore.userInfo?.id}/${from}/${to}`,
+        `${baseUrl}/users/export-study-result/${useStore.userInfo?.id}/${from}/${to}`,
         {
           method: 'GET',
           headers: {
