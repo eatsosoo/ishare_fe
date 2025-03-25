@@ -28,6 +28,7 @@
   import { ref } from 'vue';
   import { useI18n } from '@/hooks/web/useI18n';
   import { Tag } from 'ant-design-vue';
+  import { useGlobSetting } from '@/hooks/setting';
 
   const props = defineProps({
     student: {
@@ -71,8 +72,11 @@
       const data = await validate();
       const from = data.from.split(' ')[0];
       const to = data.to.split(' ')[0];
+      const config = useGlobSetting();
+      const baseUrl = config.apiUrl;
+
       const response = await fetch(
-        `https://api-gateway.danda.vn/api/users/export-study-result/${props.student.id}/${from}/${to}`,
+        `${baseUrl}/users/export-study-result/${props.student.id}/${from}/${to}`,
         {
           method: 'GET',
           headers: {
