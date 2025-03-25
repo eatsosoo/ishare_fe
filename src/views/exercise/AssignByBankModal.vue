@@ -21,9 +21,9 @@
   import { useI18n } from '@/hooks/web/useI18n';
   import { SkillType } from '@/api/exam/examModel';
   import { useDesign } from '@/hooks/web/useDesign';
-  import { assignHomeworkFormSchemas } from '../classroom/data';
+  import { assignByBankSchemas } from '../classroom/data';
   import { useForm, BasicForm } from '@/components/Form';
-  import { assignExercise, studyDateListApi } from '@/api/exercise/exercise';
+  import { assignExerciseByBank, studyDateListApi } from '@/api/exercise/exercise';
   import { ClassListItem } from '@/api/class/classModel';
   import { CollapseContainer } from '@/components/Container';
   import { getLeftValue } from '@/utils/stringUtils';
@@ -40,7 +40,7 @@
   const { t } = useI18n();
   const [registerForm, { validate, resetFields, updateSchema, setFieldsValue }] = useForm({
     labelWidth: 120,
-    schemas: assignHomeworkFormSchemas,
+    schemas: assignByBankSchemas,
     showActionButtonGroup: false,
     actionColOptions: {
       span: 24,
@@ -83,35 +83,21 @@
   async function submit() {
     try {
       const [values] = await Promise.all([validate()]);
-      const {
-        book_name,
-        skill,
-        homework_name,
-        class_id,
-        shift_id,
-        date,
-        assign_at,
-        study_date,
-        duration,
-        exercise_id,
-      } = values;
+      const { exam_bank_id, class_id, shift_id, date, assign_at, study_date, title } = values;
 
       const submitForm: any = {
-        book_name,
-        skill,
-        homework_name,
+        exam_bank_id,
         assign_at,
-        duration,
         assignment: {
           class_id,
           shift_id,
-          date: getLeftValue(date),
           study_date,
+          title,
         },
-        exercise_id,
+        deadline: getLeftValue(date),
       };
 
-      const result = await assignExercise(submitForm);
+      const result = await assignExerciseByBank(submitForm);
       if (result) {
         createSuccessModal({
           title: t('form.assignFromBank'),

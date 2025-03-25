@@ -60,6 +60,8 @@
   "bookName": "Tên sách",
   "skill": "Kỹ năng",
   "deadline": "Hạn nộp",
+  "bankTitle": "Tên đề",
+  "createBank": "Tạo đề",
   "exerciseTable": {
     "name": "Tên bài tập",
     "score": "Điểm",

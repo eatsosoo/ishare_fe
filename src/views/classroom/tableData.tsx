@@ -1026,3 +1026,81 @@ export function getAttendanceColumns(): BasicColumn[] {
     },
   ];
 }
+
+export function getBankColumns(): BasicColumn[] {
+  return [
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      fixed: 'left',
+      width: 80,
+    },
+    {
+      title: t('table.bookName'),
+      dataIndex: 'book_name',
+    },
+    {
+      title: t('table.bankTitle'),
+      dataIndex: 'homework_name',
+    },
+    {
+      title: t('form.skill'),
+      dataIndex: 'skill',
+    },
+  ];
+}
+
+export function getBankListConfig(): Partial<FormProps> {
+  return {
+    labelWidth: 100,
+    schemas: [
+      {
+        field: 'homework_name',
+        label: t('table.bankTitle'),
+        component: 'Input',
+        colProps: {
+          xl: 6,
+          xxl: 4,
+        },
+      },
+      {
+        field: 'book_name',
+        label: t('table.bookName'),
+        component: 'Input',
+        colProps: {
+          xl: 6,
+          xxl: 4,
+        },
+      },
+      {
+        field: 'skill',
+        label: t('form.skill'),
+        component: 'Select',
+        componentProps: {
+          options: [
+            {
+              label: 'Reading',
+              value: 'Reading',
+            },
+            {
+              label: 'Listening',
+              value: 'Listening',
+            },
+            {
+              label: 'Speaking',
+              value: 'Speaking',
+            },
+            {
+              label: 'Writing',
+              value: 'Writing',
+            },
+          ],
+        },
+        colProps: {
+          xl: 6,
+          xxl: 4,
+        },
+      },
+    ],
+  };
+}

@@ -5,7 +5,7 @@
   >
     <BasicTable @register="registerTable">
       <template #toolbar>
-        <a-button type="dashed" @click="activateModal('assign')">{{
+        <a-button type="dashed" @click="activateModal('bank')">{{
           t('table.assignmentTable.assignFromBank')
         }}</a-button>
         <a-button type="dashed" @click="activateModal('assign')">{{
