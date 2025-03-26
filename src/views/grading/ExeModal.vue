@@ -58,8 +58,11 @@
                 <Icon
                   :icon="
                     compareAnswers(value, JSON.parse(group.student_answer)[key])
-                      ? 'ant-design:check-circle-outlined'
+                      ? 'ant-design:check-outlined'
                       : 'ant-design:close-outlined'
+                  "
+                  :color="
+                    compareAnswers(value, JSON.parse(group.student_answer)[key]) ? 'green' : 'red'
                   "
                   class="ml-4"
                 />

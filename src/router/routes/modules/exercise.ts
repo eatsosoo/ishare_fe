@@ -24,6 +24,14 @@ const exercise: AppRouteModule = {
         title: t('routes.page.assignHomework'),
       },
     },
+    {
+      path: '/exercise/bank',
+      name: 'ExerciseBank',
+      component: () => import('@/views/exercise/bank.vue'),
+      meta: {
+        title: t('routes.page.exerciseBank'),
+      },
+    },
   ],
 };
 

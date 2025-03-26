@@ -15,6 +15,7 @@ enum Api {
   EXAM = '/exams',
   TEACHER = '/teachers',
   HOMEWORK = '/homework',
+  BANK = '/exam-banks',
 }
 
 export const teacherListApi = () => (params: BasicPageParams) =>
@@ -82,3 +83,13 @@ export const submitGradingHomeworkApi = (params: GradingForm, mode: ErrorMessage
       errorMessageMode: mode,
     },
   );
+
+export const bankListApi = () => (params: BasicPageParams) =>
+  defHttp.get<AssignmentListGetResultModel>({
+    url: `${Api.BANK}`,
+    params,
+    headers: {
+      // @ts-ignore
+      ignoreCancelToken: true,
+    },
+  });

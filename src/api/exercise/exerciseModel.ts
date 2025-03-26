@@ -43,6 +43,16 @@ export interface AssignExerciseParams {
   question_groups: GroupQuestionItem[];
 }
 
+export interface CreateBankParams {
+  book_name: string;
+  skill: SkillType;
+  homework_name: string;
+  subject: string;
+  duration: number;
+  media: string | null;
+  question_groups: GroupQuestionItem[];
+}
+
 export interface CopyExerciseParams {
   id: number;
   book_name: string;

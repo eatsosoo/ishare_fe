@@ -22,5 +22,8 @@
   "assignmentList": "Assignment List",
   "takeAttendance": "Take Attendance",
   "testIndexTitle": "Exam creation and editing",
-  "testIndexContent": "Note: When deleting a question from any skill, make sure to save the changes to update the question order."
+  "testIndexContent": "Note: When deleting a question from any skill, make sure to save the changes to update the question order.",
+  "exerciseBank": "Question bank",
+  "bankTitle": "Edit Question Bank",
+  "bankContent": "This page allows you to create and edit pre-made exams for each book. Note: Exams that have already been assigned cannot be edited."
 }

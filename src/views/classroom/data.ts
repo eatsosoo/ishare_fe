@@ -1,7 +1,7 @@
 import { classListApi } from '@/api/class/class';
 import { examListApi } from '@/api/exam/exam';
 import { bookListApi } from '@/api/exercise/exercise';
-import { teacherListApi } from '@/api/teacher/teacher';
+import { bankListApi, teacherListApi } from '@/api/teacher/teacher';
 import { FormSchema } from '@/components/Form';
 import { useI18n } from '@/hooks/web/useI18n';
 
@@ -600,6 +600,168 @@ export const assignClass: FormSchema[] = [
     required: true,
     colProps: {
       offset: 1,
+      span: 12,
+    },
+  },
+];
+
+export const questionsBankFormSchemas: FormSchema[] = [
+  {
+    field: 'book_name',
+    component: 'ApiSelect',
+    label: t('form.bookName'),
+    componentProps: {
+      api: bookListApi(),
+      resultField: 'items',
+      labelField: 'title',
+      valueField: 'title',
+      immediate: true,
+    },
+    required: true,
+    colProps: {
+      span: 12,
+    },
+  },
+  {
+    field: 'skill',
+    label: t('form.skill'),
+    component: 'Select',
+    componentProps: {
+      options: [
+        {
+          label: 'Reading',
+          value: 'Reading',
+        },
+        {
+          label: 'Listening',
+          value: 'Listening',
+        },
+        {
+          label: 'Speaking',
+          value: 'Speaking',
+        },
+        {
+          label: 'Writing',
+          value: 'Writing',
+        },
+      ],
+    },
+    required: true,
+    colProps: {
+      span: 12,
+    },
+  },
+  {
+    field: 'homework_name',
+    component: 'Input',
+    label: t('form.gradingSearch.title'),
+    required: true,
+    colProps: {
+      span: 12,
+    },
+  },
+  {
+    field: 'duration',
+    label: t('form.duration'),
+    component: 'InputNumber',
+    componentProps: {
+      max: 60,
+      min: 15,
+      defaultValue: 15,
+    },
+    required: true,
+    colProps: {
+      span: 12,
+    },
+  },
+];
+
+export const assignByBankSchemas: FormSchema[] = [
+  {
+    field: 'title',
+    component: 'Input',
+    label: t('form.gradingSearch.title'),
+    required: true,
+    colProps: {
+      span: 24,
+    },
+  },
+  {
+    field: 'exam_bank_id',
+    component: 'ApiSelect',
+    label: t('form.bookName'),
+    componentProps: {
+      api: bankListApi(),
+      resultField: 'items',
+      labelField: 'homework_name',
+      valueField: 'id',
+      immediate: true,
+    },
+    required: true,
+    colProps: {
+      span: 12,
+    },
+  },
+  {
+    field: 'class_id',
+    label: t('form.gradingSearch.className'),
+    component: 'Select',
+    componentProps: {
+      options: [],
+    },
+    required: true,
+    colProps: {
+      span: 12,
+    },
+  },
+  {
+    field: 'shift_id',
+    label: t('form.shift'),
+    component: 'Select',
+    componentProps: {
+      options: [],
+    },
+    required: true,
+    colProps: {
+      span: 12,
+    },
+  },
+  {
+    field: 'study_date',
+    label: t('form.studyDate'),
+    component: 'Select',
+    componentProps: {
+      options: [],
+    },
+    required: true,
+    colProps: {
+      span: 12,
+    },
+  },
+  {
+    field: 'date',
+    label: t('form.gradingSearch.deadline'),
+    component: 'DatePicker',
+    componentProps: {
+      format: 'YYYY-MM-DD',
+    },
+    required: true,
+    colProps: {
+      span: 12,
+    },
+  },
+  {
+    field: 'assign_at',
+    label: t('form.exeType'),
+    component: 'Select',
+    componentProps: {
+      options: [
+        { label: t('form.assignAtClass'), value: 'class' },
+        { label: t('form.assignAtHome'), value: 'home' },
+      ],
+    },
+    required: true,
+    colProps: {
       span: 12,
     },
   },

@@ -97,6 +97,7 @@
     "addActionEditor": "Chưa có vị trí để chèn text!",
     "deleteClass": "Bạn có muốn xoá lớp học này không?",
     "deleteExercise": "Bạn có muốn xoá bài tập này không?",
+    "deleteBank": "Bạn có muốn xoá dữ liệu này không?",
     "deleteQuestion": "Bạn có muốn xoá nhóm câu hỏi này không?",
     "changeSkill": "Khi bạn thay đổi trường Kỹ năng, tất cả các câu hỏi đã tạo trước đó sẽ bị đặt lại từ đầu. Bạn có chắc chắn muốn tiếp tục thay đổi không?"
   },

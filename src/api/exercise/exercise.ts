@@ -4,6 +4,7 @@ import {
   AssignExerciseParams,
   BookListGetResultModel,
   CopyExerciseParams,
+  CreateBankParams,
   ExerciseListGetResultModel,
   HomeworkListGetResultModel,
   ScoreExercise,
@@ -17,6 +18,7 @@ enum Api {
   BOOK_LIST = '/books',
   ASSIGN_EXE = '/homeworks',
   ATTENDANCE = '/attendances',
+  BANK = '/exam-banks',
 }
 
 export const exerciseListApi = () => (params: BasicPageParams) =>
@@ -74,6 +76,20 @@ export const assignExercise = (params: AssignExerciseParams, mode: ErrorMessageM
     },
   );
 
+export const assignExerciseByBank = (
+  params: AssignExerciseParams,
+  mode: ErrorMessageMode = 'none',
+) =>
+  defHttp.post<ResultBase<AssignExerciseParams>>(
+    {
+      url: `${Api.BANK}/assign`,
+      params,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+
 export const copyExercise = (params: CopyExerciseParams, mode: ErrorMessageMode = 'none') =>
   defHttp.post<ResultBase<CopyExerciseParams>>(
     {
@@ -89,6 +105,26 @@ export const deleteExercise = (id: number, mode: ErrorMessageMode = 'modal') =>
   defHttp.delete<ResultBase<Boolean>>(
     {
       url: `${Api.ASSIGN_EXE}/${id}`,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+
+export const deleteBankApi = (id: number, mode: ErrorMessageMode = 'modal') =>
+  defHttp.delete<ResultBase<Boolean>>(
+    {
+      url: `${Api.BANK}/${id}`,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+
+export const getBankApi = (id: number, mode: ErrorMessageMode = 'modal') =>
+  defHttp.get<ResultBase<Boolean>>(
+    {
+      url: `${Api.BANK}/${id}`,
     },
     {
       errorMessageMode: mode,
@@ -114,6 +150,17 @@ export const exerciseSubmitApi = (
   defHttp.post<ResultBase<ScoreExercise>>(
     {
       url: `/homework/${homeworkId}/submit`,
+      params,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+
+export const createBankApi = (params: CreateBankParams, mode: ErrorMessageMode = 'none') =>
+  defHttp.post<ResultBase<CreateBankParams>>(
+    {
+      url: `${Api.BANK}`,
       params,
     },
     {
