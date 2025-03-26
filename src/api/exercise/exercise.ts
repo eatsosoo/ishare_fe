@@ -5,6 +5,7 @@ import {
   BookListGetResultModel,
   CopyExerciseParams,
   CreateBankParams,
+  DetailBank,
   ExerciseListGetResultModel,
   HomeworkListGetResultModel,
   ScoreExercise,
@@ -122,7 +123,7 @@ export const deleteBankApi = (id: number, mode: ErrorMessageMode = 'modal') =>
   );
 
 export const getBankApi = (id: number, mode: ErrorMessageMode = 'modal') =>
-  defHttp.get<ResultBase<Boolean>>(
+  defHttp.get<ResultBase<DetailBank>>(
     {
       url: `${Api.BANK}/${id}`,
     },

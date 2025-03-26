@@ -58,8 +58,7 @@
   import { NewPartItem } from '@/views/test/types/question';
   import { questionsBankFormSchemas } from '../classroom/data';
   import { useForm, BasicForm } from '@/components/Form';
-  import { createBankApi, studyDateListApi } from '@/api/exercise/exercise';
-  import { ClassListItem } from '@/api/class/classModel';
+  import { createBankApi, getBankApi } from '@/api/exercise/exercise';
   import { CollapseContainer } from '@/components/Container';
   import { uploadAudioApi } from '@/api/exam/exam';
   import { getToken } from '@/utils/auth';
@@ -69,24 +68,25 @@
   import { CreateBankParams } from '@/api/exercise/exerciseModel';
 
   const props = defineProps({
-    classList: {
-      type: Array as PropType<ClassListItem[]>,
-      default: () => [],
+    examBankId: {
+      type: Number,
     },
   });
 
   const emit = defineEmits(['success']);
 
   const { t } = useI18n();
-  const [registerForm, { validate, resetFields, updateSchema, setFieldsValue, getFieldsValue }] =
-    useForm({
-      labelWidth: 120,
-      schemas: questionsBankFormSchemas,
-      showActionButtonGroup: false,
-      actionColOptions: {
-        span: 24,
-      },
-    });
+  const [
+    registerForm,
+    { validate, resetFields, updateSchema, setFieldsValue, getFieldsValue, clearValidate },
+  ] = useForm({
+    labelWidth: 120,
+    schemas: questionsBankFormSchemas,
+    showActionButtonGroup: false,
+    actionColOptions: {
+      span: 24,
+    },
+  });
   const { createMessage, createConfirm, createErrorModal, createSuccessModal } = useMessage();
   const prefixCls = useDesign('assign-homework');
   const { uploadUrl } = useGlobSetting();
@@ -129,28 +129,6 @@
           setFieldsValue({ skill: skill.value });
         },
       });
-    } else if (key === 'class_id') {
-      const shifts = value
-        ? props.classList.find((cls: ClassListItem) => cls.id === value)?.shifts || []
-        : [];
-
-      const res = await studyDateListApi(value);
-      const studyDateList = res.items || [];
-
-      updateSchema([
-        {
-          field: 'shift_id',
-          componentProps: {
-            options: shifts.map((shift) => ({ label: shift.title, value: shift.id })),
-          },
-        },
-        {
-          field: 'study_date',
-          componentProps: {
-            options: studyDateList.map((date) => ({ label: date, value: date })),
-          },
-        },
-      ]);
     }
   }
 
@@ -172,7 +150,7 @@
     try {
       const [values] = await Promise.all([validate()]);
       const { book_name, skill, homework_name, duration } = values;
-      console.log('value', values);
+
       if (parts.value.length === 0 || parts.value[0].question_groups.length === 0) {
         createMessage.error(t('common.pleaseCreateQuestions'));
         return;
@@ -183,6 +161,7 @@
         return;
       }
       const submitForm: CreateBankParams = {
+        id: props.examBankId,
         book_name,
         skill,
         homework_name,
@@ -266,25 +245,66 @@
     const status = file?.status;
     const url = file?.response?.result.items;
     const name = file?.name;
-    console.log(status);
+
     if (status === 'done') {
       createMessage.success(t('common.uploadFileSuccess', { name }));
       audioUrl.value = url;
     } else if (status === 'error') {
       createMessage.error(t('common.uploadFileFail', { name }));
     }
-    console.log(audioUrl.value);
+  }
+
+  async function previewItem(id: number) {
+    loading.value = true;
+    const res = await getBankApi(id);
+    loading.value = false;
+
+    if (res && res.items) {
+      const {
+        media,
+        subject,
+        question_groups,
+        duration,
+        book_name,
+        homework_name,
+        skill: initSkill,
+      } = res.items;
+
+      audioUrl.value = media;
+      parts.value[0].subject = subject;
+      parts.value[0].question_groups = question_groups;
+      skill.value = initSkill;
+      setFieldsValue({
+        duration,
+        book_name,
+        homework_name,
+        skill,
+      });
+    }
+  }
+
+  function reset() {
+    audioUrl.value = null;
+    skill.value = null;
+    parts.value = [cloneDeep(READING_PART_DEF)];
+    setFieldsValue({
+      duration: 15,
+      book_name: '',
+      homework_name: '',
+      skill: '',
+    });
+    clearValidate();
   }
 
   watch(
-    () => props.classList,
+    () => props.examBankId,
     (newVal) => {
-      const options = newVal.map((val) => ({ label: val.title, value: val.id }));
-      console.log('op', options);
-      updateSchema({
-        field: 'class_id',
-        componentProps: { options },
-      });
+      console.log(props.examBankId);
+      if (newVal) {
+        previewItem(newVal);
+      } else {
+        reset();
+      }
     },
   );
 </script>

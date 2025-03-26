@@ -67,6 +67,17 @@ export interface CopyExerciseParams {
   };
 }
 
+export interface DetailBank {
+  id: number;
+  book_name: string;
+  skill: SkillType;
+  homework_name: string;
+  subject: string;
+  duration: number;
+  media: string | null;
+  question_groups: GroupQuestionItem[];
+}
+
 export interface SpeakingExeAnswer {
   part_id: number | null;
   part_answer: string;
