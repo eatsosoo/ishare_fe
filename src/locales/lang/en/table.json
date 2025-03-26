@@ -60,6 +60,9 @@
   "bookName": "Book Name",
   "skill": "Skill",
   "deadline": "Deadline",
+  "bankTitle": "Exam Name",
+  "createBank": "Create Exam",
+  "createdAt": "Creation Date",
   "exerciseTable": {
     "name": "Exercise Name",
     "score": "Score",
@@ -97,6 +100,7 @@
     "teacher": "Teacher",
     "className": "Class Name",
     "examTitle": "Exam Name",
-    "assign": "Assign"
+    "assignNormal": "Assign Manually",
+    "assignFromBank": "Assign from Exam Bank"
   }
 }

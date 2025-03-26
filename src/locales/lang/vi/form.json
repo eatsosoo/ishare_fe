@@ -67,7 +67,7 @@
     "titleExam": "Giao bài thi",
     "contentExam": "Chọn lớp học và bài thi có sẵn để giao cho học viên.",
     "titleHomework": "Giao bài tập",
-    "contentHomework": "Để giao bài tập cho lớp học, hãy nhấp vào nút 'Giao bài' với viền nét đứt. Sau đó, điền đầy đủ thông tin yêu cầu và tạo câu hỏi phù hợp."
+    "contentHomework": "Để giao bài tập cho lớp học, hãy nhấp vào nút với viền nét đứt. Sau đó, điền đầy đủ thông tin yêu cầu và tạo câu hỏi phù hợp."
   },
   "exerciseSearch": {
     "className": "Tên lớp",

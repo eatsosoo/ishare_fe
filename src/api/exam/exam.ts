@@ -125,3 +125,23 @@ export const examGradingListApi = () => (params: BasicPageParams) => {
     },
   });
 };
+
+export const practiceExamListApi = () => (params: BasicPageParams) =>
+  defHttp.get<ExamListGetResultModel>({
+    url: `${Api.EXAM_LIST}-publish`,
+    params,
+    headers: {
+      // @ts-ignore
+      ignoreCancelToken: true,
+    },
+  });
+
+export const practiceGradingListApi = () => (params: BasicPageParams) =>
+  defHttp.get<ExamListGetResultModel>({
+    url: `${Api.EXAM_LIST}-publish/8/students`,
+    params,
+    headers: {
+      // @ts-ignore
+      ignoreCancelToken: true,
+    },
+  });

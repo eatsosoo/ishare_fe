@@ -1,8 +1,5 @@
 <template>
-  <PageWrapper
-    :title="t('routes.page.testIndexTitle')"
-    :content="t('routes.page.testIndexContent')"
-  >
+  <PageWrapper :title="t('routes.page.practiceTitle')" :content="t('routes.page.practiceContent')">
     <BasicTable @register="registerTable">
       <template #toolbar>
         <a-button type="dashed" @click="openAddModal">{{
@@ -27,7 +24,11 @@
       </template>
     </BasicTable>
 
-    <CreateExamModal @register="registerAddModal" @success="handleSuccessModal" />
+    <CreateExamModal
+      @register="registerAddModal"
+      @success="handleSuccessModal"
+      is-published="publish"
+    />
     <EditorExamModal @register="registerEditorModal" :exam-id="examId" :title="titleEditor" />
   </PageWrapper>
 </template>
@@ -35,7 +36,7 @@
   import { BasicTable, useTable } from '@/components/Table';
   import { getExamListConfig, getTestColumns } from '@/views/classroom/tableData';
   import { useI18n } from '@/hooks/web/useI18n';
-  import { examListApi } from '@/api/exam/exam';
+  import { practiceExamListApi } from '@/api/exam/exam';
   import { useModal } from '@/components/Modal';
   import CreateExamModal from '@/views/test/CreateExamModal.vue';
   import EditorExamModal from '@/views/test/EditorExamModal.vue';
@@ -46,8 +47,8 @@
 
   const { t } = useI18n();
   const [registerTable, { reload }] = useTable({
-    title: t('routes.page.examList'),
-    api: examListApi(),
+    title: t('routes.page.practiceTestList'),
+    api: practiceExamListApi(),
     columns: getTestColumns(),
     useSearchForm: true,
     formConfig: getExamListConfig(),

@@ -21,7 +21,15 @@ const grading: AppRouteModule = {
       name: 'GradingSearch',
       component: () => import('@/views/grading/index.vue'),
       meta: {
-        title: 'Chấm bài',
+        title: t('routes.page.grading'),
+      },
+    },
+    {
+      path: 'practice',
+      name: 'GradingPractice',
+      component: () => import('@/views/grading/practice.vue'),
+      meta: {
+        title: t('routes.page.grading'),
       },
     },
   ],

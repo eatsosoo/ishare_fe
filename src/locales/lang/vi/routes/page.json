@@ -6,6 +6,7 @@
   "exerciseList": "Danh sách bài tập",
   "testManagement": "Quản lý đề thi",
   "testGradingManagement": "Quản lý chấm bài",
+  "grading": "Chấm bài",
   "reading": "Reading",
   "listening": "Listening",
   "writing": "Writing",
@@ -26,5 +27,8 @@
   "exerciseBank": "Ngân hàng đề",
   "bankTitle": "Chỉnh sửa ngân hàng đề",
   "bankContent": "Trang này cho phép tạo và chỉnh sửa các đề thi có sẵn theo từng đầu sách. Lưu ý: Các đề thi đã được giao sẽ không thể chỉnh sửa.",
-  "bankList": "Danh sách"
+  "bankList": "Danh sách",
+  "practiceTestList": "Danh sách bài thi thử",
+  "practiceTitle": "Tạo và chỉnh sửa bài thi thử",
+  "practiceContent": "Chú ý: Khi xóa một câu hỏi thuộc bất kỳ kỹ năng nào, hãy lưu lại thay đổi để cập nhật lại thứ tự câu hỏi."
 }

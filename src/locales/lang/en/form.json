@@ -64,7 +64,7 @@
     "titleExam": "Assign Exam",
     "contentExam": "Select an available class and exam to assign to students.",
     "titleHomework": "Assign Homework",
-    "contentHomework": "To assign homework to a class, click the 'Assign Homework' button with a dashed border. Then, fill in the required information and create suitable questions."
+    "contentHomework": "To assign homework to a class, click the button with a dashed border. Then, fill in the required information and create suitable questions."
   },
   "exerciseSearch": {
     "className": "Class Name",

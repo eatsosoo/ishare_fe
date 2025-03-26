@@ -22,6 +22,13 @@
   import { useDesign } from '@/hooks/web/useDesign';
   import { examCreateApi } from '@/api/exam/exam';
 
+  const props = defineProps({
+    isPublished: {
+      type: String as PropType<'private' | 'publish'>,
+      default: 'private',
+    },
+  });
+
   const { t } = useI18n();
   const { createErrorModal, createSuccessModal } = useMessage();
   const [registerForm, { validate, resetFields }] = useForm({
@@ -54,6 +61,7 @@
         title,
         level,
         type: 'exam',
+        is_published: props.isPublished,
       };
       loading.value = true;
 
