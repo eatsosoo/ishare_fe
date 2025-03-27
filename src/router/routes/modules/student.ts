@@ -33,6 +33,14 @@ const student: AppRouteModule = {
       },
     },
     {
+      path: 'practice',
+      name: 'Practice',
+      component: () => import('@/views/student/practice.vue'),
+      meta: {
+        title: t('routes.page.takePracticeTest'),
+      },
+    },
+    {
       path: 'outcomes',
       name: 'Outcomes',
       component: () => import('@/views/student/outcomes.vue'),

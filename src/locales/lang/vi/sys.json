@@ -27,7 +27,8 @@
     "logoutMessage": "Xác nhận thoát khỏi hệ thống?",
     "menuLoading": "Đang tải menu...",
     "dataNotFound": "Không tìm thấy dữ liệu",
-    "submitExam": "Thời gian vẫn còn, bạn có muốn nộp bài trước không?"
+    "submitExam": "Thời gian vẫn còn, bạn có muốn nộp bài trước không?",
+    "skillOfPracticeEmpty": "Kỹ năng bài thi thử này chưa có câu hỏi, vui lòng chọn kỹ năng khác!"
   },
   "errorLog": {
     "tableTitle": "Danh sách lỗi",

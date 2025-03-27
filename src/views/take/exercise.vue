@@ -33,7 +33,8 @@
           <Col
             v-if="exerciseItem.skill === 'Reading'"
             :span="12"
-            class="bg-[aliceblue] border-r-2 border-gray h-full overflow-auto"
+            class="border-r-2 border-gray h-full overflow-auto"
+            :class="isDark ? '' : 'bg-[aliceblue]'"
           >
             <div class="p-4">
               <div>
@@ -214,10 +215,11 @@
   import { SpeakingExeAnswer, SubmitExerciseParams } from '@/api/exercise/exerciseModel';
   import { uploadAudioApi } from '@/api/exam/exam';
   import Icon from '@/components/Icon/Icon.vue';
+  import { useDarkModeTheme } from '@/hooks/setting/useDarkModeTheme';
 
   const route = useRoute();
   const router = useRouter();
-
+  const { isDark } = useDarkModeTheme();
   if (!route.query.id) {
     router.push('/dashboard');
   }

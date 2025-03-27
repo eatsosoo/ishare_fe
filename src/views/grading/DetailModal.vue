@@ -9,7 +9,11 @@
   >
     <template v-if="props.skillType === 'Reading' || props.skillType === 'Listening'">
       <Row :gutter="[16, 16]" class="h-full">
-        <Col :span="12" class="bg-[aliceblue] border-r-2 border-gray h-full overflow-auto">
+        <Col
+          :span="12"
+          class="border-r-2 border-gray h-full overflow-auto"
+          :class="isDark ? '' : 'bg-[aliceblue]'"
+        >
           <div class="p-4">
             <div v-if="props.skillType !== 'Listening'" v-html="subjectRef"></div>
             <div v-else>
@@ -84,7 +88,11 @@
     <template v-else>
       <Row v-if="completedAssignment" :gutter="[16, 16]" class="h-full">
         <!-- Questions -->
-        <Col :span="12" class="bg-[aliceblue] border-r-2 border-gray h-full overflow-auto">
+        <Col
+          :span="12"
+          class="border-r-2 border-gray h-full overflow-auto"
+          :class="isDark ? '' : 'bg-[aliceblue]'"
+        >
           <template v-if="props.skillType === 'Writing'">
             <div
               v-for="(group, index) in completedAssignment.parts[0].question_groups"
@@ -213,6 +221,7 @@
   import { getToken } from '@/utils/auth';
   import { uploadAudioApi } from '@/api/exam/exam';
   import { openWindow } from '@/utils';
+  import { useDarkModeTheme } from '@/hooks/setting/useDarkModeTheme';
 
   const props = defineProps({
     skillType: {
@@ -247,6 +256,8 @@
   const emit = defineEmits(['submit-grading']);
 
   const { t } = useI18n();
+  const { isDark } = useDarkModeTheme();
+
   const gradingFormData = ref({
     score: 0,
     feedback: '',

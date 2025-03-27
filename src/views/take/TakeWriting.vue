@@ -1,7 +1,11 @@
 <template>
   <div>
     <Row :gutter="[16, 16]" class="h-[84vh] w-[100vw] border-t-1 border-gray-200">
-      <Col :span="12" class="bg-[aliceblue] border-r-2 border-gray h-full overflow-auto">
+      <Col
+        :span="12"
+        class="border-r-2 border-gray h-full overflow-auto"
+        :class="isDark ? '' : 'bg-[aliceblue]'"
+      >
         <div class="p-6">
           <h2 class="text-primary">Writing Task {{ state.tabActive + 1 }}</h2>
           <div v-html="questions[state.tabActive].question_text"></div>
@@ -50,6 +54,7 @@
   import { Col, Input, Row } from 'ant-design-vue';
   import { useMessage } from '@/hooks/web/useMessage';
   import { useI18n } from '@/hooks/web/useI18n';
+  import { useDarkModeTheme } from '@/hooks/setting/useDarkModeTheme';
 
   const InputTextArea = Input.TextArea;
 
@@ -61,7 +66,7 @@
   });
 
   const emit = defineEmits(['change']);
-
+  const { isDark } = useDarkModeTheme();
   const state = reactive({
     tabActive: 0,
   });

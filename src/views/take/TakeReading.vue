@@ -1,7 +1,11 @@
 <template>
   <div>
     <Row :gutter="[16, 16]" class="h-[84vh] w-[100vw]">
-      <Col :span="12" class="bg-[aliceblue] border-r-2 border-gray h-full overflow-auto">
+      <Col
+        :span="12"
+        class="border-r-2 border-gray h-full overflow-auto"
+        :class="isDark ? '' : 'bg-[aliceblue]'"
+      >
         <div class="p-4">
           <div>
             <h1 class="text-2xl font-bold">Part {{ state.tabActive + 1 }}</h1>
@@ -75,6 +79,7 @@
   import { GroupQuestionItem, SkillItem } from '../test/types/question';
   import { Col, Row } from 'ant-design-vue';
   import { renderGroupQuestions } from './helpers';
+  import { useDarkModeTheme } from '@/hooks/setting/useDarkModeTheme';
 
   const props = defineProps({
     value: {
@@ -88,6 +93,7 @@
   });
 
   const emit = defineEmits(['sync']);
+  const { isDark } = useDarkModeTheme();
 
   const state = reactive({
     tabActive: 0,

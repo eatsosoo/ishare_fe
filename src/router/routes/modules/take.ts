@@ -32,6 +32,14 @@ const take: AppRouteModule = {
         title: '',
       },
     },
+    {
+      path: '/take/practice',
+      name: 'TakePractice',
+      component: () => import('@/views/take/practice.vue'),
+      meta: {
+        title: '',
+      },
+    },
   ],
 };
 

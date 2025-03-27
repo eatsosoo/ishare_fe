@@ -58,7 +58,6 @@
   });
 
   function clickOpen(examId: number, skill: SkillType) {
-    console.log(examId);
     router.push(`/take/index?id=${examId}&type=${skill}`);
   }
 </script>
