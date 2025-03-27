@@ -34,6 +34,8 @@
   "teacher": "Giáo viên",
   "studyDate": "Ngày học",
   "duration": "Thời gian làm bài",
+  "searchPracticeTest": "Tìm kiếm bài thi thử",
+  "titlePracticeTest": "Tiêu đề",
   "newClassForm": {
     "title": "Biểu mẫu tạo nhóm lớp",
     "formDesc": "",

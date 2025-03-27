@@ -1,5 +1,5 @@
 <template>
-  <PageWrapper title="Chấm bài">
+  <PageWrapper :title="t('routes.page.grading')">
     <Card :title="t('form.gradingSearch.searchText')" :bordered="false" class="mb-4">
       <BasicForm
         @register="registerForm"

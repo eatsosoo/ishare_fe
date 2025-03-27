@@ -1,6 +1,6 @@
 <template>
-  <PageWrapper title="Chấm bài">
-    <Card :title="t('form.gradingSearch.searchText')" :bordered="false" class="mb-4">
+  <PageWrapper :title="t('routes.page.practiceGrading')">
+    <Card :title="t('form.searchPracticeTest')" :bordered="false" class="mb-4">
       <BasicForm
         @register="registerForm"
         @submit="findExerciseOfClass"
@@ -73,7 +73,7 @@
   import PageWrapper from '@/components/Page/src/PageWrapper.vue';
   import BasicForm from '@/components/Form/src/BasicForm.vue';
   import { useForm } from '@/components/Form';
-  import { searchGradingSchemas } from '@/views/classroom/data';
+  import { searchGradingPracticeTestSchemas } from '@/views/classroom/data';
   import { ref } from 'vue';
   import { ExamGradingListItem, SkillType } from '@/api/exam/examModel';
   import { practiceGradingListApi } from '@/api/exam/exam';
@@ -103,7 +103,7 @@
     baseColProps: {
       span: 6,
     },
-    schemas: searchGradingSchemas,
+    schemas: searchGradingPracticeTestSchemas,
     showActionButtonGroup: true,
   });
 
@@ -150,9 +150,9 @@
   async function findExerciseOfClass() {
     try {
       const [values] = await Promise.all([validate()]);
-      const { classId, skill, type } = values;
-      useStore.setClassId(classId);
-      useStore.setGradingType(type);
+      const { examId, skill } = values;
+      console.log('examId', examId);
+      useStore.setPracticeTestId(examId);
       useStore.setGradingSkill(skill);
       showExerciseTable.value = true;
       reload();

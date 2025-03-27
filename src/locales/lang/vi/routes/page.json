@@ -30,5 +30,6 @@
   "bankList": "Danh sách",
   "practiceTestList": "Danh sách bài thi thử",
   "practiceTitle": "Tạo và chỉnh sửa bài thi thử",
-  "practiceContent": "Chú ý: Khi xóa một câu hỏi thuộc bất kỳ kỹ năng nào, hãy lưu lại thay đổi để cập nhật lại thứ tự câu hỏi."
+  "practiceContent": "Chú ý: Khi xóa một câu hỏi thuộc bất kỳ kỹ năng nào, hãy lưu lại thay đổi để cập nhật lại thứ tự câu hỏi.",
+  "practiceGrading": "Bài thi thử"
 }

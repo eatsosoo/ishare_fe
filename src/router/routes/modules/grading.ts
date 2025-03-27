@@ -29,7 +29,7 @@ const grading: AppRouteModule = {
       name: 'GradingPractice',
       component: () => import('@/views/grading/practice.vue'),
       meta: {
-        title: t('routes.page.grading'),
+        title: t('routes.page.practiceGrading'),
       },
     },
   ],

@@ -1,5 +1,5 @@
 import { classListApi } from '@/api/class/class';
-import { examListApi } from '@/api/exam/exam';
+import { examListApi, practiceExamListApi } from '@/api/exam/exam';
 import { bookListApi } from '@/api/exercise/exercise';
 import { bankListApi, teacherListApi } from '@/api/teacher/teacher';
 import { FormSchema } from '@/components/Form';
@@ -187,6 +187,64 @@ export const searchGradingSchemas: FormSchema[] = [
         {
           label: t('common.assignAtExam'),
           value: 'exam',
+        },
+      ],
+    },
+    required: true,
+    colProps: {
+      xl: 6,
+      xxl: 4,
+    },
+  },
+];
+
+export const searchGradingPracticeTestSchemas: FormSchema[] = [
+  {
+    field: 'examId',
+    component: 'ApiSelect',
+    label: t('form.titlePracticeTest'),
+    componentProps: {
+      // more details see /src/components/Form/src/components/ApiSelect.vue
+      api: practiceExamListApi(),
+      params: {
+        id: 1,
+      },
+
+      resultField: 'items',
+      // use name as label
+      labelField: 'title',
+      // use id as value
+      valueField: 'id',
+      // not request untill to select
+      immediate: true,
+    },
+    required: true,
+    colProps: {
+      xl: 6,
+      xxl: 6,
+    },
+  },
+  {
+    field: 'skill',
+    label: t('form.gradingSearch.skill'),
+    component: 'Select',
+    componentProps: {
+      options: [
+        {
+          label: 'Reading',
+          value: 'Reading',
+        },
+        {
+          label: 'Listening',
+          value: 'Listening',
+        },
+        {
+          label: 'Speaking',
+          value: 'Speaking',
+        },
+        {
+          label: 'Writing',
+          value: 'Writing',
         },
       ],
     },

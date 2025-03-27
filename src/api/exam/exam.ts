@@ -136,12 +136,16 @@ export const practiceExamListApi = () => (params: BasicPageParams) =>
     },
   });
 
-export const practiceGradingListApi = () => (params: BasicPageParams) =>
-  defHttp.get<ExamListGetResultModel>({
-    url: `${Api.EXAM_LIST}-publish/8/students`,
+export const practiceGradingListApi = () => (params: BasicPageParams) => {
+  const useStore = useUserStore();
+  const examId = useStore.getPracticeTestId;
+  const skill = useStore.gradingSkill;
+  return defHttp.get<ExamListGetResultModel>({
+    url: `${Api.EXAM_LIST}-publish/${examId}/students?skill=${skill}`,
     params,
     headers: {
       // @ts-ignore
       ignoreCancelToken: true,
     },
   });
+};

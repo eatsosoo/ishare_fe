@@ -16,7 +16,7 @@ import { RouteRecordRaw } from 'vue-router';
 import { PAGE_NOT_FOUND_ROUTE } from '@/router/routes/basic';
 import { h } from 'vue';
 import { SkillType } from '@/api/exam/examModel';
-import { Result } from '@/api/model/baseModel';
+import { ResultBase } from '@/api/model/baseModel';
 
 interface UserState {
   userInfo: Nullable<UserInfo>;
@@ -25,6 +25,7 @@ interface UserState {
   sessionTimeout?: boolean;
   lastUpdateTime: number;
   classId: number | null;
+  practiceTestId: number | null;
   gradingSkill: SkillType;
   gradingType: string;
 }
@@ -44,6 +45,7 @@ export const useUserStore = defineStore({
     lastUpdateTime: 0,
     //
     classId: null,
+    practiceTestId: null,
     gradingSkill: 'Reading',
     gradingType: 'exam',
   }),
@@ -65,6 +67,9 @@ export const useUserStore = defineStore({
     },
     getClassId(state): number | null {
       return state.classId;
+    },
+    getPracticeTestId(state): number | null {
+      return state.practiceTestId;
     },
     getGradingSkill(state): SkillType {
       return state.gradingSkill;
@@ -92,6 +97,9 @@ export const useUserStore = defineStore({
     },
     setClassId(id: number | null) {
       this.classId = id;
+    },
+    setPracticeTestId(id: number | null) {
+      this.practiceTestId = id;
     },
     setGradingSkill(type: SkillType) {
       this.gradingSkill = type;
@@ -210,7 +218,7 @@ export const useUserStore = defineStore({
     /**
      * @description: Register account
      */
-    async register(params: RegisterParams): Promise<Result<RegisterResultModel> | null> {
+    async register(params: RegisterParams): Promise<ResultBase<RegisterResultModel> | null> {
       try {
         const RegisterParams = params;
         const result = await registerApi(RegisterParams);
