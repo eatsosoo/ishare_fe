@@ -491,10 +491,10 @@
     ([newValue, newSkillType], [_, oldSkillType]) => {
       sections.value = newValue;
       activeKey.value = 0;
-      if (newSkillType !== oldSkillType) {
-        groupActive.value = null;
-        // console.log(sections.value[activeKey.value].subject);
-      }
+      // if (newSkillType !== oldSkillType) {
+      groupActive.value = null;
+      // console.log(sections.value[activeKey.value].subject);
+      // }
     },
   );
 </script>
