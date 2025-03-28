@@ -18,6 +18,7 @@ enum Api {
   EXAM_LIST = '/exams',
   EXAM_ACTION = '/exam',
   EXAM_SKILL = '/exam-skill',
+  PRACTICE = '/practice',
 }
 
 export const examListApi = () => (params: BasicPageParams) =>
@@ -128,7 +129,7 @@ export const examGradingListApi = () => (params: BasicPageParams) => {
 
 export const practiceExamListApi = () => (params: BasicPageParams) =>
   defHttp.get<ExamListGetResultModel>({
-    url: `${Api.EXAM_LIST}-publish`,
+    url: `${Api.PRACTICE}`,
     params,
     headers: {
       // @ts-ignore
@@ -141,7 +142,7 @@ export const practiceGradingListApi = () => (params: BasicPageParams) => {
   const examId = useStore.getPracticeTestId;
   const skill = useStore.gradingSkill;
   return defHttp.get<ExamListGetResultModel>({
-    url: `${Api.EXAM_LIST}-publish/${examId}/students?skill=${skill}`,
+    url: `${Api.PRACTICE}/${examId}/students?skill=${skill}`,
     params,
     headers: {
       // @ts-ignore

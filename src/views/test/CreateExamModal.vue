@@ -61,7 +61,7 @@
         title,
         level,
         type: 'exam',
-        is_published: props.isPublished,
+        status: props.isPublished,
       };
       loading.value = true;
 

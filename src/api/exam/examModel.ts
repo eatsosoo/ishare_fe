@@ -18,7 +18,7 @@ export interface ExamAddForm {
   title: string;
   level: string;
   type: string;
-  is_published: 'private' | 'publish';
+  status: 'private' | 'publish';
 }
 
 export interface ExamSkillForm {
