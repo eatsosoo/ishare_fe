@@ -34,7 +34,7 @@ export const examListApi = () => (params: BasicPageParams) =>
 export const examDeleteApi = (examId: number) =>
   defHttp.delete<ResultBase<ExamBasicItem>>(
     {
-      url: `${Api.EXAM_ACTION}/${examId}/tests`,
+      url: `${Api.EXAM_LIST}/${examId}`,
     },
     {
       errorMessageMode: 'modal',
