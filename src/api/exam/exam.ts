@@ -31,8 +31,8 @@ export const examListApi = () => (params: BasicPageParams) =>
     },
   });
 
-export const examDeleteApi = (examId: number) => () => {
-  defHttp.delete<BasicApiResult<ExamBasicItem>>(
+export const examDeleteApi = (examId: number) =>
+  defHttp.delete<ResultBase<ExamBasicItem>>(
     {
       url: `${Api.EXAM_LIST}/${examId}`,
     },
@@ -40,7 +40,6 @@ export const examDeleteApi = (examId: number) => () => {
       errorMessageMode: 'modal',
     },
   );
-};
 
 export const examCreateApi = (params: ExamAddForm, mode: ErrorMessageMode = 'modal') =>
   defHttp.post<BasicApiResult<ExamAddForm>>(

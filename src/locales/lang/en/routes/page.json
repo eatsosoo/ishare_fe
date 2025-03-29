@@ -27,5 +27,9 @@
   "exerciseBank": "Question bank",
   "bankTitle": "Edit Question Bank",
   "bankContent": "This page allows you to create and edit pre-made exams for each book. Note: Exams that have already been assigned cannot be edited.",
-  "practiceGrading": "Practice Test"
+  "bankList": "List",
+  "practiceTestList": "Practice Test List",
+  "practiceTitle": "Create and Edit Practice Test",
+  "practiceContent": "Note: When deleting a question from any skill, make sure to save the changes to update the question order.",
+  "practiceGrading": "Practice Test Grading"
 }
