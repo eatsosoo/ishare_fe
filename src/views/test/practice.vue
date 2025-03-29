@@ -86,7 +86,7 @@
     createConfirm({
       iconType: 'warning',
       title: () => h('span', t('sys.app.logoutTip')),
-      content: () => h('span', t('common.warning.deleteTest')),
+      content: () => h('span', t('common.warning.deletePracticeTest')),
       onOk: async () => {
         const res = await examDeleteApi(id);
         if (res && res.items) {
