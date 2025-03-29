@@ -158,7 +158,7 @@ export const exerciseSubmitApi = (
     },
   );
 
-export const createBankApi = (params: CreateBankParams, mode: ErrorMessageMode = 'none') =>
+export const createBankApi = (params: CreateBankParams, mode: ErrorMessageMode = 'modal') =>
   defHttp.post<ResultBase<CreateBankParams>>(
     {
       url: `${Api.BANK}`,
