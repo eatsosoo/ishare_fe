@@ -2,6 +2,7 @@ import { classListApi } from '@/api/class/class';
 import { FormProps, FormSchema, BasicColumn } from '@/components/Table';
 import { useI18n } from '@/hooks/web/useI18n';
 import { getLeftValue } from '@/utils/stringUtils';
+import { isString } from 'lodash-es';
 
 const { t } = useI18n();
 
@@ -1112,4 +1113,39 @@ export function getBankListConfig(): Partial<FormProps> {
       },
     ],
   };
+}
+
+export function getPracticeGradingColumns(): BasicColumn[] {
+  return [
+    {
+      title: t('table.exeName'),
+      dataIndex: 'exam_title',
+    },
+    {
+      title: t('table.exerciseTable.skill'),
+      dataIndex: 'skill',
+    },
+    {
+      title: t('table.exerciseTable.student'),
+      dataIndex: 'user_name',
+    },
+    {
+      title: t('table.takeTimes'),
+      dataIndex: 'times',
+    },
+    {
+      title: t('table.exerciseTable.score'),
+      dataIndex: 'score',
+      customRender: ({ text }) => {
+        if (isString(text)) {
+          return parseInt(text);
+        }
+        return text;
+      },
+    },
+    {
+      title: t('table.exerciseTable.createdAt'),
+      dataIndex: 'completed_at',
+    },
+  ];
 }

@@ -63,6 +63,7 @@
   "bankTitle": "Exam Name",
   "createBank": "Create Exam",
   "createdAt": "Creation Date",
+  "takeTimes": "Number of Attempts",
   "exerciseTable": {
     "name": "Exercise Name",
     "score": "Score",

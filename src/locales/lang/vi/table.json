@@ -63,6 +63,7 @@
   "bankTitle": "Tên đề",
   "createBank": "Tạo đề",
   "createdAt": "Ngày tạo",
+  "takeTimes": "Số lần làm",
   "exerciseTable": {
     "name": "Tên bài tập",
     "score": "Điểm",

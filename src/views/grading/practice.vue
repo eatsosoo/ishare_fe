@@ -48,18 +48,6 @@
       @register="registerDetailModal"
       @submit-grading="handleSuccess"
     />
-    <ExeModal
-      :title="modalTitle"
-      :skill-type="skillType"
-      :exam-id="examIdRef"
-      :student-id="studentIdRef"
-      :score-id="scoreIdRef"
-      :times="timeRef"
-      :score="scoreRef"
-      :assign-at="assignAtRef"
-      @register="registerExeModal"
-      @submit-grading="handleSuccess"
-    />
   </PageWrapper>
 </template>
 <script lang="ts" setup>
@@ -68,7 +56,6 @@
   import { useI18n } from '@/hooks/web/useI18n';
   import { Card, Tag } from 'ant-design-vue';
   import DetailModal from './DetailModal.vue';
-  import ExeModal from './ExeModal.vue';
   import { useModal } from '@/components/Modal';
   import PageWrapper from '@/components/Page/src/PageWrapper.vue';
   import BasicForm from '@/components/Form/src/BasicForm.vue';
@@ -97,7 +84,6 @@
   });
   const [registerDetailModal, { openModal: openDetailModal, closeModal: closeDetailModal }] =
     useModal();
-  const [registerExeModal, { openModal: openExeModal, closeModal: closeExeModal }] = useModal();
 
   const [registerForm, { validate }] = useForm({
     baseColProps: {
@@ -118,33 +104,26 @@
   const assignAtRef = ref<string | undefined>(undefined);
 
   function clickOpen(item: ExamGradingListItem) {
-    const { exam_id, skill, name, user_id, score_id, times, score, assign_at } = item;
+    const { exam_id, skill, user_name, user_id, score_id, times, score } = item;
     if (!exam_id || !user_id || !score_id) {
       return;
     }
 
-    console.log(assign_at);
-
     skillType.value = skill;
-    modalTitle.value = `Học sinh: ${name} - Kỹ năng: ${skill}`;
+    modalTitle.value = `${t('common.student')}: ${user_name} - ${t('form.skill')}: ${skill}`;
     examIdRef.value = exam_id;
     studentIdRef.value = user_id;
     scoreIdRef.value = score_id;
     timeRef.value = times;
     scoreRef.value = score;
-    assignAtRef.value = assign_at;
+    assignAtRef.value = 'exam';
 
-    if (assign_at === 'exam') {
-      openDetailModal();
-    } else {
-      openExeModal();
-    }
+    openDetailModal();
   }
 
   function handleSuccess() {
     reload();
     closeDetailModal();
-    closeExeModal();
   }
 
   async function findExerciseOfClass() {
