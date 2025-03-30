@@ -501,7 +501,7 @@
           onOk: async () => {
             stopRecording();
             stopTimer();
-            state.qIdx++;
+            state.qIdx = exerciseItem.value.question_groups.length;
           },
         });
       } else {

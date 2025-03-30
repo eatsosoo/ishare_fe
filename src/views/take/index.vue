@@ -100,10 +100,12 @@
 
   function startCountdown(time: number) {
     duration.value = time * 60;
+    isWarning.value = false;
+
     if (interval) clearInterval(interval); // Xóa interval cũ nếu có
 
     interval = setInterval(() => {
-      if (duration.value <= 0) {
+      if (duration.value < 0) {
         clearInterval(interval!);
         return;
       }
@@ -278,7 +280,7 @@
       if (val < 0) {
         console.log(val);
         isWarning.value = false;
-        timeLeft.value = '0:00';
+        // timeLeft.value = '0:00';
         if (skillExam.value?.type !== 'Speaking') {
           let countdown = 3;
           const countdownInterval = setInterval(() => {

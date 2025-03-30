@@ -157,7 +157,7 @@
             questionCurrent.value = null;
             emit('stopRecording');
             stopRecording();
-            questionIndex.value++;
+            questionIndex.value = props.value.parts[partIndex.value]?.question_groups.length;
           },
         });
       } else {
