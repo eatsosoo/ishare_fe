@@ -1206,12 +1206,12 @@ export function getPracticeGradingColumns(): BasicColumn[] {
     {
       title: t('table.exerciseTable.score'),
       dataIndex: 'score',
-      customRender: ({ text }) => {
-        if (isString(text)) {
-          return parseInt(text);
-        }
-        return text;
-      },
+      // customRender: ({ text }) => {
+      //   if (isString(text)) {
+      //     return parseInt(text);
+      //   }
+      //   return text;
+      // },
     },
     {
       title: t('table.exerciseTable.createdAt'),

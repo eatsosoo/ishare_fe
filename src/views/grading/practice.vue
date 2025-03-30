@@ -15,7 +15,7 @@
           }}</template>
           <template v-if="column.key === 'score'">
             {{
-              record.score === -1 || record.score === null
+              record.score === -1 || record.score === null || record.score === '-1.0'
                 ? t('common.noScoreYet')
                 : `${['Writing', 'Speaking'].includes(record.skill) ? record.score : `${record.score}/${record.question_count}`}`
             }}

@@ -14,15 +14,30 @@
             {{ record.completed_at ? 'v' : 'x' }}
           </Tag>
         </template>
-        <template v-if="column.key === 'action' && !record.completed_at">
+        <template v-if="column.key === 'action'">
           <a-button
+            v-if="!record.completed_at"
             size="small"
             preIcon="ant-design:edit-filled"
             @click="clickOpen(record.exam_id, record.skill)"
           />
+          <a-button
+            v-if="record.completed_at"
+            size="small"
+            preIcon="ant-design:eye-outlined"
+            @click="clickView(record)"
+          />
         </template>
       </template>
     </BasicTable>
+
+    <DetailModal
+      :title="modalTitle"
+      :skill-type="skillType"
+      :exam-id="examIdRef"
+      :student-id="studentIdRef"
+      @register="registerExeModal"
+    />
   </div>
 </template>
 <script lang="ts" setup>
@@ -38,6 +53,9 @@
 
   import { SkillType } from '@/api/exam/examModel';
   import { useRouter } from 'vue-router';
+  import DetailModal from './DetailModal.vue';
+  import { useModal } from '@/components/Modal';
+  import { ref } from 'vue';
 
   const { t } = useI18n();
   const router = useRouter();
@@ -57,8 +75,25 @@
     },
   });
 
+  const [registerExeModal, { openModal: openExeModal }] = useModal();
+
+  const modalTitle = ref('');
+  const examIdRef = ref(0);
+  const studentIdRef = ref(0);
+  const skillType = ref('');
+
   function clickOpen(examId: number, skill: SkillType) {
     router.push(`/take/index?id=${examId}&type=${skill}`);
+  }
+
+  function clickView(item: any) {
+    const { user_name, skill, user_id, exam_id } = item;
+    modalTitle.value = `Học sinh: ${user_name} - Kỹ năng: ${skill}`;
+    examIdRef.value = exam_id;
+    studentIdRef.value = user_id;
+    skillType.value = skill;
+
+    openExeModal();
   }
 </script>
 

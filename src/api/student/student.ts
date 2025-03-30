@@ -39,7 +39,7 @@ export const getHomeworkListOfStudentApi = () => (params: BasicPageParams) =>
 
 export const getExamListOfStudentApi = () => (params: BasicPageParams) =>
   defHttp.get<StudentListGetResultModel>({
-    url: `${Api.STUDENT_LIST}${Api.EXAM}`,
+    url: `${Api.STUDENT_LIST}/exam/list`,
     params,
     headers: {
       // @ts-ignore
