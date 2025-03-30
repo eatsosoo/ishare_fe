@@ -288,6 +288,10 @@ export function getExamColumns(): BasicColumn[] {
 export function getExamOfStudentColumns(): BasicColumn[] {
   return [
     {
+      title: t('table.examTable.assignmentTitle'),
+      dataIndex: 'assignment_title',
+    },
+    {
       title: t('table.examTable.name'),
       dataIndex: 'exam_title',
     },
@@ -440,6 +444,46 @@ export function getAssignmentColumns(): BasicColumn[] {
     {
       title: t('table.exeType'),
       dataIndex: 'assign_at',
+    },
+    {
+      title: t('table.assignmentTable.teacher'),
+      dataIndex: 'teacher',
+    },
+    {
+      title: t('table.assignmentTable.deadline'),
+      dataIndex: 'deadline',
+    },
+    {
+      title: t('table.createdAt'),
+      dataIndex: 'created_at',
+      customRender: ({ text }) => {
+        const dateUTC = new Date(text);
+        const localDate = dateUTC.toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' });
+        return localDate;
+      },
+    },
+  ];
+}
+
+export function getAssignmentExamColumns(): BasicColumn[] {
+  return [
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      fixed: 'left',
+      width: 80,
+    },
+    {
+      title: t('table.assignmentTable.title'),
+      dataIndex: 'title',
+    },
+    {
+      title: t('table.assignmentTable.examTitle'),
+      dataIndex: 'exam_title',
+    },
+    {
+      title: t('table.assignmentTable.className'),
+      dataIndex: 'class_name',
     },
     {
       title: t('table.assignmentTable.teacher'),
@@ -950,6 +994,32 @@ export function getAssignmentListConfig(): Partial<FormProps> {
             },
           ],
         },
+        colProps: {
+          xl: 6,
+          xxl: 4,
+        },
+      },
+    ],
+  };
+}
+
+export function getAssignmentExamListConfig(): Partial<FormProps> {
+  return {
+    labelWidth: 100,
+    schemas: [
+      {
+        field: 'title',
+        label: t('table.assignmentTable.title'),
+        component: 'Input',
+        colProps: {
+          xl: 6,
+          xxl: 4,
+        },
+      },
+      {
+        field: 'class_name',
+        label: t('table.assignmentTable.className'),
+        component: 'Input',
         colProps: {
           xl: 6,
           xxl: 4,

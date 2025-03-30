@@ -77,6 +77,7 @@
   },
   "examTable": {
     "name": "Tên bài thi",
+    "assignmentTitle": "Tiêu đề",
     "score": "Điểm",
     "status": "Trạng thái",
     "action": "Hành động",
@@ -100,7 +101,7 @@
     "deadline": "Hạn nộp",
     "teacher": "Giáo viên",
     "className": "Tên lớp",
-    "examTitle": "Tên bài",
+    "examTitle": "Tên bài thi",
     "assignNormal": "Giao bài thủ công",
     "assignFromBank": "Giao bài từ ngân hàng đề"
   }

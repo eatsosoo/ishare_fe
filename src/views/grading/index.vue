@@ -64,7 +64,7 @@
 </template>
 <script lang="ts" setup>
   import { BasicTable, useTable } from '@/components/Table';
-  import { getPracticeGradingColumns, getSearchExerciseConfig } from '@/views/classroom/tableData';
+  import { getExamGradingColumns, getSearchExerciseConfig } from '@/views/classroom/tableData';
   import { useI18n } from '@/hooks/web/useI18n';
   import { Card, Tag } from 'ant-design-vue';
   import DetailModal from './DetailModal.vue';
@@ -83,7 +83,7 @@
   const useStore = useUserStore();
   const [registerTable, { reload }] = useTable({
     api: examGradingListApi(),
-    columns: getPracticeGradingColumns(),
+    columns: getExamGradingColumns(),
     useSearchForm: false,
     formConfig: getSearchExerciseConfig(),
     tableSetting: { fullScreen: true },

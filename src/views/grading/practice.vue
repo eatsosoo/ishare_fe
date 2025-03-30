@@ -52,7 +52,7 @@
 </template>
 <script lang="ts" setup>
   import { BasicTable, useTable } from '@/components/Table';
-  import { getExamGradingColumns, getSearchExerciseConfig } from '@/views/classroom/tableData';
+  import { getPracticeGradingColumns, getSearchExerciseConfig } from '@/views/classroom/tableData';
   import { useI18n } from '@/hooks/web/useI18n';
   import { Card, Tag } from 'ant-design-vue';
   import DetailModal from './DetailModal.vue';
@@ -70,7 +70,7 @@
   const useStore = useUserStore();
   const [registerTable, { reload }] = useTable({
     api: practiceGradingListApi(),
-    columns: getExamGradingColumns(),
+    columns: getPracticeGradingColumns(),
     useSearchForm: false,
     formConfig: getSearchExerciseConfig(),
     tableSetting: { fullScreen: true },

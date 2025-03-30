@@ -6,7 +6,7 @@
     <BasicTable @register="registerTable">
       <template #toolbar>
         <a-button type="primary" @click="openModal">{{
-          t('table.assignmentTable.assign')
+          t('form.gradingSearch.titleExam')
         }}</a-button>
       </template>
     </BasicTable>
@@ -19,16 +19,19 @@
   import { BasicTable, useTable } from '@/components/Table';
   import AssignmentModal from '@/views/test/AssignmentModal.vue';
   import { assignmentListApi } from '@/api/teacher/teacher';
-  import { getAssignmentColumns, getAssignmentListConfig } from '@/views/classroom/tableData';
+  import {
+    getAssignmentExamColumns,
+    getAssignmentExamListConfig,
+  } from '@/views/classroom/tableData';
   import { useModal } from '@/components/Modal';
 
   const { t } = useI18n();
   const [registerTable, { reload }] = useTable({
     title: t('routes.page.assignmentList'),
     api: assignmentListApi('exam'),
-    columns: getAssignmentColumns(),
+    columns: getAssignmentExamColumns(),
     useSearchForm: true,
-    formConfig: getAssignmentListConfig(),
+    formConfig: getAssignmentExamListConfig(),
     showTableSetting: true,
     tableSetting: { fullScreen: true },
     showIndexColumn: false,
