@@ -36,6 +36,7 @@
       :skill-type="skillType"
       :exam-id="examIdRef"
       :student-id="studentIdRef"
+      :score="scoreRef"
       @register="registerExeModal"
     />
   </div>
@@ -81,17 +82,19 @@
   const examIdRef = ref(0);
   const studentIdRef = ref(0);
   const skillType = ref('');
+  const scoreRef = ref(0);
 
   function clickOpen(examId: number, skill: SkillType) {
     router.push(`/take/index?id=${examId}&type=${skill}`);
   }
 
   function clickView(item: any) {
-    const { user_name, skill, user_id, exam_id } = item;
+    const { user_name, skill, user_id, exam_id, score } = item;
     modalTitle.value = `Học sinh: ${user_name} - Kỹ năng: ${skill}`;
     examIdRef.value = exam_id;
     studentIdRef.value = user_id;
     skillType.value = skill;
+    scoreRef.value = score;
 
     openExeModal();
   }

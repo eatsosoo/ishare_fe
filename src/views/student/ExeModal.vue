@@ -141,7 +141,7 @@
                 label-align="left"
               >
                 <span>{{
-                  gradingFormData.score ? gradingFormData.score : t('common.noScoreYet')
+                  props.score === -1 || props.score === null ? t('common.noScoreYet') : props.score
                 }}</span>
               </FormItem>
               <FormItem
@@ -192,6 +192,10 @@
     },
     studentId: {
       type: Number,
+    },
+    score: {
+      type: Number,
+      default: 0,
     },
   });
 

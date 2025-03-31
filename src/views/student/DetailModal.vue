@@ -161,7 +161,9 @@
                 :label-col="{ span: 3 }"
                 label-align="left"
               >
-                <InputNumber v-model:value="gradingFormData.score" :min="0" :max="10" required />
+                <span>{{
+                  props.score === -1 || props.score === null ? t('common.noScoreYet') : props.score
+                }}</span>
               </FormItem>
               <FormItem
                 :label="t('common.feedback')"
@@ -188,7 +190,7 @@
 
 <script lang="ts" setup>
   import { BasicModal } from '@/components/Modal';
-  import { Row, Col, InputNumber, Form, FormItem, Card } from 'ant-design-vue';
+  import { Row, Col, Form, FormItem, Card } from 'ant-design-vue';
   import { ref, type PropType, watch } from 'vue';
   import { useI18n } from '@/hooks/web/useI18n';
   import { SkillType, ResponseExamPartItem } from '@/api/exam/examModel';
@@ -210,6 +212,10 @@
     },
     studentId: {
       type: Number,
+    },
+    score: {
+      type: Number,
+      default: 0,
     },
   });
 
