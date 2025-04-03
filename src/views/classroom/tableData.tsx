@@ -1249,3 +1249,49 @@ export function getPracticeDoneColumns(): BasicColumn[] {
     },
   ];
 }
+
+export function getPracticeDoneConfig(): Partial<FormProps> {
+  return {
+    labelWidth: 100,
+    schemas: [
+      {
+        field: 'title',
+        label: t('form.exam.name'),
+        component: 'Input',
+        colProps: {
+          xl: 6,
+          xxl: 4,
+        },
+      },
+      {
+        field: 'skill',
+        label: t('form.skill'),
+        component: 'Select',
+        componentProps: {
+          options: [
+            {
+              label: 'Reading',
+              value: 'Reading',
+            },
+            {
+              label: 'Listening',
+              value: 'Listening',
+            },
+            {
+              label: 'Speaking',
+              value: 'Speaking',
+            },
+            {
+              label: 'Writing',
+              value: 'Writing',
+            },
+          ],
+        },
+        colProps: {
+          xl: 6,
+          xxl: 4,
+        },
+      },
+    ],
+  };
+}

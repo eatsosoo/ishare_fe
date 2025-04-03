@@ -86,6 +86,7 @@
   import {
     getExamListConfig,
     getPracticeDoneColumns,
+    getPracticeDoneConfig,
     getTestColumns,
   } from '@/views/classroom/tableData';
   import { Card, TabPane, Tabs, Tooltip } from 'ant-design-vue';
@@ -146,7 +147,7 @@
     api: practiceDoneListApi(useStore.userInfo?.id),
     columns: getPracticeDoneColumns(),
     useSearchForm: true,
-    formConfig: getExamListConfig(),
+    formConfig: getPracticeDoneConfig(),
     showTableSetting: true,
     tableSetting: { fullScreen: true },
     showIndexColumn: true,
