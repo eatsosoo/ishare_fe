@@ -8,7 +8,7 @@
         ><Icon size="30" icon="ant-design:field-time-outlined" color="black" /> {{ timeLeft }}</div
       >
       <div v-if="skillExam?.type !== 'Speaking'" class="right-0 absolute mr-4">
-        <a-button type="primary" preIcon="ant-design:send-outlined" @click="submitExam"
+        <a-button type="primary" preIcon="ant-design:send-outlined" @click="submitExam()"
           >Submit</a-button
         >
       </div>

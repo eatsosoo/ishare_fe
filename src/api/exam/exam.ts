@@ -136,6 +136,16 @@ export const practiceExamListApi = () => (params: BasicPageParams) =>
     },
   });
 
+export const practiceDoneListApi = (studentId: number) => (params: BasicPageParams) =>
+  defHttp.get<ExamListGetResultModel>({
+    url: `${Api.PRACTICE}/student/${studentId}`,
+    params,
+    headers: {
+      // @ts-ignore
+      ignoreCancelToken: true,
+    },
+  });
+
 export const practiceGradingListApi = () => (params: BasicPageParams) => {
   const useStore = useUserStore();
   const examId = useStore.getPracticeTestId;

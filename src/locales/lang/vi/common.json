@@ -93,6 +93,8 @@
   "audioOfStudent": "Bài nói của học sinh",
   "score": "Điểm",
   "feedback": "Nhận xét",
+  "practiceTestList": "Danh sách",
+  "practiceTestDone": "Bài đã làm",
   "warning": {
     "addActionEditor": "Chưa có vị trí để chèn text!",
     "deleteClass": "Bạn có muốn xoá lớp học này không?",

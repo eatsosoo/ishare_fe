@@ -2,7 +2,6 @@ import { classListApi } from '@/api/class/class';
 import { FormProps, FormSchema, BasicColumn } from '@/components/Table';
 import { useI18n } from '@/hooks/web/useI18n';
 import { getLeftValue } from '@/utils/stringUtils';
-import { isString } from 'lodash-es';
 
 const { t } = useI18n();
 
@@ -1215,6 +1214,37 @@ export function getPracticeGradingColumns(): BasicColumn[] {
     },
     {
       title: t('table.exerciseTable.createdAt'),
+      dataIndex: 'completed_at',
+    },
+  ];
+}
+
+export function getPracticeDoneColumns(): BasicColumn[] {
+  return [
+    // {
+    //   title: 'ID',
+    //   dataIndex: 'id',
+    //   fixed: 'left',
+    //   width: 80,
+    // },
+    {
+      title: t('table.examTable.name'),
+      dataIndex: 'exam_title',
+    },
+    {
+      title: t('table.skill'),
+      dataIndex: 'skill',
+    },
+    {
+      title: t('table.score'),
+      dataIndex: 'score',
+    },
+    {
+      title: t('table.takeTimes'),
+      dataIndex: 'times',
+    },
+    {
+      title: t('table.completedAt'),
       dataIndex: 'completed_at',
     },
   ];
