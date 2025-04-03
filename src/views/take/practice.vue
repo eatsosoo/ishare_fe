@@ -266,7 +266,7 @@
       const result = await examSubmitApi(state.examId, formatData);
       if (result && result.items) {
         createMessage.success(t('common.submitTestSuccess'));
-        router.push('/student/exam');
+        router.push('/student/practice');
       }
     } catch (error) {
       console.log(error);
