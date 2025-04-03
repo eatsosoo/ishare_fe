@@ -80,7 +80,7 @@
   const defLength = ref<number>(props.value.length);
 
   const allowAction = computed(() => {
-    return props.typeAnswer !== 'true_false_not_given';
+    return props.typeAnswer !== 'true_false_not_given' && props.typeAnswer !== 'yes_no_not_given';
   });
   const allowActionLabel = computed(() => {
     if (props.typeAnswer === 'correct_letter') return true;
@@ -88,6 +88,7 @@
   });
   const hiddenRemoveBtn = computed(() => {
     if (props.typeAnswer === 'true_false_not_given') return true;
+    else if (props.typeAnswer === 'yes_no_not_given') return true;
     else if (props.typeAnswer === 'multiple_choice' && formData.value.length === defLength.value)
       return true;
     else if (props.typeAnswer === 'choice' && formData.value.length < 3) return true;

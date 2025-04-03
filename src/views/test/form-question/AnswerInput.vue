@@ -16,6 +16,12 @@
         class="w-[10rem] ml-2"
       />
       <Select
+        v-else-if="props.answerType === 'yes_no_not_given'"
+        v-model:value="localModel[key]"
+        :options="options as OptionAnswerType[]"
+        class="w-[10rem] ml-2"
+      />
+      <Select
         v-else-if="props.answerType === 'correct_letter'"
         v-model:value="localModel[key]"
         :options="options as OptionAnswerType[]"

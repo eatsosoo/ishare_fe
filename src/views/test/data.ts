@@ -74,6 +74,7 @@ export const WRITING_DEF: NewPartItem = {
         question_1: 'no_answer',
       },
       question_count: 1,
+      question_duration: 0,
     },
   ],
 };
@@ -94,6 +95,7 @@ export const SPEAKING_DEF: NewPartItem = {
         question_1: 'no_answer',
       },
       question_count: 1,
+      question_duration: 0,
     },
   ],
 };
@@ -137,6 +139,9 @@ export function handleAnswerOptions(type: SelectQuestionType, orders: number[]) 
   switch (type) {
     case 'true_false_not_given':
       genOps = trueFalseNotGivenOptions;
+      break;
+    case 'yes_no_not_given':
+      genOps = yesNoNotGivenOptions;
       break;
     case 'choice':
       genOps = orders.reduce((acc, item) => {
