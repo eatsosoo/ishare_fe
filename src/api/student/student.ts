@@ -66,8 +66,13 @@ export const getExamCapacityApi = () => (params: BasicPageParams) =>
     },
   });
 
-export const getDetailExamOfStudent = (studentId: number, examId: number, type: SkillType) => {
-  const url = `${Api.STUDENT_LIST}/${studentId}/skill/${examId}?type=${type}`;
+export const getDetailExamOfStudent = (
+  studentId: number,
+  examId: number,
+  type: SkillType,
+  times = 1,
+) => {
+  const url = `${Api.STUDENT_LIST}/${studentId}/skill/${examId}?type=${type}&times=${times}`;
   return defHttp.get<ResultBase<ResponseExamPartItem>>({
     url,
     headers: {

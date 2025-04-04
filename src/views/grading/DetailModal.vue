@@ -334,7 +334,7 @@
   async function getExamOfStudent(studentId: number, examId: number, type: SkillType) {
     try {
       loading.value = true;
-      const result = await getDetailExamOfStudent(studentId, examId, type);
+      const result = await getDetailExamOfStudent(studentId, examId, type, props.times);
       if (result && result.items) {
         completedAssignment.value = result.items;
         const explanation = completedAssignment.value.parts[0].question_groups[0].explanation;

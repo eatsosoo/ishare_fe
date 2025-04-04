@@ -52,7 +52,7 @@
             <div class="shadow-md rounded-md mt-1">
               <BasicTable @register="registerDoneTable">
                 <template #bodyCell="{ column, record }">
-                  <template v-if="column.key === 'action' && !record.completed_at">
+                  <template v-if="column.key === 'action'">
                     <Tooltip title="View" placement="bottom">
                       <a-button
                         size="small"
@@ -75,6 +75,7 @@
       :exam-id="examIdRef"
       :student-id="studentIdRef"
       :score="scoreRef"
+      :times="timeRef"
       @register="registerExeModal"
     />
   </div>
@@ -119,8 +120,9 @@
   const modalTitle = ref('');
   const examIdRef = ref(0);
   const studentIdRef = ref(0);
-  const skillType = ref('');
+  const skillType = ref<SkillType>('Reading');
   const scoreRef = ref(0);
+  const timeRef = ref<number | undefined>(undefined);
   const [registerExeModal, { openModal: openExeModal }] = useModal();
 
   const router = useRouter();
@@ -164,10 +166,15 @@
   }
 
   function clickView(item: any) {
-    const { user_name, skill, exam_id, score } = item;
+    const userId = useStore.userInfo?.id;
+    if (!userId) {
+      return;
+    }
+    const { user_name, skill, exam_id, score, times } = item;
     modalTitle.value = `Học sinh: ${user_name} - Kỹ năng: ${skill}`;
     examIdRef.value = exam_id;
-    studentIdRef.value = useStore.userInfo?.id;
+    studentIdRef.value = userId;
+    timeRef.value = times;
     skillType.value = skill;
     scoreRef.value = parseInt(score);
 

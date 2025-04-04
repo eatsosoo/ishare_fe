@@ -217,6 +217,14 @@
       type: Number,
       default: 0,
     },
+    times: {
+      type: Number,
+      default: 1,
+    },
+    title: {
+      type: String,
+      default: '',
+    },
   });
 
   const { t } = useI18n();
@@ -239,10 +247,15 @@
     tabActive.value = index;
   }
 
-  async function getExamOfStudent(studentId: number, examId: number, type: SkillType) {
+  async function getExamOfStudent(
+    studentId: number,
+    examId: number,
+    type: SkillType,
+    times: number,
+  ) {
     try {
       loading.value = true;
-      const result = await getDetailExamOfStudent(studentId, examId, type);
+      const result = await getDetailExamOfStudent(studentId, examId, type, times);
       if (result && result.items) {
         completedAssignment.value = result.items;
         const explanation = completedAssignment.value.parts[0].question_groups[0].explanation;
@@ -295,10 +308,10 @@
   };
 
   watch(
-    () => [props.examId],
-    ([newExamId]) => {
+    () => [props.examId, props.times],
+    ([newExamId, newTimes]) => {
       if (newExamId) {
-        getExamOfStudent(props.studentId, newExamId, props.skillType);
+        getExamOfStudent(props.studentId, newExamId, props.skillType, newTimes);
       }
     },
   );
