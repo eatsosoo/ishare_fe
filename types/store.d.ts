@@ -44,6 +44,7 @@ export interface UserInfo {
   role_name: RoleEnum;
   phone_number: string;
   date_of_birth: string;
+  name: string;
 }
 
 export interface BeforeMiniState {

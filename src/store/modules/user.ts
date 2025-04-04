@@ -146,14 +146,13 @@ export const useUserStore = defineStore({
       } else {
         const permissionStore = usePermissionStore();
 
-        // 动态路由加载（首次）
+        // Dynamic route loading (first time)
         if (!permissionStore.isDynamicAddedRoute) {
           const routes = await permissionStore.buildRoutesAction();
-          console.log(routes);
           [...routes, PAGE_NOT_FOUND_ROUTE].forEach((route) => {
             router.addRoute(route as unknown as RouteRecordRaw);
           });
-          // 记录动态路由加载完成
+          // Record dynamic routing loading completed
           permissionStore.setDynamicAddedRoute(true);
         }
 
@@ -185,10 +184,10 @@ export const useUserStore = defineStore({
       this.setSessionTimeout(false);
       this.setUserInfo(null);
       if (goLogin) {
-        // 直接回登陆页
+        // Go directly to the login page
         router.replace(PageEnum.BASE_LOGIN);
       } else {
-        // 回登陆页带上当前路由地址
+        // Return to the login page with the current routing address
         router.replace({
           path: PageEnum.BASE_LOGIN,
           query: {
@@ -209,7 +208,7 @@ export const useUserStore = defineStore({
         title: () => h('span', t('sys.app.logoutTip')),
         content: () => h('span', t('sys.app.logoutMessage')),
         onOk: async () => {
-          // 主动登出，不带redirect地址
+          // Active logout without redirection
           await this.logout(true);
         },
       });

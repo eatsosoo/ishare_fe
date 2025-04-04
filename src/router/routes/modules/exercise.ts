@@ -30,6 +30,7 @@ const exercise: AppRouteModule = {
       component: () => import('@/views/exercise/bank.vue'),
       meta: {
         title: t('routes.page.exerciseBank'),
+        roles: [RoleEnum.SUPER],
       },
     },
   ],
