@@ -34,6 +34,9 @@
   "searchPracticeTest": "Search practice test",
   "titlePracticeTest": "Practice test title",
   "examBookTitle": "Test book title",
+  "selectTestBank": "Select test bank",
+  "notSelect": "Not selected",
+  "selectClass": "Select Class",
   "newClassForm": {
     "title": "Create Class Group Form",
     "formDesc": "",

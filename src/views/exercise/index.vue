@@ -101,9 +101,9 @@
   }
 
   function activateModal(type: 'assign' | 'copy' | 'bank', id = null) {
-    if (classOptions.value.length === 0) {
-      fetchClasses();
-    }
+    // if (classOptions.value.length === 0) {
+    //   fetchClasses();
+    // }
 
     homeworkId.value = id;
 
@@ -130,8 +130,8 @@
     });
   }
 
-  async function fetchClasses() {
-    const res = await classOptionsApi();
-    classOptions.value = res.items;
-  }
+  // async function fetchClasses() {
+  //   const res = await classOptionsApi();
+  //   classOptions.value = res.items;
+  // }
 </script>

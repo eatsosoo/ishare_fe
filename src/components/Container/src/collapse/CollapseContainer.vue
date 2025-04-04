@@ -31,6 +31,11 @@
      * Delayed loading time
      */
     lazyTime: { type: Number, default: 0 },
+
+    openDefault: {
+      type: Boolean,
+      default: true,
+    },
   };
 
   export type CollapseContainerProps = ExtractPropTypes<typeof collapseContainerProps>;
@@ -43,7 +48,7 @@
     setup(props, { expose, slots }) {
       const { prefixCls } = useDesign('collapse-container');
 
-      const show = ref(true);
+      const show = ref(props.openDefault);
 
       const handleExpand = (val: boolean) => {
         show.value = isNil(val) ? !show.value : val;

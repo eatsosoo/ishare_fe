@@ -1,26 +1,11 @@
 import { classListApi } from '@/api/class/class';
 import { examListApi, practiceExamListApi } from '@/api/exam/exam';
 import { bookListApi } from '@/api/exercise/exercise';
-import { bankListApi, teacherListApi } from '@/api/teacher/teacher';
+import { teacherListApi } from '@/api/teacher/teacher';
 import { FormSchema } from '@/components/Form';
 import { useI18n } from '@/hooks/web/useI18n';
 
 const { t } = useI18n();
-
-// const basicOptions: LabelValueOptions = [
-//   {
-//     label: t('form.newClassForm.pending'),
-//     value: 'pending',
-//   },
-//   {
-//     label: t('form.newClassForm.enable'),
-//     value: 'enable',
-//   },
-//   {
-//     label: t('form.newClassForm.finished'),
-//     value: 'finished',
-//   },
-// ];
 
 export const schemas: FormSchema[] = [
   {
@@ -741,61 +726,45 @@ export const assignByBankSchemas: FormSchema[] = [
     label: t('form.gradingSearch.title'),
     required: true,
     colProps: {
-      span: 24,
-    },
-  },
-  {
-    field: 'exam_bank_id',
-    component: 'ApiSelect',
-    label: t('form.examBookTitle'),
-    componentProps: {
-      api: bankListApi(),
-      resultField: 'items',
-      labelField: 'homework_name',
-      valueField: 'id',
-      immediate: true,
-    },
-    required: true,
-    colProps: {
       span: 12,
     },
   },
-  {
-    field: 'class_id',
-    label: t('form.gradingSearch.className'),
-    component: 'Select',
-    componentProps: {
-      options: [],
-    },
-    required: true,
-    colProps: {
-      span: 12,
-    },
-  },
-  {
-    field: 'shift_id',
-    label: t('form.shift'),
-    component: 'Select',
-    componentProps: {
-      options: [],
-    },
-    required: true,
-    colProps: {
-      span: 12,
-    },
-  },
-  {
-    field: 'study_date',
-    label: t('form.studyDate'),
-    component: 'Select',
-    componentProps: {
-      options: [],
-    },
-    required: true,
-    colProps: {
-      span: 12,
-    },
-  },
+  // {
+  //   field: 'class_id',
+  //   label: t('form.gradingSearch.className'),
+  //   component: 'Select',
+  //   componentProps: {
+  //     options: [],
+  //   },
+  //   required: true,
+  //   colProps: {
+  //     span: 12,
+  //   },
+  // },
+  // {
+  //   field: 'shift_id',
+  //   label: t('form.shift'),
+  //   component: 'Select',
+  //   componentProps: {
+  //     options: [],
+  //   },
+  //   required: true,
+  //   colProps: {
+  //     span: 12,
+  //   },
+  // },
+  // {
+  //   field: 'study_date',
+  //   label: t('form.studyDate'),
+  //   component: 'Select',
+  //   componentProps: {
+  //     options: [],
+  //   },
+  //   required: true,
+  //   colProps: {
+  //     span: 12,
+  //   },
+  // },
   {
     field: 'date',
     label: t('form.gradingSearch.deadline'),

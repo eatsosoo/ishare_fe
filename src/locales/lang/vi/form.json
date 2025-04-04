@@ -37,6 +37,9 @@
   "searchPracticeTest": "Tìm kiếm bài thi thử",
   "titlePracticeTest": "Tiêu đề",
   "examBookTitle": "Tên đề sách",
+  "selectTestBank": "Chọn ngân hàng đề",
+  "selectClass": "Chọn lớp học",
+  "notSelect": "Chưa chọn",
   "newClassForm": {
     "title": "Biểu mẫu tạo nhóm lớp",
     "formDesc": "",
