@@ -38,7 +38,7 @@
   const emit = defineEmits(['success']);
 
   const { t } = useI18n();
-  const [registerForm, { validate, resetFields, updateSchema, setFieldsValue }] = useForm({
+  const [registerForm, { validate, resetFields, updateSchema }] = useForm({
     labelWidth: 120,
     schemas: assignByBankSchemas,
     showActionButtonGroup: false,
@@ -46,7 +46,7 @@
       span: 24,
     },
   });
-  const { createMessage, createConfirm, createErrorModal, createSuccessModal } = useMessage();
+  const { createErrorModal, createSuccessModal } = useMessage();
   const prefixCls = useDesign('assign-homework');
 
   const loading = ref(false);

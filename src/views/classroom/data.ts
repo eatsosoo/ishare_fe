@@ -747,7 +747,7 @@ export const assignByBankSchemas: FormSchema[] = [
   {
     field: 'exam_bank_id',
     component: 'ApiSelect',
-    label: t('form.bookName'),
+    label: t('form.examBookTitle'),
     componentProps: {
       api: bankListApi(),
       resultField: 'items',

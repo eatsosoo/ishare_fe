@@ -31,6 +31,9 @@
   "teacher": "Teacher",
   "studyDate": "Study Date",
   "duration": "Time limit",
+  "searchPracticeTest": "Search practice test",
+  "titlePracticeTest": "Practice test title",
+  "examBookTitle": "Test book title",
   "newClassForm": {
     "title": "Create Class Group Form",
     "formDesc": "",
