@@ -6,6 +6,7 @@
     :can-fullscreen="false"
     :loading="loading"
     @ok="submit"
+    @cancel="reset"
   >
     <div class="shadow-lg rounded-lg p-1 mx-1">
       <CollapseContainer :title="t('common.basicInformation')">
@@ -29,6 +30,11 @@
         </div>
       </CollapseContainer>
     </div>
+
+    <div class="shadow-lg rounded-lg p-1 mx-1 mt-4">
+      <SelectClass @select="attendanceTarget = $event" ref="selectClassRef" />
+    </div>
+
     <div class="shadow-lg rounded-lg p-1 mx-1 mt-4">
       <CollapseContainer :title="t('common.question')">
         <template v-if="skill">
@@ -48,7 +54,7 @@
 </template>
 <script lang="ts" setup>
   import { BasicModal } from '@/components/Modal';
-  import { h, ref, watch } from 'vue';
+  import { h, ref } from 'vue';
   import { useMessage } from '@/hooks/web/useMessage';
   import { useI18n } from '@/hooks/web/useI18n';
   import { SkillType } from '@/api/exam/examModel';
@@ -58,8 +64,7 @@
   import { NewPartItem } from '@/views/test/types/question';
   import { assignHomeworkFormSchemas } from '../classroom/data';
   import { useForm, BasicForm } from '@/components/Form';
-  import { assignExercise, studyDateListApi } from '@/api/exercise/exercise';
-  import { ClassListItem } from '@/api/class/classModel';
+  import { assignExercise } from '@/api/exercise/exercise';
   import { CollapseContainer } from '@/components/Container';
   import { getLeftValue } from '@/utils/stringUtils';
   import { uploadAudioApi } from '@/api/exam/exam';
@@ -67,13 +72,7 @@
   import { useGlobSetting } from '@/hooks/setting';
   import { Upload } from 'ant-design-vue';
   import { cloneDeep } from 'lodash-es';
-
-  const props = defineProps({
-    classList: {
-      type: Array as PropType<ClassListItem[]>,
-      default: () => [],
-    },
-  });
+  import SelectClass from './SelectClass.vue';
 
   const emit = defineEmits(['success']);
 
@@ -93,6 +92,14 @@
   const loading = ref(false);
   const skill = ref<SkillType | null>(null);
   const parts = ref<NewPartItem[]>([cloneDeep(READING_PART_DEF)]);
+
+  const selectClassRef = ref();
+  const attendanceTarget = ref({
+    class_id: 0,
+    shift_id: 0,
+    study_date: '',
+  });
+
   // audio
   const uploading = ref(false);
   const audioUrl = ref<string | null>(null);
@@ -128,28 +135,6 @@
           setFieldsValue({ skill: skill.value });
         },
       });
-    } else if (key === 'class_id') {
-      const shifts = value
-        ? props.classList.find((cls: ClassListItem) => cls.id === value)?.shifts || []
-        : [];
-
-      const res = await studyDateListApi(value);
-      const studyDateList = res.items || [];
-
-      updateSchema([
-        {
-          field: 'shift_id',
-          componentProps: {
-            options: shifts.map((shift) => ({ label: shift.title, value: shift.id })),
-          },
-        },
-        {
-          field: 'study_date',
-          componentProps: {
-            options: studyDateList.map((date) => ({ label: date, value: date })),
-          },
-        },
-      ]);
     }
   }
 
@@ -166,17 +151,8 @@
   async function submit() {
     try {
       const [values] = await Promise.all([validate()]);
-      const {
-        book_name,
-        skill,
-        homework_name,
-        class_id,
-        shift_id,
-        date,
-        assign_at,
-        study_date,
-        duration,
-      } = values;
+      const { book_name, skill, homework_name, date, assign_at, duration } = values;
+      const { class_id, shift_id, study_date } = attendanceTarget.value;
       if (parts.value.length === 0 || parts.value[0].question_groups.length === 0) {
         createMessage.error(t('common.pleaseCreateQuestions'));
         return;
@@ -186,6 +162,15 @@
         createMessage.error(t('common.error.pleaseUploadAudio'));
         return;
       }
+
+      if (!class_id || !shift_id || !study_date) {
+        createErrorModal({
+          title: t('form.assignHomework'),
+          content: t('form.selectClass'),
+        });
+        return;
+      }
+
       const submitForm: any = {
         book_name,
         skill,
@@ -210,7 +195,7 @@
           content: t('common.createSuccessfully'),
           // getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
         });
-        resetFields();
+        reset();
         emit('success');
       }
     } catch (error) {
@@ -277,25 +262,26 @@
     const status = file?.status;
     const url = file?.response?.result.items;
     const name = file?.name;
-    console.log(status);
+
     if (status === 'done') {
       createMessage.success(t('common.uploadFileSuccess', { name }));
       audioUrl.value = url;
     } else if (status === 'error') {
       createMessage.error(t('common.uploadFileFail', { name }));
     }
-    console.log(audioUrl.value);
   }
 
-  watch(
-    () => props.classList,
-    (newVal) => {
-      const options = newVal.map((val) => ({ label: val.title, value: val.id }));
-      console.log('op', options);
-      updateSchema({
-        field: 'class_id',
-        componentProps: { options },
-      });
-    },
-  );
+  function reset() {
+    resetFields();
+    skill.value = null;
+    parts.value = [cloneDeep(READING_PART_DEF)];
+    audioUrl.value = null;
+    fileList.value = [];
+    attendanceTarget.value = {
+      class_id: 0,
+      shift_id: 0,
+      study_date: '',
+    };
+    selectClassRef.value.reset();
+  }
 </script>

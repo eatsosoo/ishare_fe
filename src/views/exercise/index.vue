@@ -32,16 +32,10 @@
         </template>
       </template>
     </BasicTable>
-    <AssignHomeworkModal
-      @register="registerAssignModal"
-      :class-list="classOptions"
-      @success="handleOk"
-    />
-    <AssignByBankModal
-      @register="registerBankModal"
-      :class-list="classOptions"
-      @success="handleOk"
-    />
+    <AssignHomeworkModal @register="registerAssignModal" @success="handleOk" />
+
+    <AssignByBankModal @register="registerBankModal" @success="handleOk" />
+
     <CopyHomeworkModal
       @register="registerCopyModal"
       :homework-id="homeworkId"
@@ -58,7 +52,6 @@
   import { getAssignmentColumns, getAssignmentListConfig } from '@/views/classroom/tableData';
   import { useModal } from '@/components/Modal';
   import AssignHomeworkModal from './AssignHomeworkModal.vue';
-  import { classOptionsApi } from '@/api/class/class';
   import { h, ref } from 'vue';
   import { ClassListItem } from '@/api/class/classModel';
   import Icon from '@/components/Icon/Icon.vue';
@@ -129,9 +122,4 @@
       },
     });
   }
-
-  // async function fetchClasses() {
-  //   const res = await classOptionsApi();
-  //   classOptions.value = res.items;
-  // }
 </script>
