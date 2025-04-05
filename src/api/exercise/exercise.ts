@@ -79,7 +79,7 @@ export const assignExercise = (params: AssignExerciseParams, mode: ErrorMessageM
 
 export const assignExerciseByBank = (
   params: AssignExerciseParams,
-  mode: ErrorMessageMode = 'none',
+  mode: ErrorMessageMode = 'modal',
 ) =>
   defHttp.post<ResultBase<AssignExerciseParams>>(
     {

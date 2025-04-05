@@ -14,8 +14,11 @@
     </div>
 
     <div class="shadow-lg rounded-lg p-1 mx-1 mt-4">
-      <CollapseContainer :title="titleCollapseClass" :open-default="false">
-        <BasicTable @register="registerClassTable">
+      <CollapseContainer :open-default="false">
+        <template #title>
+          <div v-html="titleCollapseClass"></div>
+        </template>
+        <BasicTable @register="registerClassTable" :max-height="300">
           <template #bodyCell="{ column, record }">
             <template v-if="column.key === 'action'">
               <Icon
@@ -30,8 +33,11 @@
     </div>
 
     <div class="shadow-lg rounded-lg p-1 mx-1 mt-4 mb-8">
-      <CollapseContainer :title="titleCollapseBank" :open-default="false">
-        <BasicTable @register="registerTable">
+      <CollapseContainer :open-default="false">
+        <template #title>
+          <div v-html="titleCollapseBank"></div>
+        </template>
+        <BasicTable @register="registerTable" :max-height="300">
           <template #bodyCell="{ column, record }">
             <template v-if="column.key === 'action'">
               <Icon
@@ -49,20 +55,19 @@
       @register="registerAttendanceModal"
       :class-id="classSelected?.id ?? 0"
       :shifts="classSelected?.shifts ?? []"
-      @submit="closeModal"
+      @submit="selectAttendance"
     />
   </BasicModal>
 </template>
 <script lang="ts" setup>
   import { BasicModal, useModal } from '@/components/Modal';
-  import { computed, ref, watch } from 'vue';
+  import { computed, ref } from 'vue';
   import { useMessage } from '@/hooks/web/useMessage';
   import { useI18n } from '@/hooks/web/useI18n';
   import { useDesign } from '@/hooks/web/useDesign';
   import { assignByBankSchemas } from '../classroom/data';
   import { useForm, BasicForm } from '@/components/Form';
   import { assignExerciseByBank } from '@/api/exercise/exercise';
-  import { ClassListItem } from '@/api/class/classModel';
   import { CollapseContainer } from '@/components/Container';
   import { getLeftValue } from '@/utils/stringUtils';
   import { BasicTable, useTable } from '@/components/Table';
@@ -77,18 +82,11 @@
   import { classListApi } from '@/api/class/class';
   import AttendanceModal from './AttendanceModal.vue';
 
-  const props = defineProps({
-    classList: {
-      type: Array as PropType<ClassListItem[]>,
-      default: () => [],
-    },
-  });
-
   const emit = defineEmits(['success']);
 
   const { t } = useI18n();
   const [registerAttendanceModal, { openModal: openModal, closeModal }] = useModal();
-  const [registerBasicForm, { validate, resetFields, updateSchema }] = useForm({
+  const [registerBasicForm, { validate, resetFields }] = useForm({
     labelWidth: 120,
     schemas: assignByBankSchemas,
     showActionButtonGroup: false,
@@ -137,14 +135,28 @@
   const loading = ref(false);
   const examBankSelected = ref<any | null>(null);
   const classSelected = ref<any | null>(null);
+  const attendanceTarget = ref({
+    class_id: 0,
+    shift_id: 0,
+    study_date: '',
+  });
 
   const titleCollapseClass = computed(() => {
     const text = t('form.selectClass');
-    if (classSelected.value) {
-      const { title } = classSelected.value;
-      return `${text}: ${title}`;
+    const notSelectTag = `<span class="text-red-500">${t('form.notSelect')}</span>`;
+
+    if (!classSelected.value) {
+      return `${text}: ${notSelectTag} - ${notSelectTag} - ${notSelectTag}`;
     }
-    return `${text}: ${t('form.notSelect')}`;
+
+    const { title, shifts } = classSelected.value;
+    const { study_date, shift_id } = attendanceTarget.value;
+
+    const studyDateText = study_date ? `[${study_date}]` : notSelectTag;
+    const shiftTitle = shifts.find((item: any) => item.id === shift_id)?.title;
+    const shiftTitleText = shiftTitle ? `[${shiftTitle}]` : notSelectTag;
+
+    return `${text}: ${title} - ${studyDateText} - ${shiftTitleText}`;
   });
 
   const titleCollapseBank = computed(() => {
@@ -153,13 +165,14 @@
       const { book_name, skill, homework_name } = examBankSelected.value;
       return `${text}: ${book_name} - ${skill} - [${homework_name}]`;
     }
-    return `${text}: ${t('form.notSelect')}`;
+    return `${text}: <span class="text-red-500">${t('form.notSelect')}</span>`;
   });
 
   async function submit() {
     try {
       const [values] = await Promise.all([validate()]);
-      const { class_id, shift_id, date, assign_at, study_date, title } = values;
+      const { date, assign_at, title } = values;
+      const { class_id, shift_id, study_date } = attendanceTarget.value;
 
       if (!examBankSelected.value) {
         createErrorModal({
@@ -169,7 +182,15 @@
         return;
       }
 
-      const { exam_bank_id } = examBankSelected.value;
+      if (!class_id || !shift_id || !study_date) {
+        createErrorModal({
+          title: t('form.assignFromBank'),
+          content: t('form.selectClass'),
+        });
+        return;
+      }
+
+      const { id: exam_bank_id } = examBankSelected.value;
 
       const submitForm: any = {
         exam_bank_id,
@@ -190,7 +211,7 @@
           content: t('common.createSuccessfully'),
           // getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
         });
-        resetFields();
+        reset();
         emit('success');
       }
     } catch (error) {
@@ -212,20 +233,32 @@
 
   function activate(record: any) {
     classSelected.value = record;
+    attendanceTarget.value = {
+      class_id: record.id,
+      shift_id: 0,
+      study_date: '',
+    };
     openModal();
   }
 
-  watch(
-    () => props.classList,
-    (newVal) => {
-      const options = newVal.map((val) => ({ label: val.title, value: val.id }));
-      console.log('op', options);
-      updateSchema([
-        {
-          field: 'class_id',
-          componentProps: { options },
-        },
-      ]);
-    },
-  );
+  function selectAttendance(val: { shift_id: number; study_date: string }) {
+    attendanceTarget.value = {
+      class_id: classSelected.value.id,
+      shift_id: val.shift_id,
+      study_date: val.study_date,
+    };
+
+    closeModal();
+  }
+
+  function reset() {
+    resetFields();
+    classSelected.value = null;
+    examBankSelected.value = null;
+    attendanceTarget.value = {
+      class_id: 0,
+      shift_id: 0,
+      study_date: '',
+    };
+  }
 </script>
