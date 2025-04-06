@@ -39,11 +39,15 @@
       type: String,
       default: '',
     },
+    classId: {
+      type: Number,
+      required: true,
+    },
   });
 
   const { t } = useI18n();
 
-  const resutlStudy: FormSchema[] = [
+  const resultStudy: FormSchema[] = [
     {
       field: '[from, to]',
       label: t('common.time'),
@@ -60,7 +64,7 @@
 
   const [register, { validate }] = useForm({
     labelWidth: 120,
-    schemas: resutlStudy,
+    schemas: resultStudy,
     actionColOptions: {
       span: 24,
     },
@@ -76,7 +80,7 @@
       const baseUrl = config.apiUrl;
 
       const response = await fetch(
-        `${baseUrl}/users/export-study-result/${props.student.id}/${from}/${to}`,
+        `${baseUrl}/users/export-study-result/${props.student.id}/${from}/${to}/${props.classId}`,
         {
           method: 'GET',
           headers: {
