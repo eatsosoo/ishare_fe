@@ -24,6 +24,12 @@
             @click="activateModal('copy', record.root_id)"
           />
           <Icon
+            icon="ant-design:eye-twotone"
+            :size="18"
+            class="cursor-pointer hover:border-red border-1 border-gray-200 p-1 rounded-md mr-1"
+            @click="activateModal('preview', record.root_id)"
+          />
+          <Icon
             icon="ant-design:delete-outlined"
             :size="18"
             class="cursor-pointer hover:border-red border-1 border-gray-200 p-1 rounded-md"
@@ -42,6 +48,8 @@
       :class-list="classOptions"
       @success="handleOk"
     />
+
+    <PreviewModal @register="registerPreviewModal" :exercise-id="homeworkId" />
   </PageWrapper>
 </template>
 <script lang="ts" setup>
@@ -59,6 +67,7 @@
   import { deleteExercise } from '@/api/exercise/exercise';
   import { useMessage } from '@/hooks/web/useMessage';
   import AssignByBankModal from './AssignByBankModal.vue';
+  import PreviewModal from './PreviewModal.vue';
 
   const { t } = useI18n();
   const [registerTable, { reload }] = useTable({
@@ -80,6 +89,8 @@
   const [registerAssignModal, { openModal: openModal, closeModal }] = useModal();
   const [registerCopyModal, { openModal: openCopyModal, closeModal: closeCopyModal }] = useModal();
   const [registerBankModal, { openModal: openBankModal, closeModal: closeBankModal }] = useModal();
+  const [registerPreviewModal, { openModal: openPreviewModal, closeModal: closePreviewModal }] =
+    useModal();
 
   const { createConfirm } = useMessage();
 
@@ -90,10 +101,11 @@
     closeModal();
     closeCopyModal();
     closeBankModal();
+    closePreviewModal();
     reload();
   }
 
-  function activateModal(type: 'assign' | 'copy' | 'bank', id = null) {
+  function activateModal(type: 'assign' | 'copy' | 'bank' | 'preview', id = null) {
     // if (classOptions.value.length === 0) {
     //   fetchClasses();
     // }
@@ -104,7 +116,9 @@
       openModal();
     } else if (type === 'bank') {
       openBankModal();
-    } else {
+    } else if (type === 'preview') {
+      openPreviewModal();
+    } else if (type === 'copy') {
       openCopyModal();
     }
   }

@@ -34,7 +34,7 @@
 
   const props = defineProps({
     homeworkId: {
-      type: Number,
+      type: [Number, null] as PropType<number | null>,
       default: null,
     },
     classList: {
@@ -104,12 +104,19 @@
         return;
       }
 
+      if (!props.homeworkId) {
+        createErrorModal({
+          title: t('form.assignHomework'),
+          content: t('common.error.notHaveID', { name: 'Homework' }),
+        });
+        return;
+      }
+
       const submitForm: CopyExerciseParams = {
         id: props.homeworkId,
         book_name,
         homework_name,
         deadline: getLeftValue(deadline),
-        subject: 'copy subject',
         assignments: {
           class_id,
           shift_id,
