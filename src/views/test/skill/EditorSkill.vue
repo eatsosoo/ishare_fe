@@ -77,11 +77,7 @@
           <div class="re-box-shadow rounded-lg pa-4 w-full">
             <template v-if="groupActive">
               <h2 class="text-primary">Question {{ groupActive.question_no[0] }}</h2>
-              <Tinymce
-                v-model="groupActive.question_text"
-                width="100%"
-                :show-image-upload="false"
-              />
+              <Tinymce v-model="groupActive.question_text" width="100%" />
               <a-button
                 preIcon="ant-design:save-twotone"
                 class="mt-4"
