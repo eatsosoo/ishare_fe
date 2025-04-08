@@ -53,6 +53,16 @@ export const bookListApi = () => (params: BasicPageParams) =>
     },
   });
 
+export const deleteBookApi = (id: number, mode: ErrorMessageMode = 'modal') =>
+  defHttp.delete<ResultBase<Boolean>>(
+    {
+      url: `${Api.BOOK_LIST}/${id}`,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+
 export const studyDateListApi = (classId: number) => {
   const currentDate = new Date();
   const currentMonth = currentDate.getMonth() + 1; // Months are zero-based in JavaScript

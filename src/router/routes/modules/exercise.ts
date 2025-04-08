@@ -33,6 +33,15 @@ const exercise: AppRouteModule = {
         roles: [RoleEnum.SUPER],
       },
     },
+    {
+      path: '/exercise/book',
+      name: 'ManageBook',
+      component: () => import('@/views/exercise/book.vue'),
+      meta: {
+        title: t('routes.page.manageBook'),
+        roles: [RoleEnum.SUPER],
+      },
+    },
   ],
 };
 

@@ -1295,3 +1295,47 @@ export function getPracticeDoneConfig(): Partial<FormProps> {
     ],
   };
 }
+
+export function getBookColumns(): BasicColumn[] {
+  return [
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      fixed: 'left',
+      width: 80,
+    },
+    {
+      title: t('table.bookName'),
+      dataIndex: 'title',
+    },
+    {
+      title: t('table.bookType'),
+      dataIndex: 'type',
+    },
+    {
+      title: t('table.bookLevel'),
+      dataIndex: 'level',
+    },
+    {
+      title: t('table.bookDescription'),
+      dataIndex: 'description',
+    },
+  ];
+}
+
+export function getBookListConfig(): Partial<FormProps> {
+  return {
+    labelWidth: 100,
+    schemas: [
+      {
+        field: 'title',
+        label: t('table.bookName'),
+        component: 'Input',
+        colProps: {
+          xl: 6,
+          xxl: 4,
+        },
+      },
+    ],
+  };
+}
