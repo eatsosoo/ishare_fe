@@ -81,7 +81,6 @@
   watch(
     () => props.classId,
     async (val) => {
-      console.log(props.classId, props.shifts);
       if (val) {
         const res = await studyDateListApi(val);
         const studyDateList = res.items || [];

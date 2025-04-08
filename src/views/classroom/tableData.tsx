@@ -1307,18 +1307,23 @@ export function getBookColumns(): BasicColumn[] {
     {
       title: t('table.bookName'),
       dataIndex: 'title',
+      editRow: true,
     },
     {
       title: t('table.bookType'),
       dataIndex: 'type',
+      editRow: true,
     },
     {
       title: t('table.bookLevel'),
       dataIndex: 'level',
+      editRow: true,
     },
     {
       title: t('table.bookDescription'),
       dataIndex: 'description',
+      editRow: true,
+      editRule: false,
     },
   ];
 }

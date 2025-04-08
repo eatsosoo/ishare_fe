@@ -107,6 +107,21 @@ export interface ExerciseResultItem {
   question_groups: GroupQuestionWithAnswer[];
 }
 
+export interface CreateBookParams {
+  title: string;
+  type: string;
+  level: number;
+  description: string;
+}
+
+export interface EditBookParams {
+  id: number;
+  title: string;
+  type: string;
+  level: number;
+  description: string;
+}
+
 /**
  * @description: Request list return value
  */

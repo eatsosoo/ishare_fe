@@ -5,7 +5,9 @@ import {
   BookListGetResultModel,
   CopyExerciseParams,
   CreateBankParams,
+  CreateBookParams,
   DetailBank,
+  EditBookParams,
   ExerciseListGetResultModel,
   HomeworkListGetResultModel,
   ScoreExercise,
@@ -57,6 +59,28 @@ export const deleteBookApi = (id: number, mode: ErrorMessageMode = 'modal') =>
   defHttp.delete<ResultBase<Boolean>>(
     {
       url: `${Api.BOOK_LIST}/${id}`,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+
+export const createBookApi = (params: CreateBookParams, mode: ErrorMessageMode = 'modal') =>
+  defHttp.post<ResultBase<Boolean>>(
+    {
+      url: `${Api.BOOK_LIST}`,
+      params,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+
+export const editBookApi = (params: EditBookParams, mode: ErrorMessageMode = 'modal') =>
+  defHttp.put<ResultBase<Boolean>>(
+    {
+      url: `${Api.BOOK_LIST}/${params.id}`,
+      params,
     },
     {
       errorMessageMode: mode,
