@@ -35,6 +35,13 @@
   import { CollapseContainer } from '@/components/Container';
   import Icon from '@/components/Icon/Icon.vue';
 
+  const props = defineProps({
+    extend: {
+      type: Boolean,
+      default: true,
+    },
+  });
+
   const { t } = useI18n();
   const emit = defineEmits(['select']);
 
@@ -50,6 +57,9 @@
     const notSelectTag = `<span class="text-red-500">${t('form.notSelect')}</span>`;
 
     if (!classSelected.value) {
+      if (!props.extend) {
+        return `${text}: ${notSelectTag}`;
+      }
       return `${text}: ${notSelectTag} - ${notSelectTag} - ${notSelectTag}`;
     }
 
@@ -60,6 +70,9 @@
     const shiftTitle = shifts.find((item: any) => item.id === shift_id)?.title;
     const shiftTitleText = shiftTitle ? `[${shiftTitle}]` : notSelectTag;
 
+    if (!props.extend) {
+      return `${text}: ${title}`;
+    }
     return `${text}: ${title} - ${studyDateText} - ${shiftTitleText}`;
   });
 
@@ -84,6 +97,11 @@
 
   function activate(record: any) {
     classSelected.value = record;
+
+    if (!props.extend) {
+      emit('select', record.id);
+      return;
+    }
     attendanceTarget.value = {
       class_id: record.id,
       shift_id: 0,

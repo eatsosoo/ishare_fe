@@ -1,6 +1,20 @@
 <template>
-  <BasicModal v-bind="$attrs" :title="t('form.copyHomework')" :loading="loading" @ok="submit">
-    <BasicForm @register="registerForm" @field-value-change="handleFormChange" class="mt-6" />
+  <BasicModal
+    v-bind="$attrs"
+    :title="t('form.copyHomework')"
+    :loading="loading"
+    :default-fullscreen="true"
+    @ok="submit"
+  >
+    <div class="shadow-lg rounded-lg p-1 mx-1 mb-4">
+      <CollapseContainer :title="t('common.basicInformation')">
+        <BasicForm @register="registerForm" @field-value-change="handleFormChange" class="mt-6" />
+      </CollapseContainer>
+    </div>
+
+    <div class="shadow-lg rounded-lg p-1 mx-1">
+      <SelectClass @select="attendanceTarget = $event" ref="selectClassRef" />
+    </div>
   </BasicModal>
 </template>
 
@@ -15,10 +29,12 @@
   import { useMessage } from '@/hooks/web/useMessage';
   import { CopyExerciseParams } from '@/api/exercise/exerciseModel';
   import { getLeftValue } from '@/utils/stringUtils';
+  import { CollapseContainer } from '@/components/Container';
+  import SelectClass from './SelectClass.vue';
 
   const props = defineProps({
     homeworkId: {
-      type: Number,
+      type: [Number, null] as PropType<number | null>,
       default: null,
     },
     classList: {
@@ -31,6 +47,12 @@
   const { t } = useI18n();
 
   const loading = ref(false);
+  const attendanceTarget = ref({
+    class_id: 0,
+    shift_id: 0,
+    study_date: '',
+  });
+  const selectClassRef = ref();
 
   const { createErrorModal, createSuccessModal } = useMessage();
   const [registerForm, { validate, resetFields, updateSchema }] = useForm({
@@ -71,13 +93,30 @@
   const submit = async () => {
     try {
       const values = await validate();
-      const { book_name, homework_name, deadline, shift_id, study_date, class_id } = values;
+      const { book_name, homework_name, deadline } = values;
+      const { class_id, shift_id, study_date } = attendanceTarget.value;
+
+      if (!class_id || !shift_id || !study_date) {
+        createErrorModal({
+          title: t('form.assignHomework'),
+          content: t('form.selectClass'),
+        });
+        return;
+      }
+
+      if (!props.homeworkId) {
+        createErrorModal({
+          title: t('form.assignHomework'),
+          content: t('common.error.notHaveID', { name: 'Homework' }),
+        });
+        return;
+      }
+
       const submitForm: CopyExerciseParams = {
         id: props.homeworkId,
         book_name,
         homework_name,
         deadline: getLeftValue(deadline),
-        subject: 'copy subject',
         assignments: {
           class_id,
           shift_id,
@@ -94,7 +133,7 @@
           content: t('common.createSuccessfully'),
           // getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
         });
-        resetFields();
+        reset();
         emit('success');
       }
     } catch (error) {
@@ -112,6 +151,16 @@
       loading.value = false;
     }
   };
+
+  function reset() {
+    resetFields();
+    attendanceTarget.value = {
+      class_id: 0,
+      shift_id: 0,
+      study_date: '',
+    };
+    selectClassRef.value?.reset();
+  }
 
   watch(
     () => props.classList,

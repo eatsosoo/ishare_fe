@@ -290,31 +290,6 @@ export const assignTestFormSchemas: FormSchema[] = [
     },
   },
   {
-    field: 'class_id',
-    component: 'ApiSelect',
-    label: t('form.gradingSearch.className'),
-    componentProps: {
-      // more details see /src/components/Form/src/components/ApiSelect.vue
-      api: classListApi(),
-      params: {
-        id: 1,
-      },
-
-      resultField: 'items',
-      // use name as label
-      labelField: 'title',
-      // use id as value
-      valueField: 'id',
-      // not request untill to select
-      immediate: true,
-    },
-    required: true,
-    colProps: {
-      offset: 1,
-      span: 12,
-    },
-  },
-  {
     field: 'exam_id',
     component: 'ApiSelect',
     label: t('form.gradingSearch.examName'),
@@ -470,45 +445,9 @@ export const copyHomeworkFormSchemas: FormSchema[] = [
     },
   },
   {
-    field: 'class_id',
-    label: t('form.gradingSearch.className'),
-    component: 'Select',
-    componentProps: {
-      options: [],
-    },
-    required: true,
-    colProps: {
-      span: 24,
-    },
-  },
-  {
-    field: 'shift_id',
-    label: t('form.shift'),
-    component: 'Select',
-    componentProps: {
-      options: [],
-    },
-    required: true,
-    colProps: {
-      span: 24,
-    },
-  },
-  {
     field: 'homework_name',
     component: 'Input',
     label: t('form.gradingSearch.title'),
-    required: true,
-    colProps: {
-      span: 24,
-    },
-  },
-  {
-    field: 'study_date',
-    label: t('form.studyDate'),
-    component: 'Select',
-    componentProps: {
-      options: [],
-    },
     required: true,
     colProps: {
       span: 24,

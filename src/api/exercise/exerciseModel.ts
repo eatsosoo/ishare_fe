@@ -57,7 +57,6 @@ export interface CopyExerciseParams {
   id: number;
   book_name: string;
   homework_name: string;
-  subject: string;
   deadline: string;
   assignments: {
     class_id: number;

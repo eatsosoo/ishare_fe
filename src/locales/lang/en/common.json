@@ -108,7 +108,8 @@
     "finishAllQuestions": "Please complete all questions before submitting",
     "pleaseUploadAudio": "You have not uploaded the Listening exercise audio",
     "shiftEmpty": "You need to create a schedule for the class!",
-    "uploadOnlyAudioOrWord": "Only upload audio or text files!"
+    "uploadOnlyAudioOrWord": "Only upload audio or text files!",
+    "notHaveID": "No ID {field}!"
   },
   "test": {
     "reading": "Reading Test",

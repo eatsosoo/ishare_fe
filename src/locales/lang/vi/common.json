@@ -109,7 +109,8 @@
     "finishAllQuestions": "Hãy hoàn thành hết các câu hỏi trước khi nộp bài",
     "pleaseUploadAudio": "Bạn chưa tải audio bài tập Listening",
     "shiftEmpty": "Bạn cần tạo ca học cho lớp!",
-    "uploadOnlyAudioOrWord": "Chỉ tải lên tệp nghe hoặc tệp văn bản!"
+    "uploadOnlyAudioOrWord": "Chỉ tải lên tệp nghe hoặc tệp văn bản!",
+    "notHaveID": "Không có ID {field}!"
   },
   "test": {
     "reading": "Đề thi phần READING",

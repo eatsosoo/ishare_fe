@@ -2,13 +2,19 @@
   <BasicModal
     v-bind="$attrs"
     :title="t('form.exam.title')"
-    width="1000px"
-    :can-fullscreen="false"
+    :default-fullscreen="true"
     :loading="loading"
     @ok="handleSubmit"
     @cancel="resetFields"
   >
-    <BasicForm @register="registerForm" ref="formRef" />
+    <div class="shadow-lg rounded-lg p-1 mx-1 mb-4">
+      <CollapseContainer :title="t('common.basicInformation')">
+        <BasicForm @register="registerForm" ref="formRef" />
+      </CollapseContainer>
+    </div>
+    <div class="shadow-lg rounded-lg p-1 mx-1">
+      <SelectClass :extend="false" @select="classId = $event" ref="selectClassRef" />
+    </div>
   </BasicModal>
 </template>
 <script lang="ts" setup>
@@ -21,6 +27,8 @@
   import { useDesign } from '@/hooks/web/useDesign';
   import { AssignmentForm } from '@/api/teacher/teacherModel';
   import { assignmentApi } from '@/api/teacher/teacher';
+  import { CollapseContainer } from '@/components/Container';
+  import SelectClass from '../exercise/SelectClass.vue';
 
   const { t } = useI18n();
   const { createErrorModal, createSuccessModal } = useMessage();
@@ -36,14 +44,24 @@
 
   const loading = ref(false);
   const formRef = ref<InstanceType<typeof BasicForm> | undefined>();
+  const classId = ref<number | null>(null);
+  const selectClassRef = ref();
 
   const emit = defineEmits(['success']);
 
   async function handleSubmit() {
     try {
-      const { class_id, exam_id, title, date } = await validate();
+      const { exam_id, title, date } = await validate();
+      if (!classId.value) {
+        createErrorModal({
+          title: t('form.selectClass'),
+          content: t('form.notSelect'),
+        });
+        return;
+      }
+
       const submitForm: AssignmentForm = {
-        class_id,
+        class_id: classId.value,
         exam_id,
         title,
         date: date.split(' ')[0],

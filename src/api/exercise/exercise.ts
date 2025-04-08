@@ -91,6 +91,16 @@ export const assignExerciseByBank = (
     },
   );
 
+export const getExerciseApi = (id: number, mode: ErrorMessageMode = 'modal') =>
+  defHttp.get<ResultBase<any>>(
+    {
+      url: `${Api.ASSIGN_EXE}/${id}`,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+
 export const copyExercise = (params: CopyExerciseParams, mode: ErrorMessageMode = 'none') =>
   defHttp.post<ResultBase<CopyExerciseParams>>(
     {

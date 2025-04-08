@@ -55,6 +55,7 @@
     <ExportStudyResultModal
       :title="t('common.exportExcelStudy')"
       :student="studentTarget"
+      :class-id="props.classId"
       @register="registerExportModal"
     />
   </BasicModal>
