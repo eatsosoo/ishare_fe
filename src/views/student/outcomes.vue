@@ -13,6 +13,7 @@
   import { useUserStore } from '@/store/modules/user';
   import { useI18n } from '@/hooks/web/useI18n';
   import { useGlobSetting } from '@/hooks/setting';
+  import { classListUserApi } from '@/api/class/class';
 
   const { t } = useI18n();
   const resutlStudy: FormSchema[] = [
@@ -23,6 +24,28 @@
       componentProps: {
         format: 'YYYY-MM-DD',
         placeholder: [t('common.startDate'), t('common.endDate')],
+      },
+      required: true,
+      colProps: {
+        span: 12,
+        offset: 1,
+      },
+    },
+    {
+      field: 'class_id',
+      component: 'ApiSelect',
+      label: t('form.gradingSearch.className'),
+      componentProps: {
+        api: classListUserApi(),
+        resultField: 'items',
+        labelField: 'title',
+        valueField: 'id',
+        immediate: true,
+      },
+      required: true,
+      colProps: {
+        span: 12,
+        offset: 1,
       },
     },
   ];
@@ -41,12 +64,13 @@
       const data = await validate();
       const from = data.from.split(' ')[0];
       const to = data.to.split(' ')[0];
+      const classId = data.class_id;
       const useStore = useUserStore();
       const config = useGlobSetting();
       const baseUrl = config.apiUrl;
 
       const response = await fetch(
-        `${baseUrl}/users/export-study-result/${useStore.userInfo?.id}/${from}/${to}`,
+        `${baseUrl}/users/export-study-result/${useStore.userInfo?.id}/${from}/${to}/${classId}`,
         {
           method: 'GET',
           headers: {

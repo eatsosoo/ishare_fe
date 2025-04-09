@@ -89,6 +89,16 @@ export const classListApi = () => (params: BasicPageParams) =>
     },
   });
 
+export const classListUserApi = () => (params: BasicPageParams) =>
+  defHttp.get<ClassListGetResultModel>({
+    url: '/classes-by-students',
+    params,
+    headers: {
+      // @ts-ignore
+      ignoreCancelToken: true,
+    },
+  });
+
 export const classOptionsApi = () =>
   defHttp.get<ResultBase<ClassListItem[]>>({
     url: Api.CLASS_ROUTE,
