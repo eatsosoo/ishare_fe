@@ -19,7 +19,13 @@
     </div>
 
     <div v-if="exerciseItem" ref="htmlContainer" class="custom-html">
-      <template v-if="exerciseItem.skill === 'Reading' || exerciseItem.skill === 'Listening'">
+      <template
+        v-if="
+          exerciseItem.skill === 'Reading' ||
+          exerciseItem.skill === 'Listening' ||
+          exerciseItem.skill === 'Vocabulary'
+        "
+      >
         <div class="p-4">
           <audio
             v-if="exerciseItem.media"

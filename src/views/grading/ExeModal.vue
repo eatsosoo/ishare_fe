@@ -7,7 +7,13 @@
     :show-ok-btn="false"
     :title="props.title"
   >
-    <template v-if="props.skillType === 'Reading' || props.skillType === 'Listening'">
+    <template
+      v-if="
+        props.skillType === 'Reading' ||
+        props.skillType === 'Listening' ||
+        props.skillType === 'Vocabulary'
+      "
+    >
       <Row :gutter="[16, 16]" class="h-full">
         <Col
           :span="12"
@@ -432,7 +438,6 @@
     const status = file?.status;
     const url = file?.response?.result.items;
     const name = file?.name;
-    console.log(status);
     if (status === 'done') {
       createMessage.success(t('common.uploadFileSuccess', { name }));
       gradingFormData.value.feedback = url;

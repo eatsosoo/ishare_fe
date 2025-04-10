@@ -140,6 +140,9 @@
 
   function handleUpdateParts(partsUpdated: NewPartItem[]) {
     parts.value = partsUpdated;
+    if (skill.value !== 'Speaking') {
+      return;
+    }
     const totalDuration = partsUpdated[0].question_groups.reduce((total, item) => {
       return total + item.question_duration;
     }, 0);
