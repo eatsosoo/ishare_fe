@@ -12,7 +12,7 @@ export interface ExamListItem {
 
 export interface ExamBasicItem {}
 
-export type SkillType = 'Reading' | 'Listening' | 'Writing' | 'Speaking';
+export type SkillType = 'Reading' | 'Listening' | 'Writing' | 'Speaking' | 'Vocabulary';
 
 export interface ExamAddForm {
   title: string;

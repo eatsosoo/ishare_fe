@@ -1,6 +1,8 @@
 <template>
   <div class="bg-white px-2 mb-8">
-    <template v-if="skillType === 'Reading' || skillType === 'Listening'">
+    <template
+      v-if="skillType === 'Reading' || skillType === 'Listening' || skillType === 'Vocabulary'"
+    >
       <Tabs v-model:activeKey="activeKey" @change="handleChangeTab">
         <TabPane v-for="(item, index) in tabs" :key="item.key" :tab="item.tab">
           <Row :gutter="[16, 16]" class="mb-1 min-h-[30rem]">

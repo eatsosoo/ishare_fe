@@ -804,6 +804,10 @@ export function getSearchExamOfStudentConfig(): Partial<FormProps> {
               label: 'Writing',
               value: 'Writing',
             },
+            {
+              label: 'Vocabulary',
+              value: 'Vocabulary',
+            },
           ],
         },
         label: t('form.exam.skill'),
