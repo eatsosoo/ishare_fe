@@ -20,7 +20,7 @@
     loading: { type: Boolean },
     useWrapper: { type: Boolean, default: true },
     modalHeaderHeight: { type: Number, default: 57 },
-    modalFooterHeight: { type: Number, default: 74 },
+    modalFooterHeight: { type: Number, default: 55 },
     minHeight: { type: Number, default: 200 },
     height: { type: Number },
     footerOffset: { type: Number, default: 0 },

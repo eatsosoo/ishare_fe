@@ -1,13 +1,16 @@
 <template>
   <PageWrapper>
     <Card :title="t('form.gradingSearch.searchText')" :bordered="false" class="mb-4">
-      <BasicForm
-        @register="registerForm"
-        @submit="findExerciseOfClass"
-        @reset="showExerciseTable = false"
-      />
-      <div class="shadow-lg rounded-lg p-1 mx-1">
+      <div class="shadow-lg rounded-lg p-1 mx-1 mb-2">
         <SelectClass :extend="false" @select="classId = $event" ref="selectClassRef" />
+      </div>
+      <div class="shadow-lg rounded-lg p-1 mx-1">
+        <BasicForm
+          @register="registerForm"
+          @submit="findExerciseOfClass"
+          @reset="showExerciseTable = false"
+          class="mt-6"
+        />
       </div>
     </Card>
     <Card v-if="showExerciseTable" :title="t('common.resultList')" :bordered="false">

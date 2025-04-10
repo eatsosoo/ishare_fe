@@ -13,6 +13,7 @@
       <ModalHeader
         :helpMessage="getProps.helpMessage"
         :title="getMergeProps.title"
+        class="mb-0"
         @dblclick="handleTitleDbClick"
       />
     </template>

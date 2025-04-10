@@ -17,12 +17,24 @@
           <div class="p-4">
             <div v-if="props.skillType !== 'Listening'" v-html="completedAssignment?.subject"></div>
             <div v-else>
-              <audio
-                v-if="completedAssignment && completedAssignment.media"
-                :src="completedAssignment.media"
-                controls
-                class="h-8 w-full"
-              ></audio>
+              <Card v-if="completedAssignment && completedAssignment.media" class="mb-4 bg-red-300">
+                <audio :src="completedAssignment.media" controls class="h-8 w-full"></audio>
+              </Card>
+              <div
+                v-for="(group, gIdx) in completedAssignment?.question_groups"
+                :key="group.id || gIdx"
+                class="p-4 mb-4 bg-white rounded-lg shadow-md"
+              >
+                <h2 class="text-primary"
+                  >Questions
+                  {{
+                    group.question_no.length > 1
+                      ? `${group.question_no[0]} - ${group.question_no.at(-1)}`
+                      : group.question_no[0]
+                  }}</h2
+                >
+                <div v-html="renderGroupQuestions(group, classStyle, [])"></div>
+              </div>
             </div>
           </div>
         </Col>
@@ -202,6 +214,10 @@
   import { openWindow } from '@/utils';
   import { ExerciseResultItem } from '@/api/exercise/exerciseModel';
   import { useDarkModeTheme } from '@/hooks/setting/useDarkModeTheme';
+  import { renderGroupQuestions } from '../take/helpers';
+
+  const classStyle =
+    'bg-white rounded-full text-center outline-red-400 outline-1 border-gray-300 border-1 p-1 shadow-md h-[32px]';
 
   const props = defineProps({
     skillType: {
