@@ -5,7 +5,6 @@
     :can-fullscreen="false"
     :loading="loading"
     :show-ok-btn="false"
-    :title="props.title"
   >
     <template v-if="props.skillType === 'Reading' || props.skillType === 'Listening'">
       <Row :gutter="[16, 16]" class="h-full">
@@ -169,7 +168,7 @@
 
 <script lang="ts" setup>
   import { BasicModal } from '@/components/Modal';
-  import { Row, Col, InputNumber, Form, FormItem, Card } from 'ant-design-vue';
+  import { Row, Col, Form, FormItem, Card } from 'ant-design-vue';
   import { ref, type PropType, watch } from 'vue';
   import { useI18n } from '@/hooks/web/useI18n';
   import { SkillType } from '@/api/exam/examModel';

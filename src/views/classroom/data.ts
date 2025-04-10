@@ -101,31 +101,6 @@ export const schemas: FormSchema[] = [
 
 export const searchGradingSchemas: FormSchema[] = [
   {
-    field: 'classId',
-    component: 'ApiSelect',
-    label: t('form.gradingSearch.className'),
-    componentProps: {
-      // more details see /src/components/Form/src/components/ApiSelect.vue
-      api: classListApi(),
-      params: {
-        id: 1,
-      },
-
-      resultField: 'items',
-      // use name as label
-      labelField: 'title',
-      // use id as value
-      valueField: 'id',
-      // not request untill to select
-      immediate: true,
-    },
-    required: true,
-    colProps: {
-      xl: 6,
-      xxl: 6,
-    },
-  },
-  {
     field: 'skill',
     label: t('form.gradingSearch.skill'),
     component: 'Select',
@@ -152,7 +127,8 @@ export const searchGradingSchemas: FormSchema[] = [
     required: true,
     colProps: {
       xl: 6,
-      xxl: 4,
+      xxl: 6,
+      offset: 1,
     },
   },
   {
@@ -178,7 +154,8 @@ export const searchGradingSchemas: FormSchema[] = [
     required: true,
     colProps: {
       xl: 6,
-      xxl: 4,
+      xxl: 6,
+      offset: 1,
     },
   },
 ];

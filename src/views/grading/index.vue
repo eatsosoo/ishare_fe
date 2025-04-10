@@ -1,11 +1,14 @@
 <template>
-  <PageWrapper :title="t('routes.page.grading')">
+  <PageWrapper>
     <Card :title="t('form.gradingSearch.searchText')" :bordered="false" class="mb-4">
       <BasicForm
         @register="registerForm"
         @submit="findExerciseOfClass"
         @reset="showExerciseTable = false"
       />
+      <div class="shadow-lg rounded-lg p-1 mx-1">
+        <SelectClass :extend="false" @select="classId = $event" ref="selectClassRef" />
+      </div>
     </Card>
     <Card v-if="showExerciseTable" :title="t('common.resultList')" :bordered="false">
       <BasicTable @register="registerTable">
@@ -78,6 +81,8 @@
   import { ExamGradingListItem, SkillType } from '@/api/exam/examModel';
   import { examGradingListApi } from '@/api/exam/exam';
   import { useUserStore } from '@/store/modules/user';
+  import SelectClass from '../exercise/SelectClass.vue';
+  import { useMessage } from '@/hooks/web/useMessage';
 
   const { t } = useI18n();
   const useStore = useUserStore();
@@ -106,6 +111,9 @@
     schemas: searchGradingSchemas,
     showActionButtonGroup: true,
   });
+  const { createErrorModal } = useMessage();
+
+  const classId = ref<number | null>(null);
 
   const showExerciseTable = ref(false);
   const skillType = ref<SkillType>('Reading');
@@ -123,10 +131,8 @@
       return;
     }
 
-    console.log(assign_at);
-
     skillType.value = skill;
-    modalTitle.value = `Học sinh: ${name} - Kỹ năng: ${skill}`;
+    modalTitle.value = `${t('common.student')}: ${name} - ${t('form.skill')}: ${skill}`;
     examIdRef.value = exam_id;
     studentIdRef.value = user_id;
     scoreIdRef.value = score_id;
@@ -150,8 +156,15 @@
   async function findExerciseOfClass() {
     try {
       const [values] = await Promise.all([validate()]);
-      const { classId, skill, type } = values;
-      useStore.setClassId(classId);
+      if (!classId.value) {
+        createErrorModal({
+          title: t('form.selectClass'),
+          content: t('form.notSelect'),
+        });
+        return;
+      }
+      const { skill, type } = values;
+      useStore.setClassId(classId.value);
       useStore.setGradingType(type);
       useStore.setGradingSkill(skill);
       showExerciseTable.value = true;
