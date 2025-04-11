@@ -8,7 +8,13 @@
     :show-ok-btn="false"
   >
     <div v-if="exerciseItem" ref="htmlContainer" class="custom-html overflow-hidden">
-      <template v-if="exerciseItem.skill === 'Reading' || exerciseItem.skill === 'Listening'">
+      <template
+        v-if="
+          exerciseItem.skill === 'Reading' ||
+          exerciseItem.skill === 'Listening' ||
+          exerciseItem.skill === 'Vocabulary'
+        "
+      >
         <div v-if="exerciseItem.media" class="p-4">
           <audio
             :src="exerciseItem.media"
@@ -17,7 +23,7 @@
             :key="exerciseItem.media"
           ></audio>
         </div>
-        <Row :gutter="[16, 16]" class="h-[82vh]">
+        <Row :gutter="[16, 16]" class="h-full w-full">
           <Col
             v-if="exerciseItem.skill === 'Reading'"
             :span="12"
@@ -55,7 +61,7 @@
         </Row>
       </template>
       <template v-else-if="exerciseItem.skill === 'Writing'">
-        <Row :gutter="[16, 16]" class="h-[78vh] w-full border-t-1 border-gray-200">
+        <Row :gutter="[16, 16]" class="h-[80vh] w-full border-t-1 border-gray-200">
           <Col :span="12" class="bg-[aliceblue] border-r-2 border-gray h-full overflow-auto">
             <div class="p-6">
               <h2 class="text-primary">Writing Task {{ state.tabWriting + 1 }}</h2>
@@ -318,7 +324,7 @@
   );
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   @keyframes blinking-bg {
     0% {
       background-color: rgb(240 169 169);
@@ -339,6 +345,7 @@
 
   .custom-html {
     height: 100%;
+    overflow: hidden;
 
     table {
       width: 100%;

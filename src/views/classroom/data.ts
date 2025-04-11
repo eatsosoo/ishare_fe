@@ -122,6 +122,10 @@ export const searchGradingSchemas: FormSchema[] = [
           label: 'Writing',
           value: 'Writing',
         },
+        {
+          label: 'Vocabulary',
+          value: 'Vocabulary',
+        },
       ],
     },
     required: true,
