@@ -31,6 +31,18 @@ export interface TakeExerciseStudentItem {
   question_groups: GroupQuestionItem[];
 }
 
+export interface UpdateStudentInfoParams {
+  id: number;
+  name: string;
+  phone_number: string;
+  email: string;
+  dob: string;
+  parent_name: string;
+  parent_tel: string;
+  target: string;
+  plan: string;
+}
+
 /**
  * @description: Request list return value
  */

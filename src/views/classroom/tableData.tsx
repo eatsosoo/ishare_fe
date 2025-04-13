@@ -83,41 +83,49 @@ export function getStudentOfClassColumns(): BasicColumn[] {
       title: t('table.studentName'),
       dataIndex: 'name',
       align: 'left',
+      editRow: true,
     },
     {
       title: t('table.phone'),
       dataIndex: 'phone_number',
       align: 'left',
+      editRow: true,
     },
     {
       title: t('table.email'),
       dataIndex: 'email',
       align: 'left',
+      editRow: true,
     },
     {
       title: t('table.birthday'),
       dataIndex: 'dob',
       align: 'left',
+      editRow: true,
     },
     {
       title: t('table.parentName'),
       dataIndex: 'parent_name',
       align: 'left',
+      editRow: true,
     },
     {
       title: t('table.parentTel'),
       dataIndex: 'parent_tel',
       align: 'left',
+      editRow: true,
     },
     {
       title: t('table.target'),
       dataIndex: 'target',
       align: 'left',
+      editRow: true,
     },
     {
       title: t('table.plan'),
       dataIndex: 'plan',
       align: 'left',
+      editRow: true,
     },
   ];
 }

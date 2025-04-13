@@ -574,6 +574,10 @@ export const questionsBankFormSchemas: FormSchema[] = [
           label: 'Writing',
           value: 'Writing',
         },
+        {
+          label: 'Vocabulary',
+          value: 'Vocabulary',
+        },
       ],
     },
     required: true,

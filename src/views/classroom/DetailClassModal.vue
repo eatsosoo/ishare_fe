@@ -14,14 +14,15 @@
           <BasicTable @register="tab.register" ref="tableRefs" class="max-h-[770px]">
             <template #bodyCell="{ column, record }">
               <template v-if="column.key === 'action'">
-                <div class="flex gap-2 justify-center">
+                <TableAction :actions="createActions(record)" />
+                <!-- <div class="flex gap-2 justify-center">
                   <Icon
                     :size="18"
                     icon="ant-design:export"
                     class="cursor-pointer hover:border-red border-1 border-gray-200 p-1 rounded-md"
                     @click="activateExportModal(record)"
                   />
-                </div>
+                </div> -->
               </template>
             </template>
           </BasicTable>
@@ -63,10 +64,17 @@
 <script lang="ts" setup>
   import { h, ref, watch } from 'vue';
   import { BasicModal, useModal } from '@/components/Modal';
-  import { BasicTable, FormProps, useTable } from '@/components/Table';
+  import {
+    ActionItem,
+    BasicTable,
+    EditRecordRow,
+    FormProps,
+    TableAction,
+    useTable,
+  } from '@/components/Table';
   import { getStudentOfClassColumns } from '@/views/classroom/tableData';
   import { useI18n } from '@/hooks/web/useI18n';
-  import { omit } from 'lodash-es';
+  import { cloneDeep, omit } from 'lodash-es';
   import { Card, Tabs } from 'ant-design-vue';
   import {
     deleteClassApi,
@@ -83,6 +91,8 @@
   import { schemas } from './data';
   import { BasicForm, useForm } from '@/components/Form';
   import dayjs from 'dayjs';
+  import { UpdateStudentInfoParams } from '@/api/student/studentModel';
+  import { updateStudentInfoApi } from '@/api/student/student';
 
   const props = defineProps({
     classId: {
@@ -252,6 +262,85 @@
       loading.value = false;
     }
   };
+
+  const currentEditKeyRef = ref('');
+
+  function handleEdit(record: EditRecordRow) {
+    currentEditKeyRef.value = record.key;
+    record.onEdit?.(true);
+  }
+
+  function handleCancel(record: EditRecordRow) {
+    currentEditKeyRef.value = '';
+    record.onEdit?.(false, false);
+  }
+
+  async function handleSave(record: EditRecordRow) {
+    createMessage.loading({
+      content: t('common.saving') + '...',
+      duration: 0,
+      key: t('common.saving'),
+    });
+    const valid = await record.onValid?.();
+    if (valid) {
+      try {
+        const data = cloneDeep(record.editValueRefs);
+        if (!data) {
+          return;
+        }
+        const { id, name, phone_number, email, dob, parent_name, parent_tel, target, plan } = data;
+        const formData: UpdateStudentInfoParams = {
+          id,
+          name,
+          phone_number,
+          email,
+          dob,
+          parent_name,
+          parent_tel,
+          target,
+          plan,
+        };
+        const result = await updateStudentInfoApi(formData);
+        if (result && result.items) {
+          currentEditKeyRef.value = '';
+          record.onEdit?.(false, true);
+        }
+        createMessage.success({ content: t('common.dataSaved'), key: t('common.saving') });
+      } catch (error) {
+        createMessage.error({ content: t('common.saveFail'), key: t('common.saving') });
+      }
+    } else {
+      createMessage.error({
+        content: t('common.pleaseFillInCorrectData'),
+        key: t('common.saving'),
+      });
+    }
+  }
+
+  function createActions(record: EditRecordRow): ActionItem[] {
+    if (!record.editable) {
+      return [
+        {
+          label: t('common.updatedText'),
+          disabled: currentEditKeyRef.value ? currentEditKeyRef.value !== record.key : false,
+          onClick: handleEdit.bind(null, record),
+        },
+      ];
+    }
+    return [
+      {
+        label: t('common.saveText'),
+        onClick: handleSave.bind(null, record),
+      },
+      {
+        label: t('common.cancelText'),
+        popConfirm: {
+          title: t('common.cancelEditing') + '?',
+          confirm: handleCancel.bind(null, record),
+        },
+      },
+    ];
+  }
 
   watch(
     () => props.classId,

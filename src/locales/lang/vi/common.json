@@ -95,6 +95,11 @@
   "feedback": "Nhận xét",
   "practiceTestList": "Danh sách",
   "practiceTestDone": "Bài đã làm",
+  "saving": "Đang lưu...",
+  "dataSaved": "Dữ liệu đã được lưu",
+  "saveFail": "Lưu thất bại",
+  "pleaseFillInCorrectData": "Vui lòng điền đúng dữ liệu",
+  "cancelEditing": "Hủy chỉnh sửa",
   "warning": {
     "addActionEditor": "Chưa có vị trí để chèn text!",
     "deleteClass": "Bạn có muốn xoá lớp học này không?",

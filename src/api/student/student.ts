@@ -3,6 +3,7 @@ import {
   StudentListGetResultModel,
   TakeExamStudentItem,
   TakeExerciseStudentItem,
+  UpdateStudentInfoParams,
 } from './studentModel';
 import { BasicPageParams, ResultBase } from '../model/baseModel';
 import { ExamPartItem, ResponseExamPartItem, SkillType } from '../exam/examModel';
@@ -129,3 +130,17 @@ export const takeExerciseStudentApi = (exerciseId: number) => {
     },
   });
 };
+
+export const updateStudentInfoApi = (
+  formData: UpdateStudentInfoParams,
+  mode: ErrorMessageMode = 'modal',
+) =>
+  defHttp.put<ResultBase<UpdateStudentInfoParams>>(
+    {
+      url: '/profile',
+      data: formData,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
