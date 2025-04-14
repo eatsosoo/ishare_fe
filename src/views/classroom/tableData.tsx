@@ -95,7 +95,6 @@ export function getStudentOfClassColumns(): BasicColumn[] {
       title: t('table.email'),
       dataIndex: 'email',
       align: 'left',
-      editRow: true,
     },
     {
       title: t('table.birthday'),

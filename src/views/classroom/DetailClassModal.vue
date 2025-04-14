@@ -14,13 +14,13 @@
           <BasicTable @register="tab.register" ref="tableRefs" class="max-h-[770px]">
             <template #bodyCell="{ column, record }">
               <template v-if="column.key === 'action'">
-                <TableAction :actions="createActions(record)" />
+                <TableAction :actions="createActions(record)" @click="activateAction(record)" />
                 <!-- <div class="flex gap-2 justify-center">
                   <Icon
                     :size="18"
                     icon="ant-design:export"
                     class="cursor-pointer hover:border-red border-1 border-gray-200 p-1 rounded-md"
-                    @click="activateExportModal(record)"
+                    @click="activateAction(record)"
                   />
                 </div> -->
               </template>
@@ -180,9 +180,9 @@
     }
   };
 
-  const activateExportModal = (record: any) => {
+  const activateAction = (record: any) => {
     studentTarget.value = record;
-    openExportModal();
+    // openExportModal();
   };
 
   const handleDelete = () => {
@@ -288,18 +288,19 @@
         if (!data) {
           return;
         }
-        const { id, name, phone_number, email, dob, parent_name, parent_tel, target, plan } = data;
+        const { id } = studentTarget.value;
+        const { name, phone_number, dob, parent_name, parent_tel, target, plan } = data;
         const formData: UpdateStudentInfoParams = {
-          id,
+          user_id: id,
           name,
           phone_number,
-          email,
           dob,
           parent_name,
           parent_tel,
           target,
           plan,
         };
+        console.log(formData);
         const result = await updateStudentInfoApi(formData);
         if (result && result.items) {
           currentEditKeyRef.value = '';
@@ -324,6 +325,11 @@
           label: t('common.updatedText'),
           disabled: currentEditKeyRef.value ? currentEditKeyRef.value !== record.key : false,
           onClick: handleEdit.bind(null, record),
+        },
+        {
+          label: 'Excel',
+          disabled: currentEditKeyRef.value ? currentEditKeyRef.value !== record.key : false,
+          onClick: openExportModal,
         },
       ];
     }

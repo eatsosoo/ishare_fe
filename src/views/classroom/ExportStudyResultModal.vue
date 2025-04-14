@@ -73,6 +73,7 @@
 
   async function exportExcelStudent() {
     try {
+      loading.value = true; // Start loading
       const data = await validate();
       const from = data.from.split(' ')[0];
       const to = data.to.split(' ')[0];
@@ -123,6 +124,8 @@
       }
     } catch (error) {
       console.error('Download failed:', error);
+    } finally {
+      loading.value = false; // Stop loading
     }
   }
 </script>
