@@ -155,7 +155,7 @@
                   <Tinymce
                     v-model="groupActive.question_text"
                     width="100%"
-                    :show-image-upload="false"
+                    :show-image-upload="true"
                   />
                   <a-button
                     preIcon="ant-design:save-twotone"

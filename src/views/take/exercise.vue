@@ -163,7 +163,7 @@
                         >
                         <div
                           v-html="exerciseItem.question_groups[state.qIdx].question_text"
-                          class="text-3xl text-dark font-500"
+                          class="text-dark"
                         ></div>
                       </div>
                       <div></div>

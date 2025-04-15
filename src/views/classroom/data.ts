@@ -90,6 +90,10 @@ export const schemas: FormSchema[] = [
           label: '3',
           value: '3',
         },
+        {
+          label: '4',
+          value: '4',
+        },
       ],
     },
     required: true,

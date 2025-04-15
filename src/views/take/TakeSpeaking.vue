@@ -29,10 +29,7 @@
               <div v-else-if="questionCurrent" class="p-4">
                 <div>
                   <h2 class="text-primary text-3xl font-bold">Question {{ questionIndex + 1 }}</h2>
-                  <div
-                    v-html="questionCurrent.question_text"
-                    class="text-3xl text-dark font-500"
-                  ></div>
+                  <div v-html="questionCurrent.question_text" class="text-dark"></div>
                 </div>
                 <div></div>
                 <div class="flex justify-center items-center mt-4">
