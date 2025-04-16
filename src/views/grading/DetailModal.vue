@@ -192,29 +192,38 @@
                 :label-col="{ span: 3 }"
                 label-align="left"
               >
-                <Upload
-                  name="media"
-                  :beforeUpload="beforeUpload"
-                  :fileList="fileList"
-                  :action="gradingFormData.feedback"
-                  :headers="headers"
-                  :showUploadList="false"
-                  :customRequest="handleCustomUpload"
-                  class="mb-4"
-                  @change="handleChangeFile"
-                >
-                  <a-button preIcon="ant-design:upload-outlined" :loading="uploading">{{
-                    t('common.uploadFeedback')
-                  }}</a-button>
-                </Upload>
-                <a-button
-                  v-if="gradingFormData.feedback"
-                  type="link"
-                  @click="openWindow(gradingFormData.feedback)"
-                >
-                  {{ t('common.clickToView') }}
-                </a-button>
-                <span v-else class="ml-2">{{ t('common.noFeedbackYet') }}</span>
+                <template v-if="props.skillType === 'Writing'">
+                  <Upload
+                    name="media"
+                    :beforeUpload="beforeUpload"
+                    :fileList="fileList"
+                    :action="gradingFormData.feedback"
+                    :headers="headers"
+                    :showUploadList="false"
+                    :customRequest="handleCustomUpload"
+                    class="mb-4"
+                    @change="handleChangeFile"
+                  >
+                    <a-button preIcon="ant-design:upload-outlined" :loading="uploading">{{
+                      t('common.uploadFeedback')
+                    }}</a-button>
+                  </Upload>
+                  <a-button
+                    v-if="gradingFormData.feedback"
+                    type="link"
+                    @click="openWindow(gradingFormData.feedback)"
+                  >
+                    {{ t('common.clickToView') }}
+                  </a-button>
+                  <span v-else class="ml-2">{{ t('common.noFeedbackYet') }}</span>
+                </template>
+                <template v-else>
+                  <Textarea
+                    v-model:value="gradingFormData.feedback"
+                    required
+                    :rows="10"
+                  /> </template
+                >span>
               </FormItem>
               <div class="flex justify-end">
                 <a-button type="primary" @click="submitAll">{{ t('common.confirm') }}</a-button>
@@ -229,7 +238,7 @@
 
 <script lang="ts" setup>
   import { BasicModal } from '@/components/Modal';
-  import { Row, Col, InputNumber, Form, FormItem, Upload, Card } from 'ant-design-vue';
+  import { Row, Col, InputNumber, Form, FormItem, Upload, Card, Textarea } from 'ant-design-vue';
   import { ref, type PropType, watch } from 'vue';
   import { useI18n } from '@/hooks/web/useI18n';
   import { SkillType, ResponseExamPartItem } from '@/api/exam/examModel';

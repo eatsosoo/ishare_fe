@@ -194,14 +194,19 @@
                 :label-col="{ span: 3 }"
                 label-align="left"
               >
-                <a-button
-                  v-if="gradingFormData.feedback"
-                  type="link"
-                  @click="openWindow(gradingFormData.feedback)"
-                >
-                  {{ t('common.clickToView') }}
-                </a-button>
-                <span v-else class="ml-2">{{ t('common.noFeedbackYet') }}</span>
+                <template v-if="gradingFormData.feedback">
+                  <a-button
+                    v-if="props.skillType === 'Writing'"
+                    type="link"
+                    @click="openWindow(gradingFormData.feedback)"
+                  >
+                    {{ t('common.clickToView') }}
+                  </a-button>
+                  <span v-else class="ml-2">{{ gradingFormData.feedback }}</span>
+                </template>
+                <template v-else>
+                  <span class="ml-2">{{ t('common.noFeedbackYet') }}</span>
+                </template>
               </FormItem>
             </Form>
           </Card>
