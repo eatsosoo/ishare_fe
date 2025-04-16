@@ -1,11 +1,16 @@
 <template>
   <PageWrapper>
     <Card :title="t('form.searchClassAndDate')" :bordered="false" class="mb-4">
-      <BasicForm
-        @register="registerForm"
-        @submit="getAttendanceOfClass"
-        @reset="setTableData([])"
-      />
+      <div class="shadow-lg rounded-lg p-1 mx-1 mb-2">
+        <SelectClass :extend="false" @select="classId = $event" ref="selectClassRef" />
+      </div>
+      <div class="shadow-lg rounded-lg p-1 mx-1">
+        <BasicForm
+          @register="registerForm"
+          @submit="getAttendanceOfClass"
+          @reset="setTableData([])"
+        />
+      </div>
     </Card>
     <Card :title="t('common.resultList')" :bordered="false" class="mb-8">
       <BasicTable @register="registerTable">
@@ -34,6 +39,8 @@
   import { attendanceApi, attendanceListApi } from '@/api/class/class';
   import { getLeftValue } from '@/utils/stringUtils';
   import { ref } from 'vue';
+  import SelectClass from '../exercise/SelectClass.vue';
+  import { useMessage } from '@/hooks/web/useMessage';
 
   const { t } = useI18n();
   const loading = ref(false);
@@ -49,6 +56,7 @@
     pagination: false,
   });
 
+  const classId = ref<number | null>(null);
   const [registerForm, { validate }] = useForm({
     // baseColProps: {
     //   span: 6,
@@ -56,6 +64,7 @@
     schemas: searchAttendanceSchemas,
     showActionButtonGroup: true,
   });
+  const { createErrorModal } = useMessage();
 
   async function getAttendanceOfClass() {
     try {
@@ -79,10 +88,17 @@
     try {
       loading.value = true;
       const [values] = await Promise.all([validate()]);
-      const { classId, date } = values;
+      const { date } = values;
+      if (!classId.value) {
+        createErrorModal({
+          title: t('form.selectClass'),
+          content: t('form.notSelect'),
+        });
+        return;
+      }
       const dataSource = getDataSource();
       const formatData = {
-        class_id: classId,
+        class_id: classId.value,
         date: getLeftValue(date),
         users: dataSource.map((item) => {
           return {

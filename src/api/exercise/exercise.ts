@@ -100,7 +100,7 @@ export const studyDateListApi = (classId: number) => {
   });
 };
 
-export const assignExercise = (params: AssignExerciseParams, mode: ErrorMessageMode = 'none') =>
+export const assignExercise = (params: AssignExerciseParams, mode: ErrorMessageMode = 'modal') =>
   defHttp.post<ResultBase<AssignExerciseParams>>(
     {
       url: `${Api.ASSIGN_EXE}`,
@@ -135,7 +135,7 @@ export const getExerciseApi = (id: number, mode: ErrorMessageMode = 'modal') =>
     },
   );
 
-export const copyExercise = (params: CopyExerciseParams, mode: ErrorMessageMode = 'none') =>
+export const copyExercise = (params: CopyExerciseParams, mode: ErrorMessageMode = 'modal') =>
   defHttp.post<ResultBase<CopyExerciseParams>>(
     {
       url: `${Api.ASSIGN_EXE}/clone/new`,

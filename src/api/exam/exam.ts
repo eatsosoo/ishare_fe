@@ -55,7 +55,7 @@ export const examCreateApi = (params: ExamAddForm, mode: ErrorMessageMode = 'mod
 export const examSkillApi = (
   examId: number,
   params: ExamSkillForm,
-  mode: ErrorMessageMode = 'none',
+  mode: ErrorMessageMode = 'modal',
 ) =>
   defHttp.post<ResultBase<SkillItem>>(
     {

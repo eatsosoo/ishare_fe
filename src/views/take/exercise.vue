@@ -398,7 +398,13 @@
 
     const finalAnswers: SubmitAnswer[] | SpeakingExeAnswer[] =
       skill === 'Speaking'
-        ? [{ part_id: null, part_answer: final.value[0] }]
+        ? [
+            {
+              part_id: null,
+              part_answer: final.value[0],
+              question_group_ids: question_groups.map((item) => item.id),
+            },
+          ]
         : mapAnswersToParts(question_groups, studentAnswer.value);
 
     const formatData: SubmitExerciseParams = {

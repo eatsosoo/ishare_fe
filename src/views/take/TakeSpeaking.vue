@@ -141,6 +141,7 @@
       const submitData = props.value.parts.map((part, index) => ({
         part_id: part.id,
         part_answer: final.value[index],
+        question_group_ids: part.question_groups.map((group) => group.id),
       }));
       emit('submit', submitData);
     } else {

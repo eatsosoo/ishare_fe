@@ -458,32 +458,6 @@ export const copyHomeworkFormSchemas: FormSchema[] = [
 
 export const searchAttendanceSchemas: FormSchema[] = [
   {
-    field: 'classId',
-    component: 'ApiSelect',
-    label: t('form.gradingSearch.className'),
-    componentProps: {
-      // more details see /src/components/Form/src/components/ApiSelect.vue
-      api: classListApi(),
-      params: {
-        id: 1,
-      },
-
-      resultField: 'items',
-      // use name as label
-      labelField: 'title',
-      // use id as value
-      valueField: 'id',
-      // not request untill to select
-      immediate: true,
-    },
-    required: true,
-    colProps: {
-      xl: 6,
-      xxl: 4,
-      offset: 1,
-    },
-  },
-  {
     field: 'date',
     label: t('form.date'),
     component: 'DatePicker',
