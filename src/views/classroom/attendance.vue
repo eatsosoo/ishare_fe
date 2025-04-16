@@ -1,7 +1,7 @@
 <template>
   <PageWrapper>
     <Card :title="t('form.searchClassAndDate')" :bordered="false" class="mb-4">
-      <div class="shadow-lg rounded-lg p-1 mx-1 mb-2">
+      <div class="shadow-lg rounded-lg p-1 mx-1 mb-6">
         <SelectClass :extend="false" @select="classId = $event" ref="selectClassRef" />
       </div>
       <div class="shadow-lg rounded-lg p-1 mx-1">
@@ -69,9 +69,16 @@
   async function getAttendanceOfClass() {
     try {
       const [values] = await Promise.all([validate()]);
-      const { classId, date } = values;
+      const { date } = values;
+      if (!classId.value) {
+        createErrorModal({
+          title: t('form.selectClass'),
+          content: t('form.notSelect'),
+        });
+        return;
+      }
       setLoading(true);
-      const response = await attendanceListApi(classId, getLeftValue(date));
+      const response = await attendanceListApi(classId.value, getLeftValue(date));
 
       if (response.items[0].length === 0) {
         return;
@@ -96,6 +103,7 @@
         });
         return;
       }
+
       const dataSource = getDataSource();
       const formatData = {
         class_id: classId.value,
@@ -108,7 +116,13 @@
           };
         }),
       };
-
+      if (formatData.users.find((item) => item.status === null)) {
+        createErrorModal({
+          title: t('common.attendace'),
+          content: t('common.warning.attendanceAllStudent'),
+        });
+        return;
+      }
       await attendanceApi(formatData);
       await getAttendanceOfClass();
     } catch (error) {
