@@ -77,17 +77,26 @@
                 {{ JSON.parse(group.student_answer)[key] }}
 
                 <!-- So sánh đúng/sai và hiển thị icon -->
-                <Icon
-                  :icon="
-                    compareAnswers(value, JSON.parse(group.student_answer)[key])
-                      ? 'ant-design:check-outlined'
-                      : 'ant-design:close-outlined'
-                  "
-                  :color="
-                    compareAnswers(value, JSON.parse(group.student_answer)[key]) ? 'green' : 'red'
-                  "
-                  class="ml-4"
-                />
+                <template v-if="group.question_type !== 'multiple_choice'">
+                  <Icon
+                    :icon="
+                      compareAnswers(value, JSON.parse(group.student_answer)[key])
+                        ? 'ant-design:check-outlined'
+                        : 'ant-design:close-outlined'
+                    "
+                    :color="
+                      compareAnswers(value, JSON.parse(group.student_answer)[key]) ? 'green' : 'red'
+                    "
+                    class="ml-4"
+                  />
+                </template>
+                <template v-else>
+                  <span class="ml-2"
+                    >{{ countMultiAnswer(value, JSON.parse(group.student_answer)[key]) }}/{{
+                      value.length
+                    }}</span
+                  >
+                </template>
               </div>
             </div>
           </div>
@@ -359,6 +368,18 @@
       const isContained = value2Array.every((val) => correctAnswer.includes(val));
       return isContained;
     }
+  };
+
+  const countMultiAnswer = (correctAnswer: string[], studentAnswer: string) => {
+    if (!correctAnswer || !studentAnswer) return 0;
+    const value2Array = studentAnswer.split(',');
+    let count = 0;
+    for (let i = 0; i < correctAnswer.length; i++) {
+      if (value2Array.includes(correctAnswer[i])) {
+        count++;
+      }
+    }
+    return count;
   };
 
   // const countCorrectAnswers = (group) => {

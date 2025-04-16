@@ -12,7 +12,7 @@
           v-if="exerciseItem?.skill !== 'Speaking'"
           type="primary"
           preIcon="ant-design:send-outlined"
-          @click="submitExercise"
+          @click="submitExercise()"
           >Submit</a-button
         >
       </div>
@@ -71,7 +71,7 @@
             </div>
           </Col>
         </Row>
-        <div
+        <!-- <div
           v-for="(group, gIdx) in exerciseItem.question_groups"
           :key="gIdx"
           class="flex items-center p-4 justify-center gap-2 absolute bottom-0 h-14 bg-white box-shadow border-t w-full border-gray-200"
@@ -83,7 +83,7 @@
           >
             {{ q }}
           </div>
-        </div>
+        </div> -->
       </template>
       <template v-else-if="exerciseItem.skill === 'Writing'">
         <Row :gutter="[16, 16]" class="h-[88vh] w-[100vw] border-t-1 border-gray-200">
