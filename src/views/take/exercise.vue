@@ -136,6 +136,7 @@
                 <div class="rounded-t-md bg-[#ebebeb] border-b-1 border-[#d4dae0] h-14 relative">
                   <div class="right-0 absolute mr-4 top-[10px]">
                     <a-button
+                      v-if="microphoneAccess"
                       type="default"
                       preIcon="ant-design:caret-right-filled"
                       :disabled="state.loading"
@@ -179,19 +180,22 @@
                     </div>
                   </template>
                   <template v-else>
-                    <div>
-                      <h2>Please check your microphone before starting.</h2>
-                      <a-button type="primary" @click="requestMicrophoneAccess" class="my-4">
+                    <Card>
+                      <p class="font-500 text-md text-red-500"
+                        >Please check your microphone before starting. If not, please press the
+                        button.</p
+                      >
+                      <a-button @click="requestMicrophoneAccess" class="my-4" type="primary">
                         Allow Microphone
                       </a-button>
-                      <p v-if="microphoneAccess !== null" class="font-500">
+                      <p v-if="microphoneAccess !== null" class="font-500 text-lg">
                         {{
                           microphoneAccess
                             ? 'Microphone has been enabled ✅'
                             : 'Microphone is blocked ❌'
                         }}
                       </p>
-                    </div>
+                    </Card>
                   </template>
                 </div>
               </div>
@@ -215,7 +219,7 @@
   import { takeExerciseStudentApi } from '@/api/student/student';
   import { isArray } from '@/utils/is';
   import { TakeExerciseStudentItem } from '@/api/student/studentModel';
-  import { Col, Input, Row } from 'ant-design-vue';
+  import { Card, Col, Input, Row } from 'ant-design-vue';
   import { renderGroupQuestions } from './helpers';
   import { exerciseSubmitApi } from '@/api/exercise/exercise';
   import { SpeakingExeAnswer, SubmitExerciseParams } from '@/api/exercise/exerciseModel';
@@ -564,14 +568,18 @@
     }
   }
 
-  const microphoneAccess = ref(false);
+  const microphoneAccess = ref<Boolean | null>(null); // Use `null` to indicate uninitialized state
 
   const requestMicrophoneAccess = async () => {
     try {
+      console.log('Requesting microphone access...');
       await navigator.mediaDevices.getUserMedia({ audio: true });
       microphoneAccess.value = true;
+      createMessage.success('Microphone access granted ✅');
     } catch (error) {
       microphoneAccess.value = false;
+      console.error('Microphone access denied:', error);
+      createMessage.error('Microphone access denied ❌. Please check your browser settings.');
     }
   };
 
