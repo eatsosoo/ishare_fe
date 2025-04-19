@@ -1,7 +1,12 @@
 <template>
   <div>
     <Card>
-      <BasicForm @register="register" />
+      <div class="shadow-lg rounded-lg p-1 mx-1 mb-6">
+        <SelectClass :extend="false" @select="classId = $event" ref="selectClassRef" />
+      </div>
+      <div class="shadow-lg rounded-lg p-1 mx-1">
+        <BasicForm @register="register" />
+      </div>
     </Card>
   </div>
 </template>
@@ -11,33 +16,14 @@
   import { useForm, BasicForm } from '@/components/Form';
   import { getToken } from '@/utils/auth';
   import { useI18n } from '@/hooks/web/useI18n';
-  import { classListApi } from '@/api/class/class';
   import { useGlobSetting } from '@/hooks/setting';
+  import SelectClass from '../exercise/SelectClass.vue';
+  import { ref } from 'vue';
+  import { useMessage } from '@/hooks/web/useMessage';
 
   const { t } = useI18n();
   const config = useGlobSetting();
   const academicResults: FormSchema[] = [
-    {
-      field: 'classId',
-      component: 'ApiSelect',
-      label: t('form.gradingSearch.className'),
-      componentProps: {
-        api: classListApi(),
-        params: {
-          id: 1,
-        },
-        resultField: 'items',
-        labelField: 'title',
-        valueField: 'id',
-        immediate: true,
-      },
-      required: true,
-      colProps: {
-        offset: 1,
-        xl: 12,
-        xxl: 12,
-      },
-    },
     {
       field: 'exeType',
       label: t('form.exeType'),
@@ -78,6 +64,7 @@
     },
   ];
 
+  const classId = ref<number | null>(null);
   const [register, { validate }] = useForm({
     labelWidth: 120,
     schemas: academicResults,
@@ -86,15 +73,25 @@
     },
     submitFunc: handleSubmit,
   });
+  const { createErrorModal } = useMessage();
 
   async function handleSubmit() {
     try {
       const data = await validate();
-      const { date, classId, exeType } = data;
+      const { date, exeType } = data;
       const formatDate = date.split(' ')[0].slice(0, 7);
       const baseUrl = config.apiUrl;
+
+      if (!classId.value) {
+        createErrorModal({
+          title: t('form.selectClass'),
+          content: t('form.notSelect'),
+        });
+        return;
+      }
+
       const response = await fetch(
-        `${baseUrl}/homeworks/export?class_id=${classId}&date=${formatDate}&type=${exeType}`,
+        `${baseUrl}/homeworks/export?class_id=${classId.value}&date=${formatDate}&type=${exeType}`,
         {
           method: 'GET',
           headers: {
