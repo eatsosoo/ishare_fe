@@ -63,7 +63,7 @@ export function renderGroupQuestions(group: GroupQuestionItem, style: string, an
             <label class="custom-input custom-radio">
               <input type="radio" name="${matchFormat}" value="${value}" ${isChecked} />
               <span class="checkmark"></span>
-              ${label}
+              ${label ?? ''}
             </label>
           </div>`;
       })

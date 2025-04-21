@@ -52,7 +52,7 @@
             :span="exerciseItem.skill === 'Listening' ? 24 : 12"
             class="border-gray border-l-2 h-full overflow-auto p-4"
           >
-            <div ref="htmlContainer">
+            <div>
               <div
                 v-for="(group, gIdx) in exerciseItem.question_groups"
                 :key="group.id || gIdx"
@@ -208,7 +208,7 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, h, reactive, ref, watch } from 'vue';
+  import { computed, h, nextTick, onMounted, onUnmounted, reactive, ref, watch } from 'vue';
   import { GroupQuestionItem } from '@/views/test/types/question';
   import { useRoute, useRouter } from 'vue-router';
   import { SkillType, SubmitAnswer } from '@/api/exam/examModel';
@@ -249,6 +249,7 @@
   const exerciseItem = ref<TakeExerciseStudentItem | null>(null);
   const htmlContainer = ref<any>(null);
   const studentAnswer = ref<{ [key: string]: string | string[] }>({});
+  let observer: MutationObserver | null = null;
 
   // recording
   const isRecording = ref(false);
@@ -303,7 +304,7 @@
         });
       }
     });
-    // console.log(answerObject);
+
     return answerObject;
   }
 
@@ -314,8 +315,13 @@
       const data = result.items;
       exerciseItem.value = data;
       studentAnswer.value = generateAnswerObject(data.question_groups);
+
       if (data.skill !== 'Speaking') {
-        startCountdown(data.duration);
+        // Load progress on page load
+        loadProgress();
+        const localValue = localStorage.getItem(LOCAL_STORAGE_KEY);
+        const timeLeft = !localValue ? data.duration * 60 : JSON.parse(localValue).remainingTime;
+        startCountdown(timeLeft);
       }
     } catch (error) {
       createMessage.error(t('sys.app.dataNotFound'));
@@ -330,7 +336,6 @@
     const inputs = htmlContainer.value.querySelectorAll(
       'input[name^="question_"], select[name^="question_"]',
     );
-    console.log(inputs);
 
     const values: { [key: string]: string | string[] } = {};
 
@@ -351,7 +356,7 @@
         values[name] = (input as HTMLInputElement | HTMLSelectElement).value;
       }
     });
-    console.log('get values: ', values);
+
     studentAnswer.value = { ...studentAnswer.value, ...values };
   };
 
@@ -415,9 +420,9 @@
       type: skill,
       answers: finalAnswers,
     };
-    console.log(formatData);
 
     try {
+      localStorage.removeItem(LOCAL_STORAGE_KEY);
       openFullLoading();
       const result = await exerciseSubmitApi(id, formatData);
 
@@ -467,7 +472,6 @@
   };
 
   const uploadAudio = async () => {
-    console.log(audioFile.value);
     if (!audioFile.value) return;
 
     const formData = new FormData();
@@ -504,7 +508,7 @@
       state.qIdx = 0;
       const timeLimit = exerciseItem.value.duration;
       const questionDuration = exerciseItem.value.question_groups[state.qIdx].question_duration;
-      startCountdown(questionDuration);
+      startCountdown(questionDuration * 60);
       startRecording(timeLimit);
     } else if (actionType === 'FINISHED') {
       submitExercise();
@@ -527,7 +531,7 @@
           exerciseItem.value.question_groups[state.qIdx]
         ) {
           const questionDuration = exerciseItem.value.question_groups[state.qIdx].question_duration;
-          startCountdown(questionDuration);
+          startCountdown(questionDuration * 60);
         }
       }
     }
@@ -535,7 +539,7 @@
 
   // COUNT DOWN
   function startCountdown(time: number) {
-    duration.value = time * 60;
+    duration.value = time;
     if (interval) clearInterval(interval); // Xóa interval cũ nếu có
 
     interval = setInterval(() => {
@@ -572,27 +576,107 @@
 
   const requestMicrophoneAccess = async () => {
     try {
-      console.log('Requesting microphone access...');
       await navigator.mediaDevices.getUserMedia({ audio: true });
       microphoneAccess.value = true;
       createMessage.success('Microphone access granted ✅');
     } catch (error) {
       microphoneAccess.value = false;
-      console.error('Microphone access denied:', error);
       createMessage.error('Microphone access denied ❌. Please check your browser settings.');
     }
   };
+
+  const LOCAL_STORAGE_KEY = `exercise_${state.exerciseId}`;
+
+  function saveProgress() {
+    const progress = {
+      exerciseId: state.exerciseId,
+      answers: studentAnswer.value,
+      remainingTime: duration.value,
+    };
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(progress));
+  }
+
+  function loadProgress() {
+    const savedProgress = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (savedProgress) {
+      const { exerciseId, answers, remainingTime } = JSON.parse(savedProgress);
+      if (exerciseId === state.exerciseId) {
+        studentAnswer.value = answers || {};
+        duration.value = remainingTime || 0;
+      }
+    }
+  }
+
+  // Hàm xử lý sự kiện change
+  function handleInputChange(event) {
+    const target = event.target;
+
+    if (target.name && target.value) {
+      // Cập nhật đáp án vào studentAnswer
+      studentAnswer.value = {
+        ...studentAnswer.value,
+        [target.name]: target.value,
+      };
+    }
+  }
+
+  // Gắn sự kiện change vào các input bên trong v-html
+  function attachChangeEvent() {
+    if (!htmlContainer.value) {
+      return;
+    }
+
+    const inputs = htmlContainer.value.querySelectorAll('input, select, textarea');
+    inputs.forEach((input) => {
+      input.addEventListener('change', handleInputChange);
+    });
+  }
+
+  // Xóa sự kiện change khi cần (tránh rò rỉ bộ nhớ)
+  function detachChangeEvent() {
+    if (!htmlContainer.value) return;
+
+    const inputs = htmlContainer.value.querySelectorAll('input, select, textarea');
+    inputs.forEach((input) => {
+      input.removeEventListener('change', handleInputChange);
+    });
+  }
+
+  // Theo dõi thay đổi trong DOM bằng MutationObserver
+  function observeDomChanges() {
+    if (!htmlContainer.value) return;
+
+    observer = new MutationObserver(() => {
+      detachChangeEvent(); // Xóa sự kiện cũ
+      attachChangeEvent(); // Gắn lại sự kiện mới
+    });
+
+    observer.observe(htmlContainer.value, {
+      childList: true, // Theo dõi thay đổi trong các phần tử con
+      subtree: true, // Theo dõi toàn bộ cây DOM bên trong
+    });
+  }
+
+  // Dừng theo dõi DOM khi component bị hủy
+  function disconnectObserver() {
+    if (observer) {
+      observer.disconnect();
+      observer = null;
+    }
+  }
+
+  // Save progress whenever answers or duration change
+  watch(() => studentAnswer.value, saveProgress, { deep: true });
+
+  watch(() => duration.value, saveProgress);
 
   getExerciseDetail(state.exerciseId);
 
   watch(
     () => duration.value,
     (val) => {
-      console.log(val);
       if (val < 0) {
-        console.log(val);
         isWarning.value = false;
-        // timeLeft.value = '0:00';
         if (exerciseItem.value?.skill !== 'Speaking') {
           let countdown = 3;
           const countdownInterval = setInterval(() => {
@@ -608,6 +692,25 @@
       }
     },
   );
+
+  // Gắn sự kiện và theo dõi DOM khi component được mount
+  onMounted(() => {
+    watch(
+      () => exerciseItem.value,
+      async () => {
+        await nextTick(); // Đợi DOM cập nhật
+        attachChangeEvent();
+        observeDomChanges();
+      },
+      { immediate: true },
+    );
+  });
+
+  // Dọn dẹp khi component bị hủy
+  onUnmounted(() => {
+    detachChangeEvent();
+    disconnectObserver();
+  });
 </script>
 
 <style lang="scss">
