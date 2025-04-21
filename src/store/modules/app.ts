@@ -13,10 +13,8 @@ import { store } from '@/store';
 import { ThemeEnum } from '@/enums/appEnum';
 import { APP_DARK_MODE_KEY, PROJ_CFG_KEY, API_ADDRESS } from '@/enums/cacheEnum';
 import { Persistent } from '@/utils/cache/persistent';
-import { darkMode } from '@/settings/designSetting';
 import { resetRouter } from '@/router';
 import { deepMerge } from '@/utils';
-import setting from '@/settings/projectSetting';
 
 interface AppState {
   darkMode?: ThemeEnum;
@@ -42,10 +40,7 @@ export const useAppStore = defineStore({
     },
     getDarkMode(state): 'light' | 'dark' | string {
       return (
-        state.darkMode ||
-        localStorage.getItem(APP_DARK_MODE_KEY) ||
-        setting.menuSetting.theme ||
-        darkMode
+        state.darkMode || localStorage.getItem(APP_DARK_MODE_KEY) || 'light' // Default to 'light' mode
       );
     },
 
