@@ -314,8 +314,12 @@
       const data = result.items;
       exerciseItem.value = data;
       studentAnswer.value = generateAnswerObject(data.question_groups);
+
+      const localValue = localStorage.getItem(LOCAL_STORAGE_KEY);
+      const timeLeft = !localValue ? data.duration * 60 : JSON.parse(localValue).remainingTime;
+
       if (data.skill !== 'Speaking') {
-        startCountdown(data.duration);
+        startCountdown(timeLeft);
       }
     } catch (error) {
       createMessage.error(t('sys.app.dataNotFound'));
@@ -330,7 +334,6 @@
     const inputs = htmlContainer.value.querySelectorAll(
       'input[name^="question_"], select[name^="question_"]',
     );
-    console.log(inputs);
 
     const values: { [key: string]: string | string[] } = {};
 
@@ -351,7 +354,7 @@
         values[name] = (input as HTMLInputElement | HTMLSelectElement).value;
       }
     });
-    console.log('get values: ', values);
+
     studentAnswer.value = { ...studentAnswer.value, ...values };
   };
 
@@ -415,9 +418,9 @@
       type: skill,
       answers: finalAnswers,
     };
-    console.log(formatData);
 
     try {
+      localStorage.removeItem(LOCAL_STORAGE_KEY);
       openFullLoading();
       const result = await exerciseSubmitApi(id, formatData);
 
@@ -504,7 +507,7 @@
       state.qIdx = 0;
       const timeLimit = exerciseItem.value.duration;
       const questionDuration = exerciseItem.value.question_groups[state.qIdx].question_duration;
-      startCountdown(questionDuration);
+      startCountdown(questionDuration * 60);
       startRecording(timeLimit);
     } else if (actionType === 'FINISHED') {
       submitExercise();
@@ -527,7 +530,7 @@
           exerciseItem.value.question_groups[state.qIdx]
         ) {
           const questionDuration = exerciseItem.value.question_groups[state.qIdx].question_duration;
-          startCountdown(questionDuration);
+          startCountdown(questionDuration * 60);
         }
       }
     }
@@ -535,7 +538,7 @@
 
   // COUNT DOWN
   function startCountdown(time: number) {
-    duration.value = time * 60;
+    duration.value = time;
     if (interval) clearInterval(interval); // Xóa interval cũ nếu có
 
     interval = setInterval(() => {
@@ -583,16 +586,43 @@
     }
   };
 
+  const LOCAL_STORAGE_KEY = `exercise_${state.exerciseId}`;
+
+  function saveProgress() {
+    const progress = {
+      exerciseId: state.exerciseId,
+      answers: studentAnswer.value,
+      remainingTime: duration.value,
+    };
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(progress));
+  }
+
+  function loadProgress() {
+    const savedProgress = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (savedProgress) {
+      const { exerciseId, answers, remainingTime } = JSON.parse(savedProgress);
+      if (exerciseId === state.exerciseId) {
+        studentAnswer.value = answers || {};
+        duration.value = remainingTime || 0;
+      }
+    }
+  }
+
+  // Save progress whenever answers or duration change
+  watch(() => studentAnswer.value, saveProgress, { deep: true });
+
+  watch(() => duration.value, saveProgress);
+
+  // Load progress on page load
+  loadProgress();
+
   getExerciseDetail(state.exerciseId);
 
   watch(
     () => duration.value,
     (val) => {
-      console.log(val);
       if (val < 0) {
-        console.log(val);
         isWarning.value = false;
-        // timeLeft.value = '0:00';
         if (exerciseItem.value?.skill !== 'Speaking') {
           let countdown = 3;
           const countdownInterval = setInterval(() => {
