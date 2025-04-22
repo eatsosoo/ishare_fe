@@ -16,12 +16,7 @@
         "
       >
         <div v-if="exerciseItem.media" class="p-4">
-          <audio
-            :src="exerciseItem.media"
-            controls
-            class="h-8 w-full"
-            :key="exerciseItem.media"
-          ></audio>
+          <AudioPlayer :src="exerciseItem.media" class="w-full" :key="exerciseItem.media" />
         </div>
         <Row :gutter="[16, 16]" class="h-full w-full">
           <Col
@@ -196,6 +191,7 @@
   import { BasicModal } from '@/components/Modal';
   import { getExerciseApi } from '@/api/exercise/exercise';
   import Icon from '@/components/Icon/Icon.vue';
+  import { AudioPlayer } from '@/components/AudioPlayer';
 
   const props = defineProps({
     exerciseId: {
