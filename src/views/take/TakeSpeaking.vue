@@ -10,8 +10,18 @@
               <h1 class="text-2xl line-height-14">{{
                 partIndex === null ? 'READY' : `PART ${partIndex + 1}`
               }}</h1>
-              <div class="right-0 absolute mr-4 top-[10px]">
+              <div class="right-0 absolute mr-4 top-[10px] flex items-center">
+                <div v-if="isRecording" class="flex justify-center items-center mr-4">
+                  <span class="relative flex h-3 w-3">
+                    <span
+                      class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"
+                    ></span>
+                    <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                  </span>
+                  <span class="ml-2">Recording...</span>
+                </div>
                 <a-button
+                  v-if="microphoneAccess"
                   type="default"
                   preIcon="ant-design:caret-right-filled"
                   :disabled="uploading"
@@ -28,22 +38,35 @@
               </div>
               <div v-else-if="questionCurrent" class="p-4">
                 <div>
-                  <h2 class="text-primary text-3xl font-bold">Question {{ questionIndex + 1 }}</h2>
+                  <h2 class="text-primary text-2xl font-bold">Question {{ questionIndex + 1 }}</h2>
                   <div v-html="questionCurrent.question_text" class="text-dark"></div>
-                </div>
-                <div></div>
-                <div class="flex justify-center items-center mt-4">
-                  <span class="relative flex h-3 w-3">
-                    <span
-                      class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"
-                    ></span>
-                    <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
-                  </span>
-                  <span class="ml-2">Recording...</span>
                 </div>
               </div>
               <div v-else-if="!partIndex && !questionIndex">
-                <h2>{{ t('common.test.readyForTest') }}</h2>
+                <template v-if="!microphoneAccess">
+                  <Card>
+                    <p class="font-500 text-md text-red-500"
+                      >Please check your microphone before starting. If not, please press the
+                      button.</p
+                    >
+                    <a-button @click="requestMicrophoneAccess" class="my-4" type="primary">
+                      Allow Microphone
+                    </a-button>
+                    <p v-if="microphoneAccess !== null" class="font-500 text-md">
+                      {{ microphoneAccess ? 'Microphone has been enabled' : 'Microphone is blocked'
+                      }}<Icon
+                        :icon="
+                          microphoneAccess
+                            ? 'ant-design:audio-filled'
+                            : 'ant-design:audio-muted-outlined'
+                        "
+                      />
+                    </p>
+                  </Card>
+                </template>
+                <template v-else>
+                  <h2>{{ t('common.test.readyForTest') }}</h2>
+                </template>
               </div>
               <div v-else-if="textButton === 'FINISH'">
                 <h2>{{ t('common.test.plsClickBtnForSubmit') }}</h2>
@@ -59,10 +82,11 @@
 <script setup lang="ts">
   import { computed, ref, h } from 'vue';
   import { GroupQuestionItem, SkillItem } from '../test/types/question';
-  import { Col, Row } from 'ant-design-vue';
+  import { Card, Col, Row } from 'ant-design-vue';
   import { uploadAudioApi } from '@/api/exam/exam';
   import { useMessage } from '@/hooks/web/useMessage';
   import { useI18n } from '@/hooks/web/useI18n';
+  import Icon from '@/components/Icon/Icon.vue';
 
   const props = defineProps({
     value: {
@@ -110,7 +134,7 @@
     FINISH: 'FINISH',
   };
 
-  const { createConfirm } = useMessage();
+  const { createConfirm, createMessage } = useMessage();
   const { t } = useI18n();
 
   const actionRecord = (actionType: string) => {
@@ -216,6 +240,19 @@
       console.error('Upload failed:', error);
     } finally {
       uploading.value = false;
+    }
+  };
+
+  const microphoneAccess = ref<Boolean | null>(null); // Use `null` to indicate uninitialized state
+
+  const requestMicrophoneAccess = async () => {
+    try {
+      await navigator.mediaDevices.getUserMedia({ audio: true });
+      microphoneAccess.value = true;
+      createMessage.success('Microphone access granted ✅');
+    } catch (error) {
+      microphoneAccess.value = false;
+      createMessage.error('Microphone access denied ❌. Please check your browser settings.');
     }
   };
 </script>

@@ -107,7 +107,16 @@
                 class="min-h-[480px] rounded-md border-1 border-[#d4dae0] bg-[#f7dcdc] w-[1000px] text-center flex flex-col"
               >
                 <div class="rounded-t-md bg-[#ebebeb] border-b-1 border-[#d4dae0] h-14 relative">
-                  <div class="right-0 absolute mr-4 top-[10px]">
+                  <div class="right-0 absolute mr-4 top-[10px] flex items-center">
+                    <div class="flex justify-center items-center mr-4">
+                      <span class="relative flex h-3 w-3">
+                        <span
+                          class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"
+                        ></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                      </span>
+                      <span class="ml-2">Recording...</span>
+                    </div>
                     <a-button
                       type="default"
                       preIcon="ant-design:caret-right-filled"
@@ -127,7 +136,7 @@
                     </div>
                     <div v-else-if="exerciseItem.question_groups[state.qIdx]" class="p-4">
                       <div>
-                        <h2 class="text-primary text-3xl font-bold"
+                        <h2 class="text-primary text-2xl font-bold"
                           >Question {{ state.qIdx + 1 }}</h2
                         >
                         <div
@@ -135,32 +144,33 @@
                           class="text-3xl text-dark font-500"
                         ></div>
                       </div>
-                      <div></div>
-                      <div class="flex justify-center items-center mt-4">
-                        <span class="relative flex h-3 w-3">
-                          <span
-                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"
-                          ></span>
-                          <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
-                        </span>
-                        <span class="ml-2">Recording...</span>
-                      </div>
                     </div>
                   </template>
                   <template v-else>
-                    <div>
-                      <h2>Please check your microphone before starting.</h2>
-                      <a-button type="primary" @click="requestMicrophoneAccess" class="my-4">
+                    <Card>
+                      <p class="font-500 text-md text-red-500"
+                        >Please check your microphone before starting. If not, please press the
+                        button.</p
+                      >
+                      <a-button @click="requestMicrophoneAccess" class="my-4" type="primary">
                         Allow Microphone
                       </a-button>
-                      <p v-if="microphoneAccess !== null" class="font-500">
+                      <p v-if="microphoneAccess !== null" class="font-500 text-md">
                         {{
                           microphoneAccess
-                            ? 'Microphone has been enabled ✅'
-                            : 'Microphone is blocked ❌'
-                        }}
+                            ? 'Microphone has been enabled'
+                            : 'Microphone is blocked'
+                        }}<Icon
+                          size="20"
+                          class="ml-2"
+                          :icon="
+                            microphoneAccess
+                              ? 'ant-design:audio-filled'
+                              : 'ant-design:audio-muted-outlined'
+                          "
+                        />
                       </p>
-                    </div>
+                    </Card>
                   </template>
                 </div>
               </div>
@@ -180,11 +190,12 @@
   import { useI18n } from '@/hooks/web/useI18n';
   import { useLoading } from '@/components/Loading';
   import { TakeExerciseStudentItem } from '@/api/student/studentModel';
-  import { Col, Input, Row } from 'ant-design-vue';
+  import { Card, Col, Input, Row } from 'ant-design-vue';
   import { useDarkModeTheme } from '@/hooks/setting/useDarkModeTheme';
   import { renderGroupQuestions } from '../take/helpers';
   import { BasicModal } from '@/components/Modal';
   import { getExerciseApi } from '@/api/exercise/exercise';
+  import Icon from '@/components/Icon/Icon.vue';
 
   const props = defineProps({
     exerciseId: {
