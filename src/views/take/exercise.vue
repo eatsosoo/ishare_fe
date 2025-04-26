@@ -233,12 +233,11 @@
   import { useMessage } from '@/hooks/web/useMessage';
   import { useI18n } from '@/hooks/web/useI18n';
   import { useLoading } from '@/components/Loading';
-  import { takeExerciseStudentApi } from '@/api/student/student';
   import { isArray } from '@/utils/is';
   import { TakeExerciseStudentItem } from '@/api/student/studentModel';
   import { Card, Col, Input, Row } from 'ant-design-vue';
   import { renderGroupQuestions } from './helpers';
-  import { exerciseSubmitApi } from '@/api/exercise/exercise';
+  import { exerciseSubmitApi, getExerciseApi } from '@/api/exercise/exercise';
   import { SpeakingExeAnswer, SubmitExerciseParams } from '@/api/exercise/exerciseModel';
   import { uploadAudioApi } from '@/api/exam/exam';
   import Icon from '@/components/Icon/Icon.vue';
@@ -328,7 +327,7 @@
   async function getExerciseDetail(homeworkId: number) {
     try {
       openFullLoading();
-      const result = await takeExerciseStudentApi(homeworkId);
+      const result = await getExerciseApi(homeworkId);
       const data = result.items;
       exerciseItem.value = data;
       studentAnswer.value = generateAnswerObject(data.question_groups);
