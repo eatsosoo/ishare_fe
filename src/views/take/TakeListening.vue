@@ -115,7 +115,8 @@
       let answeredCount = 0;
 
       part.question_groups.forEach((group) => {
-        Object.keys(group.question_answer).forEach((questionKey) => {
+        Object.keys(group.question_no).forEach((questionNo) => {
+          const questionKey = `question_${questionNo}`;
           const answer = props.answers[questionKey];
 
           // Nếu key có dạng `question_1_2_3_4`, tách thành từng câu riêng lẻ

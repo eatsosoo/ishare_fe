@@ -5,7 +5,6 @@
     width="1100px"
     :show-ok-btn="false"
     :show-cancel-btn="false"
-    :can-fullscreen="false"
     :loading="loading"
   >
     <Tabs v-model:activeTab="activeTab" @change="activeKey = $event" class="max-height-[500px]">
@@ -78,12 +77,12 @@
   import { Card, Tabs } from 'ant-design-vue';
   import {
     deleteClassApi,
+    deleteStudentOfClassApi,
     getClassApi,
     getStudentsOfClassApi,
     updateClassApi,
   } from '@/api/class/class';
   import { Key } from 'ant-design-vue/es/_util/type';
-  import Icon from '@/components/Icon/Icon.vue';
   import ExportStudyResultModal from './ExportStudyResultModal.vue';
   import { useMessage } from '@/hooks/web/useMessage';
   import ShiftTable from './ShiftTable.vue';
@@ -270,6 +269,25 @@
     record.onEdit?.(true);
   }
 
+  function handleRemoveStudent(record: EditRecordRow) {
+    console.log(record);
+    const formData = {
+      class_id: props.classId,
+      students: [{ id: record.id }],
+    };
+    createConfirm({
+      iconType: 'warning',
+      title: () => h('span', t('sys.app.logoutTip')),
+      content: () => h('span', t('common.warning.deleteStudentFromClass')),
+      onOk: async () => {
+        const res = await deleteStudentOfClassApi(formData);
+        if (res && res.items) {
+          reload1();
+        }
+      },
+    });
+  }
+
   function handleCancel(record: EditRecordRow) {
     currentEditKeyRef.value = '';
     record.onEdit?.(false, false);
@@ -322,12 +340,17 @@
     if (!record.editable) {
       return [
         {
-          label: t('common.updatedText'),
+          label: '✏️',
           disabled: currentEditKeyRef.value ? currentEditKeyRef.value !== record.key : false,
           onClick: handleEdit.bind(null, record),
         },
         {
-          label: 'Excel',
+          label: '❌',
+          disabled: currentEditKeyRef.value ? currentEditKeyRef.value !== record.key : false,
+          onClick: handleRemoveStudent.bind(null, record),
+        },
+        {
+          label: '📊',
           disabled: currentEditKeyRef.value ? currentEditKeyRef.value !== record.key : false,
           onClick: openExportModal,
         },

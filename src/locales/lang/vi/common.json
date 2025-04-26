@@ -108,6 +108,7 @@
     "deleteTest": "Bạn có muốn xoá bài thi này không?",
     "deleteBank": "Bạn có muốn xoá dữ liệu này không?",
     "deleteQuestion": "Bạn có muốn xoá nhóm câu hỏi này không?",
+    "deleteStudentFromClass": "Bạn có muốn xoá học sinh này khỏi lớp không?",
     "changeSkill": "Khi bạn thay đổi trường Kỹ năng, tất cả các câu hỏi đã tạo trước đó sẽ bị đặt lại từ đầu. Bạn có chắc chắn muốn tiếp tục thay đổi không?",
     "attendanceAllStudent": "Vui lòng điểm danh tất cả học sinh trong lớp!"
   },
