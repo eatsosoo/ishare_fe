@@ -17,7 +17,7 @@
             {{
               record.score === -1 || record.score === null || record.score === '-1.0'
                 ? t('common.noScoreYet')
-                : `${['Writing', 'Speaking'].includes(record.skill) ? record.score : `${record.score}/${record.question_count}`}`
+                : `${['Writing', 'Speaking'].includes(record.skill) ? record.score : `${parseInt(record.score)}/${record.question_count}`}`
             }}
           </template>
           <template v-if="column.key === 'status'">
