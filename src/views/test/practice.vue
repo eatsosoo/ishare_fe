@@ -17,6 +17,12 @@
           <Icon
             icon="ant-design:delete-outlined"
             :size="18"
+            class="cursor-pointer hover:border-red border-1 border-gray-200 p-1 rounded-md mr-1"
+            @click="deleteItem(record.id)"
+          />
+          <Icon
+            icon="ant-design:export-outlined"
+            :size="18"
             class="cursor-pointer hover:border-red border-1 border-gray-200 p-1 rounded-md"
             @click="deleteItem(record.id)"
           />
