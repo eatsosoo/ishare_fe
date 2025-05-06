@@ -72,7 +72,7 @@
       const baseUrl = config.apiUrl;
 
       const response = await fetch(
-        `${baseUrl}/exam-excel/export?class_id=&exam_id=${props.practiceId}`,
+        `${baseUrl}/exam-excel/export?class_id=${classId}&exam_id=${props.practiceId}`,
         {
           method: 'GET',
           headers: {
