@@ -12,7 +12,7 @@
             icon="ant-design:edit-outlined"
             :size="18"
             class="cursor-pointer hover:border-red border-1 border-gray-200 p-1 rounded-md mr-1"
-            @click="activateEditorModal(record as ExamListItem)"
+            @click="activateEditorModal(record as ExamListItem, 'editor')"
           />
           <Icon
             icon="ant-design:delete-outlined"
@@ -21,10 +21,10 @@
             @click="deleteItem(record.id)"
           />
           <Icon
-            icon="ant-design:export-outlined"
+            icon="ant-design:file-excel-outlined"
             :size="18"
             class="cursor-pointer hover:border-red border-1 border-gray-200 p-1 rounded-md"
-            @click="deleteItem(record.id)"
+            @click="activateEditorModal(record as ExamListItem, 'excel')"
           />
         </template>
       </template>
@@ -35,7 +35,15 @@
       @success="handleSuccessModal"
       is-published="publish"
     />
-    <EditorExamModal @register="registerEditorModal" :exam-id="examId" :title="titleEditor" />
+
+    <EditorExamModal @register="registerEditorModal" :exam-id="examId" :title="modalTitle" />
+
+    <ExportScorePracticeModal
+      @register="registerExportModal"
+      :practice-id="examId"
+      :title="modalTitle"
+      @cancel="examId = undefined"
+    />
   </PageWrapper>
 </template>
 <script lang="ts" setup>
@@ -51,6 +59,7 @@
   import Icon from '@/components/Icon/Icon.vue';
   import PageWrapper from '@/components/Page/src/PageWrapper.vue';
   import { useMessage } from '@/hooks/web/useMessage';
+  import ExportScorePracticeModal from './ExportScorePracticeModal.vue';
 
   const { t } = useI18n();
   const [registerTable, { reload }] = useTable({
@@ -70,21 +79,27 @@
     },
   });
   const examId = ref<number | undefined>(undefined);
-  const titleEditor = ref('');
+  const modalTitle = ref('');
 
   const handleSuccessModal = () => {
     reload();
     closeModal();
   };
 
-  const activateEditorModal = (record: ExamListItem) => {
+  const activateEditorModal = (record: ExamListItem, type: 'excel' | 'editor') => {
     examId.value = record.id;
-    titleEditor.value = record.title;
-    openEditorModal();
+    modalTitle.value = record.title;
+
+    if (type === 'excel') {
+      openExportModal();
+    } else {
+      openEditorModal();
+    }
   };
 
   const [registerAddModal, { openModal: openAddModal, closeModal }] = useModal();
   const [registerEditorModal, { openModal: openEditorModal }] = useModal();
+  const [registerExportModal, { openModal: openExportModal }] = useModal();
 
   const { createConfirm } = useMessage();
 

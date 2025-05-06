@@ -1,15 +1,16 @@
 <template>
   <BasicModal
     v-bind="$attrs"
-    :title="t('component.excel.exportModalTitle')"
-    @ok="handleOk"
-    @register="registerModal"
+    :title="props.title || t('component.excel.exportModalTitle')"
+    :show-ok-btn="false"
+    :loading="loading"
+    @cancel="$emit('cancel')"
   >
     <BasicTable @register="registerClassTable" :max-height="300">
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'action'">
           <Icon
-            icon="ant-design:select-outlined"
+            icon="ant-design:download-outlined"
             :size="18"
             class="cursor-pointer hover:border-red border-1 border-gray-200 p-1 rounded-md mr-2"
             @click="exportExcel(record.id)"
@@ -27,15 +28,23 @@
   import { getClassColumns, getFormSearchClassConfig } from '../classroom/tableData';
   import { BasicModal } from '@/components/Modal';
   import Icon from '@/components/Icon/Icon.vue';
+  import { useGlobSetting } from '@/hooks/setting';
+  import { getToken } from '@/utils/auth';
+  import { ref } from 'vue';
 
   const props = defineProps({
     practiceId: {
       type: Number,
       default: 0,
     },
+    title: {
+      type: String,
+      default: '',
+    },
   });
 
   const { t } = useI18n();
+  const loading = ref(false);
 
   const [registerClassTable] = useTable({
     title: t('routes.page.classroomList'),
@@ -61,7 +70,7 @@
       const baseUrl = config.apiUrl;
 
       const response = await fetch(
-        `${baseUrl}/exam/export-excel?class_id=${classId}&exam_id=${props.practiceId}`,
+        `${baseUrl}/exam-excel/export?class_id=${classId}&exam_id=${props.practiceId}`,
         {
           method: 'GET',
           headers: {
@@ -81,7 +90,7 @@
       const disposition = response.headers.get('Content-Disposition');
       const fileName = disposition
         ? disposition.split('filename=')[1]
-        : `study-result-${from}-${to}.xlsx`;
+        : `score-class-ID:${classId}.xlsx`;
 
       // 📌 Hỗ trợ Safari & IE
       if (window.navigator && (window.navigator as any).msSaveOrOpenBlob) {
