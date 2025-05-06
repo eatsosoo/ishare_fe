@@ -2,9 +2,11 @@
   <BasicModal
     v-bind="$attrs"
     :title="props.title || t('component.excel.exportModalTitle')"
-    :show-ok-btn="false"
     :loading="loading"
-    @cancel="$emit('cancel')"
+    :width="1000"
+    :default-fullscreen="true"
+    :ok-text="t('component.excel.exportAll')"
+    @ok="exportExcel('')"
   >
     <BasicTable @register="registerClassTable" :max-height="300">
       <template #bodyCell="{ column, record }">
@@ -63,14 +65,14 @@
     },
   });
 
-  async function exportExcel(classId: number) {
+  async function exportExcel(classId: string) {
     try {
       loading.value = true; // Start loading
       const config = useGlobSetting();
       const baseUrl = config.apiUrl;
 
       const response = await fetch(
-        `${baseUrl}/exam-excel/export?class_id=${classId}&exam_id=${props.practiceId}`,
+        `${baseUrl}/exam-excel/export?class_id=&exam_id=${props.practiceId}`,
         {
           method: 'GET',
           headers: {
@@ -90,7 +92,7 @@
       const disposition = response.headers.get('Content-Disposition');
       const fileName = disposition
         ? disposition.split('filename=')[1]
-        : `score-class-ID:${classId}.xlsx`;
+        : `score_class_ID:${classId || 'All'}-${props.title}.xlsx`;
 
       // 📌 Hỗ trợ Safari & IE
       if (window.navigator && (window.navigator as any).msSaveOrOpenBlob) {

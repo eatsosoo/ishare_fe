@@ -42,7 +42,6 @@
       @register="registerExportModal"
       :practice-id="examId"
       :title="modalTitle"
-      @cancel="examId = undefined"
     />
   </PageWrapper>
 </template>

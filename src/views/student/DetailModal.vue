@@ -225,10 +225,10 @@
   import { getDetailExamOfStudent } from '@/api/student/student';
   import Icon from '@/components/Icon/Icon.vue';
   import { isArray } from 'lodash-es';
-  import { saveAs } from 'file-saver';
   import { openWindow } from '@/utils';
   import { useDarkModeTheme } from '@/hooks/setting/useDarkModeTheme';
   import { renderGroupQuestions } from '../take/helpers';
+  import { exportHtmlToDocx } from '@/utils/exportToDocx';
 
   const classStyle =
     'bg-white rounded-full text-center outline-red-400 outline-1 border-gray-300 border-1 p-1 shadow-md h-[32px]';
@@ -347,8 +347,7 @@
     </html>
   `;
 
-    const blob = new Blob(['\ufeff', htmlContent], { type: 'application/msword' });
-    saveAs(blob, `${props.title}.doc`);
+    exportHtmlToDocx(htmlContent, `${props.title}.docx`);
   };
 
   watch(
