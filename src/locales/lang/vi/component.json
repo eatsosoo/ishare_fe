@@ -31,7 +31,8 @@
   "excel": {
     "exportModalTitle": "Xuất dữ liệu",
     "fileType": "Loại tệp",
-    "fileName": "Tên tệp"
+    "fileName": "Tên tệp",
+    "exportAll": "Xuất tất cả"
   },
   "form": {
     "putAway": "Thu gọn",

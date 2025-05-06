@@ -31,7 +31,8 @@
   "excel": {
     "exportModalTitle": "Export data",
     "fileType": "File type",
-    "fileName": "File name"
+    "fileName": "File name",
+    "exportAll": "Export all"
   },
   "form": {
     "putAway": "Collapse",
