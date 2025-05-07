@@ -14,14 +14,6 @@
             <template #bodyCell="{ column, record }">
               <template v-if="column.key === 'action'">
                 <TableAction :actions="createActions(record)" @click="activateAction(record)" />
-                <!-- <div class="flex gap-2 justify-center">
-                  <Icon
-                    :size="18"
-                    icon="ant-design:export"
-                    class="cursor-pointer hover:border-red border-1 border-gray-200 p-1 rounded-md"
-                    @click="activateAction(record)"
-                  />
-                </div> -->
               </template>
             </template>
           </BasicTable>
@@ -49,6 +41,14 @@
         preIcon="ant-design:save-twotone"
         @click="updateClass"
         >{{ t('common.updatedText') }}</a-button
+      >
+      <a-button
+        v-if="activeKey === 0"
+        :disabled="selectIDs.length === 0"
+        type="primary"
+        preIcon="ant-design:swap-outlined"
+        @click="changeClass"
+        >{{ t('common.changeClass') }}</a-button
       >
     </template>
 
@@ -80,13 +80,14 @@
     deleteStudentOfClassApi,
     getClassApi,
     getStudentsOfClassApi,
+    transferStudentOfClassApi,
     updateClassApi,
   } from '@/api/class/class';
   import { Key } from 'ant-design-vue/es/_util/type';
   import ExportStudyResultModal from './ExportStudyResultModal.vue';
   import { useMessage } from '@/hooks/web/useMessage';
   import ShiftTable from './ShiftTable.vue';
-  import { ShiftItem, UpdateClassParams } from '@/api/class/classModel';
+  import { ShiftItem, TransferStudentsParams, UpdateClassParams } from '@/api/class/classModel';
   import { schemas } from './data';
   import { BasicForm, useForm } from '@/components/Form';
   import dayjs from 'dayjs';
@@ -111,6 +112,8 @@
   const studentTarget = ref<any>({});
   const detail = ref<UpdateClassParams | null>(null);
   const loading = ref(false);
+  const selectIDs = ref<number[]>([]);
+
   function searchConfig(): Partial<FormProps> {
     return {
       labelWidth: 100,
@@ -156,6 +159,12 @@
     actionColumn: {
       title: t('table.action'),
       dataIndex: 'action',
+    },
+    rowSelection: {
+      selectedRowKeys: [],
+      onChange: (selectedRowKeys: Key[]) => {
+        selectIDs.value = selectedRowKeys as number[];
+      },
     },
   });
 
@@ -224,6 +233,28 @@
     if (detail.value) {
       detail.value.shifts = newVal;
     }
+  };
+
+  const changeClass = () => {
+    if (selectIDs.value.length === 0) {
+      createMessage.error(t('common.selectStudent'));
+      return;
+    }
+    const formData: TransferStudentsParams = {
+      class_id: props.classId,
+      students: selectIDs.value.map((id) => ({ id })),
+    };
+    createConfirm({
+      iconType: 'warning',
+      title: () => h('span', t('sys.app.logoutTip')),
+      content: () => h('span', t('common.warning.transferStudent')),
+      onOk: async () => {
+        const res = await transferStudentOfClassApi(formData);
+        if (res && res.items) {
+          reload1();
+        }
+      },
+    });
   };
 
   const updateClass = async () => {
