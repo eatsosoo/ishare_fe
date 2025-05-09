@@ -1,5 +1,5 @@
 <template>
-  <BasicDrawer v-bind="$attrs" title="Drawer Title" width="50%" :loading="loading">
+  <BasicDrawer v-bind="$attrs" title="Drawer Title" width="50%" :loading="loading" @close="reset">
     <template #title>
       <div class="flex justify-between items-center">
         <span>{{ props.title }}</span>
@@ -57,16 +57,24 @@
   const { t } = useI18n();
   const newClassId = ref<number | null>(null);
   const loading = ref(false);
+  const selectClassRef = ref();
+
   const emit = defineEmits(['success']);
-  const { createConfirm, createMessage } = useMessage();
+  const { createConfirm, createErrorModal } = useMessage();
 
   const changeClass = () => {
     if (props.students.length === 0) {
-      createMessage.error(t('common.selectStudent'));
+      createErrorModal({
+        title: t('form.selectClass'),
+        content: t('common.selectStudent'),
+      });
       return;
     }
     if (!newClassId.value) {
-      createMessage.error(t('common.selectClass'));
+      createErrorModal({
+        title: t('form.selectClass'),
+        content: t('form.notSelect'),
+      });
       return;
     }
 
@@ -88,5 +96,10 @@
         }
       },
     });
+  };
+
+  const reset = () => {
+    newClassId.value = null;
+    selectClassRef.value?.reset();
   };
 </script>
