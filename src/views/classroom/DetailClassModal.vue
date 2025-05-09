@@ -6,11 +6,17 @@
     :show-ok-btn="false"
     :show-cancel-btn="false"
     :loading="loading"
+    @cancel="clearSelectedRowKeys()"
   >
     <Tabs v-model:activeTab="activeTab" @change="activeKey = $event" class="max-height-[500px]">
       <TabPane v-for="tab in tabs" :key="tab.key" v-bind="omit(tab, ['content', 'key'])">
         <template v-if="tab.key === 0">
-          <BasicTable @register="tab.register" ref="tableRefs" class="max-h-[770px]">
+          <BasicTable
+            @register="tab.register"
+            ref="tableRefs"
+            class="max-h-[770px]"
+            @selection-change="selectIDs = $event.rows"
+          >
             <template #bodyCell="{ column, record }">
               <template v-if="column.key === 'action'">
                 <TableAction :actions="createActions(record)" @click="activateAction(record)" />
@@ -47,7 +53,7 @@
         :disabled="selectIDs.length === 0"
         type="primary"
         preIcon="ant-design:swap-outlined"
-        @click="changeClass"
+        @click="openDrawer"
         >{{ t('common.changeClass') }}</a-button
       >
     </template>
@@ -57,6 +63,14 @@
       :student="studentTarget"
       :class-id="props.classId"
       @register="registerExportModal"
+    />
+
+    <DrawerTransferStudents
+      :title="t('common.transferStudent')"
+      :root-class-id="props.classId"
+      :students="selectIDs"
+      @register="registerDrawer"
+      @success="transferStudentsSuccess"
     />
   </BasicModal>
 </template>
@@ -80,19 +94,20 @@
     deleteStudentOfClassApi,
     getClassApi,
     getStudentsOfClassApi,
-    transferStudentOfClassApi,
     updateClassApi,
   } from '@/api/class/class';
   import { Key } from 'ant-design-vue/es/_util/type';
   import ExportStudyResultModal from './ExportStudyResultModal.vue';
   import { useMessage } from '@/hooks/web/useMessage';
   import ShiftTable from './ShiftTable.vue';
-  import { ShiftItem, TransferStudentsParams, UpdateClassParams } from '@/api/class/classModel';
+  import { ShiftItem, UpdateClassParams } from '@/api/class/classModel';
   import { schemas } from './data';
   import { BasicForm, useForm } from '@/components/Form';
   import dayjs from 'dayjs';
   import { UpdateStudentInfoParams } from '@/api/student/studentModel';
   import { updateStudentInfoApi } from '@/api/student/student';
+  import { useDrawer } from '@/components/Drawer';
+  import DrawerTransferStudents from './DrawerTransferStudents.vue';
 
   const props = defineProps({
     classId: {
@@ -112,7 +127,7 @@
   const studentTarget = ref<any>({});
   const detail = ref<UpdateClassParams | null>(null);
   const loading = ref(false);
-  const selectIDs = ref<number[]>([]);
+  const selectIDs = ref<any[]>([]);
 
   function searchConfig(): Partial<FormProps> {
     return {
@@ -132,6 +147,7 @@
   }
 
   const [registerExportModal, { openModal: openExportModal }] = useModal();
+  const [registerDrawer, { openDrawer, closeDrawer }] = useDrawer();
   const { createConfirm, createSuccessModal, createMessage } = useMessage();
 
   const [register, { validate, setFieldsValue }] = useForm({
@@ -143,7 +159,7 @@
     showActionButtonGroup: false,
   });
 
-  const [registerTable1, { reload: reload1 }] = useTable({
+  const [registerTable1, { reload: reload1, clearSelectedRowKeys }] = useTable({
     canResize: true,
     api: getStudentsOfClassApi(),
     columns: getStudentOfClassColumns(),
@@ -161,11 +177,9 @@
       dataIndex: 'action',
     },
     rowSelection: {
-      selectedRowKeys: [],
-      onChange: (selectedRowKeys: Key[]) => {
-        selectIDs.value = selectedRowKeys as number[];
-      },
+      type: 'checkbox',
     },
+    showSelectionBar: true,
   });
 
   const tabs = [
@@ -191,6 +205,7 @@
   const activateAction = (record: any) => {
     studentTarget.value = record;
     // openExportModal();
+    clearSelectedRowKeys();
   };
 
   const handleDelete = () => {
@@ -233,28 +248,6 @@
     if (detail.value) {
       detail.value.shifts = newVal;
     }
-  };
-
-  const changeClass = () => {
-    if (selectIDs.value.length === 0) {
-      createMessage.error(t('common.selectStudent'));
-      return;
-    }
-    const formData: TransferStudentsParams = {
-      class_id: props.classId,
-      students: selectIDs.value.map((id) => ({ id })),
-    };
-    createConfirm({
-      iconType: 'warning',
-      title: () => h('span', t('sys.app.logoutTip')),
-      content: () => h('span', t('common.warning.transferStudent')),
-      onOk: async () => {
-        const res = await transferStudentOfClassApi(formData);
-        if (res && res.items) {
-          reload1();
-        }
-      },
-    });
   };
 
   const updateClass = async () => {
@@ -301,7 +294,6 @@
   }
 
   function handleRemoveStudent(record: EditRecordRow) {
-    console.log(record);
     const formData = {
       class_id: props.classId,
       students: [{ id: record.id }],
@@ -400,6 +392,12 @@
         },
       },
     ];
+  }
+
+  function transferStudentsSuccess() {
+    closeDrawer();
+    reload1();
+    clearSelectedRowKeys();
   }
 
   watch(

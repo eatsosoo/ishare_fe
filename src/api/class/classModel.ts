@@ -74,6 +74,7 @@ export interface ClassDeleteStudentsParams {
 export interface TransferStudentsParams {
   class_id: number;
   students: { id: number }[];
+  new_class_id: number;
 }
 
 /**

@@ -1,5 +1,5 @@
 <template>
-  <CollapseContainer :open-default="false">
+  <CollapseContainer :open-default="openDefault">
     <template #title>
       <div v-html="titleCollapseClass"></div>
     </template>
@@ -39,6 +39,10 @@
     extend: {
       type: Boolean,
       default: true,
+    },
+    openDefault: {
+      type: Boolean,
+      default: false,
     },
   });
 

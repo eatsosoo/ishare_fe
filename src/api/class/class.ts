@@ -66,7 +66,7 @@ export const transferStudentOfClassApi = (
 ) =>
   defHttp.post<ResultBase<Boolean>>(
     {
-      url: `${Api.CLASS_ROUTE}/transfer-students`,
+      url: `${Api.CLASS_ROUTE}/move/students`,
       params,
     },
     {

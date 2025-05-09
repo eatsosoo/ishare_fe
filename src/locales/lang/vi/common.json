@@ -101,6 +101,7 @@
   "pleaseFillInCorrectData": "Vui lòng điền đúng dữ liệu",
   "cancelEditing": "Hủy chỉnh sửa",
   "changeClass": "Chuyển lớp",
+  "transferStudent": "Chuyển lớp cho học sinh",
   "warning": {
     "addActionEditor": "Chưa có vị trí để chèn text!",
     "deleteClass": "Bạn có muốn xoá lớp học này không?",

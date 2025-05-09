@@ -554,8 +554,9 @@ export function getFormSearchClassConfig(): Partial<FormProps> {
         component: 'Input',
         label: t('form.newClassForm.name'),
         colProps: {
-          xl: 5,
-          xxl: 5,
+          xl: 12,
+          xxl: 12,
+          md: 12,
         },
       },
       {
@@ -563,8 +564,9 @@ export function getFormSearchClassConfig(): Partial<FormProps> {
         label: t('form.newClassForm.teacher'),
         component: 'Input',
         colProps: {
-          xl: 5,
-          xxl: 5,
+          xl: 12,
+          xxl: 12,
+          md: 12,
         },
       },
       {
@@ -596,8 +598,9 @@ export function getFormSearchClassConfig(): Partial<FormProps> {
           ],
         },
         colProps: {
-          xl: 5,
-          xxl: 5,
+          xl: 12,
+          xxl: 12,
+          md: 12,
         },
       },
     ],
