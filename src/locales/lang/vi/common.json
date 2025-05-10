@@ -115,6 +115,10 @@
     "attendanceAllStudent": "Vui lòng điểm danh tất cả học sinh trong lớp!",
     "transferStudent": "Bạn có muốn chuyển học sinh này sang lớp khác không?"
   },
+  "success": {
+    "transferStudent": "Chuyển lớp thành công",
+    "deleteStudentFromClass": "Xoá học sinh khỏi lớp thành công"
+  },
   "error": {
     "finishAllQuestions": "Hãy hoàn thành hết các câu hỏi trước khi nộp bài",
     "pleaseUploadAudio": "Bạn chưa tải audio bài tập Listening",

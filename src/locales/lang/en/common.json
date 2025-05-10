@@ -113,6 +113,10 @@
     "changeSkill": "When you change the Skill field, all previously created questions will be reset. Are you sure you want to proceed with the change?",
     "attendanceAllStudent": "Attendance for all students"
   },
+  "success": {
+    "transferStudent": "Transfer student successfully",
+    "deleteStudentFromClass": "Deleted student from class successfully"
+  },
   "error": {
     "finishAllQuestions": "Please complete all questions before submitting",
     "pleaseUploadAudio": "You have not uploaded the Listening exercise audio",
