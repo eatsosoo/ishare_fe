@@ -108,9 +108,13 @@
       title: () => h('span', t('sys.app.logoutTip')),
       content: () => h('span', t('common.warning.deletePracticeTest')),
       onOk: async () => {
-        const res = await examDeleteApi(id);
-        if (res && res.items) {
-          reload();
+        try {
+          const res = await examDeleteApi(id);
+          if (res && res.items) {
+            reload();
+          }
+        } catch (error) {
+          console.error(error);
         }
       },
     });

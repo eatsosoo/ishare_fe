@@ -77,9 +77,13 @@
       title: () => h('span', t('sys.app.logoutTip')),
       content: () => h('span', t('common.warning.deleteBank')),
       onOk: async () => {
-        const res = await deleteBankApi(id);
-        if (res && res.items) {
-          reload();
+        try {
+          const res = await deleteBankApi(id);
+          if (res && res.items) {
+            reload();
+          }
+        } catch (error) {
+          console.error(error);
         }
       },
     });

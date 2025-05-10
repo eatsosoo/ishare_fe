@@ -214,9 +214,15 @@
       title: () => h('span', t('sys.app.logoutTip')),
       content: () => h('span', t('common.warning.deleteClass')),
       onOk: async () => {
-        const res = await deleteClassApi(props.classId);
-        if (res && res.items) {
-          emit('reload');
+        try {
+          const res = await deleteClassApi(props.classId);
+          if (res && res.items) {
+            emit('reload');
+          }
+        } catch (error) {
+          console.log(error);
+        } finally {
+          loading.value = false;
         }
       },
     });
@@ -303,9 +309,15 @@
       title: () => h('span', t('sys.app.logoutTip')),
       content: () => h('span', t('common.warning.deleteStudentFromClass')),
       onOk: async () => {
-        const res = await deleteStudentOfClassApi(formData);
-        if (res && res.items) {
-          reload1();
+        try {
+          const res = await deleteStudentOfClassApi(formData);
+          if (res && res.items) {
+            reload1();
+          }
+        } catch (error) {
+          console.log(error);
+        } finally {
+          loading.value = false;
         }
       },
     });

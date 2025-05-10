@@ -38,6 +38,7 @@
   import { TransferStudentsParams } from '@/api/class/classModel';
   import { useMessage } from '@/hooks/web/useMessage';
   import { Button } from 'ant-design-vue';
+  import { cloneDeep } from 'lodash-es';
 
   const props = defineProps({
     title: {
@@ -80,7 +81,7 @@
 
     const formData: TransferStudentsParams = {
       class_id: props.rootClassId,
-      students: props.students.map((id) => ({ id })),
+      students: props.students.map((student) => ({ id: student.id })),
       new_class_id: newClassId.value,
     };
     createConfirm({
@@ -89,10 +90,15 @@
       content: () => h('span', t('common.warning.transferStudent')),
       onOk: async () => {
         loading.value = true;
-        const res = await transferStudentOfClassApi(formData);
-        loading.value = false;
-        if (res && res.items) {
-          emit('success');
+        try {
+          const res = await transferStudentOfClassApi(formData);
+          if (res && res.items) {
+            emit('success');
+          }
+        } catch (error) {
+          console.error('API error:', error);
+        } finally {
+          loading.value = false; // Ensure loading is turned off in both success and failure cases
         }
       },
     });

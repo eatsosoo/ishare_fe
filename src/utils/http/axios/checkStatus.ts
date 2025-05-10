@@ -69,6 +69,8 @@ export function checkStatus(
       errMessage = t('sys.api.errMsg505');
       break;
     default:
+      errMessage = msg;
+      break;
   }
 
   if (errMessage) {

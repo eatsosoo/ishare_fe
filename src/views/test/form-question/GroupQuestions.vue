@@ -212,9 +212,13 @@
       title: () => h('span', t('sys.app.logoutTip')),
       content: () => h('span', t('common.warning.deleteQuestion')),
       onOk: async () => {
-        const res = await deleteGroupQuestion(data);
-        if (res && res.items) {
-          emit('delete');
+        try {
+          const res = await deleteGroupQuestion(data);
+          if (res && res.items) {
+            emit('delete');
+          }
+        } catch (error) {
+          console.error('API error:', error);
         }
       },
     });

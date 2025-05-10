@@ -129,9 +129,13 @@
       title: () => h('span', t('sys.app.logoutTip')),
       content: () => h('span', t('common.warning.deleteExercise')),
       onOk: async () => {
-        const res = await deleteExercise(id);
-        if (res && res.items) {
-          reload();
+        try {
+          const res = await deleteExercise(id);
+          if (res && res.items) {
+            reload();
+          }
+        } catch (error) {
+          console.error(error);
         }
       },
     });
