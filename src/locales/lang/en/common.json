@@ -114,6 +114,10 @@
     "attendanceAllStudent": "Attendance for all students",
     "changeRole": "You are about to change the role of this account. Are you sure you want to proceed?"
   },
+  "success": {
+    "transferStudent": "Transfer student successfully",
+    "deleteStudentFromClass": "Deleted student from class successfully"
+  },
   "error": {
     "finishAllQuestions": "Please complete all questions before submitting",
     "pleaseUploadAudio": "You have not uploaded the Listening exercise audio",

@@ -313,6 +313,7 @@
           const res = await deleteStudentOfClassApi(formData);
           if (res && res.items) {
             reload1();
+            createMessage.success(t('common.success.deleteStudentFromClass'));
           }
         } catch (error) {
           console.log(error);
@@ -410,6 +411,7 @@
     closeDrawer();
     reload1();
     clearSelectedRowKeys();
+    emit('reload');
   }
 
   watch(

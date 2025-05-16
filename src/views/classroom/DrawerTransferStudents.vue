@@ -38,7 +38,6 @@
   import { TransferStudentsParams } from '@/api/class/classModel';
   import { useMessage } from '@/hooks/web/useMessage';
   import { Button } from 'ant-design-vue';
-  import { cloneDeep } from 'lodash-es';
 
   const props = defineProps({
     title: {
@@ -61,7 +60,7 @@
   const selectClassRef = ref();
 
   const emit = defineEmits(['success']);
-  const { createConfirm, createErrorModal } = useMessage();
+  const { createConfirm, createErrorModal, createMessage } = useMessage();
 
   const changeClass = () => {
     if (props.students.length === 0) {
@@ -93,6 +92,7 @@
         try {
           const res = await transferStudentOfClassApi(formData);
           if (res && res.items) {
+            createMessage.success(t('common.success.transferStudent'));
             emit('success');
           }
         } catch (error) {
