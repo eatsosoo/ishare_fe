@@ -28,6 +28,7 @@
   import { useI18n } from '@/hooks/web/useI18n';
   import { useMessage } from '@/hooks/web/useMessage';
   import { getAccountColumns, getSearchUserConfig } from '@/views/classroom/tableData';
+  import { h } from 'vue';
 
   const { t } = useI18n();
   const { createMessage } = useMessage();
@@ -52,15 +53,35 @@
     showSelectionBar: false,
   });
 
-  async function changeRole(userId: number) {
-    try {
-      const result = await changeRoleApi({ user_id: userId, role_id: 2 });
-      if (result) {
-        createMessage.success(t('common.editSuccessfully'));
-        reload();
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // async function changeRole(userId: number) {
+  //   try {
+  //     const result = await changeRoleApi({ user_id: userId, role_id: 2 });
+  //     if (result) {
+  //       createMessage.success(t('common.editSuccessfully'));
+  //       reload();
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+
+  const { createConfirm } = useMessage();
+  const changeRole = (userId: number) => {
+    createConfirm({
+      iconType: 'warning',
+      title: () => h('span', t('sys.app.logoutTip')),
+      content: () => h('span', t('common.warning.changeRole')),
+      onOk: async () => {
+        try {
+          const res = await changeRoleApi({ user_id: userId, role_id: 2 });
+          if (res && res.items) {
+            createMessage.success(t('common.editSuccessfully'));
+            reload();
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      },
+    });
+  };
 </script>
