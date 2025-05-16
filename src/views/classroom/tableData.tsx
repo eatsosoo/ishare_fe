@@ -330,6 +330,10 @@ export function getExamOfStudentColumns(): BasicColumn[] {
 export function getExeOfStudentColumns(): BasicColumn[] {
   return [
     {
+      title: t('table.title'),
+      dataIndex: 'assignment_title',
+    },
+    {
       title: t('table.exerciseName'),
       dataIndex: 'homework_name',
     },
@@ -343,6 +347,10 @@ export function getExeOfStudentColumns(): BasicColumn[] {
       customRender: ({ text }) => {
         return text === 'home' ? t('common.assignAtHome') : t('common.assignAtClass');
       },
+    },
+    {
+      title: t('table.className'),
+      dataIndex: 'class_name',
     },
     {
       title: t('table.skill'),
