@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Row :gutter="[16, 16]" class="h-[84vh] w-[100vw]">
+    <Row :gutter="[16, 16]" class="h-[87vh] w-[100vw]">
       <Col
         :span="12"
         class="border-r-2 border-gray h-full overflow-auto"
@@ -35,8 +35,10 @@
       </Col>
     </Row>
 
-    <div class="absolute bottom-0 bg-white box-shadow border-t w-full border-gray-200 border-t-1">
-      <div class="flex gap-4 py-2 px-2">
+    <div
+      class="absolute bottom-0 bg-white box-shadow border-t w-full border-gray-200 border-t-1 overflow-x-scroll h-[76px]"
+    >
+      <div class="flex gap-2 py-2 px-2">
         <div
           v-for="(p, index) in props.value?.parts"
           :key="index"
@@ -46,10 +48,10 @@
               ? 'shrink-0 border-[#e8202a]'
               : 'flex-1 cursor-pointer border-gray'
           "
-          class="border-1 py-4 px-6 rounded-xl"
+          class="border-1 py-2 px-4 rounded-xl"
         >
-          <div v-if="state.tabActive === index" class="flex items-center">
-            <div class="text-xl font-semibold mr-2">Part {{ index + 1 }}</div>
+          <div v-if="state.tabActive === index" class="flex items-center flex-nowrap">
+            <div class="text-lg font-semibold mr-2">Part {{ index + 1 }}</div>
             <div class="flex gap-2">
               <div v-for="(group, gIdx) in p.question_groups" :key="gIdx" class="flex gap-2">
                 <div
@@ -62,7 +64,7 @@
               </div>
             </div>
           </div>
-          <div v-else class="text-lg text-center">
+          <div v-else class="text-lg text-center text-nowrap">
             <span class="font-semibold mr-4">Part {{ index + 1 }}</span>
             <span class="font-light font-italic">
               {{ answeredCountByPart[index] }} of {{ countQuestions(p.question_groups) }} questions
