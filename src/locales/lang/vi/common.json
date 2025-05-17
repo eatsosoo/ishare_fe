@@ -102,6 +102,9 @@
   "cancelEditing": "Hủy chỉnh sửa",
   "changeClass": "Chuyển lớp",
   "transferStudent": "Chuyển lớp cho học sinh",
+  "historyClass": "Lịch sử tham gia lớp học",
+  "transferred": "Đã chuyển lớp",
+  "enrolled": "Đang theo học",
   "warning": {
     "addActionEditor": "Chưa có vị trí để chèn text!",
     "deleteClass": "Bạn có muốn xoá lớp học này không?",

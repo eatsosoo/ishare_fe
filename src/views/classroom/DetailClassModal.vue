@@ -21,6 +21,13 @@
               <template v-if="column.key === 'action'">
                 <TableAction :actions="createActions(record)" @click="activateAction(record)" />
               </template>
+              <template v-else-if="column.key === 'name'">
+                <span
+                  class="hover:text-[#c4303a] hover:cursor-pointer hover:underline"
+                  @click="activateHistory(record)"
+                  >{{ record.name }}</span
+                >
+              </template>
             </template>
           </BasicTable>
         </template>
@@ -72,6 +79,12 @@
       @register="registerDrawer"
       @success="transferStudentsSuccess"
     />
+
+    <HistoryClass
+      :title="t('common.historyClass')"
+      :user-id="studentTarget.id"
+      @register="registerHistoryClass"
+    />
   </BasicModal>
 </template>
 <script lang="ts" setup>
@@ -108,6 +121,7 @@
   import { updateStudentInfoApi } from '@/api/student/student';
   import { useDrawer } from '@/components/Drawer';
   import DrawerTransferStudents from './DrawerTransferStudents.vue';
+  import HistoryClass from '../sys/account/HistoryClass.vue';
 
   const props = defineProps({
     classId: {
@@ -147,6 +161,8 @@
   }
 
   const [registerExportModal, { openModal: openExportModal }] = useModal();
+  const [registerHistoryClass, { openModal: openHistoryClass }] = useModal();
+
   const [registerDrawer, { openDrawer, closeDrawer }] = useDrawer();
   const { createConfirm, createSuccessModal, createMessage } = useMessage();
 
@@ -205,6 +221,12 @@
   const activateAction = (record: any) => {
     studentTarget.value = record;
     // openExportModal();
+    clearSelectedRowKeys();
+  };
+
+  const activateHistory = (record: any) => {
+    studentTarget.value = record;
+    openHistoryClass();
     clearSelectedRowKeys();
   };
 
