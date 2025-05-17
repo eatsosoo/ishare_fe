@@ -21,11 +21,11 @@
               <template v-if="column.key === 'action'">
                 <TableAction :actions="createActions(record)" @click="activateAction(record)" />
               </template>
-              <template v-else-if="column.key === 'name'">
+              <template v-else-if="column.key === 'id'">
                 <span
                   class="hover:text-[#c4303a] hover:cursor-pointer hover:underline"
                   @click="activateHistory(record)"
-                  >{{ record.name }}</span
+                  >{{ record.id }}</span
                 >
               </template>
             </template>
