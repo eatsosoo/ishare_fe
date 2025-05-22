@@ -100,6 +100,11 @@
   "saveFail": "Lưu thất bại",
   "pleaseFillInCorrectData": "Vui lòng điền đúng dữ liệu",
   "cancelEditing": "Hủy chỉnh sửa",
+  "changeClass": "Chuyển lớp",
+  "transferStudent": "Chuyển lớp cho học sinh",
+  "historyClass": "Lịch sử tham gia lớp học",
+  "transferred": "Đã chuyển lớp",
+  "enrolled": "Đang theo học",
   "warning": {
     "addActionEditor": "Chưa có vị trí để chèn text!",
     "deleteClass": "Bạn có muốn xoá lớp học này không?",
@@ -110,7 +115,13 @@
     "deleteQuestion": "Bạn có muốn xoá nhóm câu hỏi này không?",
     "deleteStudentFromClass": "Bạn có muốn xoá học sinh này khỏi lớp không?",
     "changeSkill": "Khi bạn thay đổi trường Kỹ năng, tất cả các câu hỏi đã tạo trước đó sẽ bị đặt lại từ đầu. Bạn có chắc chắn muốn tiếp tục thay đổi không?",
-    "attendanceAllStudent": "Vui lòng điểm danh tất cả học sinh trong lớp!"
+    "attendanceAllStudent": "Vui lòng điểm danh tất cả học sinh trong lớp!",
+    "transferStudent": "Bạn có muốn chuyển học sinh này sang lớp khác không?",
+    "changeRole": "Bạn có muốn thay đổi vai trò của tài khoản này thành Giáo viên không?"
+  },
+  "success": {
+    "transferStudent": "Chuyển lớp thành công",
+    "deleteStudentFromClass": "Xoá học sinh khỏi lớp thành công"
   },
   "error": {
     "finishAllQuestions": "Hãy hoàn thành hết các câu hỏi trước khi nộp bài",

@@ -1,18 +1,18 @@
 <template>
   <div>
-    <Row :gutter="[16, 16]" class="h-[84vh] w-[100vw] border-t-1 border-gray-200">
+    <Row :gutter="[16, 16]" class="h-[87.5vh] w-[100vw] border-t-1 border-gray-200">
       <Col
         :span="12"
         class="border-r-2 border-gray h-full overflow-auto"
         :class="isDark ? '' : 'bg-[aliceblue]'"
       >
-        <div class="p-6">
-          <h2 class="text-primary">Writing Task {{ state.tabActive + 1 }}</h2>
+        <div class="p-4">
+          <p class="text-lg font-600 text-primary">Writing Task {{ state.tabActive + 1 }}</p>
           <div v-html="questions[state.tabActive].question_text"></div>
         </div>
       </Col>
-      <Col :span="12" class="border-gray border-l-2 h-full overflow-auto py-6">
-        <div class="mx-4">
+      <Col :span="12" class="border-gray border-l-2 h-full overflow-auto py-4">
+        <div class="mx-2">
           <InputTextArea
             v-model:value="
               studentAnswer.answers[state.tabActive].question_answer[
@@ -39,7 +39,7 @@
               ? 'flex-1 border-[#e8202a]'
               : 'flex-1 cursor-pointer border-gray'
           "
-          class="border-1 py-4 px-6 rounded-xl"
+          class="border-1 py-2 px-4 rounded-xl"
         >
           <div class="text-xl font-semibold text-center">Task {{ index + 1 }}</div>
         </div>

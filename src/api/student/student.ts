@@ -144,3 +144,12 @@ export const updateStudentInfoApi = (
       errorMessageMode: mode,
     },
   );
+
+export const getHistoryClassApi = (studentId: number) =>
+  defHttp.get<ResultBase<any>>({
+    url: `/all-classes-by-students/${studentId}`,
+    headers: {
+      // @ts-ignore
+      ignoreCancelToken: true,
+    },
+  });

@@ -8,6 +8,7 @@ import {
   ClassListItem,
   ClassStudentGetResultModel,
   CreateClassParams,
+  TransferStudentsParams,
   UpdateClassParams,
 } from './classModel';
 import { ErrorMessageMode } from '#/axios';
@@ -52,6 +53,20 @@ export const deleteStudentOfClassApi = (
   defHttp.delete<ResultBase<Boolean>>(
     {
       url: `${Api.CLASS_ROUTE}/${params.class_id}/students`,
+      params,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+
+export const transferStudentOfClassApi = (
+  params: TransferStudentsParams,
+  mode: ErrorMessageMode = 'modal',
+) =>
+  defHttp.post<ResultBase<Boolean>>(
+    {
+      url: `${Api.CLASS_ROUTE}/move/students`,
       params,
     },
     {

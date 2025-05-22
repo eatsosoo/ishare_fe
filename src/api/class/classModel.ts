@@ -71,6 +71,12 @@ export interface ClassDeleteStudentsParams {
   students: { id: string }[];
 }
 
+export interface TransferStudentsParams {
+  class_id: number;
+  students: { id: number }[];
+  new_class_id: number;
+}
+
 /**
  * @description: Request list return value
  */

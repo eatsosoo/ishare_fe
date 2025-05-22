@@ -61,9 +61,13 @@
       title: () => h('span', t('sys.app.logoutTip')),
       content: () => h('span', t('common.warning.deleteBank')),
       onOk: async () => {
-        const res = await deleteBookApi(record.id);
-        if (res && res.items) {
-          reload();
+        try {
+          const res = await deleteBookApi(record.id);
+          if (res && res.items) {
+            reload();
+          }
+        } catch (error) {
+          console.error(error);
         }
       },
     });

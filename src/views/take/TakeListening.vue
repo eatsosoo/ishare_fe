@@ -12,30 +12,35 @@
         ></audio>
       </Col>
     </Row>
-    <Row :gutter="[16, 16]" class="h-[84vh] w-[100vw] border-t-1 border-gray-200">
+    <Row :gutter="[16, 16]" class="h-[79vh] w-[100vw] border-t-1 border-gray-200">
       <Col :span="24" class="border-gray border-l-2 h-full overflow-auto p-6">
         <div ref="htmlContainer">
           <div
             v-for="(group, gIdx) in props.value?.parts[state.tabActive].question_groups"
             :key="group.id || gIdx"
-            class="px-6 mb-12"
+            class="px-6 mb-6"
           >
-            <h2 class="text-primary"
+            <p class="text-lg font-600 text-primary"
               >Questions
               {{
                 group.question_no.length > 1
                   ? `${group.question_no[0]} - ${group.question_no.at(-1)}`
                   : group.question_no[0]
-              }}</h2
+              }}</p
             >
-            <div v-html="renderGroupQuestions(group, classStyle, props.answers)"></div>
+            <div
+              v-html="renderGroupQuestions(group, classStyle, props.answers)"
+              class="shadow-lg rounded-lg p-2"
+            ></div>
           </div>
         </div>
       </Col>
     </Row>
 
-    <div class="absolute bottom-0 bg-white box-shadow border-t w-full border-gray-200 border-t-1">
-      <div class="flex gap-4 py-2 px-2">
+    <div
+      class="absolute bottom-0 bg-white box-shadow border-t w-full border-gray-200 border-t-1 overflow-x-scroll h-[76px]"
+    >
+      <div class="flex gap-2 py-2 px-2">
         <div
           v-for="(p, index) in props.value?.parts"
           :key="index"
@@ -45,9 +50,9 @@
               ? 'shrink-0 border-[#e8202a]'
               : 'flex-1 cursor-pointer border-gray'
           "
-          class="border-1 py-4 px-6 rounded-xl"
+          class="border-1 py-2 px-4 rounded-xl"
         >
-          <div v-if="state.tabActive === index" class="flex items-center">
+          <div v-if="state.tabActive === index" class="flex items-center flex-nowrap">
             <div class="text-xl font-semibold mr-2">Part {{ index + 1 }}</div>
             <div class="flex gap-2">
               <div v-for="(group, gIdx) in p.question_groups" :key="gIdx" class="flex gap-2">
@@ -61,7 +66,7 @@
               </div>
             </div>
           </div>
-          <div v-else class="text-lg text-center">
+          <div v-else class="text-lg text-center text-nowrap">
             <span class="font-semibold mr-4">Part {{ index + 1 }}</span>
             <span class="font-light font-italic"
               >{{ answeredCountByPart[index] }} of {{ countQuestions(p.question_groups) }} questions

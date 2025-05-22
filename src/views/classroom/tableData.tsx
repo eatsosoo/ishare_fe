@@ -330,6 +330,10 @@ export function getExamOfStudentColumns(): BasicColumn[] {
 export function getExeOfStudentColumns(): BasicColumn[] {
   return [
     {
+      title: t('table.title'),
+      dataIndex: 'assignment_title',
+    },
+    {
       title: t('table.exerciseName'),
       dataIndex: 'homework_name',
     },
@@ -343,6 +347,10 @@ export function getExeOfStudentColumns(): BasicColumn[] {
       customRender: ({ text }) => {
         return text === 'home' ? t('common.assignAtHome') : t('common.assignAtClass');
       },
+    },
+    {
+      title: t('table.className'),
+      dataIndex: 'class_name',
     },
     {
       title: t('table.skill'),
@@ -554,8 +562,9 @@ export function getFormSearchClassConfig(): Partial<FormProps> {
         component: 'Input',
         label: t('form.newClassForm.name'),
         colProps: {
-          xl: 5,
-          xxl: 5,
+          xl: 12,
+          xxl: 12,
+          md: 12,
         },
       },
       {
@@ -563,8 +572,9 @@ export function getFormSearchClassConfig(): Partial<FormProps> {
         label: t('form.newClassForm.teacher'),
         component: 'Input',
         colProps: {
-          xl: 5,
-          xxl: 5,
+          xl: 12,
+          xxl: 12,
+          md: 12,
         },
       },
       {
@@ -596,8 +606,9 @@ export function getFormSearchClassConfig(): Partial<FormProps> {
           ],
         },
         colProps: {
-          xl: 5,
-          xxl: 5,
+          xl: 12,
+          xxl: 12,
+          md: 12,
         },
       },
     ],

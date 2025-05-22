@@ -32,10 +32,10 @@ export interface TakeExerciseStudentItem {
 }
 
 export interface UpdateStudentInfoParams {
-  id: number;
+  user_id: number;
   name: string;
   phone_number: string;
-  email: string;
+  // email: string;
   dob: string;
   parent_name: string;
   parent_tel: string;
