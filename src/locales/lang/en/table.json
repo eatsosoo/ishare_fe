@@ -71,6 +71,8 @@
   "bookType1": "Class Book",
   "bookType2": "Supplementary Book (Homework)",
   "bookType3": "Homework",
+  "firstName": "First Name",
+  "lastName": "Last Name",
   "exerciseTable": {
     "name": "Exercise Name",
     "score": "Score",

@@ -365,10 +365,13 @@
           return;
         }
         const { id } = studentTarget.value;
-        const { name, phone_number, dob, parent_name, parent_tel, target, plan } = data;
+        const { first_name, last_name, phone_number, dob, parent_name, parent_tel, target, plan } =
+          data;
         const formData: UpdateStudentInfoParams = {
           user_id: id,
-          name,
+          name: `${first_name} ${last_name}`,
+          first_name,
+          last_name,
           phone_number,
           dob,
           parent_name,
@@ -376,7 +379,7 @@
           target,
           plan,
         };
-        console.log(formData);
+
         const result = await updateStudentInfoApi(formData);
         if (result && result.items) {
           currentEditKeyRef.value = '';
