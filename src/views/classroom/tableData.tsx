@@ -80,8 +80,14 @@ export function getStudentOfClassColumns(): BasicColumn[] {
       width: 80,
     },
     {
-      title: t('table.studentName'),
-      dataIndex: 'name',
+      title: t('table.firstName'),
+      dataIndex: 'first_name',
+      align: 'left',
+      editRow: true,
+    },
+    {
+      title: t('table.lastName'),
+      dataIndex: 'last_name',
       align: 'left',
       editRow: true,
     },

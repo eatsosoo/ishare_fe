@@ -71,6 +71,8 @@
   "bookType1": "Sách trên lớp",
   "bookType2": "Sách bổ trợ (bài tập về nhà)",
   "bookType3": "Bài tập về nhà",
+  "firstName": "Họ",
+  "lastName": "Tên",
   "exerciseTable": {
     "name": "Tên bài tập",
     "score": "Điểm",
