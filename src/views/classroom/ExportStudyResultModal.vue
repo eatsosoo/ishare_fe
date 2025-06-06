@@ -11,7 +11,9 @@
     <div class="mb-10">
       <p
         >{{ t('common.student') }}:
-        <span class="text-xl font-500">{{ props.student.name }}</span></p
+        <span class="text-xl font-500"
+          >{{ props.student.first_name }} {{ props.student.last_name }}</span
+        ></p
       >
       <p
         >{{ t('common.target') }}: <Tag color="green" class="ml-2">{{ props.student.target }}</Tag>
