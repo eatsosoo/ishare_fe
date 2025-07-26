@@ -368,7 +368,6 @@
     orders: number[],
     type: SelectQuestionType,
   ): { [key: string]: string | string[] } {
-    console.log(orders, type);
     if (type !== 'multiple_choice') {
       return Object.fromEntries(orders.map((num) => [`question_${num}`, '']));
     } else {

@@ -254,7 +254,6 @@
         });
       }
     });
-    // console.log(answerObject);
     return answerObject;
   }
 

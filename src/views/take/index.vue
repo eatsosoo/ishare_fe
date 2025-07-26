@@ -258,7 +258,6 @@
       type: state.type,
       answers: finalAnswers,
     };
-    console.log(formatData);
     try {
       openFullLoading();
       const result = await examSubmitApi(state.examId, formatData);
@@ -278,7 +277,6 @@
     () => duration.value,
     (val) => {
       if (val < 0) {
-        console.log(val);
         isWarning.value = false;
         // timeLeft.value = '0:00';
         if (skillExam.value?.type !== 'Speaking') {

@@ -166,7 +166,6 @@
   }
 
   function activateOptionPopup() {
-    console.log(changeData);
     openOptionsModal();
   }
 
@@ -225,7 +224,6 @@
   }
 
   const saveQuestion = () => {
-    // console.log('Dữ liệu gửi lên DB:', changeData);
     const { questionText, type, answers, answerOptions } = changeData;
     emit('update-group', {
       question_type: type,

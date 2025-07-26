@@ -185,7 +185,6 @@
       if (error.errorFields) {
         return;
       }
-      console.log(error);
       const apiMessage = error.response.data.message;
       createErrorModal({
         title: t('sys.api.errorTip'),
@@ -299,7 +298,6 @@
   watch(
     () => props.examBankId,
     (newVal) => {
-      console.log(props.examBankId);
       if (newVal) {
         previewItem(newVal);
       } else {

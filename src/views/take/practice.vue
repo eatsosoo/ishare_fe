@@ -269,8 +269,7 @@
         router.push('/student/practice');
       }
     } catch (error) {
-      console.log(error);
-      // createMessage.error(t('sys.app.dataNotFound'));
+      createMessage.error(t('sys.app.dataNotFound'));
     } finally {
       closeFullLoading();
     }
@@ -280,7 +279,6 @@
     () => duration.value,
     (val) => {
       if (val < 0) {
-        console.log(val);
         isWarning.value = false;
         timeLeft.value = '0:00';
         if (skillExam.value?.type !== 'Speaking') {

@@ -155,7 +155,6 @@
       if (error.errorFields) {
         return;
       }
-      console.log(error);
       const apiMessage = error.response.data.message;
       createErrorModal({
         title: t('sys.api.errorTip'),

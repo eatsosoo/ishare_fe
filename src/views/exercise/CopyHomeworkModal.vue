@@ -140,7 +140,6 @@
       if (error.errorFields) {
         return;
       }
-      console.log(error);
       const apiMessage = error.response.data.message;
       createErrorModal({
         title: t('sys.api.errorTip'),
@@ -166,7 +165,6 @@
     () => props.classList,
     (newVal) => {
       const options = newVal.map((val) => ({ label: val.title, value: val.id }));
-      console.log('op', options);
       updateSchema({
         field: 'class_id',
         componentProps: { options },

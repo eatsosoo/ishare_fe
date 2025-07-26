@@ -138,9 +138,7 @@ export const useUserStore = defineStore({
       if (!this.getToken) return null;
       // get user info
       const userInfo = await this.getUserInfoAction();
-      console.log(userInfo);
       const sessionTimeout = this.sessionTimeout;
-      console.log(sessionTimeout);
       if (sessionTimeout) {
         this.setSessionTimeout(false);
       } else {

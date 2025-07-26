@@ -130,7 +130,6 @@
     try {
       const [values] = await Promise.all([validate()]);
       const { examId, skill } = values;
-      console.log('examId', examId);
       useStore.setPracticeTestId(examId);
       useStore.setGradingSkill(skill);
       showExerciseTable.value = true;

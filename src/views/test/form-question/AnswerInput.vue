@@ -96,7 +96,6 @@
 
   function activateModal(key: string) {
     modifyOps.value = props.options[key];
-    console.log(props.options[key]);
     keyPresent.value = key;
     openOptionsModal();
   }
@@ -104,7 +103,6 @@
   function updateAnswerOptions(items: OptionAnswerType[]) {
     const newOps = props.options;
     newOps[keyPresent.value] = items;
-    console.log(newOps);
     emit('change-options', newOps);
     closeModal();
   }

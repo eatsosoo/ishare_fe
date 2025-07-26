@@ -182,7 +182,6 @@
   const setGlobalConfigState = (formItem: IVFormComponent) => {
     formItem.colProps = formItem.colProps || {};
     formItem.colProps.span = globalConfigState.span;
-    // console.log('setGlobalConfigState', formItem);
   };
 
   /**
@@ -204,7 +203,6 @@
    * @param item {IVFormComponent} 当前点击的组件
    */
   const handleListPush = (item: IVFormComponent) => {
-    // console.log('handleListPush', item);
     const formItem = cloneDeep(item);
     setGlobalConfigState(formItem);
     generateKey(formItem);

@@ -141,7 +141,6 @@
       }
     } catch (error) {
       const apiMessage = error.response.data.message;
-      console.log(apiMessage);
       createErrorModal({
         title: t('sys.api.errorTip'),
         content:
