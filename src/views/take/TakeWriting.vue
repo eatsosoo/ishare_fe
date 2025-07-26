@@ -114,7 +114,6 @@
   watch(
     () => studentAnswer,
     (newVal) => {
-      console.log(newVal);
       emit('change', newVal);
     },
     { deep: true },

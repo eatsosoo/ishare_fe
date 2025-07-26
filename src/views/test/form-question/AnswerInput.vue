@@ -4,11 +4,10 @@
       <label v-if="typeof key === 'string'" class="min-w-[116px] inline-block">
         {{ t('common.questionAnswer') }} {{ key.replace(/^question_/, '') }}:
       </label>
-      <Input
-        v-if="props.answerType === 'fill_in'"
-        v-model:value="localModel[key]"
-        class="w-[10rem] ml-2"
-      />
+      <template v-if="props.answerType === 'fill_in'">
+        <span>{{ localModel[key] }}</span>
+        <SplashInput :str="localModel[key]" @update-value="localModel[key] = $event" />
+      </template>
       <Select
         v-else-if="props.answerType === 'true_false_not_given'"
         v-model:value="localModel[key]"
@@ -61,11 +60,12 @@
 
 <script setup lang="ts">
   import { computed, ref } from 'vue';
-  import { Input, Select, RadioGroup, Radio, CheckboxGroup, Checkbox } from 'ant-design-vue';
+  import { Select, RadioGroup, Radio, CheckboxGroup, Checkbox } from 'ant-design-vue';
   import { OptionAnswerType, SelectQuestionType } from '@/views/test/types/question';
   import { useModal } from '@/components/Modal';
   import Options from './Options.vue';
   import { useI18n } from '@/hooks/web/useI18n';
+  import SplashInput from './SplashInput.vue';
 
   const props = defineProps({
     modelValue: {

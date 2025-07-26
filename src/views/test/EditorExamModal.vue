@@ -111,7 +111,6 @@
   const { uploadUrl } = useGlobSetting();
 
   function handleUpdateParts(partsUpdated: NewPartItem[]) {
-    console.log(partsUpdated);
     if (!detail.value) return;
 
     detail.value[skillSelected.value] ??= {
@@ -171,14 +170,12 @@
     const status = file?.status;
     const url = file?.response?.result.items;
     const name = file?.name;
-    console.log(status);
     if (status === 'done') {
       createMessage.success(t('common.uploadFileSuccess', { name }));
       audioUrl.value = url;
     } else if (status === 'error') {
       createMessage.error(t('common.uploadFileFail', { name }));
     }
-    console.log(audioUrl.value);
   }
 
   async function getExamDetail(examId: number) {
@@ -188,7 +185,6 @@
       detail.value = result;
       audioUrl.value = result.Listening?.media;
     } catch (error) {
-      console.log(error);
       createMessage.error(t('sys.app.dataNotFound'));
     } finally {
       loading.value = false;
@@ -207,7 +203,6 @@
         type: skillSelected.value,
         media: skillSelected.value === 'Listening' ? audioUrl.value : null,
       };
-      console.log(submitForm);
       const result = await examSkillApi(props.examId, submitForm);
       if (result) {
         createSuccessModal({
@@ -236,7 +231,6 @@
         duration.value = detail.value[newVal] ? detail.value[newVal].duration : 10;
       }
       maxPart.value = CONFIG_MAX[newVal];
-      // console.log(detail.value?.Listening, newVal);
     },
   );
 
