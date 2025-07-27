@@ -80,12 +80,22 @@
                 <template v-if="group.question_type !== 'multiple_choice'">
                   <Icon
                     :icon="
-                      compareAnswers(value, JSON.parse(group.student_answer)[key])
+                      compareAnswers(
+                        value,
+                        JSON.parse(group.student_answer)[key],
+                        group.question_type,
+                      )
                         ? 'ant-design:check-outlined'
                         : 'ant-design:close-outlined'
                     "
                     :color="
-                      compareAnswers(value, JSON.parse(group.student_answer)[key]) ? 'green' : 'red'
+                      compareAnswers(
+                        value,
+                        JSON.parse(group.student_answer)[key],
+                        group.question_type,
+                      )
+                        ? 'green'
+                        : 'red'
                     "
                     class="ml-4"
                   />
@@ -357,7 +367,18 @@
     }
   }
 
-  const compareAnswers = (correctAnswer: string | string[], studentAnswer: string) => {
+  const compareAnswers = (
+    correctAnswer: string | string[],
+    studentAnswer: string,
+    questionType: any,
+  ) => {
+    if (questionType === 'fill_in' && correctAnswer.split('/').length > 0) {
+      const answers = correctAnswer.split('/');
+      if (answers.includes(studentAnswer)) {
+        return true;
+      }
+      return false;
+    }
     if (!correctAnswer || !studentAnswer) return false;
     if (!isArray(correctAnswer)) {
       return correctAnswer.toLowerCase() === studentAnswer.toLowerCase();
