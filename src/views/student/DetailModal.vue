@@ -232,11 +232,11 @@
   import { SkillType, ResponseExamPartItem } from '@/api/exam/examModel';
   import { getDetailExamOfStudent } from '@/api/student/student';
   import Icon from '@/components/Icon/Icon.vue';
-  import { isArray } from 'lodash-es';
   import { openWindow } from '@/utils';
   import { useDarkModeTheme } from '@/hooks/setting/useDarkModeTheme';
   import { renderGroupQuestions } from '../take/helpers';
   import { exportHtmlToDocx } from '@/utils/exportToDocx';
+  import { compareAnswers } from '@/utils/stringUtils';
 
   const classStyle =
     'bg-white rounded-full text-center outline-red-400 outline-1 border-gray-300 border-1 p-1 shadow-md h-[32px]';
@@ -310,30 +310,6 @@
       loading.value = false;
     }
   }
-
-  const compareAnswers = (
-    correctAnswer: string | string[],
-    studentAnswer: string,
-    questionType: any,
-  ) => {
-    if (questionType === 'fill_in' && correctAnswer.split('/').length > 0) {
-      const answers = correctAnswer.split('/');
-      if (answers.includes(studentAnswer)) {
-        return true;
-      }
-      return false;
-    }
-    if (!correctAnswer || !studentAnswer) return false;
-    if (!isArray(correctAnswer)) {
-      return correctAnswer.toLowerCase() === studentAnswer.toLowerCase();
-    } else {
-      const value2Array = studentAnswer.split(',');
-
-      // Kiểm tra xem tất cả phần tử của value2Array có trong value1 không
-      const isContained = value2Array.every((val) => correctAnswer.includes(val));
-      return isContained;
-    }
-  };
 
   const countMultiAnswer = (correctAnswer: string[], studentAnswer: string) => {
     if (!correctAnswer || !studentAnswer) return 0;
