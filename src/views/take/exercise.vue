@@ -9,6 +9,12 @@
       </div>
       <div class="right-0 absolute mr-4">
         <a-button
+          v-if="exerciseItem?.skill === 'Reading'"
+          preIcon="ion:document-text"
+          class="mr-2"
+          @click="openNotes"
+        />
+        <a-button
           v-if="exerciseItem?.skill !== 'Speaking'"
           type="primary"
           preIcon="ant-design:send-outlined"
@@ -26,7 +32,7 @@
           exerciseItem.skill === 'Vocabulary'
         "
       >
-        <div class="p-4">
+        <div>
           <audio
             v-if="exerciseItem.media"
             :src="exerciseItem.media"
@@ -35,16 +41,16 @@
             :key="exerciseItem.media"
           ></audio>
         </div>
-        <Row :gutter="[16, 16]" class="h-[88vh] w-[100vw]">
+        <Row :gutter="[16, 16]" class="h-[93.5vh] w-[100vw]">
           <Col
             v-if="exerciseItem.skill === 'Reading'"
-            :span="8"
+            :span="colspanReading"
             class="border-r-2 border-gray h-full overflow-auto"
             :class="isDark ? '' : 'bg-[aliceblue]'"
           >
             <div class="p-4">
               <div>
-                <div ref="content" v-html="htmlSubject"></div>
+                <div ref="content" v-html="htmlSubject" @mouseup="handleMouseUp"></div>
               </div>
             </div>
 
@@ -85,7 +91,7 @@
             </div>
           </Col>
           <Col
-            :span="exerciseItem.skill === 'Listening' ? 24 : 8"
+            :span="exerciseItem.skill === 'Listening' ? 24 : colspanReading"
             class="border-gray border-l-2 h-full overflow-auto p-4"
           >
             <div>
@@ -106,26 +112,28 @@
               </div>
             </div>
           </Col>
-          <Col
-            v-if="exerciseItem.skill === 'Reading'"
-            :span="8"
-            class="border-gray border-l-2 h-full overflow-auto p-4"
-          >
-            <div class="mb-4">
-              <Input v-model:value="searchKeyword" class="w-50" placeholder="Search..." />
-            </div>
-            <div>
-              <div v-for="(note, index) in fillterdNotes" :key="index" class="mb-4">
-                <div
-                  class="border-gray-300 border p-2 border-b-0 flex items-center justify-between"
-                >
-                  <span class="underline text-[#DD1804]">{{ note.text }}</span>
-                  <Icon icon="ion:close" @click="deleteNote(note.id)" />
-                </div>
-                <div class="border-gray-300 border p-2">{{ note.note }}</div>
+          <transition name="zoom-fade" mode="out-in">
+            <Col
+              v-if="exerciseItem.skill === 'Reading' && openSideNotes"
+              :span="4"
+              class="border-gray border-l-2 h-full overflow-auto p-4"
+            >
+              <div class="mb-4">
+                <Input v-model:value="searchKeyword" class="w-50" placeholder="Search..." />
               </div>
-            </div>
-          </Col>
+              <div>
+                <div v-for="(note, index) in fillterdNotes" :key="index" class="mb-4">
+                  <div
+                    class="border-gray-300 border p-2 border-b-0 flex items-center justify-between"
+                  >
+                    <span class="underline text-[#DD1804]">{{ note.text }}</span>
+                    <Icon icon="ion:close" @click="deleteNote(note.id)" />
+                  </div>
+                  <div class="border-gray-300 border p-2">{{ note.note }}</div>
+                </div>
+              </div>
+            </Col>
+          </transition>
         </Row>
         <!-- <div
           v-for="(group, gIdx) in exerciseItem.question_groups"
@@ -281,17 +289,7 @@
 </template>
 
 <script setup lang="ts">
-  import {
-    computed,
-    h,
-    nextTick,
-    onBeforeUnmount,
-    onMounted,
-    onUnmounted,
-    reactive,
-    ref,
-    watch,
-  } from 'vue';
+  import { computed, h, nextTick, onMounted, onUnmounted, reactive, ref, watch } from 'vue';
   import { GroupQuestionItem } from '@/views/test/types/question';
   import { useRoute, useRouter } from 'vue-router';
   import { SkillType, SubmitAnswer } from '@/api/exam/examModel';
@@ -356,6 +354,7 @@
   const popupY = ref(0);
   let selectedRange: any = null;
 
+  const openSideNotes = ref<Boolean>(false);
   const showNotePopup = ref<Boolean>(false);
   const noteText = ref<string>('');
   const selectedText = ref<string>('');
@@ -372,6 +371,10 @@
         note.note.toLowerCase().includes(searchKeyword.value.toLowerCase()) ||
         note.text.toLowerCase().includes(searchKeyword.value.toLowerCase()),
     );
+  });
+
+  const colspanReading = computed(() => {
+    return openSideNotes.value ? 10 : 12;
   });
   //-- END
 
@@ -814,8 +817,6 @@
       },
       { immediate: true },
     );
-
-    content.value?.addEventListener('mouseup', handleMouseUp);
   });
 
   // Dọn dẹp khi component bị hủy
@@ -823,6 +824,10 @@
     detachChangeEvent();
     disconnectObserver();
   });
+
+  function openNotes() {
+    openSideNotes.value = !openSideNotes.value;
+  }
 
   function handleMouseUp() {
     const selection = window.getSelection();
@@ -844,7 +849,7 @@
   }
 
   function updateHTML() {
-    htmlSubject.value[state.tabActive].subject = content.value?.innerHTML;
+    htmlSubject.value = content.value?.innerHTML;
   }
 
   function highlightSelection() {
@@ -914,10 +919,6 @@
 
     updateHTML();
   }
-
-  onBeforeUnmount(() => {
-    content.value?.removeEventListener('mouseup', handleMouseUp);
-  });
 </script>
 
 <style lang="scss">

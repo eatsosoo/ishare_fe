@@ -136,7 +136,7 @@
 
       if (props.fullScreen) {
         realHeightRef.value =
-          window.innerHeight - props.modalFooterHeight - props.modalHeaderHeight - 28;
+          window.innerHeight - props.modalFooterHeight - props.modalHeaderHeight - 6;
       } else {
         realHeightRef.value = props.height
           ? props.height

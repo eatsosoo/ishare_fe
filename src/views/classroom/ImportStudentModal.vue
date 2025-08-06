@@ -8,7 +8,7 @@
     :loading="loading"
     @ok="uploadFile"
   >
-    <div class="custom-file-upload">
+    <div class="custom-file-upload mx-4">
       <p class="font-italic">{{ t('common.importNote') }}</p>
       <label for="fileInput" class="upload-label" accept=".xls,.xlsx">
         {{ t('common.selectFile') }}

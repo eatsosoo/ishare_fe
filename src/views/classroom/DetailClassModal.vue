@@ -8,7 +8,11 @@
     :loading="loading"
     @cancel="clearSelectedRowKeys()"
   >
-    <Tabs v-model:activeTab="activeTab" @change="activeKey = $event" class="max-height-[500px]">
+    <Tabs
+      v-model:activeTab="activeTab"
+      @change="activeKey = $event"
+      class="max-height-[500px] mx-4"
+    >
       <TabPane v-for="tab in tabs" :key="tab.key" v-bind="omit(tab, ['content', 'key'])">
         <template v-if="tab.key === 0">
           <BasicTable

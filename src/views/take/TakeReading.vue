@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Row :gutter="[16, 16]" class="h-[87vh] w-[100vw]">
+    <Row :gutter="[16, 16]" class="h-[88vh] w-[100vw]">
       <Col
         :span="colspan"
         class="border-r-2 border-gray h-full overflow-auto"
@@ -69,7 +69,7 @@
           </div>
         </div>
       </Col>
-      <Col :span="colspan" class="border-gray border-l-2 h-full overflow-auto p-4">
+      <Col :span="4" class="border-gray border-l-2 h-full overflow-auto p-4">
         <div class="mb-4">
           <Input v-model:value="searchKeyword" class="w-50" placeholder="Search..." />
         </div>
@@ -86,9 +86,9 @@
     </Row>
 
     <div
-      class="absolute bottom-0 bg-white box-shadow border-t w-full border-gray-200 border-t-1 overflow-x-scroll h-[76px]"
+      class="absolute bottom-0 bg-white box-shadow border-t w-full border-gray-200 border-t-1 overflow-x-scroll h-[55px]"
     >
-      <div class="flex gap-2 py-2 px-2">
+      <div class="flex gap-2 py-1 px-2">
         <div
           v-for="(p, index) in props.value?.parts"
           :key="index"
@@ -98,7 +98,7 @@
               ? 'shrink-0 border-[#e8202a]'
               : 'flex-1 cursor-pointer border-gray'
           "
-          class="border-1 py-2 px-4 rounded-xl"
+          class="border-1 py-1 px-4 rounded-xl"
         >
           <div v-if="state.tabActive === index" class="flex items-center flex-nowrap">
             <div class="text-lg font-semibold mr-2">Part {{ index + 1 }}</div>
@@ -107,7 +107,7 @@
                 <div
                   v-for="q in group.question_no"
                   :key="q"
-                  class="rounded-full h-8 w-8 border flex items-center justify-center border-gray-200"
+                  class="rounded-full h-6 w-6 border flex items-center justify-center border-gray-200"
                 >
                   {{ q }}
                 </div>
@@ -147,7 +147,7 @@
     },
     colspan: {
       type: Number,
-      default: 8,
+      default: 10,
     },
   });
 
