@@ -1,50 +1,22 @@
-<div align="center"> <a href="https://github.com/anncwb/vue-vben-admin"> <img alt="VbenAdmin Logo" width="200" height="200" src="https://anncwb.github.io/anncwb/images/logo.png"> </a> <br> <br>
-
-[![license](https://img.shields.io/github/license/anncwb/vue-vben-admin.svg)](LICENSE)
-
-<h1>Vue vben admin</h1>
+<div align="center">
+<h1>iShare Frontend</h1>
 </div>
 
 **English** | [中文](./README.zh-CN.md)
 
 ## Introduction
 
-Vue Jin Admin is a free and open source middle platform/back-end template. Using the latest `vue3`, `vite4`, `TypeScript` and other mainstream technology, Vben is the out-of-the-box front-end solution for both production and learning purpose.
+iShare Frontend is a modern frontend application built with Vue 3, Vite, TypeScript and other mainstream technologies. It provides an out-of-the-box frontend solution for both production and learning purposes.
 
 ## Features
 
-- **State-of-art Techinical Stack**：Using the latest and popular front-end technology such as Vue3/vite2
+- **State-of-art Technical Stack**: Using the latest and popular front-end technology such as Vue3, Vite4
 - **TypeScript**: Application-level JavaScript language
 - **Theming**: Configurable themes
-- **International**：Built-in i18n support
+- **International**: Built-in i18n support
 - **Response Mock**: Built-in response mock ability
-- **Authority**: Built-in permission system based on dynamic routes.
-- **Component**: Extracted and encapsulated components for various scenarios.
-
-## Preview
-
-- [vue-vben-admin](https://vben.vvbin.cn/) - Full version (Chinese)
-- [vue-vben-admin-gh-pages](https://anncwb.github.io/vue-vben-admin/) - Full version (github hosted)
-- [vben-admin-thin-next](https://vben.vvbin.cn/thin/next/) - Simplified Version (Chinese)
-- [vben-admin-thin-gh-pages](https://anncwb.github.io/vben-admin-thin-next/) -Simplified Version (github hosted)
-
-Test account: vben/123456
-
-<p align="center">
-    <img alt="VbenAdmin Logo" width="100%" src="https://anncwb.github.io/anncwb/images/preview1.png">
-    <img alt="VbenAdmin Logo" width="100%" src="https://anncwb.github.io/anncwb/images/preview2.png">
-    <img alt="VbenAdmin Logo" width="100%" src="https://anncwb.github.io/anncwb/images/preview3.png">
-</p>
-
-### Use Gitpod
-
-Open the project in Gitpod (free online dev environment for GitHub) and start coding immediately.
-
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/anncwb/vue-vben-admin)
-
-## Documentation
-
-[Document](https://doc.vvbin.cn/)
+- **Authority**: Built-in permission system based on dynamic routes
+- **Component**: Extracted and encapsulated components for various scenarios
 
 ## Preparation
 
@@ -62,16 +34,15 @@ Open the project in Gitpod (free online dev environment for GitHub) and start co
 - Get the project code
 
 ```bash
-git clone https://github.com/vbenjs/vue-vben-admin.git
+git clone <repository-url>
 ```
 
 - Install dependencies
 
 ```bash
-cd vue-vben-admin
+cd ishare_fe
 
 pnpm install
-
 ```
 
 - run
@@ -86,20 +57,20 @@ pnpm serve
 pnpm build
 ```
 
-- docker
+## Docker
 
-### The dockerFile is located in the project root directory and supports differential deployment
+The dockerFile is located in the project root directory and supports differential deployment
 
-#### build image
+### build image
 
 ```bash
-docker build -t vue-vben-admin .
+docker build -t ishare-fe .
 ```
 
-#### Use environment variables to achieve differentiated container deployment. Specify service endpoint by assigning `VG_BASE_URL`. In the following example, `http://localhost:3333` is used as the back-end service address and the container is mapped to port `6666`:
+### Use environment variables to achieve differentiated container deployment. Specify service endpoint by assigning `VG_BASE_URL`. In the following example, `http://localhost:3333` is used as the back-end service address and the container is mapped to port `6666`:
 
 ```bash
-docker run --name vue-vben-admin -d -p 6666:80  -e VG_BASE_URL=http://localhost:3333 vue-vben-admin
+docker run --name ishare-fe -d -p 6666:80 -e VG_BASE_URL=http://localhost:3333 ishare-fe
 ```
 
 Then you can navigate to `http://localhost:6666`
@@ -108,14 +79,9 @@ Then you can navigate to `http://localhost:6666`
 
 [CHANGELOG](./CHANGELOG.zh_CN.md)
 
-## Project
-
-- [vue-vben-admin](https://github.com/anncwb/vue-vben-admin) - full version
-- [vue-vben-admin-thin-next](https://github.com/anncwb/vben-admin-thin-next) - Simplified version
-
 ## How to contribute
 
-You are very welcome to join！[Raise an issue](https://github.com/anncwb/vue-vben-admin/issues/new/choose) or submit a Pull Request。
+You are very welcome to join! Raise an issue or submit a Pull Request.
 
 **Pull Request:**
 
@@ -123,7 +89,7 @@ You are very welcome to join！[Raise an issue](https://github.com/anncwb/vue-vb
 2. Create your own branch: `git checkout -b feat/xxxx`
 3. Submit your changes: `git commit -am 'feat(function): add xxxxx'`
 4. Push your branch: `git push origin feat/xxxx`
-5. submit`pull request`
+5. submit `pull request`
 
 ## Git Contribution submission specification
 
@@ -143,15 +109,6 @@ You are very welcome to join！[Raise an issue](https://github.com/anncwb/vue-vb
   - `types` Type definition file changes
   - `wip` In development
 
-## Related warehouse
-
-If these plugins are helpful to you, you can show support by leaving a star!
-
-- [vite-plugin-mock](https://github.com/anncwb/vite-plugin-mock) - Used for local and development environment data mock
-- [vite-plugin-html](https://github.com/anncwb/vite-plugin-html) - Used for html template conversion and compression
-- [vite-plugin-compression](https://github.com/anncwb/vite-plugin-compression) - Used to pack input .gz|.brotil files
-- [vite-plugin-svg-icons](https://github.com/anncwb/vite-plugin-svg-icons) - Used to quickly generate svg sprite
-
 ## Browser support
 
 The `Chrome 80+` browser is recommended for local development
@@ -162,18 +119,6 @@ Support modern browsers, doesn't include IE
 | :-: | :-: | :-: | :-: | :-: |
 | not support | last 2 versions | last 2 versions | last 2 versions | last 2 versions |
 
-## Maintainer
-
-[@Vben](https://github.com/anncwb) [@Jinmao](https://github.com/jinmao88)
-
-## Thanks
-
-<img src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.png" alt="JetBrains Logo (Main) logo." height="120">
-
-## Star History Chart
-
-[![Star History Chart](https://api.star-history.com/svg?repos=vbenjs/vue-vben-admin&type=Date)](https://star-history.com/#vbenjs/vue-vben-admin&Date)
-
 ## License
 
-[MIT © Vben-2020](./LICENSE)
+[MIT](./LICENSE)
