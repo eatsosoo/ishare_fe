@@ -85,6 +85,7 @@ export interface SpeakingExeAnswer {
 export interface SubmitExerciseParams {
   type: SkillType;
   answers: SubmitAnswer[] | SpeakingExeAnswer[];
+  retake: boolean;
 }
 
 export interface ScoreExercise {
@@ -120,6 +121,12 @@ export interface EditBookParams {
   type: string;
   level: number;
   description: string;
+}
+
+export interface RetakeParams {
+  user_id: number;
+  exam_id: number;
+  type: string; // homework
 }
 
 /**

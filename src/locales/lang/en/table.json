@@ -73,6 +73,10 @@
   "bookType3": "Homework",
   "firstName": "First Name",
   "lastName": "Last Name",
+  "notStarted": "No started",
+  "completed": "Completed",
+  "redoRequired": "Redo required",
+  "redone": "Redone",
   "exerciseTable": {
     "name": "Exercise Name",
     "score": "Score",

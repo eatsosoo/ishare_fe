@@ -134,9 +134,9 @@ export const searchGradingSchemas: FormSchema[] = [
     },
     required: true,
     colProps: {
-      xl: 6,
-      xxl: 6,
-      offset: 1,
+      span: 8, // desktop: 3 cột / 24
+      xs: 24, // mobile: full width → 1 hàng
+      sm: 8,
     },
   },
   {
@@ -161,9 +161,9 @@ export const searchGradingSchemas: FormSchema[] = [
     },
     required: true,
     colProps: {
-      xl: 6,
-      xxl: 6,
-      offset: 1,
+      span: 8, // desktop: 3 cột / 24
+      xs: 24, // mobile: full width → 1 hàng
+      sm: 8,
     },
   },
 ];

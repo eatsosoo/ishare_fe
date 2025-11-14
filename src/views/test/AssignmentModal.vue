@@ -7,12 +7,12 @@
     @ok="handleSubmit"
     @cancel="resetFields"
   >
-    <div class="shadow-lg rounded-lg p-1 mx-1 mb-4">
+    <div class="border-1 border-gray-300 rounded-lg p-1 mx-2 mb-4">
       <CollapseContainer :title="t('common.basicInformation')">
         <BasicForm @register="registerForm" ref="formRef" />
       </CollapseContainer>
     </div>
-    <div class="shadow-lg rounded-lg p-1 mx-1">
+    <div class="border-1 border-gray-300 rounded-lg p-1 mx-2">
       <SelectClass :extend="false" @select="classId = $event" ref="selectClassRef" />
     </div>
   </BasicModal>

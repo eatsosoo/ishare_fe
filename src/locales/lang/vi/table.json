@@ -73,6 +73,10 @@
   "bookType3": "Bài tập về nhà",
   "firstName": "Họ",
   "lastName": "Tên",
+  "notStarted": "Chưa làm",
+  "completed": "Đã làm",
+  "redoRequired": "Làm lại",
+  "redone": "Đã làm lại",
   "exerciseTable": {
     "name": "Tên bài tập",
     "score": "Điểm",

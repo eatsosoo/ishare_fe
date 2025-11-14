@@ -10,6 +10,7 @@ import {
   EditBookParams,
   ExerciseListGetResultModel,
   HomeworkListGetResultModel,
+  RetakeParams,
   ScoreExercise,
   SubmitExerciseParams,
 } from './exerciseModel';
@@ -206,6 +207,17 @@ export const createBankApi = (params: CreateBankParams, mode: ErrorMessageMode =
   defHttp.post<ResultBase<CreateBankParams>>(
     {
       url: `${Api.BANK}`,
+      params,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+
+export const retakeApi = (params: RetakeParams, mode: ErrorMessageMode = 'modal') =>
+  defHttp.post<ResultBase<RetakeParams>>(
+    {
+      url: 'retake-requests',
       params,
     },
     {

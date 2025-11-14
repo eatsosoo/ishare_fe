@@ -113,7 +113,8 @@
     "deleteStudentFromClass": "Do you want to delete this student from the class?",
     "changeSkill": "When you change the Skill field, all previously created questions will be reset. Are you sure you want to proceed with the change?",
     "attendanceAllStudent": "Attendance for all students",
-    "changeRole": "You are about to change the role of this account. Are you sure you want to proceed?"
+    "changeRole": "You are about to change the role of this account. Are you sure you want to proceed?",
+    "redoRequired": "Would you like to make a redo request for this student's assignment?"
   },
   "success": {
     "transferStudent": "Transfer student successfully",
@@ -148,5 +149,6 @@
   "createSuccessfully": "Created successfully",
   "editSuccessfully": "Updated successfully",
   "deleteSuccessfully": "Deleted successfully",
-  "saveSuccessfully": "Saved successfully"
+  "saveSuccessfully": "Saved successfully",
+  "confirmSuccessfully": "Confirmed successfully"
 }

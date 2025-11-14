@@ -532,6 +532,7 @@
     const formatData: SubmitExerciseParams = {
       type: skill,
       answers: finalAnswers,
+      retake: false,
     };
 
     try {

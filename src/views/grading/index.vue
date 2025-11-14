@@ -1,17 +1,15 @@
 <template>
   <PageWrapper>
-    <Card :title="t('form.gradingSearch.searchText')" :bordered="false" class="mb-4">
-      <div class="shadow-lg rounded-lg p-1 mx-1 mb-2">
+    <Card :title="t('form.gradingSearch.searchText')" :bordered="false" class="mb-4 p-0">
+      <div class="border-1 border-gray-200 rounded-lg p-1 mx-1 mb-2">
         <SelectClass :extend="false" @select="classId = $event" ref="selectClassRef" />
       </div>
-      <div class="shadow-lg rounded-lg p-1 mx-1">
-        <BasicForm
-          @register="registerForm"
-          @submit="findExerciseOfClass"
-          @reset="showExerciseTable = false"
-          class="mt-6"
-        />
-      </div>
+      <BasicForm
+        @register="registerForm"
+        @submit="findExerciseOfClass"
+        @reset="showExerciseTable = false"
+        class="mt-6"
+      />
     </Card>
     <Card v-if="showExerciseTable" :title="t('common.resultList')" :bordered="false">
       <BasicTable @register="registerTable">
@@ -28,15 +26,24 @@
           </template>
           <template v-if="column.key === 'status'">
             <Tag :color="record.completed_at ? 'green' : 'red'">
-              {{ record.completed_at ? 'v' : 'x' }}
+              {{ statusWork(!!record.completed_at, record.retake, record.retake_score) }}
             </Tag>
           </template>
-          <template v-if="column.key === 'action' && record.completed_at">
-            <a-button
-              size="small"
-              preIcon="ant-design:edit-filled"
-              @click="clickOpen(record as ExamGradingListItem)"
-            />
+          <template v-if="column.key === 'action'">
+            <div class="grid grid-cols-2 gap-2">
+              <a-button
+                v-if="record.completed_at"
+                size="small"
+                preIcon="ant-design:edit-filled"
+                @click="clickOpen(record as ExamGradingListItem)"
+              />
+              <a-button
+                v-if="!record.retake_score && record.retake === 0"
+                size="small"
+                preIcon="ant-design:rollback-outlined"
+                @click="clickRedoRequire(record as ExamGradingListItem)"
+              />
+            </div>
           </template>
         </template>
       </BasicTable>
@@ -80,12 +87,14 @@
   import BasicForm from '@/components/Form/src/BasicForm.vue';
   import { useForm } from '@/components/Form';
   import { searchGradingSchemas } from '@/views/classroom/data';
-  import { ref } from 'vue';
+  import { h, ref } from 'vue';
   import { ExamGradingListItem, SkillType } from '@/api/exam/examModel';
   import { examGradingListApi } from '@/api/exam/exam';
   import { useUserStore } from '@/store/modules/user';
   import SelectClass from '../exercise/SelectClass.vue';
   import { useMessage } from '@/hooks/web/useMessage';
+  import { statusWork } from '@/utils/stringUtils';
+  import { retakeApi } from '@/api/exercise/exercise';
 
   const { t } = useI18n();
   const useStore = useUserStore();
@@ -114,7 +123,7 @@
     schemas: searchGradingSchemas,
     showActionButtonGroup: true,
   });
-  const { createErrorModal } = useMessage();
+  const { createErrorModal, createConfirm, createMessage } = useMessage();
 
   const classId = ref<number | null>(null);
 
@@ -148,6 +157,30 @@
     } else {
       openExeModal();
     }
+  }
+
+  function clickRedoRequire(item: ExamGradingListItem) {
+    const { exam_id, user_id } = item;
+    if (!exam_id || !user_id) {
+      return;
+    }
+
+    createConfirm({
+      iconType: 'warning',
+      title: () => h('span', t('sys.app.logoutTip')),
+      content: () => h('span', t('common.warning.redoRequired')),
+      onOk: async () => {
+        try {
+          const res = await retakeApi({ exam_id, user_id, type: 'homework' });
+          if (res && res.items) {
+            createMessage.success(t('common.confirmSuccessfully'));
+            reload();
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      },
+    });
   }
 
   function handleSuccess() {

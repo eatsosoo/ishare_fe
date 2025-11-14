@@ -8,17 +8,17 @@
     @ok="submit"
     @cancel="reset"
   >
-    <div class="shadow-lg rounded-lg p-1 mx-1">
+    <div class="border-1 border-gray-200 rounded-lg p-1 mx-2">
       <CollapseContainer :title="t('common.basicInformation')">
         <BasicForm @register="registerBasicForm" class="mt-6" />
       </CollapseContainer>
     </div>
 
-    <div class="shadow-lg rounded-lg p-1 mx-1 mt-4">
+    <div class="border-1 border-gray-200 rounded-lg p-1 mx-2 mt-4">
       <SelectClass @select="attendanceTarget = $event" ref="selectClassRef" />
     </div>
 
-    <div class="shadow-lg rounded-lg p-1 mx-1 mt-4 mb-8">
+    <div class="border-1 border-gray-200 rounded-lg p-1 mx-2 mt-4 mb-8">
       <CollapseContainer :open-default="false">
         <template #title>
           <div v-html="titleCollapseBank"></div>

@@ -8,7 +8,7 @@
     @ok="submit"
     @cancel="reset"
   >
-    <div class="shadow-lg rounded-lg p-1 mx-1">
+    <div class="border-1 border-gray-300 rounded-lg p-1 mx-2">
       <CollapseContainer :title="t('common.basicInformation')">
         <BasicForm @register="registerForm" @field-value-change="handleFormChange" class="mt-6" />
         <div v-if="skill === 'Listening'" class="flex items-center gap-2">
@@ -31,11 +31,11 @@
       </CollapseContainer>
     </div>
 
-    <div class="shadow-lg rounded-lg p-1 mx-1 mt-4">
+    <div class="border-1 border-gray-300 rounded-lg p-1 mx-2 mt-4">
       <SelectClass @select="attendanceTarget = $event" ref="selectClassRef" />
     </div>
 
-    <div class="shadow-lg rounded-lg p-1 mx-1 mt-4">
+    <div class="border-1 border-gray-300 rounded-lg p-1 mx-2 mt-4">
       <CollapseContainer :title="t('common.question')">
         <template v-if="skill">
           <EditorSkill
