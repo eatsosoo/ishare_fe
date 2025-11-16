@@ -10,8 +10,8 @@
           }}
         </template>
         <template v-if="column.key === 'status'">
-          <Tag :color="record.completed_at ? 'green' : 'red'">
-            {{ record.completed_at ? 'v' : 'x' }}
+          <Tag :color="tagColorWork(!!record.completed_at, record.retake, record.retake_score)">
+            {{ statusWork(!!record.completed_at, record.retake, record.retake_score) }}
           </Tag>
         </template>
         <template v-if="column.key === 'action'">
@@ -27,6 +27,13 @@
             preIcon="ant-design:eye-outlined"
             @click="clickView(record)"
           />
+          <a-button
+            v-if="record.retake === 1 && !record.retake_score"
+            size="small"
+            preIcon="ant-design:rollback-outlined"
+            class="ml-2"
+            @click="clickRetake(record.homework_id)"
+          />
         </template>
       </template>
     </BasicTable>
@@ -36,6 +43,7 @@
       :exam-id="examIdRef"
       :student-id="studentIdRef"
       :score="scoreRef"
+      :times="timesRef"
       @register="registerExeModal"
     />
   </div>
@@ -54,6 +62,7 @@
   import { useRouter } from 'vue-router';
   import { useModal } from '@/components/Modal';
   import ExeModal from './ExeModal.vue';
+  import { statusWork, tagColorWork } from '@/utils/stringUtils';
 
   const { t } = useI18n();
   const router = useRouter();
@@ -80,18 +89,24 @@
   const studentIdRef = ref(0);
   const skillType = ref('');
   const scoreRef = ref(0);
+  const timesRef = ref(1);
 
   function clickOpen(homeworkId: number) {
     router.push(`/take/exercise?id=${homeworkId}`);
   }
 
+  function clickRetake(homeworkId: number) {
+    router.push(`/take/exercise?id=${homeworkId}&retake=1`);
+  }
+
   function clickView(item: any) {
-    const { user_name, skill, user_id, homework_id, score } = item;
+    const { user_name, skill, user_id, homework_id, score, times } = item;
     modalTitle.value = `Học sinh: ${user_name} - Kỹ năng: ${skill}`;
     examIdRef.value = homework_id;
     studentIdRef.value = user_id;
     skillType.value = skill;
     scoreRef.value = score;
+    timesRef.value = times;
 
     openExeModal();
   }

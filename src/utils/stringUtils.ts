@@ -58,3 +58,15 @@ export function statusWork(complete: boolean, retake: number, retakeScore: numbe
     return t('table.notStarted');
   }
 }
+
+export function tagColorWork(complete: boolean, retake: number, retakeScore: number | null): string {
+  if (retakeScore) {
+    return 'blue';
+  } else if (retake === 1) {
+    return 'yellow';
+  } else if (complete) {
+    return 'green';
+  } else {
+    return 'red';
+  }
+}

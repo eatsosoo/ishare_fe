@@ -1,18 +1,18 @@
 <template>
   <PageWrapper>
-    <Card :title="t('form.searchClassAndDate')" :bordered="false" class="mb-4">
-      <div class="shadow-lg rounded-lg p-1 mx-1 mb-6">
-        <SelectClass :extend="false" @select="classId = $event" ref="selectClassRef" />
-      </div>
-      <div class="shadow-lg rounded-lg p-1 mx-1">
+    <div class="bg-white rounded-lg">
+      <div class="border-1 border-gray-200 rounded-lg p-1 pt-4">
         <BasicForm
           @register="registerForm"
           @submit="getAttendanceOfClass"
           @reset="setTableData([])"
         />
+        <div class="border-1 border-gray-200 rounded-lg p-1 mx-2 mb-2">
+          <SelectClass :extend="false" @select="classId = $event" ref="selectClassRef" />
+        </div>
       </div>
-    </Card>
-    <Card :title="t('common.resultList')" :bordered="false" class="mb-8">
+    </div>
+    <Card :title="t('common.resultList')" class="mb-8 mt-4">
       <BasicTable @register="registerTable">
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'date'">{{ getLeftValue(record.date) }}</template>

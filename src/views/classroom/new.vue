@@ -4,13 +4,13 @@
     :title="t('form.newClassForm.title')"
     :content="t('form.newClassForm.description')"
   >
-    <Card :title="t('form.newClassForm.information')" :bordered="false">
+    <Card :title="t('form.newClassForm.information')">
       <BasicForm @register="register" />
     </Card>
     <Card :title="t('form.shift')" class="mt-5">
       <ShiftTable @change="shiftData = $event" />
     </Card>
-    <Card :title="titlePreviewTable" :bordered="false" class="!mt-5">
+    <Card :title="titlePreviewTable" class="!mt-5">
       <StudentTable ref="tableRef" @select-students="handleRegisterStudentToClass" />
     </Card>
 

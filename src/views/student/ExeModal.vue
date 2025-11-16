@@ -227,6 +227,7 @@
     },
     // id của đề thi
     examId: {
+      // homework_id
       type: Number,
     },
     studentId: {
@@ -235,6 +236,10 @@
     score: {
       type: Number,
       default: 0,
+    },
+    times: {
+      type: Number,
+      default: 1,
     },
   });
 
@@ -250,10 +255,10 @@
 
   // uploadfile
 
-  async function getExamOfStudent(studentId: number, examId: number) {
+  async function getExamOfStudent(studentId: number, examId: number, times: number) {
     try {
       loading.value = true;
-      const result = await getResExercise(studentId, examId);
+      const result = await getResExercise(studentId, examId, times);
       if (result && result.items) {
         completedAssignment.value = result.items;
         const explanation = completedAssignment.value.question_groups[0].explanation;
@@ -304,10 +309,10 @@
   };
 
   watch(
-    () => [props.examId],
-    ([newExamId]) => {
+    () => [props.examId, props.times],
+    ([newExamId, newTimes]) => {
       if (newExamId) {
-        getExamOfStudent(props.studentId, newExamId);
+        getExamOfStudent(props.studentId, newExamId, newTimes);
       }
     },
   );

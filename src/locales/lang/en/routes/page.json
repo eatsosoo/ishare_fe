@@ -32,5 +32,6 @@
   "practiceTitle": "Create and Edit Practice Test",
   "practiceContent": "Note: When deleting a question from any skill, make sure to save the changes to update the question order.",
   "practiceGrading": "Practice Test Grading",
-  "manageBook": "Manage Book"
+  "manageBook": "Manage Book",
+  "bookContent": "This page allows you to create and edit book."
 }

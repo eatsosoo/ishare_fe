@@ -245,6 +245,7 @@
   import { renderGroupQuestions } from '../take/helpers';
   import { exportHtmlToDocx } from '@/utils/exportToDocx';
   import { compareAnswers } from '@/utils/stringUtils';
+  import PropsPanel from '../form-design/components/VFormDesign/modules/PropsPanel.vue';
 
   const classStyle =
     'bg-white rounded-full text-center outline-red-400 outline-1 border-gray-300 border-1 p-1 shadow-md h-[32px]';
@@ -267,6 +268,7 @@
     },
     times: {
       type: Number,
+      default: 1,
     },
     title: {
       type: String,
@@ -348,10 +350,10 @@
     }
   }
 
-  async function getExamOfStudent(studentId: number, examId: number) {
+  async function getExamOfStudent(studentId: number, examId: number, times: number) {
     try {
       loading.value = true;
-      const result = await getResExercise(studentId, examId);
+      const result = await getResExercise(studentId, examId, times);
       if (result && result.items) {
         completedAssignment.value = result.items;
         const explanation = completedAssignment.value.question_groups[0].explanation;
@@ -402,11 +404,12 @@
   };
 
   watch(
-    () => [props.examId, props.studentId, props.scoreId],
-    ([newExamId, newStudentId, newScoreId]) => {
-      if (newExamId && newStudentId && newScoreId) {
+    () => [props.examId, props.studentId, props.scoreId, props.times],
+    ([newExamId, newStudentId, newScoreId, newTimes]) => {
+      if (newExamId && newStudentId && newScoreId && newTimes) {
         if (props.assignAt !== 'exam') {
-          getExamOfStudent(newStudentId, newExamId);
+          console.log(newTimes);
+          getExamOfStudent(newStudentId, newExamId, newTimes);
         }
       }
     },

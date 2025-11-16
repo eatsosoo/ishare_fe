@@ -503,6 +503,11 @@
   async function submitExercise(passValidate = false) {
     if (!exerciseItem.value) return;
 
+    let retake = false;
+    if (route.query.retake && route.query.retake === '1') {
+      retake = true;
+    }
+
     const { skill, id, question_groups } = exerciseItem.value;
 
     if (skill !== 'Speaking') {
@@ -532,7 +537,7 @@
     const formatData: SubmitExerciseParams = {
       type: skill,
       answers: finalAnswers,
-      retake: false,
+      retake,
     };
 
     try {

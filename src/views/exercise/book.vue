@@ -1,5 +1,5 @@
 <template>
-  <PageWrapper>
+  <PageWrapper :title="t('routes.page.manageBook')" :content="t('routes.page.bookContent')">
     <BasicTable @register="registerTable">
       <template #toolbar>
         <a-button type="dashed" @click="activateModal()">{{ t('table.createBook') }}</a-button>

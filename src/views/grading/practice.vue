@@ -1,6 +1,6 @@
 <template>
-  <PageWrapper :title="t('routes.page.practiceGrading')">
-    <Card :title="t('form.searchPracticeTest')" :bordered="false" class="mb-4">
+  <PageWrapper>
+    <Card :title="t('form.searchPracticeTest')" class="mb-4 border-1 border-gray-200">
       <BasicForm
         @register="registerForm"
         @submit="findExerciseOfClass"

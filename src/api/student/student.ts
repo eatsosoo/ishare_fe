@@ -83,9 +83,9 @@ export const getDetailExamOfStudent = (
   });
 };
 
-export const getResExercise = (studentId: number, examId: number) => {
+export const getResExercise = (studentId: number, examId: number, times = 1) => {
   return defHttp.get<ResultBase<ExerciseResultItem>>({
-    url: `${Api.STUDENT_LIST}/${studentId}/homework/${examId}`,
+    url: `${Api.STUDENT_LIST}/${studentId}/homework/${examId}?times=${times}`,
     headers: {
       // @ts-ignore
       ignoreCancelToken: true,

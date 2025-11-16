@@ -861,6 +861,15 @@ export function getSearchExamOfStudentConfig(): Partial<FormProps> {
           xxl: 4,
         },
       },
+      {
+        field: '[completed_start, completed_end]',
+        component: 'RangePicker',
+        label: t('table.completedAt'),
+        colProps: {
+          xl: 6,
+          xxl: 6,
+        },
+      },
     ],
   };
 }
@@ -1318,6 +1327,15 @@ export function getPracticeDoneConfig(): Partial<FormProps> {
         colProps: {
           xl: 6,
           xxl: 4,
+        },
+      },
+      {
+        field: '[completed_start, completed_end]',
+        component: 'RangePicker',
+        label: t('table.completedAt'),
+        colProps: {
+          xl: 6,
+          xxl: 6,
         },
       },
     ],

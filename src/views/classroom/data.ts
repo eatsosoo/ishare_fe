@@ -105,6 +105,17 @@ export const schemas: FormSchema[] = [
 
 export const searchGradingSchemas: FormSchema[] = [
   {
+    field: 'student_name',
+    label: t('form.exerciseSearch.studentName'),
+    component: 'Input',
+    colProps: {
+      span: 6, // desktop: 3 cột / 24
+      xs: 24, // mobile: full width → 1 hàng
+      sm: 12,
+      xl: 6,
+    },
+  },
+  {
     field: 'skill',
     label: t('form.gradingSearch.skill'),
     component: 'Select',
@@ -134,9 +145,10 @@ export const searchGradingSchemas: FormSchema[] = [
     },
     required: true,
     colProps: {
-      span: 8, // desktop: 3 cột / 24
+      span: 6, // desktop: 3 cột / 24
       xs: 24, // mobile: full width → 1 hàng
-      sm: 8,
+      sm: 12,
+      xl: 6,
     },
   },
   {
@@ -161,9 +173,10 @@ export const searchGradingSchemas: FormSchema[] = [
     },
     required: true,
     colProps: {
-      span: 8, // desktop: 3 cột / 24
+      span: 6, // desktop: 3 cột / 24
       xs: 24, // mobile: full width → 1 hàng
-      sm: 8,
+      sm: 12,
+      xl: 6,
     },
   },
 ];

@@ -1,16 +1,20 @@
 <template>
   <PageWrapper>
-    <Card :title="t('form.gradingSearch.searchText')" :bordered="false" class="mb-4 p-0">
-      <div class="border-1 border-gray-200 rounded-lg p-1 mx-1 mb-2">
-        <SelectClass :extend="false" @select="classId = $event" ref="selectClassRef" />
+    <!-- <Card :title="t('form.gradingSearch.searchText')" :bordered="false" class="mb-4 p-0"> -->
+    <div class="mb-4">
+      <div class="border-1 border-gray-200 rounded-lg p-1 bg-white pt-8">
+        <BasicForm
+          @register="registerForm"
+          @submit="findExerciseOfClass"
+          @reset="showExerciseTable = false"
+          class="px-4"
+        />
+        <div class="mx-2 mb-2 border-1 border-gray-200 rounded-lg p-1">
+          <SelectClass :extend="false" @select="classId = $event" ref="selectClassRef" />
+        </div>
       </div>
-      <BasicForm
-        @register="registerForm"
-        @submit="findExerciseOfClass"
-        @reset="showExerciseTable = false"
-        class="mt-6"
-      />
-    </Card>
+    </div>
+    <!-- </Card> -->
     <Card v-if="showExerciseTable" :title="t('common.resultList')" :bordered="false">
       <BasicTable @register="registerTable">
         <template #bodyCell="{ column, record }">
@@ -25,14 +29,13 @@
             }}
           </template>
           <template v-if="column.key === 'status'">
-            <Tag :color="record.completed_at ? 'green' : 'red'">
+            <Tag :color="tagColorWork(!!record.completed_at, record.retake, record.retake_score)">
               {{ statusWork(!!record.completed_at, record.retake, record.retake_score) }}
             </Tag>
           </template>
           <template v-if="column.key === 'action'">
-            <div class="grid grid-cols-2 gap-2">
+            <div v-if="record.completed_at" class="grid grid-cols-2 gap-2">
               <a-button
-                v-if="record.completed_at"
                 size="small"
                 preIcon="ant-design:edit-filled"
                 @click="clickOpen(record as ExamGradingListItem)"
@@ -93,7 +96,7 @@
   import { useUserStore } from '@/store/modules/user';
   import SelectClass from '../exercise/SelectClass.vue';
   import { useMessage } from '@/hooks/web/useMessage';
-  import { statusWork } from '@/utils/stringUtils';
+  import { statusWork, tagColorWork } from '@/utils/stringUtils';
   import { retakeApi } from '@/api/exercise/exercise';
 
   const { t } = useI18n();
