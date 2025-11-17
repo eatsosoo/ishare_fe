@@ -28,6 +28,7 @@ interface UserState {
   practiceTestId: number | null;
   gradingSkill: SkillType;
   gradingType: string;
+  studentName: string;
 }
 
 export const useUserStore = defineStore({
@@ -48,6 +49,7 @@ export const useUserStore = defineStore({
     practiceTestId: null,
     gradingSkill: 'Reading',
     gradingType: 'exam',
+    studentName: '',
   }),
   getters: {
     getUserInfo(state): UserInfo {
@@ -76,6 +78,9 @@ export const useUserStore = defineStore({
     },
     getGradingType(state): string {
       return state.gradingType;
+    },
+    getStudentName(name): string {
+      return name.studentName;
     },
   },
   actions: {
@@ -106,6 +111,9 @@ export const useUserStore = defineStore({
     },
     setGradingType(type: SkillType) {
       this.gradingType = type;
+    },
+    setStudentName(name: string) {
+      this.studentName = name;
     },
     resetState() {
       this.userInfo = null;

@@ -110,11 +110,15 @@ export const examGradingListApi = () => (params: BasicPageParams) => {
   const classId = useStore.getClassId;
   const type = useStore.gradingType;
   const skill = useStore.gradingSkill;
+  const studentName = useStore.studentName;
   let url = '';
+  if (!classId) {
+    return [];
+  }
   if (type === 'exam') {
-    url = `${Api.EXAM_LIST}/${classId}/students?type=${type}&skill=${skill}`;
+    url = `${Api.EXAM_LIST}/${classId}/students?type=${type}&skill=${skill}&student_name=${studentName}`;
   } else {
-    url = `${Api.EXAM_LIST}/${classId}/students?type=homework&skill=${skill}&assign_at=${type}`;
+    url = `${Api.EXAM_LIST}/${classId}/students?type=homework&skill=${skill}&assign_at=${type}&name=${studentName}`;
   }
   return defHttp.get<ExamGradingGetResultModel>({
     url,

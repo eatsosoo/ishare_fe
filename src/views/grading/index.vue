@@ -203,10 +203,11 @@
         });
         return;
       }
-      const { skill, type } = values;
+      const { skill, type, student_name } = values;
       useStore.setClassId(classId.value);
       useStore.setGradingType(type);
       useStore.setGradingSkill(skill);
+      useStore.setStudentName(student_name || '');
       showExerciseTable.value = true;
       reload();
     } catch (error) {
