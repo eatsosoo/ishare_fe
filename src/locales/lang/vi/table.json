@@ -75,7 +75,7 @@
   "lastName": "Tên",
   "notStarted": "Chưa làm",
   "completed": "Đã làm",
-  "redoRequired": "Làm lại",
+  "redoRequired": "Đã yêu cầu làm lại",
   "redone": "Đã làm lại",
   "exerciseTable": {
     "name": "Tên bài tập",

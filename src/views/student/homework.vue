@@ -9,9 +9,12 @@
               : `${['Writing', 'Speaking'].includes(record.skill) ? record.score : `${record.score}/${record.question_count}`}`
           }}
         </template>
+        <template v-if="column.key === 'deadline'">{{
+          record.times > 1 ? '_' : getLeftValue(record.deadline)
+        }}</template>
         <template v-if="column.key === 'status'">
-          <Tag :color="tagColorWork(!!record.completed_at, record.retake, record.retake_score)">
-            {{ statusWork(!!record.completed_at, record.retake, record.retake_score) }}
+          <Tag :color="tagColorWork(record.completed_at, record.times, record.retake)">
+            {{ statusWork(record.completed_at, record.times, record.retake) }}
           </Tag>
         </template>
         <template v-if="column.key === 'action'">
@@ -62,7 +65,7 @@
   import { useRouter } from 'vue-router';
   import { useModal } from '@/components/Modal';
   import ExeModal from './ExeModal.vue';
-  import { statusWork, tagColorWork } from '@/utils/stringUtils';
+  import { getLeftValue, statusWork, tagColorWork } from '@/utils/stringUtils';
 
   const { t } = useI18n();
   const router = useRouter();

@@ -46,25 +46,25 @@ export function compareAnswers(
   }
 }
 
-export function statusWork(complete: boolean, retake: number, retakeScore: number | null): string {
+export function statusWork(completedAt: string | null, times: number, retake: number): string {
   const { t } = useI18n();
-  if (retakeScore) {
+  if (times === 2 && completedAt) {
     return t('table.redone');
-  } else if (retake === 1) {
+  } else if (times === 1 && retake === 1) {
     return t('table.redoRequired');
-  } else if (complete) {
+  } else if (times === 1 && completedAt) {
     return t('table.completed');
   } else {
     return t('table.notStarted');
   }
 }
 
-export function tagColorWork(complete: boolean, retake: number, retakeScore: number | null): string {
-  if (retakeScore) {
+export function tagColorWork(completedAt: boolean, times: number, retake: number): string {
+  if (times === 2 && completedAt) {
     return 'blue';
-  } else if (retake === 1) {
+  } else if (times === 1 && retake === 1) {
     return 'yellow';
-  } else if (complete) {
+  } else if (times === 1 && completedAt) {
     return 'green';
   } else {
     return 'red';

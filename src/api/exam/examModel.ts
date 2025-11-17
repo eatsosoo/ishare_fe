@@ -81,7 +81,7 @@ export interface ExamGradingListItem {
   status: string;
   score: number;
   skill: SkillType;
-  completed_at: string;
+  completed_at: string | null;
   score_id: number;
   times: number;
   deadline: string;

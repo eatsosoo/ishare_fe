@@ -15,42 +15,43 @@
       </div>
     </div>
     <!-- </Card> -->
-    <Card v-if="showExerciseTable" :title="t('common.resultList')" :bordered="false">
-      <BasicTable @register="registerTable">
-        <template #bodyCell="{ column, record }">
-          <template v-if="column.key === 'completed_at'">{{
-            record.completed_at || record.status
-          }}</template>
-          <template v-if="column.key === 'score'">
-            {{
-              record.score === -1 || record.score === null
-                ? t('common.noScoreYet')
-                : `${['Writing', 'Speaking'].includes(record.skill) ? record.score : `${record.score}/${record.question_count}`}`
-            }}
-          </template>
-          <template v-if="column.key === 'status'">
-            <Tag :color="tagColorWork(!!record.completed_at, record.retake, record.retake_score)">
-              {{ statusWork(!!record.completed_at, record.retake, record.retake_score) }}
-            </Tag>
-          </template>
-          <template v-if="column.key === 'action'">
-            <div v-if="record.completed_at" class="grid grid-cols-2 gap-2">
-              <a-button
-                size="small"
-                preIcon="ant-design:edit-filled"
-                @click="clickOpen(record as ExamGradingListItem)"
-              />
-              <a-button
-                v-if="!record.retake_score && record.retake === 0"
-                size="small"
-                preIcon="ant-design:rollback-outlined"
-                @click="clickRedoRequire(record as ExamGradingListItem)"
-              />
-            </div>
+    <BasicTable @register="registerTable">
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'completed_at'">{{ record.completed_at || '_' }}</template>
+        <template v-if="column.key === 'times'">{{ record.times || '_' }}</template>
+        <template v-if="column.key === 'deadline'">{{
+          record.times > 1 ? '_' : record.deadline
+        }}</template>
+        <template v-if="column.key === 'score'">
+          {{
+            record.score === -1 || record.score === null
+              ? t('common.noScoreYet')
+              : `${['Writing', 'Speaking'].includes(record.skill) ? record.score : `${record.score}/${record.question_count}`}`
+          }}
+        </template>
+        <template v-if="column.key === 'status'">
+          <Tag :color="tagColorWork(record.completed_at, record.times, record.retake)">
+            {{ statusWork(record.completed_at, record.times, record.retake) }}
+          </Tag>
+        </template>
+        <template v-if="column.key === 'action'">
+          <template v-if="record.completed_at">
+            <a-button
+              size="small"
+              preIcon="ant-design:edit-filled"
+              class="mr-1"
+              @click="clickOpen(record as ExamGradingListItem)"
+            />
+            <a-button
+              v-if="!record.retake_score && record.retake === 0"
+              size="small"
+              preIcon="ant-design:rollback-outlined"
+              @click="clickRedoRequire(record as ExamGradingListItem)"
+            />
           </template>
         </template>
-      </BasicTable>
-    </Card>
+      </template>
+    </BasicTable>
 
     <DetailModal
       :title="modalTitle"
@@ -82,7 +83,7 @@
   import { BasicTable, useTable } from '@/components/Table';
   import { getExamGradingColumns, getSearchExerciseConfig } from '@/views/classroom/tableData';
   import { useI18n } from '@/hooks/web/useI18n';
-  import { Card, Tag } from 'ant-design-vue';
+  import { Tag } from 'ant-design-vue';
   import DetailModal from './DetailModal.vue';
   import ExeModal from './ExeModal.vue';
   import { useModal } from '@/components/Modal';

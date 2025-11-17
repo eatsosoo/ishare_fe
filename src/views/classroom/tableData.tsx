@@ -248,6 +248,10 @@ export function getExamGradingColumns(): BasicColumn[] {
       dataIndex: 'status',
     },
     {
+      title: 'Time',
+      dataIndex: 'times',
+    },
+    {
       title: t('table.exerciseTable.score'),
       dataIndex: 'score',
     },
@@ -327,7 +331,7 @@ export function getExamOfStudentColumns(): BasicColumn[] {
       title: t('table.completedAt'),
       dataIndex: 'completed_at',
       customRender: ({ text }) => {
-        return text || 'Chưa nộp';
+        return text || t('common.notWork');
       },
     },
   ];
@@ -367,21 +371,22 @@ export function getExeOfStudentColumns(): BasicColumn[] {
       dataIndex: 'status',
     },
     {
+      title: 'Time',
+      dataIndex: 'times',
+    },
+    {
       title: t('table.examTable.score'),
       dataIndex: 'score',
     },
     {
       title: t('table.deadline'),
       dataIndex: 'deadline',
-      customRender: ({ text }) => {
-        return getLeftValue(text);
-      },
     },
     {
       title: t('table.completedAt'),
       dataIndex: 'completed_at',
       customRender: ({ text }) => {
-        return text || 'Chưa nộp';
+        return text || t('common.notWork');
       },
     },
   ];
