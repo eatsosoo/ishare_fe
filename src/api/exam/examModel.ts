@@ -75,7 +75,7 @@ export interface SubmitExam {
 
 export interface ExamGradingListItem {
   user_id: number;
-  name: string;
+  user_name: string;
   exam_id: number;
   exam_title: string;
   status: string;

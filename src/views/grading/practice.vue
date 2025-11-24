@@ -31,6 +31,13 @@
               preIcon="ant-design:edit-filled"
               @click="clickOpen(record as ExamGradingListItem)"
             />
+            <a-button
+              v-if="parseInt(record.score) > 0"
+              size="small"
+              preIcon="ant-design:rollback-outlined"
+              class="ml-2"
+              @click="clickRedoRequire(record as ExamGradingListItem)"
+            />
           </template>
         </template>
       </BasicTable>
@@ -61,13 +68,17 @@
   import BasicForm from '@/components/Form/src/BasicForm.vue';
   import { useForm } from '@/components/Form';
   import { searchGradingPracticeTestSchemas } from '@/views/classroom/data';
-  import { ref } from 'vue';
+  import { h, ref } from 'vue';
   import { ExamGradingListItem, SkillType } from '@/api/exam/examModel';
   import { practiceGradingListApi } from '@/api/exam/exam';
   import { useUserStore } from '@/store/modules/user';
+  import { retakeApi } from '@/api/exercise/exercise';
+  import { useMessage } from '@/hooks/web/useMessage';
 
   const { t } = useI18n();
   const useStore = useUserStore();
+  const { createConfirm, createMessage } = useMessage();
+
   const [registerTable, { reload }] = useTable({
     api: practiceGradingListApi(),
     columns: getPracticeGradingColumns(),
@@ -137,5 +148,29 @@
     } catch (error) {
       console.log(error);
     }
+  }
+
+  function clickRedoRequire(item: ExamGradingListItem) {
+    const { exam_id, user_id } = item;
+    if (!exam_id || !user_id) {
+      return;
+    }
+
+    createConfirm({
+      iconType: 'warning',
+      title: () => h('span', t('sys.app.logoutTip')),
+      content: () => h('span', t('common.warning.redoRequired')),
+      onOk: async () => {
+        try {
+          const res = await retakeApi({ exam_id, user_id, type: 'exam' });
+          if (res && res.items) {
+            createMessage.success(t('common.confirmSuccessfully'));
+            reload();
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      },
+    });
   }
 </script>

@@ -212,26 +212,23 @@
                     class="mb-4"
                     @change="handleChangeFile"
                   >
-                    <a-button preIcon="ant-design:upload-outlined" :loading="uploading">{{
-                      t('common.uploadFeedback')
-                    }}</a-button>
+                    <a-button
+                      preIcon="ant-design:upload-outlined"
+                      :loading="uploading"
+                      class="mr-2"
+                      >{{ t('common.uploadFeedback') }}</a-button
+                    >
                   </Upload>
-                  <a-button
-                    v-if="gradingFormData.feedback"
-                    type="link"
-                    @click="openWindow(gradingFormData.feedback)"
-                  >
-                    {{ t('common.clickToView') }}
-                  </a-button>
-                  <span v-else class="ml-2">{{ t('common.noFeedbackYet') }}</span>
+                  <template v-if="gradingFormData.feedback">
+                    <a-button type="link" @click="openWindow(gradingFormData.feedback)">
+                      {{ t('common.clickToView') }}
+                    </a-button>
+                  </template>
+                  <template v-else>{{ t('common.noFeedbackYet') }}</template>
                 </template>
                 <template v-else>
-                  <Textarea
-                    v-model:value="gradingFormData.feedback"
-                    required
-                    :rows="10"
-                  /> </template
-                >span>
+                  <Textarea v-model:value="gradingFormData.feedback" required :rows="10" />
+                </template>
               </FormItem>
               <div class="flex justify-end">
                 <a-button type="primary" @click="submitAll">{{ t('common.confirm') }}</a-button>
