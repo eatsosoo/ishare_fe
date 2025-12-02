@@ -214,6 +214,7 @@ export const createBankApi = (params: CreateBankParams, mode: ErrorMessageMode =
     },
   );
 
+// send retake request
 export const retakeApi = (params: RetakeParams, mode: ErrorMessageMode = 'modal') =>
   defHttp.post<ResultBase<RetakeParams>>(
     {

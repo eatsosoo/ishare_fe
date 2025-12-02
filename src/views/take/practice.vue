@@ -232,6 +232,11 @@
   async function submitExam(submitData?: any) {
     if (!skillExam.value) return;
 
+    let retake = false;
+    if (route.query.retake && route.query.retake === '1') {
+      retake = true;
+    }
+
     if (!submitData) {
       getInputValues();
 
@@ -259,6 +264,7 @@
       exam_skill_id: skillExam.value.id as number,
       type: state.type,
       answers: finalAnswers,
+      retake,
     };
 
     try {

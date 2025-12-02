@@ -52,14 +52,25 @@
             <div class="shadow-md rounded-md mt-1">
               <BasicTable @register="registerDoneTable">
                 <template #bodyCell="{ column, record }">
+                  <template v-if="column.key === 'status'">
+                    <Tag :color="tagColorWork(record.completed_at, record.times, record.retake)">
+                      {{ statusWork(record.completed_at, record.times, record.retake) }}
+                    </Tag>
+                  </template>
                   <template v-if="column.key === 'action'">
-                    <Tooltip title="View" placement="bottom">
-                      <a-button
-                        size="small"
-                        preIcon="ant-design:eye-twotone"
-                        @click="clickView(record)"
-                      />
-                    </Tooltip>
+                    <a-button
+                      v-if="record.completed_at"
+                      size="small"
+                      preIcon="ant-design:eye-outlined"
+                      @click="clickView(record)"
+                    />
+                    <a-button
+                      v-if="record.retake === 1 && !record.retake_score"
+                      size="small"
+                      preIcon="ant-design:rollback-outlined"
+                      class="ml-2"
+                      @click="clickRetake(record.exam_id, record.skill)"
+                    />
                   </template>
                 </template>
               </BasicTable>
@@ -90,7 +101,7 @@
     getPracticeDoneConfig,
     getTestColumns,
   } from '@/views/classroom/tableData';
-  import { Card, TabPane, Tabs, Tooltip } from 'ant-design-vue';
+  import { Card, TabPane, Tabs, Tag, Tooltip } from 'ant-design-vue';
 
   import { SkillType } from '@/api/exam/examModel';
   import { useRouter } from 'vue-router';
@@ -101,6 +112,7 @@
   import { useUserStore } from '@/store/modules/user';
   import DetailModal from './DetailModal.vue';
   import { useModal } from '@/components/Modal';
+  import { statusWork, tagColorWork } from '@/utils/stringUtils';
 
   const { t } = useI18n();
 
@@ -179,6 +191,10 @@
     scoreRef.value = parseInt(score);
 
     openExeModal();
+  }
+
+  function clickRetake(homeworkId: number, skill: SkillType) {
+    router.push(`/take/practice?id=${homeworkId}&type=${skill}&retake=1`); // take/practice?id=37&type=Reading
   }
 </script>
 

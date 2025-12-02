@@ -1263,12 +1263,6 @@ export function getPracticeGradingColumns(): BasicColumn[] {
 
 export function getPracticeDoneColumns(): BasicColumn[] {
   return [
-    // {
-    //   title: 'ID',
-    //   dataIndex: 'id',
-    //   fixed: 'left',
-    //   width: 80,
-    // },
     {
       title: t('table.examTable.name'),
       dataIndex: 'exam_title',
@@ -1284,6 +1278,10 @@ export function getPracticeDoneColumns(): BasicColumn[] {
     {
       title: t('table.takeTimes'),
       dataIndex: 'times',
+    },
+    {
+      title: t('table.status'),
+      dataIndex: 'status',
     },
     {
       title: t('table.completedAt'),
