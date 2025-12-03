@@ -28,8 +28,26 @@ export const getAllStudentListApi = () => (params: BasicPageParams) =>
     },
   });
 
-export const getHomeworkListOfStudentApi = () => (params: BasicPageParams) =>
-  defHttp.get<StudentListGetResultModel>({
+export const getHomeworkListOfStudentApi = () => (params: BasicPageParams) => {
+  const days = {
+    '01': '31',
+    '02': '30',
+    '03': '31',
+    '04': '30',
+    '05': '31',
+    '06': '30',
+    '07': '31',
+    '08': '31',
+    '09': '30',
+    '10': '31',
+    '11': '30',
+    '12': '31',
+  };
+  if (params.month) {
+    params.completed_start = `2025-${params.month}-01`;
+    params.completed_end = `2025-${params.month}-${days[params.month]}`;
+  }
+  return defHttp.get<StudentListGetResultModel>({
     url: `${Api.STUDENT_LIST}${Api.HOMEWORK}`,
     params,
     headers: {
@@ -37,6 +55,7 @@ export const getHomeworkListOfStudentApi = () => (params: BasicPageParams) =>
       ignoreCancelToken: true,
     },
   });
+};
 
 export const getExamListOfStudentApi = () => (params: BasicPageParams) =>
   defHttp.get<StudentListGetResultModel>({

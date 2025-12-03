@@ -867,9 +867,61 @@ export function getSearchExamOfStudentConfig(): Partial<FormProps> {
         },
       },
       {
-        field: '[completed_start, completed_end]',
-        component: 'RangePicker',
+        field: 'month',
+        component: 'Select',
         label: t('table.completedAt'),
+        componentProps: {
+          options: [
+            {
+              label: t('common.months.jan'),
+              value: '01',
+            },
+            {
+              label: t('common.months.feb'),
+              value: '02',
+            },
+            {
+              label: t('common.months.mar'),
+              value: '03',
+            },
+            {
+              label: t('common.months.apr'),
+              value: '04',
+            },
+            {
+              label: t('common.months.may'),
+              value: '05',
+            },
+            {
+              label: t('common.months.jun'),
+              value: '06',
+            },
+            {
+              label: t('common.months.jul'),
+              value: '07',
+            },
+            {
+              label: t('common.months.aug'),
+              value: '08',
+            },
+            {
+              label: t('common.months.sep'),
+              value: '09',
+            },
+            {
+              label: t('common.months.oct'),
+              value: '10',
+            },
+            {
+              label: t('common.months.nov'),
+              value: '11',
+            },
+            {
+              label: t('common.months.dec'),
+              value: '12',
+            },
+          ],
+        },
         colProps: {
           xl: 6,
           xxl: 6,
