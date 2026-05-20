@@ -57,6 +57,16 @@ const system: AppRouteModule = {
       },
       component: () => import('@/views/demo/system/password/index.vue'),
     },
+    {
+      path: 'settings',
+      name: 'SystemSettings',
+      meta: {
+        title: 'Cấu hình hệ thống',
+        ignoreKeepAlive: true,
+        roles: [RoleEnum.SUPER],
+      },
+      component: () => import('@/views/demo/system/settings/index.vue'),
+    },
     // {
     //   path: 'line',
     //   name: 'Line',

@@ -298,7 +298,7 @@
   getExamDetail(state.examId, state.type);
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   @keyframes blinking-bg {
     0% {
       background-color: rgb(240 169 169);
