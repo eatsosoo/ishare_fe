@@ -408,7 +408,7 @@
     ([newExamId, newStudentId, newScoreId, newTimes]) => {
       if (newExamId && newStudentId && newScoreId && newTimes) {
         if (props.assignAt !== 'exam') {
-          console.log(newTimes);
+          // console.log(newTimes);
           getExamOfStudent(newStudentId, newExamId, newTimes);
         }
       }

@@ -18,10 +18,12 @@ export function getRightValue(value: string): string {
 }
 
 export function compareAnswers(
-  correctAnswer: string | string[],
-  studentAnswer: string,
+  correctAnswer: string | string[] | null | undefined,
+  studentAnswer: string | null | undefined,
   questionType: any,
 ): boolean {
+  if (correctAnswer == null || studentAnswer == null) return false;
+
   if (
     questionType === 'fill_in' &&
     typeof correctAnswer === 'string' &&
@@ -48,11 +50,11 @@ export function compareAnswers(
 
 export function statusWork(completedAt: string | null, times: number, retake: number): string {
   const { t } = useI18n();
-  if (times === 2 && completedAt) {
+  if (times > 1 && completedAt) {
     return t('table.redone');
-  } else if (times === 1 && retake === 1) {
+  } else if (retake === 1) {
     return t('table.redoRequired');
-  } else if (times === 1 && completedAt) {
+  } else if (completedAt) {
     return t('table.completed');
   } else {
     return t('table.notStarted');
@@ -60,11 +62,11 @@ export function statusWork(completedAt: string | null, times: number, retake: nu
 }
 
 export function tagColorWork(completedAt: boolean, times: number, retake: number): string {
-  if (times === 2 && completedAt) {
+  if (times > 1 && completedAt) {
     return 'blue';
-  } else if (times === 1 && retake === 1) {
+  } else if (retake === 1) {
     return 'yellow';
-  } else if (times === 1 && completedAt) {
+  } else if (completedAt) {
     return 'green';
   } else {
     return 'red';

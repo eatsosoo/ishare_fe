@@ -431,10 +431,21 @@
 
       if (data.skill !== 'Speaking') {
         // Load progress on page load
-        loadProgress();
-        const localValue = localStorage.getItem(LOCAL_STORAGE_KEY);
-        const timeLeft = !localValue ? data.duration * 60 : JSON.parse(localValue).remainingTime;
-        startCountdown(timeLeft);
+        const savedRemainingTime = loadProgress();
+        const configuredDuration = Number(data.duration) * 60;
+        const initialTime = savedRemainingTime ?? configuredDuration;
+
+        if (
+          !Number.isFinite(initialTime) ||
+          (savedRemainingTime == null && configuredDuration <= 0)
+        ) {
+          stopTimer();
+          timeLeft.value = '0:00';
+          createMessage.error(t('sys.app.dataNotFound'));
+          return;
+        }
+
+        startCountdown(Math.max(0, initialTime));
       }
     } catch (error) {
       createMessage.error(t('sys.app.dataNotFound'));
@@ -715,15 +726,23 @@
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(progress));
   }
 
-  function loadProgress() {
+  function loadProgress(): number | null {
     const savedProgress = localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (savedProgress) {
+    if (!savedProgress) return null;
+
+    try {
       const { exerciseId, answers, remainingTime } = JSON.parse(savedProgress);
-      if (exerciseId === state.exerciseId) {
+      const parsedRemainingTime = Number(remainingTime);
+      if (exerciseId === state.exerciseId && Number.isFinite(parsedRemainingTime)) {
         studentAnswer.value = answers || {};
-        duration.value = remainingTime || 0;
+        return parsedRemainingTime;
       }
+    } catch (error) {
+      console.error('Invalid saved exercise progress:', error);
     }
+
+    localStorage.removeItem(LOCAL_STORAGE_KEY);
+    return null;
   }
 
   // Hàm xử lý sự kiện change

@@ -86,6 +86,8 @@ export interface ExamGradingListItem {
   times: number;
   deadline: string;
   assign_at: string;
+  retake?: number;
+  retake_score?: number | string | null;
 }
 
 /**

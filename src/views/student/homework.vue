@@ -99,6 +99,8 @@
   }
 
   function clickRetake(homeworkId: number) {
+    // A newly approved retake must not inherit an expired timer from the previous attempt.
+    localStorage.removeItem(`exercise_${homeworkId}`);
     router.push(`/take/exercise?id=${homeworkId}&retake=1`);
   }
 

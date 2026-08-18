@@ -43,7 +43,7 @@
               @click="clickOpen(record as ExamGradingListItem)"
             />
             <a-button
-              v-if="!record.retake_score && record.retake === 0"
+              v-if="canRequestRetake(record as ExamGradingListItem)"
               size="small"
               preIcon="ant-design:rollback-outlined"
               @click="clickRedoRequire(record as ExamGradingListItem)"
@@ -102,7 +102,7 @@
 
   const { t } = useI18n();
   const useStore = useUserStore();
-  const [registerTable, { reload }] = useTable({
+  const [registerTable, { reload, getDataSource }] = useTable({
     api: examGradingListApi(),
     columns: getExamGradingColumns(),
     useSearchForm: false,
@@ -140,6 +140,25 @@
   const timeRef = ref<number | undefined>(undefined);
   const scoreRef = ref<number | undefined>(undefined);
   const assignAtRef = ref<string | undefined>(undefined);
+
+  function canRequestRetake(item: ExamGradingListItem) {
+    const attempts = getDataSource<ExamGradingListItem>().filter(
+      (record) =>
+        record.exam_id === item.exam_id &&
+        record.user_id === item.user_id &&
+        record.skill === item.skill,
+    );
+    const latestAttempt = attempts.reduce<ExamGradingListItem | undefined>((latest, current) => {
+      if (!latest) return current;
+      if (current.times !== latest.times) return current.times > latest.times ? current : latest;
+      return current.score_id > latest.score_id ? current : latest;
+    }, undefined);
+
+    if (latestAttempt?.score_id !== item.score_id) return false;
+
+    const hasPendingRetake = item.retake === 1 && item.retake_score == null;
+    return !hasPendingRetake;
+  }
 
   function clickOpen(item: ExamGradingListItem) {
     const { exam_id, skill, name, user_id, score_id, times, score, assign_at } = item;
